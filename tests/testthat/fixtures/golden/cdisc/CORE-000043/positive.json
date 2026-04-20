@@ -1,0 +1,15 @@
+{
+  "rule_id": "CORE-000043",
+  "fixture_type": "positive",
+  "datasets": {
+    "TP": {
+      "TP": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded for leaf op 'exists'; should fire",
+  "authored": "auto-seed@1"
+}
