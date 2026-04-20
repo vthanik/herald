@@ -347,3 +347,94 @@ op_ends_with <- function(data, ctx, name, value, ignore_case = FALSE) {
     cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
   )
 )
+
+# --- prefix operators (first N chars of column value) -----------------------
+# CDISC convention: prefix length = 2 chars (the domain 2-char prefix).
+# Allow override via `prefix_length` arg if rule specifies.
+
+.prefix <- function(s, len = 2L) substr(as.character(s), 1L, len)
+
+op_prefix_equal_to <- function(data, ctx, name, value, prefix_length = 2L) {
+  col <- data[[name]]
+  if (is.null(col)) return(rep(NA, nrow(data)))
+  values <- as.character(col)
+  missing <- is.na(values)
+  out <- logical(length(values))
+  out[missing]  <- NA
+  out[!missing] <- .prefix(values[!missing], prefix_length) == as.character(value)
+  out
+}
+.register_op(
+  "prefix_equal_to", op_prefix_equal_to,
+  meta = list(
+    kind = "string",
+    summary = "First `prefix_length` chars of value equal a literal",
+    arg_schema = list(
+      name          = list(type = "string",  required = TRUE),
+      value         = list(type = "string",  required = TRUE),
+      prefix_length = list(type = "integer", default = 2L)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_prefix_not_equal_to <- function(data, ctx, name, value, prefix_length = 2L) {
+  m <- op_prefix_equal_to(data, ctx, name, value, prefix_length)
+  ifelse(is.na(m), NA, !m)
+}
+.register_op(
+  "prefix_not_equal_to", op_prefix_not_equal_to,
+  meta = list(
+    kind = "string",
+    summary = "First N chars of value do not equal a literal",
+    arg_schema = list(
+      name          = list(type = "string",  required = TRUE),
+      value         = list(type = "string",  required = TRUE),
+      prefix_length = list(type = "integer", default = 2L)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_prefix_matches_regex <- function(data, ctx, name, value, prefix_length = 2L) {
+  col <- data[[name]]
+  if (is.null(col)) return(rep(NA, nrow(data)))
+  values <- as.character(col)
+  missing <- is.na(values)
+  out <- logical(length(values))
+  out[missing]  <- NA
+  out[!missing] <- grepl(value, .prefix(values[!missing], prefix_length),
+                         perl = TRUE)
+  out
+}
+.register_op(
+  "prefix_matches_regex", op_prefix_matches_regex,
+  meta = list(
+    kind = "string",
+    summary = "First N chars of value match PCRE pattern",
+    arg_schema = list(
+      name          = list(type = "string",  required = TRUE),
+      value         = list(type = "string",  required = TRUE),
+      prefix_length = list(type = "integer", default = 2L)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_not_prefix_matches_regex <- function(data, ctx, name, value, prefix_length = 2L) {
+  m <- op_prefix_matches_regex(data, ctx, name, value, prefix_length)
+  ifelse(is.na(m), NA, !m)
+}
+.register_op(
+  "not_prefix_matches_regex", op_not_prefix_matches_regex,
+  meta = list(
+    kind = "string",
+    summary = "First N chars of value do not match PCRE pattern",
+    arg_schema = list(
+      name          = list(type = "string",  required = TRUE),
+      value         = list(type = "string",  required = TRUE),
+      prefix_length = list(type = "integer", default = 2L)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)

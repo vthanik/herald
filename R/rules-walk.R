@@ -140,13 +140,11 @@ walk_tree <- function(node, data, ctx = NULL) {
   # Strip 'operator' key; remaining keys are op args.
   args <- node[setdiff(names(node), "operator")]
 
-  # SDTM `--VAR` wildcard expansion: replace the leading `--` with the
-  # 2-char domain prefix from ctx$current_domain (falls back to the first
-  # 2 chars of ctx$current_dataset). Applied to any string arg value
-  # that starts with "--" (typically `name`, but also to `value` fields
-  # when the value is a cross-reference to another variable).
-  domain_prefix <- .domain_prefix(ctx, data)
-  args <- .expand_wildcard_args(args, domain_prefix)
+  # SDTM / ADaM `--VAR` wildcard expansion. For each candidate domain
+  # prefix (SDTM 2-char, ADaM "AD" prefix -> SDTM parent, SUPP prefix, etc.)
+  # pick the first that yields a column actually present in data.
+  candidates <- .domain_prefix_candidates(ctx, data)
+  args <- .expand_wildcard_args(args, data, candidates)
 
   tryCatch(
     do.call(fn, c(list(data = data, ctx = ctx), args)),
@@ -161,28 +159,79 @@ walk_tree <- function(node, data, ctx = NULL) {
   )
 }
 
-.domain_prefix <- function(ctx, data) {
+#' Candidate domain prefixes for --VAR wildcard resolution
+#'
+#' The `--VAR` wildcard is an **SDTM-IG convention only** (SDTMIG s.2.5.1).
+#' ADaMIG does not use it — ADaM variables are explicitly named
+#' (AVAL, AVALC, PARAM, PARAMCD, ADT, ADY, ASTDY, AENDY, TRTEMFL, etc.).
+#' So our resolver returns candidates only for SDTM + SEND datasets and
+#' returns an empty list for ADaM. SUPP-- domains keep parent-domain
+#' resolution because their rules sometimes reference the parent via `--`.
+#'
+#' Resolution order (first candidate that yields an existing column wins):
+#'
+#'   SDTM / SEND (AE, DM, LB, EX, VS, ...) -> first 2 chars of dataset name
+#'   SUPP-- (SUPPAE, SUPPDM, ...)          -> parent-domain 2 chars (AE, DM)
+#'   ADaM  (ADAE, ADLB, ADSL, ...)         -> NONE (wildcard stays unresolved;
+#'                                            op sees `--VAR` as column,
+#'                                            returns NA -> advisory)
+#' @noRd
+.domain_prefix_candidates <- function(ctx, data) {
+  ds <- if (!is.null(ctx$current_dataset)) toupper(ctx$current_dataset) else NA_character_
+
+  # ADaM datasets use explicit naming, no `--` convention.
+  if (!is.na(ds) && startsWith(ds, "AD") && nchar(ds) >= 3L) {
+    return(character(0))
+  }
+
+  candidates <- character()
+
+  # Explicit domain override from ctx takes priority (e.g. a rule author
+  # forces the prefix).
   if (!is.null(ctx$current_domain) && nzchar(ctx$current_domain)) {
-    return(toupper(ctx$current_domain))
+    candidates <- c(candidates, toupper(ctx$current_domain))
   }
-  if (!is.null(ctx$current_dataset) && nzchar(ctx$current_dataset)) {
-    return(toupper(substr(ctx$current_dataset, 1, 2)))
+
+  if (!is.na(ds) && nzchar(ds)) {
+    # SUPP-- domains: parent 2-char comes first (SUPPAE -> AE)
+    if (startsWith(ds, "SUPP") && nchar(ds) >= 6L) {
+      candidates <- c(candidates, substr(ds, 5L, 6L))
+    }
+    # SDTM / SEND: first 2 chars of dataset name
+    candidates <- c(candidates, substr(ds, 1L, 2L))
   }
-  # Fall back to reading the DOMAIN column if present (single unique value)
+
+  # DOMAIN column fallback (rare — mostly for synthetic tests)
   if (!is.null(data$DOMAIN)) {
     u <- unique(as.character(data$DOMAIN))
     u <- u[nzchar(u)]
-    if (length(u) == 1L) return(toupper(u))
+    if (length(u) == 1L) candidates <- c(candidates, toupper(u))
   }
-  NA_character_
+
+  unique(candidates[nzchar(candidates)])
 }
 
-.expand_wildcard_args <- function(args, prefix) {
-  if (is.na(prefix) || is.null(prefix)) return(args)
+#' Resolve a `--VAR` wildcard against a dataset's actual columns
+#' @noRd
+.resolve_wildcard <- function(var_wildcard, data, candidates) {
+  if (length(candidates) == 0L) return(var_wildcard)
+  tail <- substr(var_wildcard, 3L, nchar(var_wildcard))
+  # First candidate that produces a column actually in data wins
+  for (cand in candidates) {
+    col <- paste0(cand, tail)
+    if (col %in% names(data)) return(col)
+  }
+  # No match: use the first (primary) candidate so downstream op can
+  # report missing-column via its normal path (returns NA mask)
+  paste0(candidates[1], tail)
+}
+
+.expand_wildcard_args <- function(args, data, candidates) {
+  if (length(candidates) == 0L) return(args)
   for (nm in names(args)) {
     v <- args[[nm]]
     if (is.character(v) && length(v) == 1L && startsWith(v, "--")) {
-      args[[nm]] <- paste0(prefix, substr(v, 3, nchar(v)))
+      args[[nm]] <- .resolve_wildcard(v, data, candidates)
     }
   }
   args
