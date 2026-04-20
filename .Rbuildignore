@@ -1,0 +1,17 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^README\.Rmd$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
+^\.local$
+^CLAUDE\.md$
+^\.claude$
+^\.claudeignore$
+^tools$
+^revdep$
+^cran-comments\.md$
+^\.DS_Store$
+^tasks$

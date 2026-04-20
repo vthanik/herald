@@ -1,0 +1,39 @@
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+/doc/
+/Meta/
+inst/doc/
+
+# Build artifacts
+/.Rcheck/
+/revdep/
+*.tar.gz
+
+# pkgdown
+/docs/
+
+# Renv
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/staging/
+
+# Claude + local
+.claude/
+.claudeignore
+CLAUDE.md
+.local/
+tasks/todo.md
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
