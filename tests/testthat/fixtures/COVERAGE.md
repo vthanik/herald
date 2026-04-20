@@ -1,15 +1,15 @@
 # Golden-fixture coverage
 
-_generated 2026-04-20T20:40:53Z by tools/fixture-coverage.R_
+_generated 2026-04-20T21:00:25Z by tools/fixture-coverage.R_
 
 | metric | count |
 |---|---:|
 | executable rules | 476 |
-| covered (both fixtures) | 274 |
+| covered (both fixtures) | 264 |
 | missing positive only | 0 |
 | missing negative only | 0 |
-| missing both (pending) | 202 |
-| coverage | 57.6% |
+| missing both (pending) | 212 |
+| coverage | 55.5% |
 
 Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 
@@ -47,7 +47,6 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000035
 - CORE-000037
 - CORE-000038
-- CORE-000040
 - CORE-000041
 - CORE-000042
 - CORE-000043
@@ -107,7 +106,6 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000105
 - CORE-000106
 - CORE-000107
-- CORE-000108
 - CORE-000109
 - CORE-000110
 - CORE-000111
@@ -172,7 +170,6 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000207
 - CORE-000217
 - CORE-000218
-- CORE-000219
 - CORE-000223
 - CORE-000224
 - CORE-000225
@@ -182,15 +179,12 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000232
 - CORE-000233
 - CORE-000234
-- CORE-000238
-- CORE-000239
 - CORE-000240
 - CORE-000241
 - CORE-000245
 - CORE-000246
 - CORE-000247
 - CORE-000248
-- CORE-000249
 - CORE-000252
 - CORE-000253
 - CORE-000254
@@ -200,7 +194,6 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000261
 - CORE-000266
 - CORE-000267
-- CORE-000272
 - CORE-000289
 - CORE-000290
 - CORE-000295
@@ -239,7 +232,6 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000505
 - CORE-000506
 - CORE-000522
-- CORE-000529
 - CORE-000530
 - CORE-000533
 - CORE-000543
@@ -278,14 +270,12 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000791
 - CORE-000793
 - CORE-000841
-- CORE-000843
 - CORE-000853
 - CORE-000862
 - CORE-000864
 - CORE-000892
 - CORE-000901
 - CORE-000913
-- CORE-000927
 - CORE-001043
 - CORE-001081
 - CORE-001082
@@ -299,10 +289,12 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000018
 - CORE-000036
 - CORE-000039
+- CORE-000040
 - CORE-000047
 - CORE-000086
 - CORE-000094
 - CORE-000097
+- CORE-000108
 - CORE-000132
 - CORE-000134
 - CORE-000135
@@ -310,6 +302,4 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000140
 - CORE-000142
 - CORE-000144
-- CORE-000145
-- CORE-000146
-- _...and 182 more_
+- _...and 192 more_

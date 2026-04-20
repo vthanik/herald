@@ -521,6 +521,11 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
 args  <- commandArgs(trailingOnly = TRUE)
 force <- "--force" %in% args
 
+# Track fixture files we write this run so we can garbage-collect stale
+# auto-seeded fixtures from previous seeder versions whose rules no longer
+# auto-seed (e.g. after an engine correctness fix).
+written_paths <- character()
+
 cat_rds <- system.file("rules", "rules.rds", package = "herald")
 if (!nzchar(cat_rds)) cat_rds <- file.path("inst", "rules", "rules.rds")
 catalog <- readRDS(cat_rds)
@@ -626,7 +631,31 @@ for (i in seq_len(n_total)) {
                  out_pos, notes_pos, ds_class = ds_info$class)
   .write_fixture(paths$negative, rule_id, "negative", ds_info$name, cols_neg,
                  out_neg, notes_neg, ds_class = ds_info$class)
+  written_paths <- c(written_paths, paths$positive, paths$negative)
   n_seeded <- n_seeded + 1L
+}
+
+# Prune stale auto-seed fixtures: any auto-seeded file we did NOT write this
+# run (meaning: its rule no longer meets the seeder's criteria) is deleted.
+# Manual fixtures are always preserved.
+n_pruned <- 0L
+existing <- list.files(fx_root, pattern = "\\.(json)$",
+                       recursive = TRUE, full.names = TRUE)
+for (p in setdiff(existing, written_paths)) {
+  if (.is_manual(p)) next
+  file.remove(p)
+  n_pruned <- n_pruned + 1L
+}
+# Sweep now-empty rule directories.
+for (d in list.files(fx_root, recursive = TRUE, include.dirs = TRUE,
+                     full.names = TRUE)) {
+  if (dir.exists(d) && length(list.files(d)) == 0L) {
+    unlink(d, recursive = TRUE)
+  }
+}
+if (n_pruned > 0L) {
+  cat(sprintf("seed-fixtures: pruned %d stale auto-seeded fixture file(s)\n",
+              n_pruned))
 }
 
 cat(sprintf("seed-fixtures: seeded %d rules, skipped %d\n",

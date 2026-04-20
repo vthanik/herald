@@ -71,3 +71,39 @@ test_that("readiness_state covers all four banner states", {
   r_ok <- new_herald_result(rules_applied = 100L, rules_total = 100L)
   expect_equal(readiness_state(r_ok), "Submission Ready")
 })
+
+test_that("validate(files = list(dm, ae)) infers dataset names from symbols", {
+  dm <- data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)
+  ae <- data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)
+  r <- validate(files = list(dm, ae), rules = character(0), quiet = TRUE)
+  expect_setequal(r$datasets_checked, c("DM", "AE"))
+})
+
+test_that("validate(files = list(dm, AE = other)) mixes inferred + named", {
+  dm    <- data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)
+  other <- data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)
+  r <- validate(files = list(dm, AE = other),
+                rules = character(0), quiet = TRUE)
+  expect_setequal(r$datasets_checked, c("DM", "AE"))
+})
+
+test_that("validate(files = list(<inline expr>)) errors with a helpful message", {
+  # All-inline: falls through to the standard named-list error.
+  expect_error(
+    validate(
+      files = list(data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)),
+      rules = character(0), quiet = TRUE
+    ),
+    "named list"
+  )
+  # Mixed bare + inline: surfaces the "bare variable" guidance.
+  dm <- data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)
+  expect_error(
+    validate(
+      files = list(dm,
+                   data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)),
+      rules = character(0), quiet = TRUE
+    ),
+    "bare variable"
+  )
+})

@@ -38,7 +38,8 @@ validate <- function(path = NULL,
                      standards = NULL,
                      quiet = FALSE) {
   t0 <- Sys.time()
-  call <- rlang::caller_env()
+  call      <- rlang::caller_env()
+  files_exp <- rlang::enexpr(files)
 
   if (is.null(path) && is.null(files)) {
     cli::cli_abort(
@@ -49,6 +50,7 @@ validate <- function(path = NULL,
 
   # ---- assemble dataset map ------------------------------------------------
   if (!is.null(files)) {
+    files    <- .infer_file_names(files, files_exp, call)
     datasets <- .assemble_from_files(files, call)
   } else {
     datasets <- .assemble_from_path(path, call)
@@ -87,8 +89,9 @@ validate <- function(path = NULL,
 
   # ---- ctx + per-rule execution -------------------------------------------
   ctx <- new_herald_ctx()
-  ctx$datasets <- datasets
-  ctx$spec     <- spec
+  ctx$datasets  <- datasets
+  ctx$spec      <- spec
+  ctx$crossrefs <- build_crossrefs(datasets, spec)
 
   all_findings <- list()
   rules_applied <- 0L
@@ -98,6 +101,7 @@ validate <- function(path = NULL,
     # Un-list-column the scope + check_tree (they come back as length-1 list)
     rule$scope      <- rule$scope[[1]]
     rule$check_tree <- rule$check_tree[[1]]
+    ctx$current_rule_id <- rule$id
 
     target_ds <- scoped_datasets(rule, ctx)
     if (length(target_ds) == 0L) next
@@ -167,6 +171,55 @@ validate <- function(path = NULL,
     if (file.exists(here)) return(here)
   }
   p
+}
+
+#' When `files` is a `list(...)` call, recover bare-symbol names for entries
+#' that the user didn't label explicitly. `files = list(dm, ae)` becomes
+#' `list(DM = dm, AE = ae)` without the user having to type the keys.
+#'
+#' If the user's list mixes bare symbols with unresolvable entries (inline
+#' expressions or literals), emit a helpful error. If NO entry is a
+#' recoverable symbol, leave `files` alone and let downstream validation
+#' produce its usual "must be a named list of data frames" error.
+#' @noRd
+.infer_file_names <- function(files, files_exp, call) {
+  if (!is.list(files)) return(files)
+  have_names <- names(files) %||% rep("", length(files))
+
+  if (!is.call(files_exp) || length(files_exp) <= 1L ||
+      !identical(files_exp[[1L]], quote(list))) {
+    return(files)
+  }
+
+  entries <- as.list(files_exp)[-1L]
+  if (length(entries) != length(files)) return(files)
+
+  entry_nms <- names(entries) %||% rep("", length(entries))
+  is_sym <- vapply(entries, is.symbol, logical(1L))
+
+  # If none of the entries look like bare symbols, nothing to infer --
+  # leave `files` as given and let downstream validation handle it.
+  recoverable <- is_sym & !nzchar(have_names) & !nzchar(entry_nms)
+  if (!any(recoverable)) return(files)
+
+  for (i in which(recoverable)) {
+    have_names[[i]] <- as.character(entries[[i]])
+  }
+
+  # Now: if anything is STILL nameless, the user mixed symbols with inline
+  # expressions -- flag that.
+  if (any(!nzchar(have_names))) {
+    bad <- which(!nzchar(have_names))[[1L]]
+    cli::cli_abort(
+      c(
+        "Every element of {.arg files} must be named or a bare variable.",
+        "i" = "Entry at position {bad} is an inline expression; pass a named entry or assign it to a variable first."
+      ),
+      call = call
+    )
+  }
+  names(files) <- have_names
+  files
 }
 
 .assemble_from_files <- function(files, call) {

@@ -146,6 +146,17 @@ walk_tree <- function(node, data, ctx = NULL) {
   candidates <- .domain_prefix_candidates(ctx, data)
   args <- .expand_wildcard_args(args, data, candidates)
 
+  # $-prefixed cross-reference substitution (e.g. $dm_usubjid -> unique
+  # USUBJID values in DM). Unresolved tokens -> NA mask so the reviewer
+  # gets an advisory instead of a silent false-pass.
+  if (!is.null(ctx) && !is.null(ctx$crossrefs)) {
+    sub <- substitute_crossrefs(args, ctx)
+    if (isTRUE(sub$unresolved)) {
+      return(rep(NA, nrow(data)))
+    }
+    args <- sub$args
+  }
+
   tryCatch(
     do.call(fn, c(list(data = data, ctx = ctx), args)),
     error = function(e) {
