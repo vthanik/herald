@@ -5,4 +5,5 @@
 #' rules, controlled terminology, and Define-XML 2.1 specifications.
 #'
 #' @keywords internal
+#' @importFrom rlang caller_arg caller_env `%||%`
 "_PACKAGE"
