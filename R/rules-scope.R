@@ -57,28 +57,39 @@ scoped_datasets <- function(rule, ctx) {
 
 .rule_scope_matches_ctx <- function(rule, ds_name, ds_class = NULL) {
   rule_std <- toupper(rule[["standard"]] %||% "")
-  if (identical(rule_std, "SDTM") || identical(rule_std, "SDTM-IG")) {
+  ds_up    <- toupper(ds_name)
+  is_adam_name  <- grepl("^AD[A-Z]", ds_up)
+  adam_classes <- c(
+    "ADSL", "BDS", "OCCDS", "TTE", "ADAM OTHER",
+    "SUBJECT LEVEL ANALYSIS DATASET",
+    "BASIC DATA STRUCTURE",
+    "OCCURRENCE DATA STRUCTURE",
+    "TIME-TO-EVENT"
+  )
+  is_adam_class <- !is.null(ds_class) && !is.na(ds_class) &&
+    nzchar(ds_class) &&
+    (toupper(ds_class) %in% toupper(adam_classes) ||
+       startsWith(toupper(ds_class), "AD"))
+  is_adam_dataset <- is_adam_name || is_adam_class
+
+  # SDTM / SEND rules do NOT fire against ADaM datasets (unless they have
+  # entirely empty scope -- structural rules that apply universally -- or
+  # they are Controlled Terminology rules).
+  if (identical(rule_std, "SDTM") || identical(rule_std, "SDTM-IG") ||
+      identical(rule_std, "SEND") || identical(rule_std, "SEND-IG")) {
     is_ct <- grepl("^HRL-CT-|^CT[0-9]", rule[["id"]] %||% rule[["rule_id"]] %||% "")
     if (!is_ct) {
       scope0 <- rule[["scope"]]
       has_sdtm_scope <- !is.null(scope0) &&
         (length(scope0[["domains"]]) > 0L || length(scope0[["classes"]]) > 0L)
-      if (has_sdtm_scope) {
-        adam_classes <- c(
-          "ADSL", "BDS", "OCCDS", "TTE", "ADAM OTHER",
-          "SUBJECT LEVEL ANALYSIS DATASET",
-          "BASIC DATA STRUCTURE",
-          "OCCURRENCE DATA STRUCTURE",
-          "TIME-TO-EVENT"
-        )
-        is_adam_class <- !is.null(ds_class) && !is.na(ds_class) &&
-          nzchar(ds_class) &&
-          (toupper(ds_class) %in% toupper(adam_classes) ||
-             startsWith(toupper(ds_class), "AD"))
-        is_adam_name <- grepl("^AD[A-Z]", toupper(ds_name))
-        if (is_adam_class || is_adam_name) return(FALSE)
-      }
+      if (has_sdtm_scope && is_adam_dataset) return(FALSE)
     }
+  }
+
+  # Symmetric: ADaM-IG rules do NOT fire against SDTM / SEND datasets.
+  if (identical(rule_std, "ADAM") || identical(rule_std, "ADAM-IG") ||
+      identical(rule_std, "ADaM") || identical(rule_std, "ADaM-IG")) {
+    if (!is_adam_dataset) return(FALSE)
   }
 
   scope <- rule[["scope"]]

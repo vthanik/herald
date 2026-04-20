@@ -112,6 +112,73 @@ print.herald_result <- function(x, ...) {
   invisible(x)
 }
 
+#' Programmer work-queue: rules that could not evaluate to a definitive
+#' TRUE/FALSE against the data
+#'
+#' Advisory rules fall into two buckets, each surfaced as a tibble with
+#' the full rule metadata + rule text needed to author a predicate:
+#'
+#'   - **narrative-only**: CDISC XLSX harvests with `check: {narrative: "..."}`.
+#'     These rules have id, scope, severity, message, and cited guidance,
+#'     but no executable predicate yet. Need hand-authoring of `check_tree`
+#'     in YAML (or an R-DSL rule() call).
+#'
+#'   - **operator-tree-stalled**: rules with a real operator tree that
+#'     returned NA (often because a required column is absent or a
+#'     cross-dataset reference is unresolvable). May be legitimate
+#'     "cannot decide" or may indicate a missing operator / broken rule.
+#'
+#' @param x a `herald_result`
+#' @return a tibble with one row per advisory rule, columns:
+#'   kind (narrative | stalled), id, authority, standard, severity,
+#'   message, source_document, datasets_touched, note
+#' @export
+advisory_report <- function(x) {
+  stopifnot(inherits(x, "herald_result"))
+  adv <- x$findings[x$findings$status == "advisory", , drop = FALSE]
+  if (nrow(adv) == 0L) return(tibble::tibble())
+
+  rule_ids <- unique(adv$rule_id)
+  catalog <- x$rule_catalog
+  cat_rows <- catalog[catalog$id %in% rule_ids, , drop = FALSE]
+
+  # We need the check_tree too; pull from the shipped rules.rds if present
+  rules_rds <- system.file("rules", "rules.rds", package = "herald")
+  full_catalog <- if (nzchar(rules_rds)) readRDS(rules_rds) else NULL
+
+  datasets_per_rule <- tapply(adv$dataset, adv$rule_id,
+                              function(v) paste(sort(unique(v)), collapse = ", "))
+
+  classify <- function(id) {
+    if (is.null(full_catalog)) return("stalled")
+    idx <- which(full_catalog$id == id)
+    if (length(idx) == 0L) return("stalled")
+    tree <- full_catalog$check_tree[[idx[1]]]
+    if (!is.null(tree$narrative)) return("narrative")
+    "stalled"
+  }
+
+  out <- tibble::tibble(
+    kind      = vapply(rule_ids, classify, character(1)),
+    id        = rule_ids,
+    authority = vapply(rule_ids, function(r) cat_rows$authority[cat_rows$id == r][1], character(1)),
+    standard  = vapply(rule_ids, function(r) cat_rows$standard[cat_rows$id == r][1],  character(1)),
+    severity  = vapply(rule_ids, function(r) cat_rows$severity[cat_rows$id == r][1],  character(1)),
+    message   = vapply(rule_ids, function(r) cat_rows$message[cat_rows$id == r][1],   character(1)),
+    datasets_touched = as.character(datasets_per_rule[rule_ids])
+  )
+
+  # Note: a narrative rule needs predicate authoring; a stalled rule
+  # needs debugging or data augmentation.
+  out$note <- ifelse(
+    out$kind == "narrative",
+    "author check_tree from message + cited guidance",
+    "operator tree returned NA; verify column availability or spec"
+  )
+
+  out[order(out$kind, out$authority, out$standard, out$id), ]
+}
+
 #' @export
 summary.herald_result <- function(object, ...) {
   list(
