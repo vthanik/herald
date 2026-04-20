@@ -1,0 +1,58 @@
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+name: pkgdown
+
+permissions:
+  contents: write
+
+jobs:
+  pkgdown:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::pkgdown, local::.
+          needs: website
+
+      # Guard: never ship CLAUDE.md or other non-package dev docs to gh-pages.
+      # pkgdown renders every root *.md file; move CLAUDE.md out first.
+      - name: Hide CLAUDE.md before pkgdown build
+        run: |
+          if [ -f CLAUDE.md ]; then
+            mkdir -p .local
+            mv CLAUDE.md .local/CLAUDE.md.build-hide
+          fi
+        shell: bash
+
+      - name: Build site
+        run: Rscript -e 'pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)'
+
+      - name: Verify no CLAUDE.md leak
+        run: |
+          if grep -rc CLAUDE docs/ 2>/dev/null | grep -v ':0$' | grep -q .; then
+            echo "CLAUDE.md content leaked into docs/"
+            exit 1
+          fi
+        shell: bash
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          clean: true
+          branch: gh-pages
+          folder: docs
