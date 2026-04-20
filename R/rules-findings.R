@@ -41,15 +41,17 @@ emit_findings <- function(rule, ds_name, mask, data, variable = NA_character_) {
   n <- length(mask)
   if (n == 0L) return(empty_findings())
 
-  is_false   <- !is.na(mask) & !mask
+  # CDISC CORE semantics: check_tree returns TRUE for rows that VIOLATE
+  # the rule (emit a finding). FALSE means the rule passes. NA means we
+  # could not decide (narrative-only, unknown operator, op error).
+  is_true    <- !is.na(mask) & mask
   is_na      <- is.na(mask)
 
-  # "fired" rows -- rule failed on this record
-  fired_rows <- which(is_false)
-  # "advisory" rows -- check_tree could not be evaluated (narrative, op error, etc.)
-  # We emit ONE advisory row per (rule, dataset) rather than per record, because
-  # narrative rules would otherwise dominate the finding table.
-  adv_once <- any(is_na) && !any(is_false)
+  # "fired" rows -- check_tree evaluated TRUE (violation condition met)
+  fired_rows <- which(is_true)
+  # "advisory" rows -- one emitted per (rule, dataset) when nothing fired
+  # but at least one row was NA (narrative / unknown op / op error).
+  adv_once <- any(is_na) && !any(is_true)
 
   out <- empty_findings()
   if (length(fired_rows) > 0L) {

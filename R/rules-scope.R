@@ -84,22 +84,40 @@ scoped_datasets <- function(rule, ctx) {
   scope <- rule[["scope"]]
   if (is.null(scope) || length(scope) == 0L) return(TRUE)
 
+  ds_up <- toupper(ds_name)
+
+  # Exclude-domains: if the dataset is listed here, rule does NOT apply.
+  exclude <- scope[["exclude_domains"]]
+  if (!is.null(exclude) && length(exclude) > 0L) {
+    excl_up <- toupper(as.character(unlist(exclude)))
+    if (ds_up %in% excl_up) return(FALSE)
+  }
+
   # Domain match
   domains <- scope[["domains"]]
   if (!is.null(domains) && length(domains) > 0L) {
-    ds_up  <- toupper(ds_name)
     dom_up <- toupper(as.character(unlist(domains)))
-    if ("ALL" %in% dom_up) return(TRUE)
-    domain_ok <- ds_up %in% dom_up
-    class_ok  <- !is.null(ds_class) && !is.na(ds_class) &&
-      toupper(ds_class) %in% dom_up
-    if (!domain_ok && !class_ok) return(FALSE)
+    if ("ALL" %in% dom_up) {
+      # Fall through to class check (ALL means "all domains in class scope")
+    } else {
+      domain_ok <- ds_up %in% dom_up
+      class_ok  <- !is.null(ds_class) && !is.na(ds_class) &&
+        toupper(ds_class) %in% dom_up
+      if (!domain_ok && !class_ok) return(FALSE)
+    }
   }
 
   # Class match (with ADaM long <-> short form normalisation)
   classes <- scope[["classes"]]
-  if (!is.null(classes) && length(classes) > 0L &&
-      !is.null(ds_class) && !is.na(ds_class)) {
+  if (!is.null(classes) && length(classes) > 0L) {
+    # If the rule requires specific classes but we don't know this dataset's
+    # class (no spec supplied), fail-safe: do NOT apply the rule. Prevents
+    # SDTM EVENTS-class rules from firing against every dataset.
+    if (is.null(ds_class) || is.na(ds_class) || !nzchar(ds_class)) {
+      cls_up <- toupper(as.character(unlist(classes)))
+      if ("ALL" %in% cls_up) return(TRUE)
+      return(FALSE)
+    }
     adam_long <- c(
       "ADSL"  = "SUBJECT LEVEL ANALYSIS DATASET",
       "BDS"   = "BASIC DATA STRUCTURE",
@@ -113,7 +131,6 @@ scoped_datasets <- function(rule, ctx) {
     }
     ds_norm  <- norm(ds_class)
     cls_norm <- norm(as.character(unlist(classes)))
-    # ALL wildcard in classes => always match
     if ("ALL" %in% cls_norm) return(TRUE)
     if (!any(ds_norm == cls_norm)) return(FALSE)
   }

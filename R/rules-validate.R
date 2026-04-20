@@ -105,6 +105,9 @@ validate <- function(path = NULL,
     rule_fired <- FALSE
     for (ds_name in target_ds) {
       d <- datasets[[ds_name]]
+      # Make dataset name available to the walker for --VAR wildcard expansion
+      ctx$current_dataset <- ds_name
+      ctx$current_domain  <- toupper(substr(ds_name, 1, 2))
       mask <- walk_tree(rule$check_tree, d, ctx)
       if (length(mask) == 0L) next
       var <- primary_variable(rule$check_tree)

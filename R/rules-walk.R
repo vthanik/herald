@@ -66,9 +66,10 @@ walk_tree <- function(node, data, ctx = NULL) {
   n <- nrow(data)
   if (length(children) == 0L) return(rep(TRUE, n))
 
-  mask    <- rep(TRUE, n)   # overall pass mask
-  na_mask <- rep(FALSE, n)  # was any child NA for this row?
-  active  <- rep(TRUE, n)   # rows still in the running
+  pass       <- rep(TRUE, n)   # all children so far returned TRUE
+  false_seen <- rep(FALSE, n)  # at least one child explicitly returned FALSE
+  na_seen    <- rep(FALSE, n)  # at least one child returned NA
+  active     <- rep(TRUE, n)   # rows still in the running (not yet failed)
 
   for (child in children) {
     if (!any(active)) break
@@ -76,26 +77,30 @@ walk_tree <- function(node, data, ctx = NULL) {
     full <- rep(NA, n)
     full[active] <- sub
 
-    na_mask <- na_mask | is.na(full)
-    mask    <- mask & (full %in% TRUE)
-    active  <- active & (full %in% TRUE)
+    false_seen <- false_seen | (!is.na(full) & !full)
+    na_seen    <- na_seen    | is.na(full)
+    pass       <- pass & (full %in% TRUE)
+    active     <- active & (full %in% TRUE)
   }
 
-  # If a row was NA somewhere and never turned FALSE (only NA/TRUE), keep NA.
-  mask[na_mask & !(!mask)] <- ifelse(mask[na_mask & !(!mask)], NA, FALSE)
-  # Simpler: rows where we saw NA and the final mask is still TRUE → NA
-  idx <- na_mask & mask
-  mask[idx] <- NA
-  mask
+  # Resolve per row:
+  #   TRUE   iff pass is still TRUE (every child returned TRUE)
+  #   FALSE  iff any child explicitly returned FALSE
+  #   NA     iff not a pass and no explicit FALSE (only NA contributed)
+  out <- rep(TRUE, n)
+  out[false_seen] <- FALSE
+  out[!false_seen & !pass & na_seen] <- NA
+  out
 }
 
 .walk_any <- function(children, data, ctx) {
   n <- nrow(data)
   if (length(children) == 0L) return(rep(FALSE, n))
 
-  mask    <- rep(FALSE, n)
-  na_mask <- rep(FALSE, n)
-  active  <- rep(TRUE, n)
+  any_true   <- rep(FALSE, n)  # at least one child returned TRUE
+  false_seen <- rep(FALSE, n)  # at least one child explicitly returned FALSE
+  na_seen    <- rep(FALSE, n)  # at least one child returned NA
+  active     <- rep(TRUE, n)   # rows still in the running (not yet succeeded)
 
   for (child in children) {
     if (!any(active)) break
@@ -103,15 +108,20 @@ walk_tree <- function(node, data, ctx = NULL) {
     full <- rep(NA, n)
     full[active] <- sub
 
-    na_mask <- na_mask | is.na(full)
-    mask    <- mask | (full %in% TRUE)
-    active  <- active & !(full %in% TRUE)
+    false_seen <- false_seen | (!is.na(full) & !full)
+    na_seen    <- na_seen    | is.na(full)
+    any_true   <- any_true   | (full %in% TRUE)
+    active     <- active & !(full %in% TRUE)
   }
 
-  # Rows that never saw TRUE but saw NA somewhere → NA
-  idx <- na_mask & !mask
-  mask[idx] <- NA
-  mask
+  # Resolve per row:
+  #   TRUE   iff at least one child returned TRUE
+  #   FALSE  iff no TRUE and every child returned FALSE (no NA contributed)
+  #   NA     iff no TRUE and at least one NA (undecidable)
+  out <- rep(FALSE, n)
+  out[any_true] <- TRUE
+  out[!any_true & na_seen] <- NA
+  out
 }
 
 # --- leaf dispatch -----------------------------------------------------------
@@ -127,8 +137,16 @@ walk_tree <- function(node, data, ctx = NULL) {
     return(rep(NA, nrow(data)))
   }
 
-  # Strip 'operator' key; remaining keys are op args
+  # Strip 'operator' key; remaining keys are op args.
   args <- node[setdiff(names(node), "operator")]
+
+  # SDTM `--VAR` wildcard expansion: replace the leading `--` with the
+  # 2-char domain prefix from ctx$current_domain (falls back to the first
+  # 2 chars of ctx$current_dataset). Applied to any string arg value
+  # that starts with "--" (typically `name`, but also to `value` fields
+  # when the value is a cross-reference to another variable).
+  domain_prefix <- .domain_prefix(ctx, data)
+  args <- .expand_wildcard_args(args, domain_prefix)
 
   tryCatch(
     do.call(fn, c(list(data = data, ctx = ctx), args)),
@@ -141,6 +159,33 @@ walk_tree <- function(node, data, ctx = NULL) {
       rep(NA, nrow(data))
     }
   )
+}
+
+.domain_prefix <- function(ctx, data) {
+  if (!is.null(ctx$current_domain) && nzchar(ctx$current_domain)) {
+    return(toupper(ctx$current_domain))
+  }
+  if (!is.null(ctx$current_dataset) && nzchar(ctx$current_dataset)) {
+    return(toupper(substr(ctx$current_dataset, 1, 2)))
+  }
+  # Fall back to reading the DOMAIN column if present (single unique value)
+  if (!is.null(data$DOMAIN)) {
+    u <- unique(as.character(data$DOMAIN))
+    u <- u[nzchar(u)]
+    if (length(u) == 1L) return(toupper(u))
+  }
+  NA_character_
+}
+
+.expand_wildcard_args <- function(args, prefix) {
+  if (is.na(prefix) || is.null(prefix)) return(args)
+  for (nm in names(args)) {
+    v <- args[[nm]]
+    if (is.character(v) && length(v) == 1L && startsWith(v, "--")) {
+      args[[nm]] <- paste0(prefix, substr(v, 3, nchar(v)))
+    }
+  }
+  args
 }
 
 # --- r_expression escape hatch -----------------------------------------------

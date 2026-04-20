@@ -26,22 +26,23 @@ test_that("empty_findings() returns tibble with canonical columns", {
                   %in% names(f)))
 })
 
-test_that("emit_findings produces one row per failed record", {
+test_that("emit_findings fires on TRUE rows (CDISC violation semantics)", {
   rule <- mk_rule()
   d <- mk_data(4L)
+  # TRUE = violation condition met = emit finding
   mask <- c(TRUE, FALSE, TRUE, FALSE)
   f <- emit_findings(rule, "AE", mask, d, variable = "AESTDTC")
   expect_equal(nrow(f), 2L)
-  expect_equal(f$row, c(2L, 4L))
+  expect_equal(f$row, c(1L, 3L))
   expect_equal(f$status, c("fired", "fired"))
   expect_equal(f$dataset, c("AE", "AE"))
   expect_equal(f$variable, c("AESTDTC", "AESTDTC"))
-  expect_equal(f$value, c("2", "4"))
+  expect_equal(f$value, c("1", "3"))
 })
 
-test_that("all-pass mask produces no findings", {
+test_that("all-FALSE mask produces no findings (all pass)", {
   rule <- mk_rule()
-  f <- emit_findings(rule, "AE", c(TRUE, TRUE, TRUE), mk_data(3))
+  f <- emit_findings(rule, "AE", c(FALSE, FALSE, FALSE), mk_data(3))
   expect_equal(nrow(f), 0L)
 })
 
@@ -53,18 +54,18 @@ test_that("all-NA mask produces one advisory row", {
   expect_true(is.na(f$row))
 })
 
-test_that("mixed NA + FALSE mask emits only 'fired' rows (advisory supressed)", {
+test_that("mixed NA + TRUE mask emits only 'fired' rows (advisory suppressed)", {
   rule <- mk_rule()
   f <- emit_findings(rule, "AE", c(TRUE, NA, FALSE, NA), mk_data(4),
                      variable = "USUBJID")
   expect_equal(nrow(f), 1L)
   expect_equal(f$status, "fired")
-  expect_equal(f$row, 3L)
+  expect_equal(f$row, 1L)
 })
 
 test_that("variable=NA omits the value column data", {
   rule <- mk_rule()
-  f <- emit_findings(rule, "AE", c(FALSE, FALSE), mk_data(2))
+  f <- emit_findings(rule, "AE", c(TRUE, TRUE), mk_data(2))
   expect_equal(nrow(f), 2L)
   expect_true(all(is.na(f$value)))
   expect_true(all(is.na(f$variable)))
