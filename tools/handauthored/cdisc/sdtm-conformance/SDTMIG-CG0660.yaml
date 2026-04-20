@@ -1,0 +1,32 @@
+id: CG0660
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains:
+  - QS
+  - FT
+  - RS
+  exclude_domains: []
+variable: --EVALID
+check:
+  narrative: --EVALID not present in dataset
+  condition: Domain in ('QS', 'FT') or (Domain = 'RS' and it's the Clinical Classification
+    Use Case)
+outcome:
+  message: --EVALID not present in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.4 6.3.9.1, 6.3.9.2, 6.3.9.3.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 6.3.9.1[Assumption 8][--EVAL and --EVALID must not be used to model
+    QRS data in SDTM.]6.3.9.2[Assumption 8][--EVAL and --EVALID must not be used to
+    model QRS data in SDTM.]6.3.9.3.2[Assumption 8][--EVAL and --EVALID must not be
+    used to model QRS data in SDTM.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

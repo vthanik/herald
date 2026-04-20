@@ -1,0 +1,30 @@
+id: '565'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: BCHGCAyN where y is an integer [1-9, not zero-padded]
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: BCHGCAyN is present
+outcome:
+  message: BCHGCAyN is present and BCHGCATy is not present
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.2 3.1.1
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.2, Section 3.1.1, Item 6: When a secondary variable is
+    included in the dataset, then the primary variable must also be included.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

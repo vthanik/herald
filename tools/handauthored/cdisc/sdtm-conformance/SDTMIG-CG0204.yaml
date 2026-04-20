@@ -1,0 +1,34 @@
+id: CG0204
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: SPC
+  domains: SUPP--
+  exclude_domains: []
+variable: IDVARVAL
+check:
+  narrative: IDVARVAL ^= null
+  condition: IDVAR ^= null
+outcome:
+  message: IDVARVAL ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 8.4.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: A record in a SUPP-- dataset relates back to its parent record(s)
+    via the key identified by the STUDYID, RDOMAIN,and IDVAR/IDVARVAL variables. An
+    exception is SUPP-- dataset records that are related to Demographics (DM) records,
+    such as the Intent To Treat (ITT) and Safety (SAFETY) subject-level population
+    flags, where both IDVAR and IDVARVAL will be null because the key variables STUDYID,
+    RDOMAIN, and USUBJID are sufficient to identify the unique parent record in DM
+    (DM has one record per USUBJID).
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

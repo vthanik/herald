@@ -1,0 +1,36 @@
+id: CG0397
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: ALL
+  exclude_domains: []
+variable: --STRESC
+check:
+  narrative: --STRESC ^= null
+  condition: --ORRES ^= null or --DRVFL = 'Y'
+outcome:
+  message: --STRESC ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2|Model v1.4 IG v3.2[6.3 LB]|Model v1.4[2.2.3]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: IG v3.2[6.3 LB][Contains the result value for all findings; copied
+    or derived from LBORRES in a standard format or standard units. LBSTRESC should
+    store all results or findings in character format; if results are numeric; they
+    should also be stored in numeric format in LBSTRESN. For example; if a test has
+    results 'NONE'; 'NEG'; and 'NEGATIVE' in LBORRES and these results effectively
+    have the same meaning; they could be represented in standard format in LBSTRESC
+    as 'NEGATIVE'. For other examples; see general assumptions.]|Model v1.4[2.2.3][Contains
+    the result value for all findings; copied or derived from --ORRES in a standard
+    format or in standard units.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

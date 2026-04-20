@@ -1,0 +1,29 @@
+id: CG0015
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Variable present in dataset and ^= null
+  condition: Variable Core Status = Permissible and data is collected
+outcome:
+  message: Variable present in dataset and ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.1.5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: The sponsor does not have the discretion to exclude permissible
+    variables when they contain data.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,37 @@
+id: CG0219
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes:
+  - INT
+  - FND
+  - EVT
+  domains:
+  - NOT(IE
+  - SC)
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: At least one timing variable present in dataset
+  condition: ''
+outcome:
+  message: At least one timing variable present in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: In general, all domains based on the three general observation classes
+    should have at least one Timing variable. in the Events or Interventions general
+    observation class this could be the start date of the event or intervention. in
+    the Findings observation class where data are usually collected at multiple visits,
+    at least one Timing variable must be used.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

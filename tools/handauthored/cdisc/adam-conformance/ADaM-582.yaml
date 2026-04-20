@@ -1,0 +1,30 @@
+id: '582'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: BCHG
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: BCHG is populated
+outcome:
+  message: Within a given value of PARAMCD for a subject, BCHG is populated and is
+    not equal to BASE-AVAL
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.2 3.3.4.1
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.2, Section 3.3.4.1, Table 3.3.4.1.1: Equal to BASE-AVAL'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

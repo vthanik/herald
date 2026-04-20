@@ -1,0 +1,30 @@
+id: CG0197
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: PE
+  exclude_domains: []
+variable: PESTRESC
+check:
+  narrative: PESTRESC = PEORRES OR a dictionary coded preferred term
+  condition: PESTRESC ^= null
+outcome:
+  message: PESTRESC = PEORRES OR a dictionary coded preferred term
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: If there are findings for a body system, then either the dictionary
+    preferred term (if findings are coded using a dictionary) or PEORRES (if findings
+    are not coded) should appear here.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

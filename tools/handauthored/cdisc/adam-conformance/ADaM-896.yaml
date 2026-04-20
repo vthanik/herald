@@ -1,0 +1,30 @@
+id: '896'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: AWU
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: AWU is present
+outcome:
+  message: AWU is present and AWLO, AWHI, AWTARGET, and AWTDIFF are not present
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.2 3.3.5
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.2, Section 3.3.5, Table 3.3.5.2: Unit used for AWTARGET,
+    AWTDIFF, AWLO, and AWHI.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,29 @@
+id: CG0098
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: INT
+  domains: CM
+  exclude_domains: []
+variable: CMTRT
+check:
+  narrative: CMTRT = collected medication name only
+  condition: ''
+outcome:
+  message: CMTRT = collected medication name only
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: CMTRT should only include the medication/therapy name and should
+    not include dosage, formulation, or other qualifying information.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

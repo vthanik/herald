@@ -1,0 +1,36 @@
+id: CG0096
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: INT
+  domains: CM
+  exclude_domains: []
+variable: CMDECOD
+check:
+  narrative: CMDECOD ^= null
+  condition: CMTRT has a decode value in the dictionary
+outcome:
+  message: CMDECOD ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 IG v3.2[6.1]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: IG v3.2[6.1][Assumption 2c][CMDECOD is the standardized medication/therapy
+    term derived by the sponsor from the coding dictionary. It is expected that the
+    reported term (CMTRT) or the modified term (CMMODIFY) will be coded using a standard
+    dictionary.]|IG v3.2[6.1][Specification][Standardized or dictionary-derived text
+    description of CMTRT or CMMODIFY. Equivalent to the generic medication name in
+    WHO Drug. The sponsor is expected to provide the dictionary name and version used
+    to map the terms utilizing the define.xml external codelist attributes. If an
+    intervention term does not have a decode value in the dictionary then CMDECOD
+    will be left blank.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

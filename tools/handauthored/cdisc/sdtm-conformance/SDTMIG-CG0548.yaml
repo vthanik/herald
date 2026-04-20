@@ -1,0 +1,27 @@
+id: CG0548
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: ALL
+  exclude_domains: []
+variable: --ORREF
+check:
+  narrative: --ORREF in same units as --ORRES
+  condition: ''
+outcome:
+  message: --ORREF in same units as --ORRES
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.7 Table 2.2.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: --ORREF uses the same units as --ORRES, if applicable.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

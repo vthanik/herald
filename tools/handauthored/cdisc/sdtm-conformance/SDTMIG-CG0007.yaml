@@ -1,0 +1,32 @@
+id: CG0007
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: --DY
+check:
+  narrative: --DY = null
+  condition: The date portion of --DTC ^= complete date or the date portion of DM.RFSTDTC
+    ^= complete date
+outcome:
+  message: --DY = null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.4.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: The permissible Study Day variables (--DY, --STDY, and --ENDY) .
+    . . are determined by comparing the date portion of the respective date/time variables
+    (--DTC, --STDTC, and --ENDTC) to the date portion of the Subject Reference Start
+    Date (RFSTDTC from the Demographics domain).
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

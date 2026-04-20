@@ -1,0 +1,34 @@
+id: '625'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes:
+  - OCCURRENCE DATA STRUCTURE
+  - ADVERSE EVENT
+  domains: []
+  exclude_domains: []
+variable: ''
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: ''
+outcome:
+  message: AEBDSYCD is not present
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: OCCDS v1.1 3.2.3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'OCCDS v1.1, Section 3.2.3, Table 3.2.3.1: --BDSYCD has Core=Req
+    for SubClass=ADVERSE EVENT.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

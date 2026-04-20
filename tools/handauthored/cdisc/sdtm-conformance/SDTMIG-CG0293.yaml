@@ -1,0 +1,29 @@
+id: CG0293
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TV
+  exclude_domains: []
+variable: ARMCD
+check:
+  narrative: ARMCD in TA.ARMCD
+  condition: ARMCD ^= null
+outcome:
+  message: ARMCD in TA.ARMCD
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 2. If the timing of Visits for a trial does not depend on which
+    ARM a subject is in, then ARMCD should be null.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

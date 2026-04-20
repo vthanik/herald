@@ -1,0 +1,29 @@
+id: CG0067
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: EVT
+  domains: DS
+  exclude_domains: []
+variable: DSDECOD
+check:
+  narrative: DSDECOD = 'DEATH'
+  condition: SS.SSSTRESC = 'DEAD'
+outcome:
+  message: DSDECOD = 'DEATH'
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: For example, if a subject's Survival Status is "DEAD", the date
+    of death must be stored in DM and within a final disposition record in DS.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

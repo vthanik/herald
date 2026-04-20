@@ -1,0 +1,28 @@
+id: CG0265
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TS
+  exclude_domains: []
+variable: TSVALCD
+check:
+  narrative: TSVALCD and TSVAL have a one-to-one relationship.
+  condition: TSVAL ^= null and TSVALCD ^= null
+outcome:
+  message: TSVALCD and TSVAL have a one-to-one relationship.
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: This is the code of the term in TSVAL.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

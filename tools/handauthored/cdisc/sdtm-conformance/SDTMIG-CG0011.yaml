@@ -1,0 +1,31 @@
+id: CG0011
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Variable Format = SDTM-specified controlled terminology and format guidelines
+    for variables, when provided
+  condition: ''
+outcome:
+  message: Variable Format = SDTM-specified controlled terminology and format guidelines
+    for variables, when provided
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 3.2.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Following SDTM-specified controlled terminology and format guidelines
+    for variables, when provided
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

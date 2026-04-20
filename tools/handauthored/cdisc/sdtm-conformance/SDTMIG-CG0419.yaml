@@ -1,0 +1,34 @@
+id: CG0419
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: SPC
+  domains: RELREC
+  exclude_domains: []
+variable: RELTYPE
+check:
+  narrative: RELTYPE = null
+  condition: IDVAR populated with a --SEQ value
+outcome:
+  message: RELTYPE = null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 IG v3.2[8.2.1]|IG v3.2[8.3.1]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: IG v3.2[8.2.1][Identifies the hierarchical level of the records
+    in the relationship. Values should be either ONE or MANY. Used only when identifying
+    a relationship between datasets (as described in Section 8.3).]IG v3.2[8.3.1][Since
+    IDVAR identifies the keys that can be used to merge/join records between the datasets;
+    the root values (e.g., -- GRPID in the above example) for IDVAR must be the same
+    for both records with the same RELID. --SEQ cannot be used because --SEQ only
+    has meaning within a subject within a dataset; not across datasets.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

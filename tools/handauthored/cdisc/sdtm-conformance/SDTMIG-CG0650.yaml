@@ -1,0 +1,32 @@
+id: CG0650
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: AP
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Split dataset names length > 4 and <= 6
+  condition: Non-Supplemental Qualifier datasets
+outcome:
+  message: Split dataset names length > 4 and <= 6
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: AP Guide v1.0|IG v3.2 2|4.1.1.7
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: AP Guide v1.0[2][Associated Persons datasets are given a prefix
+    of AP-- to identify the data as AP data to and distinguish them from study subject
+    data.]|IG v3.2[4.1.1.7][Item 6][For example, if splitting by --CAT, then dataset
+    names would be the domain name plus up to two additional characters (e.g., QS36
+    for SF-36).]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

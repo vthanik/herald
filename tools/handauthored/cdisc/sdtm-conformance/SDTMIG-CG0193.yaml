@@ -1,0 +1,29 @@
+id: CG0193
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.2'
+severity: Medium
+scope:
+  classes: FND
+  domains: MB
+  exclude_domains: []
+variable: MBRESCAT
+check:
+  narrative: MBRESCAT ^= null
+  condition: MBTESTCD = 'ORGANISM' and MBSTRESC ^= 'NO GROWTH' and MBMETHOD ^= 'GRAM
+    STAIN'
+outcome:
+  message: MBRESCAT ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: MBRESCAT is expected in all records where a microorganism has been
+    identified to differentiate between colonizing organisms and the one(s) that are
+    causing the infection. It is not expected when there is “No growth” or when the
+    results are from a gram stain.
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

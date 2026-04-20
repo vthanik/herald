@@ -1,0 +1,31 @@
+id: '136'
+authority: CDISC
+standard: ADaM-IG
+standard_versions: '1'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: SHIFTyN where y is an integer [1-9, not zero-padded]
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: ''
+outcome:
+  message: Within a given value of PARAMCD, there is more than one value of SHIFTyN
+    for a given value of SHIFTy
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3.2.4
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.0, Section 3.2.4, Table 3.2.4.1: SHIFTN has a one-to-one mapping relationship with SHIFT.
+
+    The ADaM Team acknowledges that this cited text does not adequately support the creation of a conformance rule.  The intent of the ADaM Team was clarified in ADaMIG v1.0, Section 3.2.4, Table 3.2.4.1 v1.1.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

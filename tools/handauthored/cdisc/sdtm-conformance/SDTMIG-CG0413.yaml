@@ -1,0 +1,31 @@
+id: CG0413
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: DOMAIN
+check:
+  narrative: Dataset name begins with DOMAIN value
+  condition: ''
+outcome:
+  message: Dataset name begins with DOMAIN value
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'This code; which is stored in the SDTM variable named DOMAIN; is
+    used in four ways: as the dataset name; the value of the DOMAIN variable in that
+    dataset; as a prefix for most variable names in that dataset; and as a value in
+    the RDOMAIN variable in relationship tables.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

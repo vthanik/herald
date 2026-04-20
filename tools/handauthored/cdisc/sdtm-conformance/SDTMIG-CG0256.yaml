@@ -1,0 +1,31 @@
+id: CG0256
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TI
+  exclude_domains: []
+variable: IETESTCD
+check:
+  narrative: IETESTCD unique in dataset
+  condition: TIVERS not present in dataset
+outcome:
+  message: IETESTCD unique in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Specification[The number of this version of the Inclusion/Exclusion
+    criteria. May be omitted if there is only one version.]|Assumption 3[Individual
+    criteria do not have versions. If a criterion changes, it should be treated as
+    a new criterion, with a new value for IETESTCD.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

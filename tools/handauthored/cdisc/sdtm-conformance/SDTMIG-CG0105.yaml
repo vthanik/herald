@@ -1,0 +1,30 @@
+id: CG0105
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: INT
+  domains: EX
+  exclude_domains: []
+variable: EXVAMT
+check:
+  narrative: EXVAMT not present in dataset
+  condition: EC domain is present
+outcome:
+  message: EXVAMT not present in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: When the EC domain (See Section 6.1.2.3) is implemented in conjunction
+    with the EX domain, EXVAMT and EXVAMTU should not be used in EX; collected values
+    instead would be represented in ECDOSE and ECDOSU
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

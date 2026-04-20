@@ -1,0 +1,40 @@
+id: CG0079
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: EVT
+  domains: MH
+  exclude_domains: []
+variable: MHSTDTC
+check:
+  narrative: MHSTDTC < DM.RFSTDTC
+  condition: MHSTDTC ^= null
+outcome:
+  message: MHSTDTC < DM.RFSTDTC
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 IG v3.2[2.6]|IG v3.2[4.1.2.6]|IG v3.2[6.2]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'IG v3.2[2.6][Section 2.6: Do not create separate domains based
+    on time, rather represent both prior and current observations in a domain (e.g.,
+    CM for all non-study medications). Note that AE and MH are an exception to this
+    best practice because of regulatory reporting needs.]|IG v3.2[4.1.2.6][Section
+    4.1.2.6, Item 2.B.3.A (Discussion of --CAT/--SCAT): Adverse Events (AE), Medical
+    History (MH) and Clinical Events (CE), for example, are conceptually the same
+    data, the only differences being when the event started relative to the study
+    start and whether the event is considered a regulatory reportable adverse event
+    in the study.]|IG v3.2[6.2][Domain Code Table: The medical history dataset includes
+    the subject''s prior history at the start of the trial.][MH: The medical history
+    dataset includes the subject''s prior history at the start of the trial.][Assumption
+    1:The Medical History dataset generally includes the subject''s prior and concomitant
+    conditions at the start of the trial.]'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

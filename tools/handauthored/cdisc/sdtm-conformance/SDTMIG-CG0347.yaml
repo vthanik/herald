@@ -1,0 +1,33 @@
+id: CG0347
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: ALL
+  exclude_domains: []
+variable: --ORRES
+check:
+  narrative: --ORRES ^ = 'MULTIPLE'
+  condition: The use of 'MULTIPLE' reflects multiple values (as opposed to a valid
+    response in the context of the finding (e.g., Questionnaire CT).
+outcome:
+  message: --ORRES ^ = 'MULTIPLE'
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.2.8.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'Multiple Values for a Findings Result Variable. If multiple result
+    values (--ORRES) are reported for a test in a Findings class dataset; multiple
+    records should be submitted for that --TESTCD. Example: - EGTESTCD=RHYRATE; EGTEST=Rhythm
+    and Rate; EGORRES=ATRIAL FIBRILLATION. - EGTESTCD=RHYRATE; EGTEST=Rhythm and Rate;
+    EGORRES=ATRIAL FLUTTER'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

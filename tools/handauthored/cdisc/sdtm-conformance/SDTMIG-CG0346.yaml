@@ -1,0 +1,32 @@
+id: CG0346
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: EVT
+  domains: ALL
+  exclude_domains: []
+variable: --TERM
+check:
+  narrative: --TERM ^= 'MULTIPLE'
+  condition: ''
+outcome:
+  message: --TERM ^= 'MULTIPLE'
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.2.8.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: If multiple values are reported for a topic variable (i.e.; --TRT
+    in an Interventions general-observation-class dataset   or --TERM in an Events
+    general-observation-class dataset); it is assumed that the sponsor will split
+    the values into multiple records or otherwise resolve the multiplicity as per
+    the sponsor's standard data management procedures.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

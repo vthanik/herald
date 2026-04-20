@@ -1,0 +1,33 @@
+id: CG0171
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: SS
+  exclude_domains: []
+variable: SSDTC
+check:
+  narrative: SSDTC >= DM.DTHDTC
+  condition: SSSTRESC = 'DEAD'
+outcome:
+  message: SSDTC >= DM.DTHDTC
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Subject Status does not contain details about the circumstances
+    of a subject's status. The response to the status assessment may trigger collection
+    of additional details but those details are to be stored in appropriate separate
+    domains. For example, if a subject's Survival Status is "DEAD", the date of death
+    must be stored in DM and within a final disposition record in DS. Only the status
+    collection date, the status question and the status response are stored in SS.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

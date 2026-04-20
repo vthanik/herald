@@ -1,0 +1,32 @@
+id: CG0252
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TA
+  exclude_domains: []
+variable: TATRANS
+check:
+  narrative: TATRANS ^= null
+  condition: Trial Design allows for a Subject to transition to an Element other than
+    the next Element in sequence
+outcome:
+  message: TATRANS ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: If the trial design allows a subject to transition to an Element
+    other than the next Element in sequence, then the conditions for transitioning
+    to those other Elements, and the alternative Element sequences, are specified
+    in this rule (e.g., Responders go to washout).
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

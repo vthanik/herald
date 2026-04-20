@@ -1,0 +1,30 @@
+id: CG0225
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: VISITDY
+check:
+  narrative: VISITDY = null
+  condition: VISITNUM is NOT in TV.VISITNUM
+outcome:
+  message: VISITDY = null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.4.5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: VISITDY must not be populated for unplanned visits, since VISITDY
+    is, by definition, the planned study day of visit, and since the actual study
+    day of an unplanned visit belongs in a --DY variable.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

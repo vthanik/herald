@@ -1,0 +1,26 @@
+id: CG0619
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: ALL
+  exclude_domains: []
+variable: --SPCUFL
+check:
+  narrative: --SPCUFL = 'N' or null
+  condition: ''
+outcome:
+  message: --SPCUFL = 'N' or null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v2.0 Findings
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: The value will be "N" if the specimen is not usable, and null if
+    the specimen is usable.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

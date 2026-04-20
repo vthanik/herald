@@ -1,0 +1,31 @@
+id: CG0334
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: SUPP----
+  exclude_domains: []
+variable: RDOMAIN
+check:
+  narrative: Value of RDOMAIN equals characters 5 and 6 of the dataset name
+  condition: Dataset name begins with 'SUPP'
+outcome:
+  message: Value of RDOMAIN equals characters 5 and 6 of the dataset name
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.1.7
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Supplemental Qualifier datasets for split domains would also be
+    split. The nomenclature would include the additional one-to-two characters used
+    to identify the split dataset (e.g., SUPPQS36; SUPPFACM). The value of RDOMAIN
+    in the SUPP-- datasets would be the two-character domain code (e.g., QS; FA).
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

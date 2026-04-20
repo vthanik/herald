@@ -1,0 +1,36 @@
+id: '735'
+authority: CDISC
+standard: ADaM-IG
+standard_versions: '1.3'
+severity: Medium
+scope:
+  classes:
+  - BASIC DATA STRUCTURE
+  - MEDICAL DEVICE BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: BASETYPE
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: On rows where BASE or BASEC are populated
+outcome:
+  message: Within a given value of PARAMCD where either BASE or BASEC are populated,
+    BASETYPE is populated for at least one record and is not populated for at least
+    one record
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.3; ADaMIG-MD v1.0 3.3.4.1; 4.2.1.6; 3.1
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.3, Section 3.3.4.1, Table 3.3.4.1.1: If used for any PARAM within a dataset, it must be non-null for all records for that PARAM within that dataset where either BASE or BASEC are also non-null.
+
+    ADaMIG v1.3, Section 4.2.1.6: Whenever there is more than one definition of baseline, the BASETYPE column is required. BASETYPE identifies the definition of baseline that corresponds to the value of BASE in each row.
+
+    ADaMIG-MD v1.0, Section 3.1: The MDBDS supports analysis needs by adding SPDEVID as a required key variable and USUBJID as a conditionally required variable. See the BDS class for further details.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,34 @@
+id: '760'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: SUBJECT LEVEL ANALYSIS DATASET
+  domains: []
+  exclude_domains: []
+variable: TRxxAGy where xx is an integer [01-99, zero-padded] and y is an integer
+  [1-99, not zero-padded]
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: On rows where TRxxAGy and TRxxAGyN are both populated
+outcome:
+  message: There is more than one value of TRxxAGy for a given value of TRxxAGyN,
+    where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9],
+    considering only those rows on which both variables are populated
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.1 3.2
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.1, Section 3.2, Table 3.2.4: TRxxAGyN: The numeric code
+    for TRxxAGy. One-to-one mapping to TRxxAGy within a study.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

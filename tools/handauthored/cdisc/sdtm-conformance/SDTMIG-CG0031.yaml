@@ -1,0 +1,29 @@
+id: CG0031
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: VISIT
+check:
+  narrative: VISIT in TV.VISIT
+  condition: VISIT ^= null and is planned
+outcome:
+  message: VISIT in TV.VISIT
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.4.5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: For planned visits, values of VISIT, VISITNUM, and VISITDY must
+    be those defined in the Trial Visits dataset,
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

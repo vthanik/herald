@@ -1,0 +1,25 @@
+id: CG0303
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.2'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Variable Label = IG Label
+  condition: ''
+outcome:
+  message: Variable Label = IG Label
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 3.2.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Using SDTM-specified variable labels for all standard domains
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

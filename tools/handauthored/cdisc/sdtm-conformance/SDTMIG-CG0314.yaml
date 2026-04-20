@@ -1,0 +1,32 @@
+id: CG0314
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: SUPP--
+  exclude_domains: []
+variable: QNAM
+check:
+  narrative: Value of SUPP--.QNAM ^= any variable name defined in the corresponding
+    SDTM version
+  condition: SUPP--.QNAM present in dataset
+outcome:
+  message: Value of SUPP--.QNAM ^= any variable name defined in the corresponding
+    SDTM version
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 2.5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'The SDTM allows for the inclusion of the sponsors non-SDTM variables
+    using the Supplemental Qualifiers special-purpose dataset structure, described
+    in Section 8: 8.4, Relating Non-Standard Variables Values To A Parent Domain.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

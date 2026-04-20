@@ -1,0 +1,31 @@
+id: CG0562
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: ALL
+  exclude_domains: []
+variable: --REPNUM
+check:
+  narrative: --REPNUM ^= null and unique per subject per test per the timing variables
+  condition: REPNUM is in the dataset, and the are multiple records for a subject
+    for a test within the timeframe identified by the timing variables on the record
+outcome:
+  message: --REPNUM ^= null and unique per subject per test per the timing variables
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.7 Table 2.2.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: The instance number of a test that is repeated within a given timeframe
+    for the same test. The level of granularity can vary (e.g., within a time point
+    or within a visit). For example, multiple measurements of blood pressure or multiple
+    analyses of a sample.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

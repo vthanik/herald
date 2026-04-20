@@ -1,0 +1,30 @@
+id: CG0058
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: --ENTPT
+check:
+  narrative: --ENTPT present in dataset
+  condition: --ENRTPT present in dataset
+outcome:
+  message: --ENTPT present in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.5 Timing Variables for All Classes
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: '(--ENTPT) Description or date/time in ISO 8601 or other character
+    format of the sponsor-defined reference point referred to by --ENRTPT. Examples:
+    "2003-12-25" or "VISIT 2".'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,27 @@
+id: CG0607
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: MB
+  exclude_domains: []
+variable: MBTEST
+check:
+  narrative: MBTEST = name of the organism or antigen
+  condition: Test targets an organism, group of organisms, or antigen
+outcome:
+  message: MBTEST = name of the organism or antigen
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.4 6.3.5.7.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: In cases of tests that target an organism, group of organisms, or
+    antigen for identification, MBTEST equals the name of the organism/antigen targeted
+    by the identification assay.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

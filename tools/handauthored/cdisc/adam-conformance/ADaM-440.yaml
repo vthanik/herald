@@ -1,0 +1,31 @@
+id: '440'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: BASECATy where y is an integer [1-9, not zero-padded]
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: BASECAyN is populated
+outcome:
+  message: On a given record, BASECAyN is populated and BASECATy is not populated
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.2 3.3.4.1
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.2, Section 3.3.4.1, Table 3.3.4.1.1: There must be a one-to-one relationship between BASECAyN and BASECATy within a parameter.
+    BASECAyN cannot be present unless BASECATy is also present. When BASECATy and BASECAyN are present, then on a given record, either both must be populated or both must be null.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

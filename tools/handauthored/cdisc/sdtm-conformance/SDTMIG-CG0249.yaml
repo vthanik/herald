@@ -1,0 +1,30 @@
+id: CG0249
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TA
+  exclude_domains: []
+variable: TATRANS
+check:
+  narrative: TATRANS = null
+  condition: Element does not end with a decision that could lead to a shortened path
+    within the Arm
+outcome:
+  message: TATRANS = null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: If an Element does not end with a decision that could lead to a
+    shortened path within the Arm, then TATRANS will be blank.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

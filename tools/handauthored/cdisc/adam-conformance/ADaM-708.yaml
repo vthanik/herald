@@ -1,0 +1,39 @@
+id: '708'
+authority: CDISC
+standard: ADaM-IG
+standard_versions: '1.1000000000000001'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: ALL
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: Variable name matches a standard variable defined in the ADaM-IG
+outcome:
+  message: Labels for ADaM variables do not match the standard labels for ADaM variables
+    listed in the implementation guide that cannot be modified (with the exception
+    of (1) variables whose names contain indexes "w", “y”, "xx", or “zz”; and (2)
+    variable labels with asterisks (*), braces ({...}), and ellipses (...) indicated
+    for sponsor appropriate text)
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.1 3.1.6
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.1, Section 3.1.6: In general, the variable labels specified
+    in the tables in Section 3 are required. There are only two exceptions to this
+    rule: 1. Descriptive text is allowed at the end of the labels of variables whose
+    names contain indexes "y" or "zz"; and 2. Variable labels containing a word or
+    phrase in brackets, e.g. {Time}, should be replaced by the producer with appropriate
+    text that contains the bracketed word or phrase somewhere in the text (e.g., the
+    label for a *TM variable is indicated as {Time} in this document) indicating any
+    producer-defined label is permitted as long as the word Time is incorporated in
+    it.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

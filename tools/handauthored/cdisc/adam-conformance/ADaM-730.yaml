@@ -1,0 +1,33 @@
+id: '730'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: PARCATy where y is an integer [1-99, not zero-padded]
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: Considering only those rows on which both PARCATy and PARCATyN
+    are populated
+outcome:
+  message: There is more than one value of PARCATy for a given value of PARCATyN,
+    considering only those rows on which both variables are populated
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.1 3.3.4
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.1, Section 3.3.4, Table 3.3.4.1: There must be a one-to-one
+    relationship within a dataset between PARCATy and PARCATyN.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,35 @@
+id: '18'
+authority: CDISC
+standard: ADaM-IG
+standard_versions: '1'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: ALL
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: Variable name matches a standard variable defined in the ADaM-IG
+outcome:
+  message: Labels for ADaM variables do not match the standard labels for ADaM variables
+    listed in the implementation guide that cannot be modified (with the exception
+    of 1) variables whose names contain indexes “y”, "xx", or “zz”; and (2) variable
+    labels with asterisks (*) and ellipses (...) indicated for sponsor appropriate
+    text)
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.0, Section 3: In general, the variable labels specified
+    in the tables in Section 3 are required. There are only two exceptions to this
+    rule: (1) descriptive text is allowed at the end of the labels of variables whose
+    names contain indexes "y" or "zz"; and (2) asterisks (*) and ellipses (...) in
+    specified variable labels should be replaced by the sponsor with appropriate text.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

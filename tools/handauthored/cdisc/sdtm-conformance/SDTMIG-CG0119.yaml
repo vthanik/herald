@@ -1,0 +1,26 @@
+id: CG0119
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.2'
+severity: Medium
+scope:
+  classes: SPC
+  domains: DM
+  exclude_domains: []
+variable: ACTARM
+check:
+  narrative: ACTARM = ARM
+  condition: ACTARM in ('Screen Failure', 'Not Assigned')
+outcome:
+  message: ACTARM = ARM
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Values should be "Screen Failure" for screen failures and "Not Assigned"
+    for subjects not assigned to treatment.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

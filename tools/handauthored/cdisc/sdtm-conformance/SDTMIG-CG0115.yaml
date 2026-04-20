@@ -1,0 +1,32 @@
+id: CG0115
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes:
+  - INT
+  - FND
+  - EVT
+  domains: ALL
+  exclude_domains: []
+variable: --PORTOT
+check:
+  narrative: --PORTOT not present in dataset
+  condition: --LOC not present in dataset
+outcome:
+  message: --PORTOT not present in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Qualifier for anatomical location further detailing the distribution,
+    which means arrangement of, apportioning of the intervention administration.
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

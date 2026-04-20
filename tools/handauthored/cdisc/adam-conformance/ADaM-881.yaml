@@ -1,0 +1,29 @@
+id: '881'
+authority: CDISC
+standard: ADaM-IG
+standard_versions: '1.3'
+severity: Medium
+scope:
+  classes:
+  - BASIC DATA STRUCTURE
+  - POPULATION PHARMACOKINETIC ANALYSIS
+  domains: []
+  exclude_domains: []
+variable: 'COUNTRY '
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: COUNTRYL is populated
+outcome:
+  message: COUNTRYL is populated and COUNTRY is not populated
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADPPKIG v1.0 3.2
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADPPKIG v1.0, Section 3.3, Table 3.3: Numeric version of COUNTRY.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

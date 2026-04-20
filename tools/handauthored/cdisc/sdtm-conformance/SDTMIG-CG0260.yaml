@@ -1,0 +1,29 @@
+id: CG0260
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TS
+  exclude_domains: []
+variable: TSVALNF
+check:
+  narrative: TSVALNF = null
+  condition: TSVAL ^= null
+outcome:
+  message: TSVALNF = null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Null flavor for the value of TSPARM, to be populated if and only
+    if TSVAL = null.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

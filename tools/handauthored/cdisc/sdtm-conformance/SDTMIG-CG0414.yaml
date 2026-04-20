@@ -1,0 +1,37 @@
+id: CG0414
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes:
+  - SPC
+  - TDM
+  domains:
+  - SE
+  - TA
+  exclude_domains: []
+variable: ETCD
+check:
+  narrative: ETCD = TE.ETCD
+  condition: ETCD ^= 'UNPLAN'
+outcome:
+  message: ETCD = TE.ETCD
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 5 SE
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'The Subject Elements domain allows the submission of data on the
+    timing of the trial Elements a subject actually passed through in their participation
+    in the trial. Please read Section 7.2 - Experimental Design: Trial Elements (TE);
+    on the Trial Elements dataset and Section 7.2 - Experimental Design: Trial Arms
+    (TA); on the Trial Arms dataset; as these datasets define a trial''s planned Elements;
+    and describe the planned sequences of lements for the Arms of the trial.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

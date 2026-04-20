@@ -1,0 +1,31 @@
+id: CG0507
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: --USCHFL
+check:
+  narrative: --USCHFL not present in dataset
+  condition: ''
+outcome:
+  message: --USCHFL not present in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.3 2.7
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'The following SDTM variables; defined for use in non-clinical studies
+    (SEND); must NEVER be used in the submission of SDTM-based data for human clinical
+    trials: --USCHFL (Interventions, Events, Findings), --DTHREL (Findings), --EXCLFL
+    (Findings), --REASEX (Findings), --IMPLBL (Findings), --FETUSID (Identifiers),
+    --DETECT (Timing Variables), --NOMDY (Timing Variables), --NOMLBL (Timing Variables)'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,17 +1,17 @@
 {
-  "compiled_at": "2026-04-20T13:33:46Z",
+  "compiled_at": "2026-04-20T13:43:19Z",
   "herald_version": "0.1.0",
   "rule_counts": {
-    "total": 594,
+    "total": 1623,
     "by_authority": {
-      "CDISC": 364,
+      "CDISC": 1393,
       "FDA": 79,
       "HERALD": 151
     },
     "by_standard": {
-      "ADaM-IG": 29,
+      "ADaM-IG": 544,
       "Define-XML": 91,
-      "SDTM-IG": 473,
+      "SDTM-IG": 987,
       "SEND-IG": 1
     }
   },

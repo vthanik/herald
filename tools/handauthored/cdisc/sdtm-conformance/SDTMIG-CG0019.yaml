@@ -1,0 +1,35 @@
+id: CG0019
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Each record is unique per sponsor defined key variables as documented
+    in the define.xml
+  condition: ''
+outcome:
+  message: Each record is unique per sponsor defined key variables as documented in
+    the define.xml
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 Table 3.2.1|3.2.1.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Table 3.2.1[Note that the key variables shown in this table are
+    examples only. A sponsor's actual key structure may be different.]|3.2.1.1[Since
+    the purpose of this column is to aid reviewers in understanding the structure
+    of a dataset, sponsors should list all of the natural keys (see definition below)
+    for the dataset. These keys should define uniqueness for records within a dataset,
+    and may define a record sort order.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

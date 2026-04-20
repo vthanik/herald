@@ -1,0 +1,29 @@
+id: CG0311
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Variable label length <= 40
+  condition: ''
+outcome:
+  message: Variable label length <= 40
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 2.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: A descriptive Variable Label, using up to 40 characters, which should
+    be unique for each variable in the dataset
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

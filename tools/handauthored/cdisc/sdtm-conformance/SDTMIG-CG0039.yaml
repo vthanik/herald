@@ -1,0 +1,37 @@
+id: CG0039
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: EVT
+  domains:
+  - NOT(DS
+  - DV
+  - HO)
+  exclude_domains: []
+variable: --BODSYS
+check:
+  narrative: --BODSYS = --SOC
+  condition: Primary SOC used for analysis
+outcome:
+  message: --BODSYS = --SOC
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2|Model v1.4 IG v3.2[6.2 AE]|Model v1.4[2.2.2]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'IG v3.2[6.2 AE][Specification][Dictionary derived. Body system
+    or organ class used by the sponsor from the coding dictionary (e.g., MedDRA).
+    When using a multi-axial dictionary such as MedDRA, this should contain the SOC
+    used for the sponsor''s analyses and summary tables which may not necessarily
+    be the primary SOC.]|Model v1.4[2.2.2][Table 2.2.2: --BODSYS][Model: Body system
+    or system organ class assigned for analysis from a standard hierarchy (e.g. MedDRA)
+    associated with an event.]'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

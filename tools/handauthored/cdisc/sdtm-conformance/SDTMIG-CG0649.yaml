@@ -1,0 +1,35 @@
+id: CG0649
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TS
+  exclude_domains: []
+variable: TSVALNF
+check:
+  narrative: TSVALNF = null
+  condition: TSVAL not populated with values or synonyms of values in the ISO 21090
+    null flavor codelist (or other terms that can be represented as null flavors),
+    unless the term is included in published terminology.
+outcome:
+  message: TSVALNF = null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.4 7.4.2|7.4.2.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: '7.4.2[Assumption 11]Some codelists used for TSVAL include terms
+    which are also null flavors. For example, the Pharmaceutical Dosage Form codelist
+    includes the values "UNKNOWN" and "NOT APPLICABLE." In such cases, TSVAL should
+    have the term from the codelist and TSVALNF should be null.]|7.4.2.1[While it
+    would be possible to allow a value such as NONE or UNBOUNDED to be entered in
+    TSVAL, validation programs would then have to recognize this special term as an
+    exception to the expected data format. Therefore, it was decided that a separate
+    null flavor variable that uses the ISO 21090 null flavor terminology would be
+    a better solution.] '
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

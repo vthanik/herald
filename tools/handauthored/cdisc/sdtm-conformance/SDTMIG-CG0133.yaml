@@ -1,0 +1,31 @@
+id: CG0133
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: SPC
+  domains: DM
+  exclude_domains: []
+variable: DTHFL
+check:
+  narrative: DTHFL = 'Y'
+  condition: DD record present for subject
+outcome:
+  message: DTHFL = 'Y'
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Specification[Indicates the subject died. Should be Y or null. Should
+    be populated even when the death date is unknown.]|DD Assumption 1[This domain
+    captures information pertaining to the death of a subject, including the causes
+    of death.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

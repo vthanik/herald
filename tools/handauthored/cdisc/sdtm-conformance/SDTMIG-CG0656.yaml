@@ -1,0 +1,31 @@
+id: CG0656
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.4'
+severity: Medium
+scope:
+  classes: SPC
+  domains: SV
+  exclude_domains: []
+variable: VISITNUM
+check:
+  narrative: VISITNUM not in TV.VISITNUM
+  condition: SVPRESP = null
+outcome:
+  message: VISITNUM not in TV.VISITNUM
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.4 5.5|7.3.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 5.5[Specification][SVPRESP][Value is "Y" for planned visits, null
+    for unplanned visits.]|7.3.1[Assumption 6] [The values of VISITNUM in the TV dataset
+    are the valid values of VISITNUM for planned Visits. Any values of VISITNUM that
+    appear in subject-level datasets that are not in the TV dataset are assumed to
+    correspond to unplanned Visits. This applies, in particular, to the subject-level
+    Subject Visits (SV) dataset; see SV under Section 5, Models for Special-Purpose
+    Domains, for additional information about handling unplanned Visits.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

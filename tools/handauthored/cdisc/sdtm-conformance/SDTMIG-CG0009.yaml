@@ -1,0 +1,30 @@
+id: CG0009
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: EPOCH
+check:
+  narrative: EPOCH in TA.EPOCH
+  condition: ''
+outcome:
+  message: EPOCH in TA.EPOCH
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: '... EPOCH, as a Timing variable, is the name of the Epoch during
+    which --STDTC or --DTC falls. The values of EPOCH are drawn from the Trial Arms
+    domain, Section 7.2 - Experimental Design: Trial Arms (TA)'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

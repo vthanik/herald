@@ -1,0 +1,33 @@
+id: CG0017
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: NOT (AP)
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Split dataset names length > 2 and <= 4
+  condition: Non-Supplemental Qualifier datasets
+outcome:
+  message: Split dataset names length > 2 and <= 4
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2|AP Guide v1.0 4.1.1.7|2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 4.1.1.7[Split dataset names can be up to four characters in length.
+    For example, if splitting by --CAT, then dataset names would be the domain name
+    plus up to two additional characters (e.g., QS36 for SF-36). If splitting Findings
+    About by parent domain, then the dataset name would be the domain name plus the
+    two-character domain code describing the parent domain code (e.g., FACM).]|2[AP
+    domain codes are therefore four characters long.]
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

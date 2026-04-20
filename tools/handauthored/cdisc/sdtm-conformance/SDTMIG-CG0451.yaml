@@ -1,0 +1,30 @@
+id: CG0451
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TS
+  exclude_domains: []
+variable: TSVALCD
+check:
+  narrative: TSVALCD is a valid unique ingredient identifier from FDA Substance Registration
+    System (SRS)
+  condition: TSPARMCD = 'TRT'
+outcome:
+  message: TSVALCD is a valid unique ingredient identifier from FDA Substance Registration
+    System (SRS)
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.4|Appendix C1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Further information about the parameters is included below in Table
+    1. TSVAL may have controlled terminology depending on the value of TSPARMCD
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

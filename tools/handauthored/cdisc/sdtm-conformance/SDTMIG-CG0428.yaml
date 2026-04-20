@@ -1,0 +1,39 @@
+id: CG0428
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes:
+  - EVT
+  - FND
+  domains:
+  - AE
+  - MH
+  - CE
+  - EG
+  - LB
+  - PC
+  - PP
+  exclude_domains: []
+variable: --TOXGR
+check:
+  narrative: --TOXGR ^= null
+  condition: --TOX ^= null
+outcome:
+  message: --TOXGR ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.2|2.2.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'Description of toxicity quantified by --TOXGR such as NCI CTCAE
+    Short Name. Examples: HYPERCALCEMIA; HYPOCALCEMIA. Sponsor should specify which
+    scale and version is used in the Sponsor Comments column of the Define-XML document.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

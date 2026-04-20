@@ -1,0 +1,29 @@
+id: CG0463
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: INT
+  domains: ALL
+  exclude_domains: []
+variable: --TRT
+check:
+  narrative: --TRT present in custom interventions dataset
+  condition: Custom domain present in study
+outcome:
+  message: --TRT present in custom interventions dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 2.6
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Include the Topic variable from the identified general observation
+    class (e.g., --TESTCD for Findings)
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

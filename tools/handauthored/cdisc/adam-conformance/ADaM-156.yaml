@@ -1,0 +1,31 @@
+id: '156'
+authority: CDISC
+standard: ADaM-IG
+standard_versions: '1'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: CRITyFL where y is an integer [1-9, not zero-padded]
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: CRITyFL is present
+outcome:
+  message: A variable with a prefix of CRIT, a suffix of FL and containing a one-digit
+    number (CRITyFL) is present and a variable with the same root without a suffix
+    of FL (CRITy) is not present
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3.2.6
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.0, Section 3.2.6, Table 3.2.6.1: Character indicator
+    of whether the criterion defined in CRITy was met. See also CRITy in Section 3.2.4.
+    Required if CRITy exists.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

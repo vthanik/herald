@@ -1,0 +1,29 @@
+id: CG0159
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: AP
+  domains: ALL
+  exclude_domains: []
+variable: RSUBJID
+check:
+  narrative: RSUBJID = null
+  condition: Relationship described is to a study but not to individual study subjects
+outcome:
+  message: RSUBJID = null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: AP Guide v1.0 2.1.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: RSUBJID will be populated with the USUBJID of the related subject
+    or the POOLID of the related pool.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

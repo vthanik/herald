@@ -1,0 +1,28 @@
+id: CG0151
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: SPC
+  domains: DM
+  exclude_domains: []
+variable: USUBJID
+check:
+  narrative: USUBJID unique within a submission
+  condition: ''
+outcome:
+  message: USUBJID unique within a submission
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Identifier used to uniquely identify a subject across all studies
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

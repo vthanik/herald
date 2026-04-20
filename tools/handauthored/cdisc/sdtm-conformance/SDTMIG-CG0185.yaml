@@ -1,0 +1,29 @@
+id: CG0185
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: LB
+  exclude_domains: []
+variable: LBTOXGR
+check:
+  narrative: LBTOXGR is a numeric value
+  condition: Numeric scale used
+outcome:
+  message: LBTOXGR is a numeric value
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: If value is from a numeric scale, represent only the number (e.g.,
+    "2" and not "Grade 2").
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

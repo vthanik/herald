@@ -1,0 +1,32 @@
+id: CG0367
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: AP
+  domains: ALL
+  exclude_domains: []
+variable: RSUBJID
+check:
+  narrative: RSUBJID = DM.USUBJID
+  condition: RSUBJID ^=null and RSUBJID ^= POOLID
+outcome:
+  message: RSUBJID = DM.USUBJID
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 5.1.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Identifier for a related study subject or pool of study subjects.
+    The subject(s) may be human or animal. RSUBJID will be populated with the USUBJID
+    of the related subject or the POOLID of the related pool. RSUBJID will be null
+    for data about associated persons who are related to the study but not to any
+    of the study subjects.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

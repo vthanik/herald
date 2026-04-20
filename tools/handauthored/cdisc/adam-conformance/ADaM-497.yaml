@@ -1,0 +1,31 @@
+id: '497'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: ''
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: Dataset class is missing
+outcome:
+  message: A dataset name starts with "AD" when the dataset class is missing
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.2 1.6
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.1, Section 1.6: non-ADaM analysis dataset names should
+    not start with the prefix AD'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

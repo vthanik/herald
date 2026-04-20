@@ -1,0 +1,33 @@
+id: CG0663
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.4'
+severity: Medium
+scope:
+  classes: AP
+  domains:
+  - NOT(APRELSUB
+  - POOLDEF)
+  exclude_domains: []
+variable: DOMAIN
+check:
+  narrative: 'Value length = 4 characters beginning with ''AP'' and ending with 2
+    character SDTM domain '
+  condition: AP Core Domain
+outcome:
+  message: 'Value length = 4 characters beginning with ''AP'' and ending with 2 character
+    SDTM domain '
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: AP Guide v1.0 2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Associated Persons datasets are given a prefix of AP-- to identify
+    the data as AP data to and distinguish them from study subject data. Associated
+    Persons domain codes in the DOMAIN column of every record are also given a prefix
+    of AP-- to identify the domains as AP domains and to distinguish them from study
+    subject domains. AP domain codes are therefore four characters long.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,31 @@
+id: CG0278
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TS
+  exclude_domains: []
+variable: TSVAL
+check:
+  narrative: TSVAL ^= null
+  condition: TSPARMCD = 'INTTYPE' and record exists where TSPARMCD = 'STYPE' and TSVAL
+    = 'INTERVENTIONAL'
+outcome:
+  message: TSVAL ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 IG v3.2[7.4]|IG v3.2[Appendix C1]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: IG v3.3[7.4.2][Assumption 3][Further information about the parameters
+    is included below in Table 1. TSVAL may have controlled terminology depending
+    on the value of TSPARMCD]|IG v3.3[Appendix C1][If study type is "INTERVENTIONAL"
+    this parameter is required]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

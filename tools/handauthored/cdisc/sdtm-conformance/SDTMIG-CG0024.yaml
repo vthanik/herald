@@ -1,0 +1,28 @@
+id: CG0024
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: --LNKID
+check:
+  narrative: --LNKID present in another domain
+  condition: --LNKID present in a domain
+outcome:
+  message: --LNKID present in another domain
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Identifier used to link related records across domains.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

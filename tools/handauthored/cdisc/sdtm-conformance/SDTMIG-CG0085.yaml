@@ -1,0 +1,35 @@
+id: CG0085
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes:
+  - EVT
+  - INT
+  domains:
+  - NOT(DS
+  - DV
+  - EX)
+  exclude_domains: []
+variable: --PRESP
+check:
+  narrative: --PRESP in ('Y', null)
+  condition: ''
+outcome:
+  message: --PRESP in ('Y', null)
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 Model v1.4[2.2.1 (Interventions)]|Model v1.4[2.2.2
+    (Events)]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'Model v1.4[2.2.1 (Interventions )][--PRESP: Values should be "Y"
+    or null.]|Model v1.4[2.2.2 (Events)][--PRESP: Values should be "Y" or null.]'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

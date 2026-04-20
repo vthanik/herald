@@ -1,0 +1,29 @@
+id: CG0418
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: TAETORD
+check:
+  narrative: TAETORD order of elements match order in TA within ARM of the Subject
+  condition: ''
+outcome:
+  message: TAETORD order of elements match order in TA within ARM of the Subject
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Number that gives the planned order of the Element within the Arm
+    (see Trial Arms; Section 3.2.2 ).
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

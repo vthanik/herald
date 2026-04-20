@@ -1,0 +1,28 @@
+id: CG0114
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: INT
+  domains: ALL
+  exclude_domains: []
+variable: --DOSU
+check:
+  narrative: --DOSU ^= null
+  condition: --DOSE ^= null or --DOSTOT ^= null or --DOSTXT ^= null
+outcome:
+  message: --DOSU ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'Units for --DOSE, --DOSTOT, or --DOSTXT (Examples: ng, mg, mg/kg).'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,36 @@
+id: '200'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: ALL
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: A variable is present in ADaM with the same name as a variable
+    present in ADaM IG
+outcome:
+  message: A variable is present in ADaM with the same name as a variable defined
+    in the ADaM IG but the variables do not have identical data types
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.0, Section 3: This section defines the required characteristics of standard variables (columns) that are frequently needed in analysis datasets. The ADaM standard requires that these variable names be used when a variable that contains the content defined in Section 3 is included in an analysis dataset. In addition, the "Type" column is being used to define whether the variable being described is character or numeric.
+
+    The ADaM Team acknowledges that ADaMIG v1.0 mistakenly indicated 6 variables as character when they should have been numeric.  This error was corrected in ADaMIG v1.1.  These 6 variables should comply with the correct variable type in ADaMIG v1.1 when they are present in the dataset: TRxxPGyN, TRxxAGyN, ANRLO, ANRHI, AyLO, and AyHI.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

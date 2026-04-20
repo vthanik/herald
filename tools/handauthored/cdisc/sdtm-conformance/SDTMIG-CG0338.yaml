@@ -1,0 +1,29 @@
+id: CG0338
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: EVT
+  domains: ALL
+  exclude_domains: []
+variable: --SCAT
+check:
+  narrative: --SCAT ^= --DECOD
+  condition: ''
+outcome:
+  message: --SCAT ^= --DECOD
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.2.6
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Values for --CAT and --SCAT should not be redundant with the domain
+    name or dictionary classification provided by --DECOD and --BODSYS.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

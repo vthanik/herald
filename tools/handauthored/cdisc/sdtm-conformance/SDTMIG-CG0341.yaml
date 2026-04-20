@@ -1,0 +1,33 @@
+id: CG0341
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: ALL
+  exclude_domains: []
+variable: --TESTCD
+check:
+  narrative: --TESTCD ^= 'OTHER'
+  condition: ''
+outcome:
+  message: --TESTCD ^= 'OTHER'
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.2.7.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'Findings: ''Other; Specify'' for tests may be handled similarly
+    to Interventions. --TESTCD and --TEST should be populated with the code and description
+    of the test found in the specified text. If specific tests are not prespecified
+    on the CRF and the investigator has the option of writing free text for tests;
+    then the name of the test would have to be coded to ensure that all --TESTCD and
+    --TEST values are controlled terminology and are not free text.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,35 @@
+id: '732'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: BASE
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: On rows where BASE and BASEC are both populated
+outcome:
+  message: Within a given value of PARAMCD for a subject, there is more than one value
+    of BASE for a given value of BASEC, considering only those rows on which both
+    variables are populated
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.1 3.3.4
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.1, Section 3.3.4, Table 3.3.4.1: Within a given parameter,
+    if there exists a row on which both BASEC and BASE are populated, then there must
+    be a one-to-one mapping between BASEC and BASE on all rows on which both variables
+    are populated.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

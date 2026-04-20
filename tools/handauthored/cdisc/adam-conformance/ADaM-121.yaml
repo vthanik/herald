@@ -1,0 +1,36 @@
+id: '121'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: '*SDT'
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: On rows where *SDT and *EDT are both populated
+outcome:
+  message: The value of a variable with a suffix of SDT is greater than the value
+    of a variable with the same root and a suffix of EDT, considering only rows on
+    which both variables are populated
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.0, Section 3, Item 9 (General Timing Variable Conventions): Names of timing start variables end with an S followed by the two characters indicating the type of timing (e.g., SDT, STM), unless otherwise specified elsewhere in Section 3.
+
+    The ADaM Team acknowledges that this cited text does not adequately support the creation of a conformance rule.  See definition of Message Type="Note" in Section 3, Description of ADaM Conformance Rules Table.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

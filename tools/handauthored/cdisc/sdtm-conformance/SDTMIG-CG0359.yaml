@@ -1,0 +1,29 @@
+id: CG0359
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Variable labels are in title case
+  condition: ''
+outcome:
+  message: Variable labels are in title case
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 2.6
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Use title case for all labels (title case means to capitalize the
+    first letter of every word except for articles; prepositions; and conjunctions).
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

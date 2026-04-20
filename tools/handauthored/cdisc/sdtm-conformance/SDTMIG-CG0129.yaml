@@ -1,0 +1,26 @@
+id: CG0129
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.2'
+severity: Medium
+scope:
+  classes: SPC
+  domains: DM
+  exclude_domains: []
+variable: ARMCD
+check:
+  narrative: ARMCD = ACTARMCD
+  condition: ARMCD in ('SCRNFAIL', 'NOTASSGN')
+outcome:
+  message: ARMCD = ACTARMCD
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Values should be "SCRNFAIL" for screen failures and "NOTASSGN" for
+    subjects not assigned to treatment.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

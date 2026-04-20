@@ -1,0 +1,36 @@
+id: '7'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: '*FL'
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: Variable with a suffix of FN is present
+outcome:
+  message: A variable with a suffix of FN is present but a variable with the same
+    root and a suffix of FL is not present
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.0, Section 3, Item 3 (General Variable Naming Conventions):
+    The names of all other character flag (or indicator) variables end in FL, and
+    the names of the corresponding numeric flag (or indicator) variables end in FN
+    If the flag is used, the character version (*FL) is required but the numeric version
+    (*FN) can also be included.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

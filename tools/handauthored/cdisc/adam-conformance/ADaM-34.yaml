@@ -1,0 +1,31 @@
+id: '34'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: '*PFL'
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: Variable with a suffix of PFL is present
+outcome:
+  message: A variable with a suffix of PFL has a value that is not Y or null
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.0, Section 3, Item 6 (General Flag Variable Conventions):
+    For parameter-level and record-level character population flag variables: Y =
+    yes (included). Null values are allowed.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

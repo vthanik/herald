@@ -1,0 +1,30 @@
+id: CG0287
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+severity: High
+scope:
+  classes: TDM
+  domains: TS
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: A set of records exist with at least one record with TSPARMCD equal to
+    each of the required values in the list of Trial Summary Codes in Appendix C1
+  condition: ''
+outcome:
+  message: A set of records exist with at least one record with TSPARMCD equal to
+    each of the required values in the list of Trial Summary Codes in Appendix C1
+  severity: High
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Further information about the parameters is included below in Table
+    1. TSVAL may have controlled terminology depending on the value of TSPARMCD
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

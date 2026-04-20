@@ -1,0 +1,28 @@
+id: CG0262
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TS
+  exclude_domains: []
+variable: TSVALn
+check:
+  narrative: TSVALn ^= null
+  condition: TSVAL(n+1) ^= null
+outcome:
+  message: TSVALn ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Text over 200 characters can be added to additional columns TSVAL1-TSVALn.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

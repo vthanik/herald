@@ -1,0 +1,30 @@
+id: CG0034
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: VISITNUM
+check:
+  narrative: VISITNUM in SV.VISITNUM
+  condition: VISITNUM ^= null
+outcome:
+  message: VISITNUM in SV.VISITNUM
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: The Subject Visits domain consolidates information about the timing
+    of subject visits that is otherwise spread over domains that include the visit
+    variables (VISITNUM and possibly VISIT and/or VISITDY).
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

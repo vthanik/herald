@@ -1,0 +1,33 @@
+id: '459'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes:
+  - BASIC DATA STRUCTURE
+  - OCCURRENCE DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: TRTP
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: TRTPN is populated
+outcome:
+  message: On a given record, TRTPN is populated and TRTP is not populated
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.2 3.3.2
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.2, Section 3.3.2, Table 3.3.2.1: There must be a one-to-one relationship between TRTPN and TRTP within a study.
+    TRTPN cannot be present unless TRTP is also present. When TRTP and TRTPN are present, then on a given record, either both must be populated or both must be null.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

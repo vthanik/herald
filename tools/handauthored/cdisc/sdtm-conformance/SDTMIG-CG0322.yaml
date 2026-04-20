@@ -1,0 +1,32 @@
+id: CG0322
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains:
+  - TE
+  - TA
+  exclude_domains: []
+variable: ELEMENT
+check:
+  narrative: ELEMENT value does not refer to any specific ARM
+  condition: ELEMENT is associated with > 1 ARM
+outcome:
+  message: ELEMENT value does not refer to any specific ARM
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: TESTRL should be expressed without referring to Arm. If the Element
+    appears in more than one Arm in the Trial Arms dataset; then the Element description
+    (ELEMENT) must not refer to any Arms.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

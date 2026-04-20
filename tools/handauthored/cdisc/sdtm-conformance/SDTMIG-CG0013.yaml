@@ -1,0 +1,31 @@
+id: CG0013
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Variable = Model List of Allowed Variables for Observation Class
+  condition: ''
+outcome:
+  message: Variable = Model List of Allowed Variables for Observation Class
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2|Model v1.4 IG v3.2[2.5]|Model v1.4[3.2.22]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: IG v3.2[2.5][Sponsors may not add any other variables. . . . Standard
+    variables must not be renamed or modified for novel usage. Using SDTM-specified
+    standard variable names.]|Model v1.4[3.2.22][Each observation can be described
+    by a series of named variables.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

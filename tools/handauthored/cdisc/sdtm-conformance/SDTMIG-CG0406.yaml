@@ -1,0 +1,32 @@
+id: CG0406
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: NOT(IE)
+  exclude_domains: []
+variable: --TEST
+check:
+  narrative: --TEST length <= 40
+  condition: ''
+outcome:
+  message: --TEST length <= 40
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.5.3.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: The length of --TEST is normally limited to 40 characters to conform
+    to the limitations of the SAS V5 Transport format currently used for submission
+    datasets. IETEST values in IE and TI are exceptions to the above 40-character
+    rule and are limited to 200 characters since they are not expected to be transformed
+    to a column labels.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

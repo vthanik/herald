@@ -1,0 +1,26 @@
+id: CG0313
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.2'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: STUDYID, USUBJID or POOLID, DOMAIN, and --SEQ exist
+  condition: ''
+outcome:
+  message: STUDYID, USUBJID or POOLID, DOMAIN, and --SEQ exist
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: STUDYID, DOMAIN, USUBJID (or POOLID), and --SEQ are required in
+    all domains based on one of the three general observation classes.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

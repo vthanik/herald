@@ -1,0 +1,37 @@
+id: CG0053
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes:
+  - EVT
+  - INT
+  domains:
+  - NOT(DS
+  - DV
+  - EX)
+  exclude_domains: []
+variable: --REASND
+check:
+  narrative: --REASND not present in dataset
+  condition: --PRESP not present in dataset
+outcome:
+  message: --REASND not present in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.1 (Interventions )|2.2.2 (Events)
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: (--PRESP/Events) Used to indicate whether the event describe by
+    --TERM was pre-specified on a CRF. Value is Y for pre-specified events, null for
+    spontaneously reported events. (--PRESP/Interventions) Used when a specific intervention
+    is pre-specified on a CRF. Values should be "Y" or null. (--REASND) Used in conjunction
+    with --STAT when value is NOT DONE
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

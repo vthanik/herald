@@ -1,0 +1,25 @@
+id: CG0641
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.4'
+severity: Medium
+scope:
+  classes: SPC
+  domains: DM
+  exclude_domains: []
+variable: AGETXT
+check:
+  narrative: AGETXT not present in dataset
+  condition: ''
+outcome:
+  message: AGETXT not present in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v2.0 Demographics
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Not in human clinical trials.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

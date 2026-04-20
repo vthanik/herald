@@ -1,0 +1,31 @@
+id: CG0369
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: SPC
+  domains:
+  - CO
+  - SUPP--
+  - RELREC
+  exclude_domains: []
+variable: RDOMAIN
+check:
+  narrative: RDOMAIN is dataset in study
+  condition: RDOMAIN ^= null
+outcome:
+  message: RDOMAIN is dataset in study
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.7
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Domain Abbreviation of the parent record(s).
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

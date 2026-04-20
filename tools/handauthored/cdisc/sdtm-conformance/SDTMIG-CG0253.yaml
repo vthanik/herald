@@ -1,0 +1,30 @@
+id: CG0253
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TI
+  exclude_domains: []
+variable: TIVERS
+check:
+  narrative: TIVERS ^= null
+  condition: Greater than one version of the IE criteria in study documentation
+outcome:
+  message: TIVERS ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: If inclusion/exclusion criteria were amended during the trial, then
+    each complete set of criteria must be included in the TI domain. TIVERS is used
+    to distinguish between the versions.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

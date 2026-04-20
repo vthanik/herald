@@ -1,0 +1,32 @@
+id: CG0028
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: --SEQ
+check:
+  narrative: --SEQ is a unique number per USUBJID per domain, or a unique number per
+    POOLID per domain, including when the domain is split into multiple files
+  condition: Variable is not TS.TSSEQ
+outcome:
+  message: --SEQ is a unique number per USUBJID per domain, or a unique number per
+    POOLID per domain, including when the domain is split into multiple files
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Sequence number to ensure uniqueness of records within a dataset
+    for a subject (or within a parameter, in the case of the Trial Summary domain).
+    May be any valid number (including decimals) and does not have to start at 1.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

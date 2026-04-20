@@ -1,0 +1,34 @@
+id: CG0291
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Low
+scope:
+  classes: TDM
+  domains: TS
+  exclude_domains: []
+variable: TSVAL
+check:
+  narrative: TSVAL not populated with values or synonyms of values in the ISO 21090
+    null flavor codelist (or other terms that can be represented as null flavors)
+  condition: TSVALNF = null
+outcome:
+  message: TSVAL not populated with values or synonyms of values in the ISO 21090
+    null flavor codelist (or other terms that can be represented as null flavors)
+  severity: Low
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 Section 7.4-TS - Use of Null Flavor Enumeration
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: While it would be possible to allow a value such as NONE or UNBOUNDED
+    to be entered in TSVAL, validation programs would then have to recognize this
+    special term as an exception to the expected data format. Therefore, it was decided
+    that a separate null flavor variable that uses the ISO 21090 null flavor terminology
+    would be a better solution.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

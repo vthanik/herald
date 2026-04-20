@@ -1,0 +1,29 @@
+id: CG0399
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: ALL
+  exclude_domains: []
+variable: --ULOQ
+check:
+  narrative: --ULOQ is expressed using the units in --STRESU
+  condition: --ULOQ present in dataset
+outcome:
+  message: --ULOQ is expressed using the units in --STRESU
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Indicates the upper limit of quantitation for an assay. Units will
+    be those used for --STRESU.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

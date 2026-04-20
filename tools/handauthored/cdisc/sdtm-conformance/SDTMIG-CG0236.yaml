@@ -1,0 +1,35 @@
+id: CG0236
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: ALL
+  exclude_domains: []
+variable: --DTC
+check:
+  narrative: --DTC is date/time of specimen collection or observation, not date/time
+    of recording/acquisition
+  condition: ''
+outcome:
+  message: --DTC is date/time of specimen collection or observation, not date/time
+    of recording/acquisition
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.4.8
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: For any domain based on the Findings general observation class,
+    such as lab tests which are based on a specimen, the collection date is likely
+    to be tied to when the specimen or source of the finding was captured, not necessarily
+    when the data was recorded. in order to ensure that the critical timing information
+    is always represented in the same variable, the --DTC variable is used to represent
+    the time of specimen collection.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

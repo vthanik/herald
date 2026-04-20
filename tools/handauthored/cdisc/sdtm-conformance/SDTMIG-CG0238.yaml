@@ -1,0 +1,41 @@
+id: CG0238
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: ALL
+  exclude_domains: []
+variable: --ORRES
+check:
+  narrative: --ORRES in ISO 8601 date format
+  condition: Date Value
+outcome:
+  message: --ORRES in ISO 8601 date format
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.4.9
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'Dates are generally used only as timing variables, ... but there
+    may be occasions when it may be preferable to model a date as a result (--ORRES)
+    in a Findings dataset. ... this situation may occasionally occur when a) a group
+    of questions (each of which has a date response) is asked and analyzed together;
+    or b) the Event(s) and Intervention(s) in question are not medically significant
+    (often the case when included in questionnaires). Consider the following cases:
+    Calculated due date; Date of last day on the job; Date of high school graduation.
+    One approach to modeling these data would be to place the text of the question
+    in --TEST and the response to the question, a date represented in ISO 8601 format,
+    in --ORRES and --STRESC as long as these date results do not contain the dates
+    of medically significant events or interventions. Again, use extreme caution when
+    storing dates as the results of Findings. Remember, in most cases, these dates
+    should be timing variables associated with a record in an Intervention or Events
+    dataset.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

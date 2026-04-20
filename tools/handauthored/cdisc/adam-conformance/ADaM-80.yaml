@@ -1,0 +1,32 @@
+id: '80'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: SUBJECT LEVEL ANALYSIS DATASET
+  domains: []
+  exclude_domains: []
+variable: TRTxxA where xx is an integer [01-99, zero-padded]
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: TRTxxA is present
+outcome:
+  message: TRTxxA is present and TRTxxP is not present
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3.1
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.0, Section 3.1, Table 3.1.1: CDISC Notes for TRTxxP state:
+    "At least TRT01P is required."'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

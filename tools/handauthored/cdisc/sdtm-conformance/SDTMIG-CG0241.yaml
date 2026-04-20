@@ -1,0 +1,38 @@
+id: CG0241
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: --ELTM
+check:
+  narrative: --ELTM is the same value across records with the same values of DOMAIN,
+    VISITNUM, --TPTREF, and --TPTNUM
+  condition: --TPT ^= null and --TPTNUM ^= null and --ELTM ^= null
+outcome:
+  message: --ELTM is the same value across records with the same values of DOMAIN,
+    VISITNUM, --TPTREF, and --TPTNUM
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.4.10
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Within the context that defines uniqueness for a time point, there
+    is likely to be a one-to-one relationship between most values of --TPT and --ELTM.
+    However, since --ELTM can only be populated with ISO 8601 periods of time (as
+    described in Section 4.1.4.3, Intervals of Time and Use of Duration for --DUR
+    Variables), --ELTM may not be populated for all time points. For example, --ELTM
+    is likely to be null for time points described by text such as 'pre-dose' or 'before
+    breakfast.' When --ELTM is populated, if two subjects have records with the same
+    values of DOMAIN, VISITNUM, --TPTREF, and --TPTNUM, then these records may not
+    have different values in --ELTM.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

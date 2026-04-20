@@ -1,0 +1,32 @@
+id: CG0554
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: STUDYID, DOMAIN, and --SEQ exist and at least one of USUBJID, APID, SPDEVID,
+    or POOLID
+  condition: ''
+outcome:
+  message: STUDYID, DOMAIN, and --SEQ exist and at least one of USUBJID, APID, SPDEVID,
+    or POOLID
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.7 2.2.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'STUDYID, DOMAIN, and --SEQ are required in all domains based on
+    one of the 3 general observation classes. Each general class domain must also
+    include at least one of the following subject identifiers: USUBJID, APID, SPDEVID,
+    or POOLID.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,29 @@
+id: CG0196
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: PE
+  exclude_domains: []
+variable: PEORRES
+check:
+  narrative: PEORRES = 'NORMAL'
+  condition: PEORRES ^= null and no abnormal findings
+outcome:
+  message: PEORRES = 'NORMAL'
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Text description of any abnormal findings. If the examination was
+    completed and there were no abnormal findings, the value should be NORMAL.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

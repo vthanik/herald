@@ -1,0 +1,29 @@
+id: CG0186
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: LB
+  exclude_domains: []
+variable: LBORNRLO
+check:
+  narrative: LBORNRLO is expressed using the units in LBORRESU
+  condition: ''
+outcome:
+  message: LBORNRLO is expressed using the units in LBORRESU
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Lower end of reference range for continuous measurements in original
+    units.
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,32 @@
+id: CG0010
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Metadata attribute of Variable Role = IG Role for domains in IG, Metadata
+    attribute of Variable Role = Model Role for custom domains
+  condition: ''
+outcome:
+  message: Metadata attribute of Variable Role = IG Role for domains in IG, Metadata
+    attribute of Variable Role = Model Role for custom domains
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2|Model v1.4 IG v3.2[3.1]|Model v1.4[2]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: IG v3.2[3.1][Since these roles are predefined for all standard domains
+    that follow the general observation classes]|Model v1.4[2][Each variable . . .
+    can be classified according to its Role]
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

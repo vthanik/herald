@@ -1,0 +1,29 @@
+id: CG0538
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: EVT
+  domains: DS
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: No more than 1 record per subject has DSSCAT = 'STUDY PARTICIPATION'
+  condition: Subject has more than one record per Epoch with DSCAT = 'DISPOSITION
+    EVENT'
+outcome:
+  message: No more than 1 record per subject has DSSCAT = 'STUDY PARTICIPATION'
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.3 6.2.3 DS
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: DSSCAT = "STUDY PARTICIPATION" is used to represent disposition
+    of study participation.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

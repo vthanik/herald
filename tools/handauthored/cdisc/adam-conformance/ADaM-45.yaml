@@ -1,0 +1,36 @@
+id: '45'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: '*DT; *DTM'
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: Variable with a suffix of DT and a variable with a suffix of
+    DTM with the same root name
+outcome:
+  message: A variable with a suffix of DT and a variable with a suffix of DTM with
+    the same root name have different date values
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.0, Section 3, Item 5 (General Timing Variable Conventions):
+    If a *DTM and associated *TM variable exist, then the *TM variable must match
+    the time part of the *DTM variable. If a *DTM and associated *DT variable exist,
+    then the *DT variable must match the date part of the *DTM variable.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

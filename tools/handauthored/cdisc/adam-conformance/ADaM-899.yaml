@@ -1,0 +1,38 @@
+id: '899'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: ''
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: USUBJID is present and there is a value of USUBJID that is a
+    value of --.USUBJID and a value of --SEQ that is a value of --.--SEQ
+outcome:
+  message: AD*.USUBJID equals --.USUBJID, AD*.--SEQ equals --.--SEQ, and the values
+    of a variable with prefix -- which is present in both datasets are not equal
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: Model v2.1; OCCDS v1.0; OCCDS v1.1 4.1.2; 1.1; 1.1.2.1
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    Model v2.1, Section 4.1.2: Any ADaM variable with the same name as an SDTM variable is required to be a copy of the SDTM variable, and its label, attributes, and values cannot be modified. ADaM adheres to the principle of harmonization known as "same name, same meaning, and same values."
+
+    OCCDS v1.0, Section 1.1: The structure for the occurrence analysis dataset is usually one record per each record in the corresponding SDTM domain.
+
+    OCCDS v1.1, Section 1.1.2.1: The structure for the occurrence analysis dataset is usually one record per each record in the corresponding SDTM domain.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

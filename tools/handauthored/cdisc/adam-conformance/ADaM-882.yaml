@@ -1,0 +1,30 @@
+id: '882'
+authority: CDISC
+standard: ADaM-IG
+standard_versions: '1.3'
+severity: Medium
+scope:
+  classes:
+  - BASIC DATA STRUCTURE
+  - POPULATION PHARMACOKINETIC ANALYSIS
+  domains: []
+  exclude_domains: []
+variable: COUNTRYL
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: On rows where both COUNTRYL and COUNTRY are both populated
+outcome:
+  message: 'Within a dataset, there is more than one value of COUNTRYL for a given
+    value of COUNTRY, considering only those rows on which both variables are populated.  '
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADPPKIG v1.0 3.2
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADPPKIG v1.0, Section 3.3, Table 3.3: Numeric version of COUNTRY.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

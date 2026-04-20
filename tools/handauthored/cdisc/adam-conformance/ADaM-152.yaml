@@ -1,0 +1,33 @@
+id: '152'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: BASE
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: BASETYPE is present and BASE is populated
+outcome:
+  message: BASETYPE is present, BASE is populated, and BASE is not equal to AVAL where
+    ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3.2.4
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.0, Section 3.2.4, Table 3.2.4.1: If BASE is populated
+    for a parameter, and BASE is non-null for a subject for that parameter, then there
+    must be a record flagged by ABLFL for that subject and parameter.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,28 @@
+id: CG0298
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TV
+  exclude_domains: []
+variable: VISIT
+check:
+  narrative: VISIT is described in protocol
+  condition: ''
+outcome:
+  message: VISIT is described in protocol
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Protocol-defined description of clinical encounter.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

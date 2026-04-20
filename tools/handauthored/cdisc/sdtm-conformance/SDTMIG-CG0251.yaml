@@ -1,0 +1,29 @@
+id: CG0251
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TA
+  exclude_domains: []
+variable: TABRANCH
+check:
+  narrative: TABRANCH ^= null
+  condition: Trial design branches
+outcome:
+  message: TABRANCH ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: TABRANCH describes the outcome of a branch decision point in the
+    trial design for subjects in the Arm
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

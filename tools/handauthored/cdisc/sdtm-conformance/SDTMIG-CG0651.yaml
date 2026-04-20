@@ -1,0 +1,29 @@
+id: CG0651
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Variable present in dataset
+  condition: Variable Core Status = Permissible and data is planned to be collected
+outcome:
+  message: Variable present in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.3 2.5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: If a study includes a data item that would be represented in a Permissible
+    variable, then that variable must be included in the SDTM dataset, even if null.
+    Indicate no data were available for that variable in the Define-XML document.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

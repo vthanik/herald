@@ -1,0 +1,29 @@
+id: CG0184
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: LB
+  exclude_domains: []
+variable: LBSTNRC
+check:
+  narrative: LBSTNRC = null
+  condition: LBORRES = continuous measurement
+outcome:
+  message: LBSTNRC = null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: For normal range values that are character in ordinal scale or if
+    categorical ranges were supplied (e.g., "-1 to +1", "NEGATIVE TO TRACE").
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

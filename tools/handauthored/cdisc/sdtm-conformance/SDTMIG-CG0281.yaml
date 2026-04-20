@@ -1,0 +1,33 @@
+id: CG0281
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TS
+  exclude_domains: []
+variable: TSPARMCD
+check:
+  narrative: TSPARMCD = RANDQT record is present
+  condition: At least one observation where TSPARMCD = TRT and there is only one investigational
+    treatment
+outcome:
+  message: TSPARMCD = RANDQT record is present
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 IG v3.2[7.4]|IG v3.2[Appendix C1]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: '|IG v3.2[Appendix C1][Further information about the parameters
+    is included below in Table 1. TSVAL may have controlled terminology depending
+    on the value of TSPARMCD]|IG v3.2[Appendix C1][Required only when there is only
+    one investigational treatment. The value is always a number between 0 and 1. There
+    are cases where the ratio is 1 (e.g., crossover study or open label study where
+    all subjects are exposed to investigational therapy).]'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

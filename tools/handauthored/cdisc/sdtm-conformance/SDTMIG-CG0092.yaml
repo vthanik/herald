@@ -1,0 +1,36 @@
+id: CG0092
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: --TPTREF
+check:
+  narrative: --TPTREF present in dataset
+  condition: --ELTM present in dataset
+outcome:
+  message: --TPTREF present in dataset
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4|IG v3.2 Model v1.4[2.2.5 Timing Variables for
+    All Classes]|IG v3.2[4.1.4.10 Representing Time Points]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'Model v1.4[2.2.5 Timing Variables for All Classes][Specification][(--TPTREF)
+    Description of the fixed reference point referred to by --ELTM, --TPTNUM, and
+    --TPT. Examples: PREVIOUS DOSE, PREVIOUS MEAL.]|IG v3.2[4.1.4.10 Representing
+    Time Points][If the protocol describes the scheduling of a dose using a reference
+    intervention or assessment, then --TPTREF should be populated, even if it does
+    not contribute to uniqueness. The fact that time points are related to a reference
+    time point, and what that reference time point is, are important for interpreting
+    the data collected at the time point.]'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

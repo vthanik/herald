@@ -1,0 +1,30 @@
+id: CG0501
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: MIDS
+check:
+  narrative: TM dataset present in study
+  condition: MIDS present in dataset
+outcome:
+  message: TM dataset present in study
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.7 2.2.5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: The name of a specific instance of a Disease Milestone Type (MIDSTYPE)
+    described in the Trial Disease Milestones dataset (see Section 3.5, Trial Disease
+    Milestones). This should be unique within a subject. Used only in conjunction
+    with RELMIDS and MIDSDTC.
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

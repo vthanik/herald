@@ -1,0 +1,27 @@
+id: '685'
+authority: CDISC
+standard: ADaM-IG
+standard_versions: '1.3'
+severity: Medium
+scope:
+  classes: DEVICE LEVEL ANALYSIS DATASET
+  domains: []
+  exclude_domains: []
+variable: ''
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: ''
+outcome:
+  message: DEVSDT is not present within ADDL
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG-MD v1.0 3.2.1.3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG-MD v1.0, Section 3.2.1.3: DEVSDT has Core=Req.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

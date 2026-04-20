@@ -1,0 +1,34 @@
+id: '102'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: APERIOD
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: APERIOD is populated
+outcome:
+  message: For every unique xx value of APERIOD, there is not an ADSL variable TRTxxP
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3.2.3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.0, Section 3.2.3, Table 3.2.3.1: The numeric value characterizing
+    the period to which the record belongs. The value of APERIOD must be consistent
+    with the xx value in TRTxxP, TRTxxA, and all variables whose names begin with
+    TRxx and APxx.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

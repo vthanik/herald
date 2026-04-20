@@ -1,0 +1,28 @@
+id: CG0247
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TA
+  exclude_domains: []
+variable: TAETORD
+check:
+  narrative: TAETORD is unique within an ARM
+  condition: ''
+outcome:
+  message: TAETORD is unique within an ARM
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Number that gives the order of the Element within the Arm.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

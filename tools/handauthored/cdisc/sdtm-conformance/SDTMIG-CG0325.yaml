@@ -1,0 +1,33 @@
+id: CG0325
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TE
+  exclude_domains: []
+variable: ETCD
+check:
+  narrative: The combination of ELEMENT, TESTRL, TEENRL, and TEDUR is unique for each
+    ETCD
+  condition: ''
+outcome:
+  message: The combination of ELEMENT, TESTRL, TEENRL, and TEDUR is unique for each
+    ETCD
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Specification[Expresses rule for ending Element. Either TEENRL or
+    TEDUR must be present for each Element.]|Assumption 15[Note that Elements that
+    have different start and end rules are different Elements and must have different
+    values of ELEMENT and ETCD.]
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

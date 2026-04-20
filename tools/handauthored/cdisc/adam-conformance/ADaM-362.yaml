@@ -1,0 +1,36 @@
+id: '362'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: ASTDTM
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: Considering only those rows on which both ASTDTM and AENDTM are
+    populated
+outcome:
+  message: The value of ASTDTM is greater than the value of AENDTM, considering only
+    those rows on which both variables are populated
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.0, Section 3, Item 9 (General Timing Variable Conventions): Names of timing start variables end with an S followed by the two characters indicating the type of timing (e.g., SDT, STM), unless otherwise specified elsewhere in Section 3.
+
+    ADaMIG v1.0, Section 3, Item 10 (General Timing Variable Conventions): Names of timing end variables end with an E followed by the two characters indicating the type of timing (e.g., EDT, ETM), unless otherwise specified elsewhere in Section 3.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

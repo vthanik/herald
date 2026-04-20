@@ -1,0 +1,32 @@
+id: CG0602
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: FA
+  exclude_domains: []
+variable: --OBJ
+check:
+  narrative: |+
+    --OBJ = --TRT
+
+  condition: Interventions parent record exists and DECOD = null
+outcome:
+  message: |+
+    --OBJ = --TRT
+
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.4 4.2.7.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: When findings are collected about an event or intervention, and
+    the name of the event or intervention is collected in an "Other, specify" CRF
+    field, the value in --OBJ variable depends on whether the FA record has a parent record
+    and whether the "Other, specify" value was coded.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

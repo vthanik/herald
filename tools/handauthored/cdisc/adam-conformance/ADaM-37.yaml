@@ -1,0 +1,31 @@
+id: '37'
+authority: CDISC
+standard: ADaM-IG
+standard_versions: '1'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: ''
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: ''
+outcome:
+  message: There is more than one value of a variable which has a suffix of GRyN for
+    a given value of a variable with the same root name and suffix of GRy
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.0, Section 3, Item 10 (General Variable Naming Conventions): If any combining of the SDTM character categories is done, the name of the derived ADaM character grouping variable should end in GRy and the name of its numeric equivalent should end in GRyN where y is an integer from 1-9 representing a grouping scheme. For example, if a character analysis variable is created to contain values of Caucasian and Non-Caucasian from the SDTM RACE variable that has 5 categories, then it should be named RACEGRy and its numeric equivalent should be named RACEGRyN (e.g., RACEGR1, RACEGR1N). Truncation of the original variable name may be necessary when appending suffix fragments GRy, or GRyN.
+
+    The ADaM Team acknowledges that this cited guidance does not adequately support the creation of a conformance rule; however, we recognize the intent of character and numeric variable pairs and the one-to-one relationships that they must have.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

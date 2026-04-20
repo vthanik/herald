@@ -1,0 +1,36 @@
+id: CG0376
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TD
+  exclude_domains: []
+variable: TDSTOFF
+check:
+  narrative: TDSTOFF = 0 or positive value in ISO 8601 Duration format
+  condition: ''
+outcome:
+  message: TDSTOFF = 0 or positive value in ISO 8601 Duration format
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2|Model v1.4 IG v3.2[7.3]|Model v1.4[3.5.1]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: IG v3.2[7.3][A fixed offset from the date provided by the variable
+    referenced in TDANCVAR. This is used when the timing of planned cycles does not
+    start on the exact day referenced in the variable indicated in TDANCVAR. The value
+    of this variable will be either zero or a positive value and will be represented
+    in ISO 8601 character format.]|Model v1.4[3.5.1][A fixed offset from the date
+    provided by the variable referenced in TDANCVAR. This is used when the timing
+    of planned cycles does not start on the exact day referenced in the variable indicated
+    in TDANCVAR. The value of this variable will be either zero or a positive value
+    and will be represented in ISO 8601 character format.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

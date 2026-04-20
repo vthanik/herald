@@ -1,0 +1,36 @@
+id: CG0006
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: --DY
+check:
+  narrative: --DY calculated as per the study day algorithm as a non-zero integer
+    value
+  condition: Date portion of --DTC is complete and date portion of RFSTDTC is a complete
+    date AND --DY is ^= null
+outcome:
+  message: --DY calculated as per the study day algorithm as a non-zero integer value
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.4.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'IG v3.2[4.1.4.4][The Study Day value is incremented by 1 for each
+    date following RFSTDTC. Dates prior to RFSTDTC are decreased by 1, with the date
+    preceding RFSTDTC designated as Study Day -1 (there is no Study Day 0). . . .
+    All Study Day values are integers.]IG v3.2[4.1.4.4][Thus, to calculate Study Day:  --DY
+    = (date portion of --DTC) - (date portion of RFSTDTC) + 1 if --DTC is on or after
+    RFSTDTC --DY = (date portion of --DTC) - (date portion of RFSTDTC) if --DTC precedes
+    RFSTDTC This algorithm should be used across all domains.]'
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

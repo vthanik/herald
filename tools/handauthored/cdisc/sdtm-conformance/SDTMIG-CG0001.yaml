@@ -1,0 +1,31 @@
+id: CG0001
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: DOMAIN
+check:
+  narrative: DOMAIN = valid Domain Code published by CDISC
+  condition: Not custom domain
+outcome:
+  message: DOMAIN = valid Domain Code published by CDISC
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 2.6
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Check the CDISC Controlled Terminology [see Appendix C - Controlled
+    Terminology] for reserved two-character domain identifiers or abbreviations. If
+    one has not been assigned by CDISC, then the sponsor may select the unique two-character
+    domain code to be used consistently throughout the submission.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

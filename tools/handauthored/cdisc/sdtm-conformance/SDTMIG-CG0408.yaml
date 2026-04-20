@@ -1,0 +1,30 @@
+id: CG0408
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Dataset > 0 records
+  condition: Dataset planned for submission
+outcome:
+  message: Dataset > 0 records
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 3.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: In the event that no records are present in a dataset (e.g., a small
+    PK study where no subjects took concomitant medications); the empty dataset should
+    not be submitted and should not be described in the define.xml document.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,32 @@
+id: '402'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: AVAL; ATOXGRH
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: ATOXDSCH is populated
+outcome:
+  message: AVAL is not populated or ATOXGRH is not populated, and ATOXDSCH is populated
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.2 3.3.7
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.2, Section 3.3.7, Table 3.3.7.1: ATOXDSCH is only populated if AVAL is populated and the PARAM is evaluated for toxicity in the high direction. There is a one-to-one relationship between ATOXDCSH and PARAM within a subject.
+
+    The ADaM Team acknowledges that this cited guidance contains a typographical error in the referenced variable name; however, we recognize the intent of the relationship between AVAL, ATOXGRH, and ATOXDSCH.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

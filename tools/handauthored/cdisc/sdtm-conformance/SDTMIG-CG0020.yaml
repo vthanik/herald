@@ -1,0 +1,33 @@
+id: CG0020
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Value in associated codelist or 'MULTIPLE'
+  condition: Use of value 'MULTIPLE' is appropriate to the data being represented
+outcome:
+  message: Value in associated codelist or 'MULTIPLE'
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 3.2.2|4.1.2.8.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 3.2.2[Conformance with the SDTMIG Domain Models is minimally indicated
+    by following SDTM-specified controlled terminology and format guidelines for variables,
+    when provided]4.1.2.8.3[The SDTM permits one value for each Qualifier variable
+    per record. If multiple values exist (e.g., due to a "Check all that apply" instruction
+    on a CRF), then the value for the Qualifier variable should be "MULTIPLE" and
+    SUPP-- should be used to store the individual responses.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

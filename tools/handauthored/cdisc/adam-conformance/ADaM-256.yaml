@@ -1,0 +1,34 @@
+id: '256'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: ALL
+  domains: []
+  exclude_domains: []
+variable: ''
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: USUBJID is present
+outcome:
+  message: The values of USUBJID are not present in ADSL
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: Model v2.1; ADaMIG v1.0 6; 3.1
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    Model v2.1, Section 6: The structure of the Subject-Level Analysis Dataset (ADSL) is one record per subject, regardless of the type of clinical trial design. ADSL is used to provide the variables that describe attributes of a subject. This structure allows simple merging with any other dataset, including SDTM and analysis datasets.
+
+    ADaMIG v1.0, Section 3.1: The structure of ADSL is one record per subject, regardless of the type of clinical trial design. ADSL is used to provide the variables that describe attributes of a subject. This section lists the standard variables that are required to be in every ADSL.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,33 @@
+id: CG0160
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: AP
+  domains: ALL
+  exclude_domains: []
+variable: SREL
+check:
+  narrative: Describes relationship of associated person to study subject or pool
+  condition: RSUBJID ^= null
+outcome:
+  message: Describes relationship of associated person to study subject or pool
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: AP Guide v1.0 2.1.1
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: If RSUBJID is populated, describes the relationship of the associated
+    person(s) identified in APID to the subject or pool identified in RSUBJID. If
+    RDEVID is populated, describes the relationship of the associated person(s) identified
+    in APID to the device identified in RDEVID. If RSUBJID and RDEVID are null, SREL
+    describes the relationship of the associated person(s) identified in APID to the
+    study identified in STUDYID
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

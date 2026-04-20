@@ -1,0 +1,28 @@
+id: '180'
+authority: CDISC
+standard: ADaM-IG
+standard_versions: '1'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: SRCDOM
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: SRCDOM is present
+outcome:
+  message: SRCDOM has a value that is not an SDTM domain name or null
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3.2.8
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.0, Section 3.2.8, Table 3.2.8.1: The 2-character identifier
+    of the SDTM domain that relates to AVAL or AVALC.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

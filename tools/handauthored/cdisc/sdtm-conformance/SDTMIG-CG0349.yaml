@@ -1,0 +1,38 @@
+id: CG0349
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes:
+  - FND
+  - INT
+  - EVT
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: First 2 characters of the Variable Name = the 2-character domain code
+  condition: Custom domain and variable name is not STUDYID, DOMAIN, USUBJID, POOLID,
+    SPDEVID, VISIT, VISITNUM, VISITDY, ELEMENT, TAETORD, EPOCH.
+outcome:
+  message: First 2 characters of the Variable Name = the 2-character domain code
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 4.1.2.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'The philosophy applied to determine which variable names use a
+    prefix was that all variable names are prefixed with the Domain Identifier in
+    which they originate except the following: a. Required Identifiers (STUDYID; DOMAIN;
+    USUBJID). b. Commonly used grouping and merge Keys (VISIT; VISITNUM; VISITDY);
+    and many of the variables in trial design (such as ELEMENT and ARM). c. All Demographics
+    domain (DM) variables other than DMDTC and DMDY. d. All variables in RELREC and
+    SUPPQUAL; and some variables in Comments and Trial Design datasets.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

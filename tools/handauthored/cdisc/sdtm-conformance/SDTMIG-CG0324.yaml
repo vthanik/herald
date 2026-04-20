@@ -1,0 +1,30 @@
+id: CG0324
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TE
+  exclude_domains: []
+variable: TEENRL
+check:
+  narrative: TEENRL value does not refer to any specific ARM
+  condition: ''
+outcome:
+  message: TEENRL value does not refer to any specific ARM
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: The Trial Arms dataset; not the Trial Elements dataset; describes
+    where the subject moves next; so TEENRL must be expressed without referring to
+    Arm.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

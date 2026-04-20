@@ -1,0 +1,29 @@
+id: CG0321
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Custom domain is based on one of the observation classes
+  condition: Custom domain present in study
+outcome:
+  message: Custom domain is based on one of the observation classes
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 2.6
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: This section describes the overall process for creating a custom
+    domain, which must be based on one of the three SDTM general observation classes.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

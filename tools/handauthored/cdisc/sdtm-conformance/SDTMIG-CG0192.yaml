@@ -1,0 +1,25 @@
+id: CG0192
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.2'
+severity: Medium
+scope:
+  classes: FND
+  domains: MB
+  exclude_domains: []
+variable: MBTESTCD
+check:
+  narrative: MBTESTCD = 'ORGANISM'
+  condition: Organisms present in the specimen
+outcome:
+  message: MBTESTCD = 'ORGANISM'
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 3. MBTESTCD value for organisms present in a specimen is 'ORGANISM'.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

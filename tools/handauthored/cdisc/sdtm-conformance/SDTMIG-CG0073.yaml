@@ -1,0 +1,28 @@
+id: CG0073
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.2'
+severity: Medium
+scope:
+  classes: EVT
+  domains: DS
+  exclude_domains: []
+variable: EPOCH
+check:
+  narrative: EPOCH = null
+  condition: DSCAT = 'PROTOCOL MILESTONE'
+outcome:
+  message: EPOCH = null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: When DSCAT='PROTOCOL MILESTONE', DSTERM and DSDECOD will contain
+    the same value drawn from the sponsor's controlled terminology. Examples of controlled
+    terms include 'INFORMED CONSENT OBTAINED' and 'RANDOMIZED.' EPOCH should not be
+    populated when DSCAT = "PROTOCOL MILESTONE".
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+

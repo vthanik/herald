@@ -1,0 +1,35 @@
+id: CG0557
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: PP
+  exclude_domains: []
+variable: PPORRESU
+check:
+  narrative: Terminology is for parameter normalized by weight
+  condition: Parameter is normalized by weight.
+outcome:
+  message: Terminology is for parameter normalized by weight
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.3 6.3.11.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: "\tThere are separate codelists used for PPORRESU/PPSTRESU where
+    the choice depends on whether the value of the pharmacokinetic parameter is normalized.
+    - Codelist \"PKUNIT\" is used for non-normalized parameters. - Codelists \"PKUDMG\"
+    and \"PKUDUG\" are used when parameters are normalized by dose amount in milligrams
+    or micrograms respectively. - Codelists \"PKUWG\" and \"PKUWKG\" are used when
+    parameters are normalized by weight in grams or kilograms respectively. Multiple
+    subset codelists were created for the unique unit expressions of the same concept
+    across codelists, this approach allows study-context appropriate use of unit values
+    for PK analysis subtypes."
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

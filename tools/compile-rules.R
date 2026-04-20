@@ -26,17 +26,19 @@ dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 # ---- canonical row builder -------------------------------------------------
 
 normalize_standard <- function(raw) {
-  raw <- toupper(raw %||% "")
+  if (is.null(raw) || is.na(raw) || !nzchar(raw)) return(NA_character_)
+  key <- toupper(raw)
+  key <- gsub("-", "", key, fixed = TRUE)
   switch(
-    raw,
-    "SDTMIG"   = "SDTM-IG",
-    "SDTM"     = "SDTM-IG",
-    "ADAMIG"   = "ADaM-IG",
-    "ADAM"     = "ADaM-IG",
-    "SENDIG"   = "SEND-IG",
-    "SEND"     = "SEND-IG",
-    "DEFINE-XML" = "Define-XML",
-    "CT"       = "CT",
+    key,
+    "SDTMIG"    = "SDTM-IG",
+    "SDTM"      = "SDTM-IG",
+    "ADAMIG"    = "ADaM-IG",
+    "ADAM"      = "ADaM-IG",
+    "SENDIG"    = "SEND-IG",
+    "SEND"      = "SEND-IG",
+    "DEFINEXML" = "Define-XML",
+    "CT"        = "CT",
     raw
   )
 }
@@ -132,21 +134,44 @@ row_from_herald_yaml <- function(yml, path) {
   if (!nzchar(source_doc)) source_doc <- "Self-authored by herald team"
   # Crosswalk ID lives only in p21_id_equivalent column; no mention in source_document.
 
+  # Respect authority + license declared in YAML; fall back to HERALD/MIT
+  declared_authority <- yml$authority %||% "HERALD"
+  declared_license   <- yml$provenance$license %||% (
+    if (declared_authority == "HERALD") "MIT" else "CC-BY-4.0"
+  )
+  # For CDISC-declared rules from the XLSX harvest, provenance.source_document
+  # is the canonical source — prefer it.
+  if (!is.null(yml$provenance$source_document) &&
+      nzchar(yml$provenance$source_document)) {
+    source_doc <- yml$provenance$source_document
+  }
+  if (!is.null(yml$provenance$source_url) &&
+      nzchar(yml$provenance$source_url)) {
+    source_url <- yml$provenance$source_url
+  }
+
+  standard_ver <- NA_character_
+  if (!is.null(yml$standard_versions) && length(yml$standard_versions) > 0) {
+    standard_ver <- paste(as.character(yml$standard_versions), collapse = ",")
+  } else if (!is.null(yml$standard_version)) {
+    standard_ver <- as.character(yml$standard_version)
+  }
+
   list(
     id             = as.character(id),
-    authority      = "HERALD",
+    authority      = as.character(declared_authority),
     standard       = normalize_standard(yml$standard),
-    standard_ver   = NA_character_,
+    standard_ver   = standard_ver,
     severity       = severity,
     scope          = scope,
     check_tree     = check_tree,
     message        = as.character(message),
     source_document = as.character(source_doc),
     source_url     = as.character(source_url),
-    source_version = as.character(yml$version %||% "1"),
+    source_version = as.character(yml$provenance$source_version %||% yml$version %||% "1"),
     fetched_at     = as.POSIXct(NA),
     content_hash   = hash_tree(check_tree),
-    license        = "MIT",
+    license        = as.character(declared_license),
     p21_id_equivalent = as.character(p21_id)
   )
 }

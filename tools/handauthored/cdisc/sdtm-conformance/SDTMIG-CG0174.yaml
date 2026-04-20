@@ -1,0 +1,30 @@
+id: CG0174
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: FA
+  exclude_domains: []
+variable: FAOBJ
+check:
+  narrative: FAOBJ in (--TERM, --TRT, --DECOD)
+  condition: Related record present in parent domain dataset
+outcome:
+  message: FAOBJ in (--TERM, --TRT, --DECOD)
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.4.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: In general, the value in FAOBJ should match the value in --TERM
+    or --TRT, unless the parent domain is dictionary coded or subject to controlled
+    terminology, in which case FAOBJ should then match the value in --DECOD.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

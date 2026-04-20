@@ -1,0 +1,33 @@
+id: '447'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes:
+  - BASIC DATA STRUCTURE
+  - OCCURRENCE DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: AVISIT
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: AVISITN is populated
+outcome:
+  message: On a given record, AVISITN is populated and AVISIT is not populated
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.2 3.3.3
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.2, Section 3.3.3, Table 3.3.3.1: There must be a one-to-one relationship between AVISITN and AVISIT (i.e., AVISITN has the same value for each distinct AVISIT) within a parameter. A best practice is to extend the one-to-one relationship to within a study, but this is not an ADaM requirement. In the event that a record does not fall within any predefined analysis timepoint window, AVISITN can be populated in any way that the producer chooses to indicate this fact (e.g., may be null). Values of AVISITN are producer-defined.
+    AVISITN cannot be present unless AVISIT is also present. On a given record, AVISITN cannot be populated if AVISIT is null. AVISITN can be null when AVISIT is populated, as long as the one-to-one relationship is maintained within a parameter on all rows on which both variables are populated.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

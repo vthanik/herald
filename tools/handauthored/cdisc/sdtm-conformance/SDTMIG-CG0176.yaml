@@ -1,0 +1,29 @@
+id: CG0176
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: FND
+  domains: IE
+  exclude_domains: []
+variable: IEORRES
+check:
+  narrative: IEORRES = 'N'
+  condition: IECAT = 'INCLUSION'
+outcome:
+  message: IEORRES = 'N'
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.3
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: The intent of the domain model is to collect response to only those
+    criteria that the subject did not meet, and not the responses to all criteria.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,29 @@
+id: CG0329
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: TDM
+  domains: TE
+  exclude_domains: []
+variable: TEDUR
+check:
+  narrative: TEDUR ^= null
+  condition: TEENRL = null
+outcome:
+  message: TEDUR ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 7.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Specification[Either TEENRL or TEDUR must be present for each Element.]|Assumption
+    12[At least one of TEENRL or TEDUR must be populated. Both may be populated.]
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

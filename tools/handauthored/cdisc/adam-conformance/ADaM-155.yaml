@@ -1,0 +1,34 @@
+id: '155'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1'
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: ABLFL
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: BASETYPE is not present
+outcome:
+  message: Within a given PARAMCD for a subject, more than one record has ABLFL equal
+    to Y and BASETYPE is not present
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.0 3.2.6
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: |-
+    ADaMIG v1.0, Section 3.2.6, Table 3.2.6.1: Character indicator to identify the baseline record for each parameter, or if there is more than one baseline definition, for each parameter and baseline type (BASETYPE). See BASETYPE in Table 3.2.4.1. ABLFL is required if BASE is present in the dataset.
+    A baseline record may be derived (e.g., it may be an average), in which case DTYPE must also be populated. If BASE is populated for a parameter, and BASE is non-null for a subject for that parameter, then there must be a record flagged by ABLFL for that subject and parameter.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

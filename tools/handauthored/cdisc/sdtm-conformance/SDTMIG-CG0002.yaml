@@ -1,0 +1,29 @@
+id: CG0002
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: ALL
+  domains: ALL
+  exclude_domains: []
+variable: --DUR
+check:
+  narrative: --DUR collected and not derived
+  condition: --DUR ^= null
+outcome:
+  message: --DUR collected and not derived
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 2.2.5
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Collected duration of an event, intervention, or finding represented
+    in ISO 8601 character format. Used only if collected on the CRF and not derived.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

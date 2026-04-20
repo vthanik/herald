@@ -1,0 +1,30 @@
+id: CG0364
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: SPC
+  domains: RELSUB
+  exclude_domains: []
+variable: RSUBJID
+check:
+  narrative: RSUBJID ^= POOLID
+  condition: RSUBJID ^= null
+outcome:
+  message: RSUBJID ^= POOLID
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: Model v1.4 4.1.4
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: Identifier used to identify a related subject or pool of subjects.
+    RSUBJID will be populated with either the USUBJID of the related subject or the
+    POOLID of the related pool.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

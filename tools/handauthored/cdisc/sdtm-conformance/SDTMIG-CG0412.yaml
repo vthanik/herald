@@ -1,0 +1,29 @@
+id: CG0412
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.2'
+severity: Medium
+scope:
+  classes: EVT
+  domains: DS
+  exclude_domains: []
+variable: GEN
+check:
+  narrative: Subject records > 0
+  condition: DM.ACTARMCD not in ('SCRNFAIL', 'NOTASSGN', 'NOTTRT')
+outcome:
+  message: Subject records > 0
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.2 DS
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: The Disposition dataset provides an accounting for all subjects
+    who entered the study and may include protocol milestones; such as randomization;
+    as well as the subject's completion status or reason for discontinuation for the
+    entire study or each phase or segment of the study; including screening and post-treatment
+    follow-up.
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,34 @@
+id: CG0063
+authority: CDISC
+standard: SDTM-IG
+standard_versions: '3.2'
+severity: Medium
+scope:
+  classes: EVT
+  domains: DS
+  exclude_domains: []
+variable: EPOCH
+check:
+  narrative: EPOCH ^= null
+  condition: Multiple events per subject where DSCAT = 'DISPOSITION EVENT'
+outcome:
+  message: EPOCH ^= null
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 6.2
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: 'A sponsor may collect one disposition event for the trial as a
+    whole, or they may collect disposition for each Epoch of the trial. When disposition
+    is collected for each Epoch, the variable EPOCH should be included in the DS dataset.
+    When EPOCH is populated for disposition events (records with DSCAT = DISPOSITION
+    EVENT), EPOCH is the name of the Epoch for the disposition event described in
+    the record. This is a subtly different meaning from that of EPOCH when it is used
+    in other general-observation-class domains, where EPOCH, as a Timing variable,
+    is the name of the Epoch during which --STDTC or --DTC falls. The values of EPOCH
+    are drawn from the Trial Arms domain, Section 7.2 - Experimental Design: Trial
+    Arms (TA)'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

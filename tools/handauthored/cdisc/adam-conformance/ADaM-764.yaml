@@ -1,0 +1,34 @@
+id: '764'
+authority: CDISC
+standard: ADaM-IG
+standard_versions:
+- '1.1000000000000001'
+- '1.2'
+- '1.3'
+severity: Medium
+scope:
+  classes: BASIC DATA STRUCTURE
+  domains: []
+  exclude_domains: []
+variable: TRTPGy where y is an integer [1-99, not zero-padded]
+define_element: ''
+check:
+  narrative: ''
+  condition_success: ''
+  condition_failure: TRTA is present
+outcome:
+  message: TRTPGy is present and TRTA is present but TRTAGy is not present, where
+    y is an integer [1-99, not zero-padded]
+  severity: Medium
+provenance:
+  source_document: CDISC ADaM Conformance Rules v5.0
+  source_document_section: ADaMIG v1.1 3.3.2
+  source_url: https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0
+  cited_guidance: 'ADaMIG v1.1, Section 3.3.2, Table 3.3.2.1: TRTAGy: TRTAGy is the
+    actual pooled treatment y attributed to a record for analysis purposes. "y" represents
+    an integer [1-99, not zero-padded] corresponding to a particular pooling scheme.
+    Required when TRTPGy is present and TRTA is present.'
+  source_version: '1'
+  license: CC-BY-4.0
+  executability: narrative
+

@@ -1,0 +1,36 @@
+id: CG0100
+authority: CDISC
+standard: SDTM-IG
+standard_versions:
+- '3.2'
+- '3.3'
+- '3.4'
+severity: Medium
+scope:
+  classes: INT
+  domains: EC
+  exclude_domains: []
+variable: ECDOSE
+check:
+  narrative: ECDOSE > 0
+  condition: ECOCCUR ^= 'N' and ECSTAT = null and ECDOSTXT = null
+outcome:
+  message: ECDOSE > 0
+  severity: Medium
+provenance:
+  source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
+  source_document_section: IG v3.2 IG v3.2[6.1]
+  source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
+  cited_guidance: IG v3.2[6.1][Assumption 4a][For example, if 0 tablets are taken
+    within a timeframe or 0 mL infused at a visit, then ECOCCUR = 'N' is the standard
+    representation of the collected doses not taken, not given, or missed. Dose amount
+    variables (e.g., ECDOSE, ECDOSTXT) must not be set to zero (0) as an alternative
+    method for indicating doses not taken, not given, or missed.]|IG v3.2[6.1][Assumption
+    4b][Qualifiers that indicate dose amount (e.g., ECDOSE, ECDOSTXT) may be populated
+    with positive (non-zero) values in cases where the sponsor feels it is necessary
+    and/or appropriate to represent specific dose amounts not taken, not given, or
+    missed.]
+  source_version: '2'
+  license: CC-BY-4.0
+  executability: narrative
+
