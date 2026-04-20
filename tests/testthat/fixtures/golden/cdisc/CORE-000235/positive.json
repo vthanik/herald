@@ -1,0 +1,18 @@
+{
+  "rule_id": "CORE-000235",
+  "fixture_type": "positive",
+  "datasets": {
+    "AP--": {
+      "RSUBJID": "TARGET_X"
+    },
+    "DM": {
+      "USUBJID": "OTHER_001"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded (+1 ref ds); 3 leaf op(s): non_empty,not_equal_to,is_not_contained_by",
+  "authored": "auto-seed@4"
+}

@@ -7,7 +7,7 @@
 #
 # Writes tests/testthat/fixtures/golden/<authority>/<rule_id>/{positive,negative}.json
 #
-# Phase 1c + 2 scope:
+# Phase 1c + 2 + C scope:
 #   * single-leaf + multi-leaf `{all: [...]}` / `{any: [...]}` trees
 #   * `{not: leaf}` wrappers (leaf polarity tracked + swapped at emit time)
 #   * --VAR wildcard expansion for SDTM rules (class -> representative domain)
@@ -15,9 +15,13 @@
 #   * multi-row structural operators (is_unique_set, is_not_unique_set,
 #     is_unique_relationship, is_not_unique_relationship)
 #   * comparison, date compare, case-insensitive, prefix/suffix operators
+#   * Phase C: $<dom>_<col> and $usubjids_in_<dom> cross-dataset refs --
+#     seeder builds the referenced dataset alongside the main dataset with
+#     controlled values so the leaf can fire (positive) or pass (negative).
 #
-# Still skipped: nested combinators (`{all: [{all: [...]}]}`), cross-dataset
-# refs (`$dm_usubjid`-style), `r_expression` rules, narrative-only trees.
+# Still skipped: nested combinators (`{all: [{all: [...]}]}`), meta-refs
+# like `$domain_label` / `$list_dataset_names` / spec-driven refs,
+# aggregate refs (`$max_ex_exstdtc`), `r_expression` rules, narrative trees.
 #
 # Idempotency: fixtures authored manually (`authored: "manual"`) are never
 # overwritten. Auto-seeded fixtures ARE overwritten on each run.
@@ -34,7 +38,7 @@ suppressPackageStartupMessages({
   }
 })
 
-SEEDER_VERSION <- "auto-seed@3"
+SEEDER_VERSION <- "auto-seed@4"
 
 WHITELIST_OPS <- c(
   # existence
@@ -197,7 +201,162 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
   format(d + as.integer(days))
 }
 
-.leaf_variants <- function(op, leaf, domain) {
+# -- $-prefixed cross-dataset refs (Phase C) --------------------------------
+#
+# CDISC CORE rules use tokens like "$dm_usubjid" to mean "unique values of
+# DM.USUBJID". The engine resolves these at walk time (see R/rules-crossrefs.R).
+# For fixture seeding we need to additionally produce the *referenced* dataset
+# with controlled values so the positive variant can fire and the negative
+# variant can not fire.
+
+# Tokens that are meta / dynamic / spec-driven -- we can't auto-seed these.
+SPECIAL_DOLLAR_TOKENS <- c(
+  "$list_dataset_names", "$study_domains", "$domain_label",
+  "$arm_list", "$allowed_variables",
+  "$required_variables", "$expected_variables",
+  "$dataset_name", "$domain_lib_ccode",
+  "$column_order_from_library", "$arms_in_ta"
+)
+
+# Known token aliases we can rewrite to `list(dataset, column)`.
+# `$armcd_list` is documented by the engine's build_crossrefs as an alias for
+# TA.ARMCD; seeding it is equivalent to seeding `$ta_armcd`.
+DOLLAR_ALIASES <- list(
+  "$armcd_list" = list(dataset = "TA", column = "ARMCD")
+)
+
+#' Parse a `$`-prefixed token into `list(dataset, column)`, or return NULL if
+#' the token is special-purpose, aggregate, or doesn't match the
+#' `$<2-char-dom>_<col>` / `$usubjids_in_<dom>` conventions.
+.parse_dollar_ref <- function(token) {
+  if (!is.character(token) || length(token) != 1L) return(NULL)
+  if (!startsWith(token, "$")) return(NULL)
+  low <- tolower(token)
+  if (low %in% SPECIAL_DOLLAR_TOKENS) return(NULL)
+  if (!is.null(DOLLAR_ALIASES[[low]])) return(DOLLAR_ALIASES[[low]])
+  # Aggregate / nested-query tokens (not yet supported).
+  if (grepl("^\\$(max|min|sum|count|avg)_", low)) return(NULL)
+
+  # Alias: $usubjids_in_<dom>
+  if (startsWith(low, "$usubjids_in_")) {
+    dom <- toupper(substring(low, nchar("$usubjids_in_") + 1L))
+    if (!nzchar(dom)) return(NULL)
+    return(list(dataset = dom, column = "USUBJID"))
+  }
+  # Generic `$<word>_in_<dom>` aliases we don't resolve.
+  if (grepl("^\\$[a-z]+_in_", low)) return(NULL)
+
+  # Regular pattern: $<dom>_<col>. CDISC domains are 2 chars.
+  if (nchar(low) < 5L) return(NULL)
+  if (substring(low, 4L, 4L) != "_") return(NULL)
+  dom <- toupper(substring(low, 2L, 3L))
+  col <- toupper(substring(low, 5L))
+  if (!nzchar(dom) || !nzchar(col)) return(NULL)
+  list(dataset = dom, column = col)
+}
+
+#' Return a {A, B} variant where each side is {main, extras}. Used when a
+#' leaf's `value` is a $-ref pointing at a different dataset.
+#' Returns NULL for ops we don't know how to seed with a cross-ref value.
+.dollar_variant <- function(op, name, ref) {
+  ds   <- ref$dataset
+  col  <- ref$column
+
+  same   <- "SAME_VAL"
+  other  <- "OTHER_001"
+  target <- "TARGET_X"
+
+  mk_main <- function(v) stats::setNames(list(v), name)
+  mk_ref  <- function(v) stats::setNames(
+    list(stats::setNames(list(v), col)), ds
+  )
+
+  switch(
+    op,
+    is_not_contained_by = list(
+      A = list(main = mk_main(target), extras = mk_ref(other)),
+      B = list(main = mk_main(same),   extras = mk_ref(same))
+    ),
+    is_contained_by = list(
+      A = list(main = mk_main(same),   extras = mk_ref(same)),
+      B = list(main = mk_main(target), extras = mk_ref(other))
+    ),
+    is_not_contained_by_case_insensitive = list(
+      A = list(main = mk_main(target),         extras = mk_ref(other)),
+      B = list(main = mk_main(tolower(same)),  extras = mk_ref(toupper(same)))
+    ),
+    is_contained_by_case_insensitive = list(
+      A = list(main = mk_main(tolower(same)),  extras = mk_ref(toupper(same))),
+      B = list(main = mk_main(target),         extras = mk_ref(other))
+    ),
+    not_equal_to = list(
+      A = list(main = mk_main(target), extras = mk_ref(other)),
+      B = list(main = mk_main(same),   extras = mk_ref(same))
+    ),
+    equal_to = list(
+      A = list(main = mk_main(same),   extras = mk_ref(same)),
+      B = list(main = mk_main(target), extras = mk_ref(other))
+    ),
+    equal_to_case_insensitive = list(
+      A = list(main = mk_main(tolower(same)), extras = mk_ref(toupper(same))),
+      B = list(main = mk_main(target),        extras = mk_ref(other))
+    ),
+    not_equal_to_case_insensitive = list(
+      A = list(main = mk_main(target),        extras = mk_ref(other)),
+      B = list(main = mk_main(tolower(same)), extras = mk_ref(toupper(same)))
+    ),
+    date_greater_than = {
+      v <- "2026-01-15"
+      list(
+        A = list(main = mk_main(.shift_date(v,  1L)), extras = mk_ref(v)),
+        B = list(main = mk_main(.shift_date(v, -1L)), extras = mk_ref(v))
+      )
+    },
+    date_less_than = {
+      v <- "2026-01-15"
+      list(
+        A = list(main = mk_main(.shift_date(v, -1L)), extras = mk_ref(v)),
+        B = list(main = mk_main(.shift_date(v,  1L)), extras = mk_ref(v))
+      )
+    },
+    date_equal_to = {
+      v <- "2026-01-15"
+      list(
+        A = list(main = mk_main(v),                   extras = mk_ref(v)),
+        B = list(main = mk_main(.shift_date(v,  1L)), extras = mk_ref(v))
+      )
+    },
+    date_not_equal_to = {
+      v <- "2026-01-15"
+      list(
+        A = list(main = mk_main(.shift_date(v,  1L)), extras = mk_ref(v)),
+        B = list(main = mk_main(v),                   extras = mk_ref(v))
+      )
+    },
+    date_greater_than_or_equal_to = {
+      v <- "2026-01-15"
+      list(
+        A = list(main = mk_main(v),                   extras = mk_ref(v)),
+        B = list(main = mk_main(.shift_date(v, -1L)), extras = mk_ref(v))
+      )
+    },
+    date_less_than_or_equal_to = {
+      v <- "2026-01-15"
+      list(
+        A = list(main = mk_main(v),                   extras = mk_ref(v)),
+        B = list(main = mk_main(.shift_date(v,  1L)), extras = mk_ref(v))
+      )
+    },
+    NULL
+  )
+}
+
+# -- per-op seed variants ---------------------------------------------------
+# Each case returns either a flat {A = cols, B = cols} (no extras) or the
+# richer {A = {main, extras}, B = {main, extras}} shape used by $-ref ops.
+# `.normalize_variant` downstream collapses both into the rich shape.
+
+.leaf_variants <- function(op, leaf, domain, main_dataset = NULL) {
   raw_name <- leaf[["name"]]
   if (is.null(raw_name)) return(NULL)
   raw_vec <- as.character(unlist(raw_name))
@@ -207,6 +366,15 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
   name <- name_vec[[1L]]  # primary column (used by scalar-name ops)
 
   val1 <- .val_first(leaf[["value"]])
+
+  # Phase C: detect $-ref leaf values and dispatch to dollar-variant path.
+  if (!is.na(val1) && startsWith(val1, "$")) {
+    ref <- .parse_dollar_ref(val1)
+    if (is.null(ref)) return(NULL)
+    main_up <- toupper(as.character(main_dataset %||% ""))
+    if (identical(ref$dataset, main_up)) return(NULL)
+    return(.dollar_variant(op, name, ref))
+  }
 
   switch(
     op,
@@ -367,7 +535,7 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
     is_not_contained_by = {
       allowed <- .vals_all(leaf[["value"]])
       if (length(allowed) == 0L) return(NULL)
-      if (startsWith(allowed[[1L]], "$")) return(NULL)
+      # $-ref values are handled above by .parse_dollar_ref / .dollar_variant.
       list(A = .mk(name, paste0("NOT_IN_", allowed[[1L]])),
            B = .mk(name, allowed[[1L]]))
     },
@@ -462,28 +630,65 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
   out
 }
 
-.run_rule <- function(rule_id, ds_name, cols, spec = NULL) {
-  df <- as.data.frame(cols, stringsAsFactors = FALSE, check.names = FALSE)
-  r  <- validate(
-    files = stats::setNames(list(df), ds_name),
-    spec  = spec,
-    rules = rule_id,
-    quiet = TRUE
-  )
-  fired_rows <- r$findings$row[r$findings$status == "fired"]
-  fired_rows <- fired_rows[!is.na(fired_rows)]
-  list(fires = length(fired_rows) > 0L, rows = as.integer(fired_rows))
+# Normalize either a flat `{A = cols, B = cols}` or a rich
+# `{A = {main, extras}, B = {main, extras}}` to the rich shape.
+.normalize_variant <- function(v) {
+  if (is.null(v)) return(NULL)
+  norm_side <- function(x) {
+    if (is.null(x)) return(NULL)
+    if (is.list(x) && !is.null(x$main)) {
+      return(list(main = x$main, extras = x$extras))
+    }
+    list(main = x, extras = NULL)
+  }
+  list(A = norm_side(v$A), B = norm_side(v$B))
+}
+
+# Merge a list of per-leaf `extras` maps (each keyed by referenced dataset
+# name) into one `{<DS> = <merged-cols>}` map. Returns NULL on any conflict.
+.merge_extras <- function(extras_list) {
+  by_ds <- list()
+  for (ex in extras_list) {
+    if (is.null(ex)) next
+    for (d in names(ex)) {
+      by_ds[[d]] <- c(by_ds[[d]] %||% list(), list(ex[[d]]))
+    }
+  }
+  out <- list()
+  for (d in names(by_ds)) {
+    merged <- .merge_cols(by_ds[[d]])
+    if (is.null(merged)) return(NULL)
+    out[[d]] <- merged
+  }
+  out
+}
+
+#' Run `validate()` for one rule against a named list of column-maps.
+#' Returns list(fires, rows) where `rows` are the fired row indices in the
+#' MAIN dataset (first entry in `dataset_map`).
+.run_rule <- function(rule_id, dataset_map, spec = NULL) {
+  files <- lapply(dataset_map, function(cols) {
+    as.data.frame(cols, stringsAsFactors = FALSE, check.names = FALSE)
+  })
+  r <- validate(files = files, spec = spec, rules = rule_id, quiet = TRUE)
+  main_name <- names(dataset_map)[[1L]]
+  fired <- r$findings[r$findings$status == "fired", , drop = FALSE]
+  main_rows <- fired$row[toupper(fired$dataset) == toupper(main_name)]
+  main_rows <- main_rows[!is.na(main_rows)]
+  list(fires = nrow(fired) > 0L, rows = as.integer(main_rows))
 }
 
 # -- fixture I/O ------------------------------------------------------------
 
-.write_fixture <- function(path, rule_id, fix_type, ds_name, cols,
-                           expected, notes, ds_class = NA_character_) {
+.write_fixture <- function(path, rule_id, fix_type, dataset_map,
+                           expected, notes, ds_class = NA_character_,
+                           main_name = NULL) {
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+  datasets <- lapply(dataset_map, as.list)
   obj <- list(
     rule_id      = rule_id,
     fixture_type = fix_type,
-    datasets     = stats::setNames(list(as.list(cols)), ds_name),
+    datasets     = datasets,
     expected     = list(
       fires = expected$fires,
       rows  = if (isTRUE(expected$fires)) as.integer(expected$rows) else integer()
@@ -491,8 +696,8 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
     notes    = notes,
     authored = SEEDER_VERSION
   )
-  if (!is.na(ds_class) && nzchar(ds_class)) {
-    obj$spec <- list(class_map = stats::setNames(list(ds_class), ds_name))
+  if (!is.na(ds_class) && nzchar(ds_class) && !is.null(main_name)) {
+    obj$spec <- list(class_map = stats::setNames(list(ds_class), main_name))
   }
   json <- jsonlite::toJSON(obj, auto_unbox = TRUE, pretty = TRUE,
                            null = "null", digits = NA)
@@ -566,6 +771,36 @@ for (i in seq_len(n_total)) {
     reasons <- c(reasons, "no-dataset-name")
     next
   }
+
+  # When the fallback main dataset collides with a $-ref target (e.g. a rule
+  # scoped to ALL domains that references $dm_usubjid), swap to a non-
+  # conflicting domain. Only do this when the rule has no explicit scope --
+  # an explicit scope must be honoured.
+  dollar_targets <- character()
+  for (lf in leaves_info) {
+    v1 <- .val_first(lf$leaf$value)
+    if (!is.na(v1) && startsWith(v1, "$")) {
+      ref <- .parse_dollar_ref(v1)
+      if (!is.null(ref)) dollar_targets <- c(dollar_targets, ref$dataset)
+    }
+  }
+  if (length(dollar_targets) > 0L &&
+      toupper(ds_info$name) %in% toupper(dollar_targets)) {
+    scope_doms <- rule$scope$domains
+    explicit_scope <- length(scope_doms) > 0L &&
+      any(nzchar(as.character(unlist(scope_doms))) &
+          toupper(as.character(unlist(scope_doms))) != "ALL")
+    if (!explicit_scope) {
+      alt_candidates <- c("AE", "DS", "EX", "LB", "CM", "VS")
+      alt <- alt_candidates[!alt_candidates %in% toupper(dollar_targets)]
+      if (length(alt) > 0L) {
+        ds_info$name  <- alt[[1L]]
+        ds_info$class <- NA_character_
+        ds_info$spec  <- NULL
+      }
+    }
+  }
+
   is_adam <- grepl("^AD[A-Z]", ds_info$name)
   wildcard_domain <- if (is_adam) NA_character_ else ds_info$name
 
@@ -573,8 +808,10 @@ for (i in seq_len(n_total)) {
   variants_B <- vector("list", length(leaves_info))
   seed_fail <- FALSE
   for (j in seq_along(leaves_info)) {
-    v <- .leaf_variants(ops[[j]], leaves_info[[j]]$leaf, wildcard_domain)
+    v <- .leaf_variants(ops[[j]], leaves_info[[j]]$leaf,
+                        wildcard_domain, main_dataset = ds_info$name)
     if (is.null(v)) { seed_fail <- TRUE; break }
+    v <- .normalize_variant(v)
     # `not`-wrapped leaves: swap A <-> B so positive/negative semantics line
     # up with the outer rule.
     if (isTRUE(leaves_info[[j]]$inverted)) {
@@ -591,11 +828,21 @@ for (i in seq_len(n_total)) {
     next
   }
 
-  cols_pos <- .merge_cols(variants_A)
-  cols_neg <- .merge_cols(variants_B)
+  main_A_cols <- lapply(variants_A, function(v) v$main)
+  main_B_cols <- lapply(variants_B, function(v) v$main)
+  cols_pos <- .merge_cols(main_A_cols)
+  cols_neg <- .merge_cols(main_B_cols)
   if (is.null(cols_pos) || is.null(cols_neg)) {
     n_skipped <- n_skipped + 1L
     reasons <- c(reasons, "leaf-col-conflict")
+    next
+  }
+
+  extras_pos <- .merge_extras(lapply(variants_A, function(v) v$extras))
+  extras_neg <- .merge_extras(lapply(variants_B, function(v) v$extras))
+  if (is.null(extras_pos) || is.null(extras_neg)) {
+    n_skipped <- n_skipped + 1L
+    reasons <- c(reasons, "leaf-extras-conflict")
     next
   }
 
@@ -607,8 +854,11 @@ for (i in seq_len(n_total)) {
     next
   }
 
-  out_pos <- .run_rule(rule_id, ds_info$name, cols_pos, spec = ds_info$spec)
-  out_neg <- .run_rule(rule_id, ds_info$name, cols_neg, spec = ds_info$spec)
+  dataset_map_pos <- c(stats::setNames(list(cols_pos), ds_info$name), extras_pos)
+  dataset_map_neg <- c(stats::setNames(list(cols_neg), ds_info$name), extras_neg)
+
+  out_pos <- .run_rule(rule_id, dataset_map_pos, spec = ds_info$spec)
+  out_neg <- .run_rule(rule_id, dataset_map_neg, spec = ds_info$spec)
 
   if (!isTRUE(out_pos$fires) || isTRUE(out_neg$fires)) {
     n_skipped <- n_skipped + 1L
@@ -620,17 +870,23 @@ for (i in seq_len(n_total)) {
   }
 
   any_inverted <- any(vapply(leaves_info, function(l) isTRUE(l$inverted), logical(1)))
-  notes_pos <- sprintf("auto-seeded%s; %d leaf op(s): %s",
+  has_extras <- length(extras_pos) > 0L
+  extras_tag <- if (has_extras) sprintf(" (+%d ref ds)", length(extras_pos)) else ""
+  notes_pos <- sprintf("auto-seeded%s%s; %d leaf op(s): %s",
                        if (any_inverted) " (w/ not-wrapper)" else "",
+                       extras_tag,
                        length(ops), paste(ops, collapse = ","))
-  notes_neg <- sprintf("auto-seeded%s; %d leaf op(s): %s (should not fire)",
+  notes_neg <- sprintf("auto-seeded%s%s; %d leaf op(s): %s (should not fire)",
                        if (any_inverted) " (w/ not-wrapper)" else "",
+                       extras_tag,
                        length(ops), paste(ops, collapse = ","))
 
-  .write_fixture(paths$positive, rule_id, "positive", ds_info$name, cols_pos,
-                 out_pos, notes_pos, ds_class = ds_info$class)
-  .write_fixture(paths$negative, rule_id, "negative", ds_info$name, cols_neg,
-                 out_neg, notes_neg, ds_class = ds_info$class)
+  .write_fixture(paths$positive, rule_id, "positive", dataset_map_pos,
+                 out_pos, notes_pos, ds_class = ds_info$class,
+                 main_name = ds_info$name)
+  .write_fixture(paths$negative, rule_id, "negative", dataset_map_neg,
+                 out_neg, notes_neg, ds_class = ds_info$class,
+                 main_name = ds_info$name)
   written_paths <- c(written_paths, paths$positive, paths$negative)
   n_seeded <- n_seeded + 1L
 }

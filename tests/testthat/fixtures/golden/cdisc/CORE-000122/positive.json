@@ -14,7 +14,7 @@
     "rows": 1
   },
   "notes": "auto-seeded; 6 leaf op(s): non_empty,empty,empty,non_empty,empty,not_exists",
-  "authored": "auto-seed@3",
+  "authored": "auto-seed@4",
   "spec": {
     "class_map": {
       "DM": "SPECIAL PURPOSE"

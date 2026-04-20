@@ -1,0 +1,19 @@
+{
+  "rule_id": "CORE-000140",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "VISITNUM": "SAME_VAL",
+      "VISITDY": ""
+    },
+    "TV": {
+      "VISITNUM": "SAME_VAL"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded (+1 ref ds); 2 leaf op(s): is_not_contained_by,non_empty (should not fire)",
+  "authored": "auto-seed@4"
+}

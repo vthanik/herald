@@ -1,0 +1,18 @@
+{
+  "rule_id": "CORE-000172",
+  "fixture_type": "negative",
+  "datasets": {
+    "AE": {
+      "STUDYID": "SAME_VAL"
+    },
+    "DM": {
+      "STUDYID": "SAME_VAL"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded (+1 ref ds); 1 leaf op(s): is_not_contained_by (should not fire)",
+  "authored": "auto-seed@4"
+}

@@ -1,0 +1,19 @@
+{
+  "rule_id": "CORE-000515",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "ACTARMCD": "NOT_IN_SCRNFAIL",
+      "USUBJID": "TARGET_X"
+    },
+    "DS": {
+      "USUBJID": "OTHER_001"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded (+1 ref ds); 2 leaf op(s): is_not_contained_by,is_not_contained_by",
+  "authored": "auto-seed@4"
+}

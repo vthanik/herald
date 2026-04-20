@@ -13,7 +13,7 @@
     "rows": []
   },
   "notes": "auto-seeded; 4 leaf op(s): non_empty,non_empty,equal_to,not_equal_to (should not fire)",
-  "authored": "auto-seed@3",
+  "authored": "auto-seed@4",
   "spec": {
     "class_map": {
       "PP": "FINDINGS"

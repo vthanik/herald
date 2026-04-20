@@ -18,7 +18,7 @@
     "rows": []
   },
   "notes": "auto-seeded; 10 leaf op(s): prefix_matches_regex,not_exists,not_prefix_matches_regex,exists,exists,not_exists,not_exists,not_exists,not_exists,not_exists (should not fire)",
-  "authored": "auto-seed@3",
+  "authored": "auto-seed@4",
   "spec": {
     "class_map": {
       "AE": "EVENTS"
