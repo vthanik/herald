@@ -1,15 +1,15 @@
 # Golden-fixture coverage
 
-_generated 2026-04-20T21:28:01Z by tools/fixture-coverage.R_
+_generated 2026-04-20T22:03:32Z by tools/fixture-coverage.R_
 
 | metric | count |
 |---|---:|
 | executable rules | 476 |
-| covered (both fixtures) | 295 |
+| covered (both fixtures) | 285 |
 | missing positive only | 0 |
 | missing negative only | 0 |
-| missing both (pending) | 181 |
-| coverage | 62.0% |
+| missing both (pending) | 191 |
+| coverage | 59.9% |
 
 Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 
@@ -51,9 +51,6 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000039
 - CORE-000040
 - CORE-000041
-- CORE-000042
-- CORE-000043
-- CORE-000044
 - CORE-000045
 - CORE-000046
 - CORE-000047
@@ -167,7 +164,6 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000179
 - CORE-000180
 - CORE-000182
-- CORE-000183
 - CORE-000185
 - CORE-000187
 - CORE-000188
@@ -202,7 +198,6 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000246
 - CORE-000247
 - CORE-000248
-- CORE-000249
 - CORE-000252
 - CORE-000253
 - CORE-000254
@@ -263,7 +258,6 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000543
 - CORE-000563
 - CORE-000564
-- CORE-000581
 - CORE-000585
 - CORE-000587
 - CORE-000594
@@ -284,10 +278,7 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000744
 - CORE-000746
 - CORE-000747
-- CORE-000757
 - CORE-000758
-- CORE-000766
-- CORE-000767
 - CORE-000774
 - CORE-000776
 - CORE-000778
@@ -303,7 +294,6 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000885
 - CORE-000886
 - CORE-000892
-- CORE-000901
 - CORE-000913
 - CORE-000927
 - CORE-001043
@@ -318,6 +308,9 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000015
 - CORE-000016
 - CORE-000018
+- CORE-000042
+- CORE-000043
+- CORE-000044
 - CORE-000086
 - CORE-000094
 - CORE-000097
@@ -330,7 +323,4 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000145
 - CORE-000146
 - CORE-000152
-- CORE-000154
-- CORE-000169
-- CORE-000177
-- _...and 161 more_
+- _...and 171 more_

@@ -107,3 +107,34 @@ test_that("validate(files = list(<inline expr>)) errors with a helpful message",
     "bare variable"
   )
 })
+
+test_that("advisory findings collapse to one per rule_id", {
+  # A pure-narrative rule applied across 3 datasets should emit ONE advisory,
+  # not three.
+  dm <- data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)
+  ae <- data.frame(USUBJID = "S1-001", AESEQ = 1L, stringsAsFactors = FALSE)
+  lb <- data.frame(USUBJID = "S1-001", LBSEQ = 1L, stringsAsFactors = FALSE)
+  # Pick a narrative-only rule from the catalog -- any rule whose check_tree
+  # is just {narrative: ...} qualifies. Use the internal helper if exposed.
+  # Fall back to asserting via a dummy rule: if no narrative rules apply, at
+  # least check that `.collapse_advisories` is callable and idempotent.
+  f <- herald:::empty_findings()
+  f_two <- rbind(
+    f,
+    data.frame(rule_id="X", authority="CDISC", standard="S",
+               severity="Medium", status="advisory", dataset="DM",
+               variable=NA_character_, row=NA_integer_, value=NA_character_,
+               expected=NA_character_, message="narrative", source_url=NA_character_,
+               p21_id_equivalent=NA_character_, license=NA_character_,
+               stringsAsFactors=FALSE),
+    data.frame(rule_id="X", authority="CDISC", standard="S",
+               severity="Medium", status="advisory", dataset="AE",
+               variable=NA_character_, row=NA_integer_, value=NA_character_,
+               expected=NA_character_, message="narrative", source_url=NA_character_,
+               p21_id_equivalent=NA_character_, license=NA_character_,
+               stringsAsFactors=FALSE)
+  )
+  out <- herald:::.collapse_advisories(f_two)
+  expect_equal(nrow(out), 1L)
+  expect_equal(out$rule_id, "X")
+})

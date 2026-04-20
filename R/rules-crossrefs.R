@@ -117,31 +117,55 @@ build_crossrefs <- function(datasets, spec = NULL) {
 
 # -- resolution --------------------------------------------------------------
 
-#' Resolve a single `$`-prefixed token against `ctx`. Returns either a
-#' character vector OR `NULL` to signal the token is unknown/unresolved.
-#' Always logs a ctx$op_errors entry on miss (so the final herald_result
-#' surfaces which datasets/refs the run couldn't verify).
+#' Resolve a single cross-dataset token against `ctx`. Two surface forms are
+#' accepted:
+#'   * `$<dom>_<col>` / `$usubjids_in_<dom>` / `$domain_label` / ... -- the
+#'     CDISC CORE-native convention, looked up in `ctx$crossrefs`.
+#'   * `<DOM>.<COL>` -- dotted cross-dataset refs (used by some hand-authored
+#'     rules, e.g. `TV.VISITDY`). Resolves to
+#'     `unique(non-NA) ctx$datasets[[<DOM>]][[<COL>]]`.
+#' Returns either a character vector OR `NULL` to signal the token is
+#' unknown/unresolved. Always logs a ctx$op_errors entry on miss.
 #' @noRd
 resolve_ref <- function(token, ctx) {
-  if (!is.character(token) || length(token) != 1L || !startsWith(token, "$")) {
-    return(NULL)
-  }
-  key <- tolower(token)
-  reg <- ctx$crossrefs
-  if (is.null(reg) || is.null(reg[[key]])) {
-    .log_unresolved(ctx, key)
-    return(NULL)
-  }
-  entry <- reg[[key]]
-  if (is.function(entry)) {
-    val <- tryCatch(entry(ctx), error = function(e) NULL)
-    if (is.null(val) || length(val) == 0L) {
+  if (!is.character(token) || length(token) != 1L) return(NULL)
+
+  if (startsWith(token, "$")) {
+    key <- tolower(token)
+    reg <- ctx$crossrefs
+    if (is.null(reg) || is.null(reg[[key]])) {
       .log_unresolved(ctx, key)
       return(NULL)
     }
-    return(as.character(val))
+    entry <- reg[[key]]
+    if (is.function(entry)) {
+      val <- tryCatch(entry(ctx), error = function(e) NULL)
+      if (is.null(val) || length(val) == 0L) {
+        .log_unresolved(ctx, key)
+        return(NULL)
+      }
+      return(as.character(val))
+    }
+    return(as.character(entry))
   }
-  as.character(entry)
+
+  # Dotted DOM.COL convention (no `$` prefix). Conservative pattern so
+  # plain dotted strings like "v2.0" or "foo.bar" don't accidentally match.
+  if (grepl("^[A-Z][A-Z0-9]{1,7}\\.[A-Z][A-Z0-9_]*$", token)) {
+    parts <- strsplit(token, ".", fixed = TRUE)[[1L]]
+    dom   <- parts[[1L]]
+    col   <- parts[[2L]]
+    ds <- ctx$datasets[[dom]]
+    if (is.null(ds) || !col %in% names(ds)) {
+      .log_unresolved(ctx, token)
+      return(NULL)
+    }
+    values <- unique(as.character(ds[[col]]))
+    values <- values[!is.na(values) & nzchar(values)]
+    return(values)
+  }
+
+  NULL
 }
 
 #' Scan an args list and substitute any $-token values with their resolved
@@ -154,13 +178,14 @@ substitute_crossrefs <- function(args, ctx) {
     return(list(args = args, unresolved = FALSE))
   }
   unresolved <- FALSE
+  dotted_pat <- "^[A-Z][A-Z0-9]{1,7}\\.[A-Z][A-Z0-9_]*$"
   for (k in names(args)) {
     v <- args[[k]]
     # Only handle plain character values here. Structured list values
     # (e.g. {reference_dataset, by, column} for is_inconsistent_across_dataset)
     # are handled inside their own operators.
     if (!is.character(v)) next
-    hits <- startsWith(v, "$")
+    hits <- startsWith(v, "$") | grepl(dotted_pat, v)
     if (!any(hits)) next
     for (i in which(hits)) {
       resolved <- resolve_ref(v[[i]], ctx)
@@ -168,8 +193,8 @@ substitute_crossrefs <- function(args, ctx) {
         unresolved <- TRUE
         break
       }
-      # Replace this $-element with its resolved vector; when a value arg
-      # holds a mix of $-tokens and literals, unroll into the final set.
+      # Replace this ref element with its resolved vector; when a value arg
+      # holds a mix of refs and literals, unroll into the final set.
       v <- c(v[-i], resolved)
     }
     if (unresolved) break

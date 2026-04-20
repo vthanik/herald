@@ -102,3 +102,33 @@ test_that("end-to-end: CORE-000201 without the ref target -> advisory only", {
   # Some advisory emission expected on the unresolved ref.
   expect_true(nrow(r$findings[r$findings$status == "advisory", ]) >= 1L)
 })
+
+test_that("dotted <DOM>.<COL> refs resolve to target-dataset values", {
+  tv <- data.frame(VISITDY = c(1L, 8L, 15L), stringsAsFactors = FALSE)
+  ctx <- mk_ctx(list(TV = tv))
+  expect_setequal(resolve_ref("TV.VISITDY", ctx), c("1", "8", "15"))
+})
+
+test_that("dotted refs that don't match target dataset/column are unresolved", {
+  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  ctx <- mk_ctx(list(DM = dm))
+  expect_null(resolve_ref("TV.VISITDY", ctx))
+  # logged as unresolved
+  kinds <- vapply(ctx$op_errors, function(e) e$kind, character(1))
+  expect_true("unresolved_crossref" %in% kinds)
+})
+
+test_that("substitute_crossrefs recognizes dotted refs in args", {
+  tv <- data.frame(VISITDY = c(1L, 8L), stringsAsFactors = FALSE)
+  ctx <- mk_ctx(list(TV = tv))
+  out <- substitute_crossrefs(list(name = "VISITDY", value = "TV.VISITDY"), ctx)
+  expect_false(out$unresolved)
+  expect_setequal(out$args$value, c("1", "8"))
+})
+
+test_that("plain dotted strings that don't match the pattern are not resolved", {
+  ctx <- mk_ctx(list(DM = data.frame(USUBJID = "S1", stringsAsFactors = FALSE)))
+  # Lowercase / non-domain forms should NOT trigger resolution.
+  expect_null(resolve_ref("v2.0", ctx))
+  expect_null(resolve_ref("foo.bar", ctx))
+})

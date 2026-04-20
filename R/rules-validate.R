@@ -132,6 +132,11 @@ validate <- function(path = NULL,
     empty_findings()
   }
 
+  # Collapse advisories to at most one per rule. Narrative or NA-mask rules
+  # otherwise emit one advisory per (rule x dataset) which inflates counts
+  # on multi-dataset corpora (22 SDTM + narrative -> 22x duplication).
+  findings_tbl <- .collapse_advisories(findings_tbl)
+
   # ---- metadata about datasets --------------------------------------------
   dataset_meta <- lapply(names(datasets), function(nm) {
     d <- datasets[[nm]]
@@ -161,6 +166,27 @@ validate <- function(path = NULL,
 }
 
 # --- internals --------------------------------------------------------------
+
+#' De-duplicate advisory findings: emit at most one advisory per rule_id.
+#'
+#' Fired findings pass through unchanged (they are row-level violations with
+#' distinct row numbers). Advisory findings come from narrative-only rules
+#' or NA-mask rules; one-per-dataset inflation is rarely useful, so we
+#' collapse to one advisory per rule_id. The retained advisory uses the
+#' first dataset encountered; downstream consumers should not rely on the
+#' dataset field of an advisory row being exhaustive.
+#' @noRd
+.collapse_advisories <- function(findings) {
+  if (nrow(findings) == 0L) return(findings)
+  fired <- findings[findings$status != "advisory", , drop = FALSE]
+  adv   <- findings[findings$status == "advisory", , drop = FALSE]
+  if (nrow(adv) > 1L) {
+    adv <- adv[!duplicated(adv$rule_id), , drop = FALSE]
+  }
+  if (nrow(fired) == 0L) return(adv)
+  if (nrow(adv)   == 0L) return(fired)
+  rbind(fired, adv)
+}
 
 .rules_path <- function() {
   # During devtools::load_all(), system.file returns the source inst/ path.

@@ -45,3 +45,32 @@ test_that("missing column returns NA mask", {
   expect_equal(op_non_empty(d, NULL, "NONEXISTENT"), rep(NA, 4L))
   expect_equal(op_empty(d, NULL, "NONEXISTENT"),     rep(NA, 4L))
 })
+
+test_that("dataset-level not_exists collapses to a single fire when dataset missing", {
+  ae <- data.frame(USUBJID = c("S1", "S2", "S3"), stringsAsFactors = FALSE)
+  ctx <- list(datasets = list(AE = ae))  # EX is NOT in the submission
+  # Without dataset-level detection, this would fire per row (3 TRUEs).
+  expect_equal(op_not_exists(ae, ctx, "EX"), c(TRUE, FALSE, FALSE))
+})
+
+test_that("dataset-level not_exists does not fire when dataset is present", {
+  ae <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  ex <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  ctx <- list(datasets = list(AE = ae, EX = ex))
+  expect_equal(op_not_exists(ae, ctx, "EX"), c(FALSE, FALSE))
+})
+
+test_that("dataset-level exists fires once when the referenced dataset is present", {
+  ae <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  ex <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  ctx <- list(datasets = list(AE = ae, EX = ex))
+  expect_equal(op_exists(ae, ctx, "EX"), c(TRUE, FALSE))
+})
+
+test_that("column-level exists still works when name matches a column", {
+  ae <- data.frame(EX = c(1, 2, 3), USUBJID = c("a","b","c"), stringsAsFactors = FALSE)
+  ctx <- list(datasets = list(AE = ae))
+  # "EX" IS a column here -- stay at column-level.
+  expect_equal(op_exists(ae, ctx, "EX"), rep(TRUE, 3L))
+  expect_equal(op_not_exists(ae, ctx, "EX"), rep(FALSE, 3L))
+})

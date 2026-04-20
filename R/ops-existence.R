@@ -8,8 +8,40 @@
 
 # --- exists (column present in dataset) --------------------------------------
 
+# When `name` refers to a top-level dataset (rather than a column in the
+# currently-evaluated dataset), we collapse the mask to `c(result, FALSE...)`
+# so the rule fires at most once per (rule x evaluated dataset), not once per
+# row. Without this guard, rules like `not_exists(EX)` scoped to ALL domains
+# emit millions of findings on pilot-sized submissions.
+#
+# Detection is conservative: `name` must look like a CDISC domain code (2-4
+# uppercase), NOT be a column in `data`, and ctx$datasets must be populated
+# so we don't hide legitimate column checks when no submission context exists.
+.is_dataset_ref <- function(name, data, ctx) {
+  if (!is.character(name) || length(name) != 1L) return(FALSE)
+  if (!grepl("^[A-Z][A-Z0-9]{1,3}$", name)) return(FALSE)
+  if (name %in% names(data)) return(FALSE)
+  # Require a submission-level context. Without ctx$datasets we can't tell
+  # a dataset ref from a column whose name happens to match the pattern.
+  !is.null(ctx) && !is.null(ctx$datasets) && length(ctx$datasets) > 0L
+}
+
+.ds_present <- function(name, ctx) {
+  if (is.null(ctx) || is.null(ctx$datasets)) return(FALSE)
+  toupper(name) %in% toupper(names(ctx$datasets))
+}
+
+.dataset_level_mask <- function(violated, n) {
+  if (n == 0L) return(logical(0))
+  c(isTRUE(violated), rep(FALSE, n - 1L))
+}
+
 op_exists <- function(data, ctx, name) {
   n <- nrow(data)
+  if (.is_dataset_ref(name, data, ctx)) {
+    # "exists(<DS>)" in a check_tree fires when the dataset IS present.
+    return(.dataset_level_mask(.ds_present(name, ctx), n))
+  }
   rep(isTRUE(name %in% names(data)), n)
 }
 .register_op(
@@ -27,6 +59,10 @@ op_exists <- function(data, ctx, name) {
 
 op_not_exists <- function(data, ctx, name) {
   n <- nrow(data)
+  if (.is_dataset_ref(name, data, ctx)) {
+    # "not_exists(<DS>)" fires when the dataset is missing.
+    return(.dataset_level_mask(!.ds_present(name, ctx), n))
+  }
   rep(!(name %in% names(data)), n)
 }
 .register_op(
