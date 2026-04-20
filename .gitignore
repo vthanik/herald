@@ -31,6 +31,9 @@ CLAUDE.md
 .local/
 tasks/todo.md
 
+# Harvest cache (raw CDISC Library API JSON responses)
+tools/harvest-cache/
+
 # macOS
 .DS_Store
 
