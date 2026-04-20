@@ -1,0 +1,22 @@
+{
+  "rule_id": "CORE-000757",
+  "fixture_type": "negative",
+  "datasets": {
+    "CM": {
+      "CMDECOD": "value",
+      "RELREC.FAOBJ": "",
+      "CMTRT": "RELREC.FAOBJ"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 3 leaf op(s): empty,non_empty,not_equal_to (should not fire)",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "CM": "INTERVENTIONS"
+    }
+  }
+}

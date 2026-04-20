@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000701",
+  "fixture_type": "positive",
+  "datasets": {
+    "CM": {
+      "_placeholder_": "x",
+      "EPOCH": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): not_exists,empty",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "CM": "INTERVENTIONS"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000328",
+  "fixture_type": "negative",
+  "datasets": {
+    "CM": {
+      "CMSTDY": "value",
+      "_placeholder_": "x"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): not_exists,exists (should not fire)",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "CM": "INTERVENTIONS"
+    }
+  }
+}

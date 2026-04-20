@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000766",
+  "fixture_type": "negative",
+  "datasets": {
+    "AE": {
+      "AEDECOD": "value",
+      "AETERM": "RELREC.FAOBJ"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): empty,not_equal_to (should not fire)",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "AE": "EVENTS"
+    }
+  }
+}

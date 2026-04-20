@@ -1,0 +1,20 @@
+{
+  "rule_id": "CORE-000157",
+  "fixture_type": "negative",
+  "datasets": {
+    "TV": {
+      "ARMCD": "xxxxxxxxxxxxxxxxxxx"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): longer_than (should not fire)",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "TV": "TRIAL DESIGN"
+    }
+  }
+}

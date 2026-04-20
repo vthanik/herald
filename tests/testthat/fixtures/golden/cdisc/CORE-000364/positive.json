@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000364",
+  "fixture_type": "positive",
+  "datasets": {
+    "DS": {
+      "DSCAT": "PROTOCOL MILESTONE",
+      "EPOCH": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): equal_to,non_empty",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "DS": "EVENTS"
+    }
+  }
+}

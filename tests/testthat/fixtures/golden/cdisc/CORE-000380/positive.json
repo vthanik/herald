@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000380",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "ACTARM": "NOT_IN_Screen Failure",
+      "RFSTDTC": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): is_not_contained_by,empty",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "DM": "SPECIAL PURPOSE"
+    }
+  }
+}

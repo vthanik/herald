@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000092",
+  "fixture_type": "positive",
+  "datasets": {
+    "CM": {
+      "CMDOSTXT": "value",
+      "CMDOSE": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,non_empty",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "CM": "INTERVENTIONS"
+    }
+  }
+}

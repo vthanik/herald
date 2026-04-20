@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000322",
+  "fixture_type": "negative",
+  "datasets": {
+    "DS": {
+      "DSCAT": "OTHER",
+      "DSTERM": "DSDECOD"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): equal_to,not_equal_to (should not fire)",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "DS": "EVENTS"
+    }
+  }
+}

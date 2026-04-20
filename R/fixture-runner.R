@@ -51,6 +51,26 @@
   out
 }
 
+#' Build a minimal `herald_spec` from a fixture's `spec.class_map` field, or
+#' NULL when the fixture carries no class mapping.
+#' @noRd
+.fixture_spec <- function(fx) {
+  cm <- fx$spec$class_map
+  if (is.null(cm) || length(cm) == 0L) return(NULL)
+  nms <- names(cm)
+  classes <- vapply(cm, function(x) as.character(x)[[1L]], character(1L))
+  structure(
+    list(
+      ds_spec = data.frame(
+        dataset = toupper(nms),
+        class   = unname(classes),
+        stringsAsFactors = FALSE
+      )
+    ),
+    class = c("herald_spec", "list")
+  )
+}
+
 #' Run a fixture and assert the expected outcome against validate().
 #'
 #' Uses testthat expectations so a failure surfaces at the enclosing
@@ -60,6 +80,7 @@
   datasets <- .fixture_datasets(fx)
   res <- validate(
     files = datasets,
+    spec  = .fixture_spec(fx),
     rules = fx$rule_id,
     quiet = TRUE
   )

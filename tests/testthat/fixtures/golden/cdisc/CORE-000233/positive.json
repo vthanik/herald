@@ -1,0 +1,16 @@
+{
+  "rule_id": "CORE-000233",
+  "fixture_type": "positive",
+  "datasets": {
+    "AP--": {
+      "RSUBJID": "value",
+      "RDEVID": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,non_empty",
+  "authored": "auto-seed@2"
+}

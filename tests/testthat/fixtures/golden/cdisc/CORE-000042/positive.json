@@ -10,6 +10,6 @@
     "fires": true,
     "rows": 1
   },
-  "notes": "auto-seeded for leaf op 'exists'; should fire",
-  "authored": "auto-seed@1"
+  "notes": "auto-seeded; 1 leaf op(s): exists",
+  "authored": "auto-seed@2"
 }

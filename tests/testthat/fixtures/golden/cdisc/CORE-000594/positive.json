@@ -1,0 +1,15 @@
+{
+  "rule_id": "CORE-000594",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "variable_label": "!!!"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): not_matches_regex",
+  "authored": "auto-seed@2"
+}

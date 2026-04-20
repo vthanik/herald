@@ -1,0 +1,15 @@
+{
+  "rule_id": "CORE-000049",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "DMUSCHFL": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): exists",
+  "authored": "auto-seed@2"
+}

@@ -1,0 +1,16 @@
+{
+  "rule_id": "CORE-000643",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "DMBLFL": "OTHER",
+      "DMSTRESC": "value"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): equal_to,empty (should not fire)",
+  "authored": "auto-seed@2"
+}

@@ -1,0 +1,16 @@
+{
+  "rule_id": "CORE-000085",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "DMSTTPT": "value",
+      "DMSTRTPT": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,empty",
+  "authored": "auto-seed@2"
+}

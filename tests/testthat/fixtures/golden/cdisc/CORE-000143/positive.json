@@ -1,0 +1,20 @@
+{
+  "rule_id": "CORE-000143",
+  "fixture_type": "positive",
+  "datasets": {
+    "TA": {
+      "ETCD": "xxxxxxxxxx"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): longer_than",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "TA": "TRIAL DESIGN"
+    }
+  }
+}

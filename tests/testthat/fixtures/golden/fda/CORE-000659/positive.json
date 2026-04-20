@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000659",
+  "fixture_type": "positive",
+  "datasets": {
+    "AE": {
+      "AEOUT": "RECOVERED/RESOLVED",
+      "AEENDTC": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): equal_to,empty",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "AE": "EVENTS"
+    }
+  }
+}

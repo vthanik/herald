@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000105",
+  "fixture_type": "positive",
+  "datasets": {
+    "LB": {
+      "LBLOBXFL": "Y",
+      "LBSTRESC": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): equal_to,empty",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "LB": "FINDINGS"
+    }
+  }
+}

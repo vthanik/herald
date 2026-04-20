@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000032",
+  "fixture_type": "positive",
+  "datasets": {
+    "QS": {
+      "QSEVALID": "value",
+      "FTEVALID": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): exists,exists",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "QS": "FINDINGS"
+    }
+  }
+}

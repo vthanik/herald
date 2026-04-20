@@ -1,0 +1,15 @@
+{
+  "rule_id": "CORE-000180",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "DOMAIN": "xxxx"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): longer_than",
+  "authored": "auto-seed@2"
+}

@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000843",
+  "fixture_type": "positive",
+  "datasets": {
+    "SV": {
+      "SVUPDES": "value",
+      "VISITNUM": "$visitnum_in_tv"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,is_contained_by",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "SV": "SPECIAL PURPOSE"
+    }
+  }
+}

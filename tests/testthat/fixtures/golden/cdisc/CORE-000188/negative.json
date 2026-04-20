@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000188",
+  "fixture_type": "negative",
+  "datasets": {
+    "MS": {
+      "_placeholder_": "x",
+      "MB": "value"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): exists,not_exists (should not fire)",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "MS": "FINDINGS"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "rule_id": "CORE-000121",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "ARMCD": "",
+      "ACTARMCD": "",
+      "ARMNRS": ""
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 3 leaf op(s): non_empty,non_empty,non_empty (should not fire)",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "DM": "SPECIAL PURPOSE"
+    }
+  }
+}

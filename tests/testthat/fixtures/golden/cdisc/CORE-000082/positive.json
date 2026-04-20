@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000082",
+  "fixture_type": "positive",
+  "datasets": {
+    "PE": {
+      "PEORRES": "",
+      "PESTRESC": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): empty,non_empty",
+  "authored": "auto-seed@2",
+  "spec": {
+    "class_map": {
+      "PE": "FINDINGS"
+    }
+  }
+}
