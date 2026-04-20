@@ -17,24 +17,33 @@
 #' @noRd
 .valid_iso8601_sdtm <- function(x) {
   x <- as.character(x)
-  # Year: 4 digits or 2-4 dashes (common shorthand for unknown year)
-  # Month/day: 2 digits or 1-2 dashes
-  # Hour/min/sec: 2 digits or 1-2 dashes
-  date_re <- "(\\d{4}|-{2,4})(-(\\d{2}|-{1,2})(-(\\d{2}|-{1,2}))?)?"
+  # Year: 4 digits or 1-4 dashes.
+  # Month/day/hour/min/sec: 2 digits or 1-2 dashes.
+  # Date-component separator is OPTIONAL so spec shorthand "--12-15"
+  # (dashed year with no year-month separator) is accepted.
+  # Time separators (:) are required in the strict form, but the minute/sec
+  # slots themselves can be dashed ("T13:-:17" = unknown minute).
+  date_re <- paste0(
+    "(\\d{4}|-{1,4})",                 # year
+    "(-?(\\d{2}|-{1,2})",              # optional sep + month
+      "(-?(\\d{2}|-{1,2}))?",          # optional sep + day
+    ")?"
+  )
   time_re <- paste0(
-    "(\\d{2}|-{1,2})",             # hour
-    "(:(\\d{2}|-{1,2})",           # :minute
-      "(:(\\d{2}|-{1,2})",         # :second
-        "(\\.\\d+)?",              # .fraction
+    "(\\d{2}|-{1,2})",                 # hour
+    "(:(\\d{2}|-{1,2})",               # :minute
+      "(:(\\d{2}|-{1,2})",             # :second
+        "(\\.\\d+)?",                  # .fraction
       ")?",
     ")?",
-    "(Z|[+-]\\d{2}:?\\d{2})?"      # timezone
+    "(Z|[+-]\\d{2}:?\\d{2})?"          # timezone
   )
   pat <- paste0("^(", date_re, ")?(T", time_re, ")?$")
 
   ok <- grepl(pat, x, perl = TRUE)
-  # Must contain something other than a bare "T"
-  ok & nzchar(x) & !(x == "T")
+  # Reject empty, bare "T", and all-dashes-no-digits strings
+  has_digit <- grepl("[0-9]", x)
+  ok & nzchar(x) & x != "T" & has_digit
 }
 
 #' Operator: iso8601

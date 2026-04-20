@@ -27,6 +27,16 @@ test_that(".valid_iso8601_sdtm accepts dash-substituted missing components", {
   expect_true(all(.valid_iso8601_sdtm(partial)))
 })
 
+test_that(".valid_iso8601_sdtm accepts all 6 SDTMIG §4.1.4 spec examples", {
+  # Verbatim from SDTMIG Section 4.1.4 ISO 8601 examples table
+  expect_true(.valid_iso8601_sdtm("2003-12-15T13:15:17"))   # full
+  expect_true(.valid_iso8601_sdtm("2003-12-15T-:15"))       # unknown hour
+  expect_true(.valid_iso8601_sdtm("2003-12-15T13:-:17"))    # unknown minute
+  expect_true(.valid_iso8601_sdtm("2003---15"))             # unknown month
+  expect_true(.valid_iso8601_sdtm("--12-15"))               # unknown year
+  expect_true(.valid_iso8601_sdtm("-----T07:15"))           # unknown date
+})
+
 test_that(".valid_iso8601_sdtm rejects ill-formed strings", {
   bad <- c(
     "",                # empty
