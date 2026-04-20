@@ -200,3 +200,150 @@ op_contains <- function(data, ctx, name, value, ignore_case = FALSE) {
     )
   )
 )
+
+# --- not_matches_regex -------------------------------------------------------
+
+op_not_matches_regex <- function(data, ctx, name, value, allow_missing = TRUE) {
+  m <- op_matches_regex(data, ctx, name, value, allow_missing)
+  # Preserve NA; invert otherwise
+  ifelse(is.na(m), NA, !m)
+}
+.register_op(
+  "not_matches_regex", op_not_matches_regex,
+  meta = list(
+    kind = "string",
+    summary = "Column value does not match regex pattern",
+    arg_schema = list(
+      name  = list(type = "string", required = TRUE),
+      value = list(type = "string", required = TRUE),
+      allow_missing = list(type = "logical", default = TRUE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+# --- does_not_contain --------------------------------------------------------
+
+op_does_not_contain <- function(data, ctx, name, value, ignore_case = FALSE) {
+  m <- op_contains(data, ctx, name, value, ignore_case)
+  ifelse(is.na(m), NA, !m)
+}
+.register_op(
+  "does_not_contain", op_does_not_contain,
+  meta = list(
+    kind = "string",
+    summary = "Column value does NOT contain substring",
+    arg_schema = list(
+      name        = list(type = "string", required = TRUE),
+      value       = list(type = "string", required = TRUE),
+      ignore_case = list(type = "logical", default = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = FALSE
+  )
+)
+
+# --- length comparators ------------------------------------------------------
+
+op_longer_than <- function(data, ctx, name, value) {
+  col <- data[[name]]
+  if (is.null(col)) return(rep(NA, nrow(data)))
+  values <- as.character(col)
+  missing <- is.na(values)
+  out <- logical(length(values))
+  out[missing] <- NA
+  out[!missing] <- nchar(values[!missing], type = "bytes") > as.integer(value)
+  out
+}
+.register_op(
+  "longer_than", op_longer_than,
+  meta = list(
+    kind = "string",
+    summary = "Column character length (bytes) is greater than value",
+    arg_schema = list(
+      name  = list(type = "string",  required = TRUE),
+      value = list(type = "integer", required = TRUE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_shorter_than <- function(data, ctx, name, value) {
+  col <- data[[name]]
+  if (is.null(col)) return(rep(NA, nrow(data)))
+  values <- as.character(col)
+  missing <- is.na(values)
+  out <- logical(length(values))
+  out[missing] <- NA
+  out[!missing] <- nchar(values[!missing], type = "bytes") < as.integer(value)
+  out
+}
+.register_op(
+  "shorter_than", op_shorter_than,
+  meta = list(
+    kind = "string",
+    summary = "Column character length (bytes) is less than value",
+    arg_schema = list(
+      name  = list(type = "string",  required = TRUE),
+      value = list(type = "integer", required = TRUE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+# --- starts_with / ends_with ------------------------------------------------
+
+op_starts_with <- function(data, ctx, name, value, ignore_case = FALSE) {
+  col <- data[[name]]
+  if (is.null(col)) return(rep(NA, nrow(data)))
+  values <- as.character(col)
+  missing <- is.na(values)
+  out <- logical(length(values))
+  out[missing] <- NA
+  if (ignore_case) {
+    out[!missing] <- startsWith(tolower(values[!missing]), tolower(value))
+  } else {
+    out[!missing] <- startsWith(values[!missing], value)
+  }
+  out
+}
+.register_op(
+  "starts_with", op_starts_with,
+  meta = list(
+    kind = "string",
+    summary = "Column value starts with prefix",
+    arg_schema = list(
+      name        = list(type = "string", required = TRUE),
+      value       = list(type = "string", required = TRUE),
+      ignore_case = list(type = "logical", default = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_ends_with <- function(data, ctx, name, value, ignore_case = FALSE) {
+  col <- data[[name]]
+  if (is.null(col)) return(rep(NA, nrow(data)))
+  values <- as.character(col)
+  missing <- is.na(values)
+  out <- logical(length(values))
+  out[missing] <- NA
+  if (ignore_case) {
+    out[!missing] <- endsWith(tolower(values[!missing]), tolower(value))
+  } else {
+    out[!missing] <- endsWith(values[!missing], value)
+  }
+  out
+}
+.register_op(
+  "ends_with", op_ends_with,
+  meta = list(
+    kind = "string",
+    summary = "Column value ends with suffix",
+    arg_schema = list(
+      name        = list(type = "string", required = TRUE),
+      value       = list(type = "string", required = TRUE),
+      ignore_case = list(type = "logical", default = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
