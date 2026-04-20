@@ -1,0 +1,216 @@
+# -----------------------------------------------------------------------------
+# rules-validate.R — validate() entry point
+# -----------------------------------------------------------------------------
+# Top-level: given a directory path OR a named list of data frames, load the
+# rule corpus, scope each rule to matching datasets, walk its check_tree, and
+# collect findings into a herald_result.
+
+#' Validate CDISC clinical data against the bundled conformance rules
+#'
+#' @param path Directory path containing XPT/JSON datasets. Alternatively,
+#'   pass `files = list(DM = df, AE = df, ...)` to skip disk reads.
+#' @param files Named list of data frames, mutually exclusive with `path`.
+#' @param spec Optional `herald_spec` (from `read_spec()`) for anchor +
+#'   class resolution.
+#' @param rules Optional subset of rule ids to run. `NULL` runs the full
+#'   compiled catalog.
+#' @param authorities Optional character vector of authorities to include
+#'   (e.g. `c("CDISC", "FDA")`). `NULL` = all.
+#' @param standards Optional character vector of standards to include
+#'   (e.g. `c("SDTM-IG", "ADaM-IG")`). `NULL` = all.
+#' @param quiet Suppress progress output. Default FALSE.
+#'
+#' @return A `herald_result` S3 object.
+#'
+#' @examples
+#' \dontrun{
+#' result <- validate("/path/to/sdtm/")
+#' result <- validate(files = list(AE = my_ae_df))
+#' print(result)
+#' }
+#'
+#' @export
+validate <- function(path = NULL,
+                     files = NULL,
+                     spec = NULL,
+                     rules = NULL,
+                     authorities = NULL,
+                     standards = NULL,
+                     quiet = FALSE) {
+  t0 <- Sys.time()
+  call <- rlang::caller_env()
+
+  if (is.null(path) && is.null(files)) {
+    cli::cli_abort(
+      "Either {.arg path} or {.arg files} must be supplied.",
+      call = call
+    )
+  }
+
+  # ---- assemble dataset map ------------------------------------------------
+  if (!is.null(files)) {
+    datasets <- .assemble_from_files(files, call)
+  } else {
+    datasets <- .assemble_from_path(path, call)
+  }
+
+  if (length(datasets) == 0L) {
+    cli::cli_warn("No datasets found to validate.")
+  }
+
+  # ---- load rule corpus ----------------------------------------------------
+  rules_rds <- .rules_path()
+  if (!file.exists(rules_rds)) {
+    cli::cli_abort(
+      "Rule catalog {.path {rules_rds}} not found. Run tools/compile-rules.R.",
+      call = call
+    )
+  }
+  catalog <- readRDS(rules_rds)
+
+  if (!is.null(authorities)) {
+    catalog <- catalog[catalog$authority %in% authorities, , drop = FALSE]
+  }
+  if (!is.null(standards)) {
+    catalog <- catalog[catalog$standard %in% standards, , drop = FALSE]
+  }
+  if (!is.null(rules)) {
+    catalog <- catalog[catalog$id %in% rules, , drop = FALSE]
+  }
+
+  rules_total <- nrow(catalog)
+  if (!quiet) {
+    cli::cli_inform(c(
+      "v" = "Loaded {rules_total} rules; validating {length(datasets)} dataset{?s}."
+    ))
+  }
+
+  # ---- ctx + per-rule execution -------------------------------------------
+  ctx <- new_herald_ctx()
+  ctx$datasets <- datasets
+  ctx$spec     <- spec
+
+  all_findings <- list()
+  rules_applied <- 0L
+
+  for (i in seq_len(rules_total)) {
+    rule <- as.list(catalog[i, , drop = FALSE])
+    # Un-list-column the scope + check_tree (they come back as length-1 list)
+    rule$scope      <- rule$scope[[1]]
+    rule$check_tree <- rule$check_tree[[1]]
+
+    target_ds <- scoped_datasets(rule, ctx)
+    if (length(target_ds) == 0L) next
+
+    rule_fired <- FALSE
+    for (ds_name in target_ds) {
+      d <- datasets[[ds_name]]
+      mask <- walk_tree(rule$check_tree, d, ctx)
+      if (length(mask) == 0L) next
+      var <- primary_variable(rule$check_tree)
+      f <- emit_findings(rule, ds_name, mask, d, variable = var)
+      if (nrow(f) > 0L) {
+        all_findings[[length(all_findings) + 1L]] <- f
+        rule_fired <- TRUE
+      } else if (any(!is.na(mask) & mask)) {
+        rule_fired <- TRUE
+      }
+    }
+    if (rule_fired) rules_applied <- rules_applied + 1L
+  }
+
+  findings_tbl <- if (length(all_findings) > 0L) {
+    do.call(rbind, all_findings)
+  } else {
+    empty_findings()
+  }
+
+  # ---- metadata about datasets --------------------------------------------
+  dataset_meta <- lapply(names(datasets), function(nm) {
+    d <- datasets[[nm]]
+    list(
+      rows   = nrow(d),
+      cols   = ncol(d),
+      label  = attr(d, "label") %||% NA_character_,
+      class  = .ds_class(nm, ctx)
+    )
+  })
+  names(dataset_meta) <- names(datasets)
+
+  duration <- Sys.time() - t0
+
+  new_herald_result(
+    findings         = findings_tbl,
+    rules_applied    = rules_applied,
+    rules_total      = rules_total,
+    datasets_checked = names(datasets),
+    duration         = duration,
+    profile          = NA_character_,
+    config_hash      = NA_character_,
+    dataset_meta     = dataset_meta,
+    rule_catalog     = tibble::as_tibble(catalog[, c("id","authority","standard","severity","message")]),
+    op_errors        = ctx$op_errors
+  )
+}
+
+# --- internals --------------------------------------------------------------
+
+.rules_path <- function() {
+  # During devtools::load_all(), system.file returns the source inst/ path.
+  p <- system.file("rules", "rules.rds", package = "herald")
+  if (!nzchar(p)) {
+    # Fall back for dev tree without install
+    here <- file.path("inst", "rules", "rules.rds")
+    if (file.exists(here)) return(here)
+  }
+  p
+}
+
+.assemble_from_files <- function(files, call) {
+  if (!is.list(files) || is.null(names(files))) {
+    cli::cli_abort(
+      "{.arg files} must be a named list of data frames.",
+      call = call
+    )
+  }
+  bad <- !vapply(files, is.data.frame, logical(1))
+  if (any(bad)) {
+    cli::cli_abort(
+      "All entries of {.arg files} must be data frames. Offenders: {.val {names(files)[bad]}}",
+      call = call
+    )
+  }
+  # Uppercase dataset names to match rule-scope convention
+  setNames(files, toupper(names(files)))
+}
+
+.assemble_from_path <- function(path, call) {
+  if (!dir.exists(path)) {
+    cli::cli_abort("{.arg path} {.path {path}} does not exist.", call = call)
+  }
+  xpt_files  <- list.files(path, pattern = "\\.xpt$", full.names = TRUE,
+                           ignore.case = TRUE)
+  json_files <- list.files(path, pattern = "\\.json$", full.names = TRUE,
+                           ignore.case = TRUE)
+
+  datasets <- list()
+  for (f in xpt_files) {
+    nm <- toupper(tools::file_path_sans_ext(basename(f)))
+    datasets[[nm]] <- tryCatch(read_xpt(f),
+                               error = function(e) {
+                                 cli::cli_warn("Failed to read {.path {f}}: {conditionMessage(e)}")
+                                 NULL
+                               })
+  }
+  for (f in json_files) {
+    nm <- toupper(tools::file_path_sans_ext(basename(f)))
+    if (is.null(datasets[[nm]])) {
+      datasets[[nm]] <- tryCatch(read_json(f),
+                                 error = function(e) {
+                                   cli::cli_warn("Failed to read {.path {f}}: {conditionMessage(e)}")
+                                   NULL
+                                 })
+    }
+  }
+  datasets[!vapply(datasets, is.null, logical(1))]
+}
