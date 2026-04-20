@@ -202,37 +202,8 @@ yaml_paths <- list.files(
 cat("Found ", length(yaml_paths), " YAML files under ",
     author_root, "\n", sep = "")
 
-yaml_rows <- lapply(yaml_paths, parse_one)
-yaml_rows <- yaml_rows[!vapply(yaml_rows, is.null, logical(1))]
-
-# R-DSL: load helpers, then source every *.R under tools/handauthored/
-dsl_path <- file.path(project_root, "tools", "rule-dsl.R")
-if (file.exists(dsl_path)) {
-  source(dsl_path, local = FALSE)
-  .reset_rule_registry()
-
-  r_paths <- list.files(
-    author_root, pattern = "\\.R$", recursive = TRUE, full.names = TRUE
-  )
-  for (p in r_paths) {
-    source(p, local = FALSE)
-  }
-  r_rows <- .collect_rules()
-
-  # Canonicalize R-DSL rows into the same shape parse_one returns
-  r_rows <- lapply(r_rows, function(r) {
-    r$content_hash <- hash_tree(r$check_tree)
-    r$.origin <- NULL
-    r
-  })
-
-  cat("Found ", length(r_paths), " R files, ",
-      length(r_rows), " rule() calls\n", sep = "")
-} else {
-  r_rows <- list()
-}
-
-rows <- c(yaml_rows, r_rows)
+rows <- lapply(yaml_paths, parse_one)
+rows <- rows[!vapply(rows, is.null, logical(1))]
 
 # Build tibble-like data frame (keep list-columns as-is)
 if (length(rows) == 0L) {
