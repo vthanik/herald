@@ -65,9 +65,9 @@ Authorities:
 Check:
   all:
     - name: --STTPT
-      operator: empty
-    - name: --STRTPT
       operator: non_empty
+    - name: --STRTPT
+      operator: empty
 Core:
   Id: CORE-000085
   Status: Published
@@ -94,5 +94,6 @@ herald:
   catalogs:
     - SDTMIG 3.2
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:15:16Z'
+    - SDTMIG 3.4
+  fetched: '2026-04-20T13:03:50Z'
 

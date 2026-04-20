@@ -1,0 +1,59 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Not in human clinical trials.
+                Document: Model v2.0
+                Item: --RSTIND
+                Section: Interventions|Findings
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0623
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: Not in human clinical trials.
+                Document: SDTM v2.1
+                Item: --RSTIND
+                Section: Interventions|Findings
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0664
+              Version: '1'
+            Version: '1.0'
+        Substandard: SDTM
+        Version: '1.0'
+Check:
+  all:
+    - name: --RSTIND
+      operator: exists
+Core:
+  Id: CORE-000050
+  Status: Published
+  Version: '1'
+Description: Raise an error when --RSTIND is present.
+Executability: Fully Executable
+Outcome:
+  Message: --RSTIND is present.
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - INTERVENTIONS
+      - FINDINGS
+  Domains:
+    Include:
+      - ALL
+  Use_Case: INDH, PROD
+Sensitivity: Dataset
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.4
+  fetched: '2026-04-20T13:03:51Z'
+

@@ -19,11 +19,11 @@ Authorities:
 Check:
   all:
     - name: DSCAT
-      operator: not_equal_to
+      operator: equal_to
       value: PROTOCOL MILESTONE
       value_is_literal: yes
     - name: DSTERM
-      operator: equal_to
+      operator: not_equal_to
       value: DSDECOD
 Core:
   Id: CORE-000322
@@ -50,5 +50,5 @@ herald:
   source: CDISC Library API
   catalogs:
     - SDTMIG 3.2
-  fetched: '2026-04-03T12:15:16Z'
+  fetched: '2026-04-20T13:03:50Z'
 

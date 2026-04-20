@@ -43,10 +43,10 @@ Authorities:
 Check:
   all:
     - name: AEOUT
-      operator: not_equal_to
+      operator: equal_to
       value: NOT RECOVERED/NOT RESOLVED
     - name: AEENDTC
-      operator: empty
+      operator: non_empty
 Core:
   Id: CORE-000657
   Status: Published
@@ -74,5 +74,6 @@ herald:
   catalogs:
     - SDTMIG 3.2
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:15:16Z'
+    - SDTMIG 3.4
+  fetched: '2026-04-20T13:03:50Z'
 

@@ -46,9 +46,9 @@ Authorities:
 Check:
   all:
     - name: TSVCDVER
-      operator: empty
-    - name: TSVCDREF
       operator: non_empty
+    - name: TSVCDREF
+      operator: empty
 Core:
   Id: CORE-000153
   Status: Published
@@ -74,5 +74,6 @@ herald:
   catalogs:
     - SDTMIG 3.2
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:15:16Z'
+    - SDTMIG 3.4
+  fetched: '2026-04-20T13:03:50Z'
 

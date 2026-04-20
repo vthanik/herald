@@ -71,7 +71,7 @@ Core:
   Id: CORE-000741
   Status: Published
   Version: '1'
-Description: The set  ('INTMODEL', 'INTTYPE','PCLASS') is not in the list of TSPARAMCD
+Description: The set  ('INTMODEL’, 'INTTYPE','PCLASS') is not in the list of TSPARAMCD
   with TSVAL populated.
 Executability: Fully Executable
 Operations:
@@ -81,7 +81,7 @@ Operations:
     id: $STYPE_INTERVENTIONAL
     operator: record_count
 Outcome:
-  Message: The set  ('INTMODEL', 'INTTYPE','PCLASS') is not in the list of TSPARAMCD
+  Message: The set  ('INTMODEL’, 'INTTYPE','PCLASS') is not in the list of TSPARAMCD
     with TSVAL populated.
   Output_Variables:
     - TSPARMCD
@@ -101,5 +101,6 @@ herald:
   catalogs:
     - SDTMIG 3.2
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:15:16Z'
+    - SDTMIG 3.4
+  fetched: '2026-04-20T13:03:50Z'
 

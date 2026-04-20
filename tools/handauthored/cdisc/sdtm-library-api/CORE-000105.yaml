@@ -75,11 +75,11 @@ Authorities:
 Check:
   all:
     - name: --LOBXFL
-      operator: not_equal_to
+      operator: equal_to
       value: 'Y'
       value_is_literal: yes
     - name: --STRESC
-      operator: non_empty
+      operator: empty
 Core:
   Id: CORE-000105
   Status: Published
@@ -106,5 +106,6 @@ herald:
   source: CDISC Library API
   catalogs:
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:15:16Z'
+    - SDTMIG 3.4
+  fetched: '2026-04-20T13:03:51Z'
 

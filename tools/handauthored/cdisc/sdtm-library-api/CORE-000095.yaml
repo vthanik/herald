@@ -62,7 +62,7 @@ Authorities:
                   for a particular period of time cannot be represented with one of
                   the planned elements, then that period of time should be represented
                   as an unplanned element. The value of ETCD for an unplanned element
-                  is <U+201C>UNPLAN<U+201D> and SEUPDES should be populated with a description of
+                  is “UNPLAN” and SEUPDES should be populated with a description of
                   the unplanned element.
                 Document: TIG 1.0
                 Item: Assumption 3
@@ -77,9 +77,9 @@ Authorities:
 Check:
   all:
     - name: SEUPDES
-      operator: empty
+      operator: non_empty
     - name: ETCD
-      operator: equal_to
+      operator: not_equal_to
       value: UNPLAN
 Core:
   Id: CORE-000095
@@ -104,5 +104,6 @@ herald:
   catalogs:
     - SDTMIG 3.2
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:57:40Z'
+    - SDTMIG 3.4
+  fetched: '2026-04-20T13:03:50Z'
 

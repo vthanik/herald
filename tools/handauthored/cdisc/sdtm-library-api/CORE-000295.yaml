@@ -50,9 +50,9 @@ Authorities:
 Check:
   all:
     - name: --STREFC
-      operator: empty
-    - name: --STREFN
       operator: non_empty
+    - name: --STREFN
+      operator: empty
 Core:
   Id: CORE-000295
   Status: Published
@@ -75,5 +75,6 @@ herald:
   source: CDISC Library API
   catalogs:
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:15:16Z'
+    - SDTMIG 3.4
+  fetched: '2026-04-20T13:03:51Z'
 

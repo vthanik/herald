@@ -34,10 +34,10 @@ Authorities:
 Check:
   all:
     - name: TSPARMCD
-      operator: not_equal_to
+      operator: equal_to
       value: FCNTRY
     - name: TSVCDREF
-      operator: equal_to
+      operator: not_equal_to
       value: ISO 3166-1 alpha-3
 Core:
   Id: CORE-000339
@@ -62,5 +62,5 @@ herald:
   catalogs:
     - SDTMIG 3.2
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:15:16Z'
+  fetched: '2026-04-20T13:03:50Z'
 

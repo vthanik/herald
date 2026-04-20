@@ -43,10 +43,10 @@ Authorities:
 Check:
   all:
     - name: AEOUT
-      operator: not_equal_to
+      operator: equal_to
       value: FATAL
     - name: AEENDTC
-      operator: equal_to
+      operator: not_equal_to
       value: DTHDTC
 Core:
   Id: CORE-000841
@@ -81,5 +81,6 @@ herald:
   catalogs:
     - SDTMIG 3.2
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:15:16Z'
+    - SDTMIG 3.4
+  fetched: '2026-04-20T13:03:50Z'
 

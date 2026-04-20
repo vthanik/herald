@@ -6,7 +6,7 @@ Authorities:
           - Citations:
               - Cited_Guidance: The intent of the domain model is to collect responses
                   to only those criteria that the subject did not meet, and not the
-                  responses to all criteria.<U+00A0>
+                  responses to all criteria. 
                 Document: SDTMIG v3.4
                 Item: Assumption 1
                 Section: 6.3.4
@@ -65,11 +65,11 @@ Authorities:
 Check:
   all:
     - name: IECAT
-      operator: not_equal_to
+      operator: equal_to
       value: EXCLUSION
       value_is_literal: yes
     - name: IEORRES
-      operator: equal_to
+      operator: not_equal_to
       value: 'Y'
       value_is_literal: yes
 Core:
@@ -99,5 +99,6 @@ herald:
   catalogs:
     - SDTMIG 3.2
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:57:40Z'
+    - SDTMIG 3.4
+  fetched: '2026-04-20T13:03:50Z'
 

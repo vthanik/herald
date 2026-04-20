@@ -177,7 +177,12 @@ for (cc in CATALOGS) {
   }
 
   rules <- data$rules %||% list()
-  cat(sprintf(" %d rules\n", length(rules)))
+  if (identical(rules, list())) {
+    cat(sprintf(" 0 rules (API returned empty; use tools/parse-conformance-xlsx.R for %s)\n",
+                cc$standard))
+  } else {
+    cat(sprintf(" %d rules\n", length(rules)))
+  }
 
   for (rule in rules) {
     core_id <- rule$Core$Id %||% ""

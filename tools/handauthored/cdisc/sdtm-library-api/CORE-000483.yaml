@@ -34,10 +34,10 @@ Authorities:
 Check:
   all:
     - name: TSPARMCD
-      operator: not_equal_to
+      operator: equal_to
       value: PCLAS
     - name: TSVCDREF
-      operator: equal_to
+      operator: not_equal_to
       value: MED-RT
 Core:
   Id: CORE-000483
@@ -61,5 +61,5 @@ herald:
   catalogs:
     - SDTMIG 3.2
     - SDTMIG 3.3
-  fetched: '2026-04-03T12:15:16Z'
+  fetched: '2026-04-20T13:03:50Z'
 
