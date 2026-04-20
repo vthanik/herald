@@ -12,7 +12,7 @@
     "rows": []
   },
   "notes": "auto-seeded; 2 leaf op(s): not_equal_to,is_contained_by (should not fire)",
-  "authored": "auto-seed@2",
+  "authored": "auto-seed@3",
   "spec": {
     "class_map": {
       "DM": "SPECIAL PURPOSE"

@@ -11,7 +11,7 @@
     "rows": 1
   },
   "notes": "auto-seeded; 1 leaf op(s): longer_than",
-  "authored": "auto-seed@2",
+  "authored": "auto-seed@3",
   "spec": {
     "class_map": {
       "TS": "TRIAL DESIGN"

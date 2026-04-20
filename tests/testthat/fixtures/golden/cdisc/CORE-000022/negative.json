@@ -1,0 +1,28 @@
+{
+  "rule_id": "CORE-000022",
+  "fixture_type": "negative",
+  "datasets": {
+    "AE": {
+      "AESCAN": "OTHER",
+      "AESCONG": "OTHER",
+      "AESDISAB": "OTHER",
+      "AESDTH": "OTHER",
+      "AESHOSP": "OTHER",
+      "AESLIFE": "OTHER",
+      "AESOD": "OTHER",
+      "AESMIE": "OTHER",
+      "AESER": "Y"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 9 leaf op(s): equal_to,equal_to,equal_to,equal_to,equal_to,equal_to,equal_to,equal_to,not_equal_to (should not fire)",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "AE": "EVENTS"
+    }
+  }
+}

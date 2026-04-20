@@ -1,0 +1,24 @@
+{
+  "rule_id": "CORE-000585",
+  "fixture_type": "negative",
+  "datasets": {
+    "CM": {
+      "STUDYID": "value",
+      "CMSEQ": "value",
+      "DOMAIN": "value",
+      "USUBJID": "value",
+      "POOLID": "value"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 5 leaf op(s): not_exists,not_exists,not_exists,not_exists,not_exists (should not fire)",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "CM": "INTERVENTIONS"
+    }
+  }
+}

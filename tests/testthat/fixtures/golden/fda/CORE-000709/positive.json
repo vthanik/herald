@@ -1,0 +1,22 @@
+{
+  "rule_id": "CORE-000709",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "CETERM": "DEATH",
+      "CEDECOD": "DEATH",
+      "DTHFL": "OTHER"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 3 leaf op(s): equal_to,equal_to,not_equal_to",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "DM": "SPECIAL PURPOSE"
+    }
+  }
+}

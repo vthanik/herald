@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000004",
+  "fixture_type": "positive",
+  "datasets": {
+    "EC": {
+      "ECOCCUR": "N",
+      "ECDOSE": 0
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): equal_to,less_than_or_equal_to",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "EC": "INTERVENTIONS"
+    }
+  }
+}

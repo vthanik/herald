@@ -1,0 +1,22 @@
+{
+  "rule_id": "CORE-000027",
+  "fixture_type": "positive",
+  "datasets": {
+    "TE": {
+      "TEDUR": "",
+      "_placeholder_": "x",
+      "TEENRL": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 4 leaf op(s): empty,not_exists,empty,not_exists",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "TE": "TRIAL DESIGN"
+    }
+  }
+}

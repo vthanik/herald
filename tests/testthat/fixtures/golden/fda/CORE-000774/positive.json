@@ -1,0 +1,22 @@
+{
+  "rule_id": "CORE-000774",
+  "fixture_type": "positive",
+  "datasets": {
+    "LB": {
+      "LBSTAT": "NOT DONE",
+      "LBREASND": "",
+      "_placeholder_": "x"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 3 leaf op(s): equal_to,empty,not_exists",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "LB": "FINDINGS"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "rule_id": "CORE-000115",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "ARM": "NOT_IN_Screen Failure"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): is_contained_by_case_insensitive (should not fire)",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "DM": "TRIAL DESIGN"
+    }
+  }
+}

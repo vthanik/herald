@@ -35,15 +35,12 @@
 #' @noRd
 .fixture_datasets <- function(fx) {
   out <- lapply(fx$datasets, function(cols) {
-    # cols is a list: column name -> list of values
     df_cols <- lapply(cols, function(v) {
-      vals <- unlist(v, use.names = FALSE)
-      # JSON nulls come in as NULL entries -- preserve as NA
+      # JSON nulls arrive as NULL entries in a list -- promote to NA.
       if (is.list(v)) {
-        vals <- vapply(v, function(x) if (is.null(x)) NA else x,
-                       FUN.VALUE = NA)
+        v <- lapply(v, function(x) if (is.null(x)) NA else x)
       }
-      vals
+      unlist(v, use.names = FALSE)
     })
     as.data.frame(df_cols, stringsAsFactors = FALSE, check.names = FALSE)
   })

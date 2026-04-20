@@ -1,0 +1,17 @@
+{
+  "rule_id": "CORE-000354",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "DMDY": "value",
+      "DMDTC": "2026-01-",
+      "RFSTDTC": "2026-01-"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 3 leaf op(s): non_empty,is_incomplete_date,is_incomplete_date",
+  "authored": "auto-seed@3"
+}

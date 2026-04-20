@@ -1,0 +1,26 @@
+{
+  "rule_id": "CORE-000892",
+  "fixture_type": "positive",
+  "datasets": {
+    "CM": {
+      "CMENDTC": "value",
+      "_placeholder_": "x",
+      "CMSTDTC": "",
+      "CMSTRF": "",
+      "CMSTRTPT": "",
+      "CMENRF": "value",
+      "CMENRTPT": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 21 leaf op(s): non_empty,not_exists,empty,not_exists,empty,not_exists,empty,non_empty,not_exists,empty,not_exists,empty,not_exists,empty,non_empty,not_exists,empty,not_exists,empty,not_exists,empty",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "CM": "INTERVENTIONS"
+    }
+  }
+}

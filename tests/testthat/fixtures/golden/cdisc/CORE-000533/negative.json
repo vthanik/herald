@@ -1,0 +1,20 @@
+{
+  "rule_id": "CORE-000533",
+  "fixture_type": "negative",
+  "datasets": {
+    "RELREC": {
+      "QNAM": "NOT_IN_COMPLT"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): is_contained_by_case_insensitive (should not fire)",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "RELREC": "RELATIONSHIP"
+    }
+  }
+}

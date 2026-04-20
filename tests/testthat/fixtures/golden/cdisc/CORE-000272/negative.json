@@ -1,0 +1,15 @@
+{
+  "rule_id": "CORE-000272",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "DMCAT": "NO-$domain_label"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): equal_to_case_insensitive (should not fire)",
+  "authored": "auto-seed@3"
+}
