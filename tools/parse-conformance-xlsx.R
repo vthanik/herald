@@ -62,6 +62,21 @@ emit_yaml <- function(rec, path) {
   writeLines(yaml::as.yaml(rec, line.sep = "\n"), path)
 }
 
+# Excel stores numeric cells as IEEE 754 doubles; when the XLSX XML preserves
+# the full 17-digit representation (e.g. "1.1000000000000001" for 1.1),
+# openxlsx2 passes the raw string through. Only collapse values that look
+# like precision artifacts (10+ decimal digits) -- leave "1.0" / "1.1" / etc.
+# exactly as authored.
+.clean_version <- function(x) {
+  s <- as.character(x)
+  suspect <- !is.na(s) & grepl("^[0-9]+\\.[0-9]{10,}$", s)
+  if (any(suspect)) {
+    nums <- suppressWarnings(as.numeric(s[suspect]))
+    s[suspect] <- trimws(formatC(nums, digits = 6, format = "fg"))
+  }
+  s
+}
+
 # ---- SDTM: parse + emit ----------------------------------------------------
 
 parse_sdtm <- function(path, out_dir) {
@@ -84,7 +99,7 @@ parse_sdtm <- function(path, out_dir) {
   for (rule_id in names(by_id)) {
     sub <- by_id[[rule_id]]
     # Collect unique IG versions this rule applies to
-    ig_versions <- unique(as.character(sub$`SDTMIG Version`))
+    ig_versions <- unique(.clean_version(sub$`SDTMIG Version`))
     ig_versions <- ig_versions[!is.na(ig_versions) & nzchar(ig_versions)]
 
     first <- sub[1, , drop = FALSE]
@@ -158,7 +173,7 @@ parse_adam <- function(path, out_dir) {
   emitted <- 0L
   for (rule_id in names(by_id)) {
     sub <- by_id[[rule_id]]
-    rule_sets <- unique(as.character(sub$`Rule Set (Generally IG Version, OCCDS v1.0, ADNCA v1.0)`))
+    rule_sets <- unique(.clean_version(sub$`Rule Set (Generally IG Version, OCCDS v1.0, ADNCA v1.0)`))
     rule_sets <- rule_sets[!is.na(rule_sets) & nzchar(rule_sets)]
 
     first <- sub[1, , drop = FALSE]

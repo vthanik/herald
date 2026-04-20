@@ -3,7 +3,7 @@ authority: CDISC
 standard: ADaM-IG
 standard_versions:
 - '1'
-- '1.1000000000000001'
+- '1.1'
 - '1.2'
 severity: Medium
 scope:
