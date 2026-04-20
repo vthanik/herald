@@ -1,0 +1,24 @@
+{
+  "rule_id": "CORE-000217",
+  "fixture_type": "positive",
+  "datasets": {
+    "EC": {
+      "ECDOSE": "",
+      "ECOCCUR": "OTHER",
+      "ECSTAT": "",
+      "ECDOSTXT": "",
+      "_placeholder_": "x"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 16 leaf op(s): empty,not_equal_to,empty,empty,empty,not_equal_to,not_exists,empty,empty,not_exists,empty,empty,empty,not_exists,not_exists,empty",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "EC": "INTERVENTIONS"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "rule_id": "CORE-000107",
+  "fixture_type": "positive",
+  "datasets": {
+    "AE": {
+      "DOMAIN": "TESTvalueXX",
+      "_placeholder_": "x",
+      "STUDYID": "value",
+      "AESEQ": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 10 leaf op(s): prefix_matches_regex,not_exists,not_prefix_matches_regex,exists,exists,not_exists,not_exists,not_exists,not_exists,not_exists",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "AE": "EVENTS"
+    }
+  }
+}

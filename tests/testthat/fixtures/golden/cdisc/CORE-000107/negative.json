@@ -1,0 +1,27 @@
+{
+  "rule_id": "CORE-000107",
+  "fixture_type": "negative",
+  "datasets": {
+    "AE": {
+      "DOMAIN": "TESTvalueXX",
+      "APID": "value",
+      "_placeholder_": "x",
+      "USUBJID": "value",
+      "SPDEVID": "value",
+      "POOLID": "value",
+      "SPTOBID": "value",
+      "STOCONID": "value"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 10 leaf op(s): prefix_matches_regex,not_exists,not_prefix_matches_regex,exists,exists,not_exists,not_exists,not_exists,not_exists,not_exists (should not fire)",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "AE": "EVENTS"
+    }
+  }
+}

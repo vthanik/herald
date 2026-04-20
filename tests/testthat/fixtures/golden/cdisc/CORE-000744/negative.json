@@ -1,0 +1,20 @@
+{
+  "rule_id": "CORE-000744",
+  "fixture_type": "negative",
+  "datasets": {
+    "FA": {
+      "FAOBJ": "RELREC.**DECOD"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 3 leaf op(s): not_equal_to,not_equal_to,not_equal_to_case_insensitive (should not fire)",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "FA": "FINDINGS ABOUT"
+    }
+  }
+}

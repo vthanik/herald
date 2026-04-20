@@ -435,16 +435,25 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
   )
 }
 
-# Merge per-leaf columns into one row-set. Length-1 columns are recycled;
-# conflicting values for the same column produce NULL (rule is skipped).
+# Merge per-leaf columns into one row-set. For a column touched by multiple
+# leaves, prefer the "more specific" value (longer total string length);
+# run-to-verify in the main loop filters cases where this heuristic picks
+# a value that leaves the rule in the wrong state.
+.col_specificity <- function(v) {
+  s <- as.character(unlist(v))
+  sum(nchar(s[!is.na(s)]), na.rm = TRUE)
+}
+
 .merge_cols <- function(leaf_cols) {
   out <- list()
   for (lc in leaf_cols) {
     if (is.null(lc)) return(NULL)
     for (k in names(lc)) {
       if (!is.null(out[[k]])) {
-        # Same column appeared before -- only reconcile if identical values
-        if (!identical(out[[k]], lc[[k]])) return(NULL)
+        if (identical(out[[k]], lc[[k]])) next
+        if (.col_specificity(lc[[k]]) > .col_specificity(out[[k]])) {
+          out[[k]] <- lc[[k]]
+        }
       } else {
         out[[k]] <- lc[[k]]
       }

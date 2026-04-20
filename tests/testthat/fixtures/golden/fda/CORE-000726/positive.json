@@ -1,0 +1,22 @@
+{
+  "rule_id": "CORE-000726",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "ETHNIC": "NOT_IN_HISPANIC OR LATINO",
+      "QNAM": "CETHNIC",
+      "QVAL": "NOT_IN_HISPANIC OR LATINO"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 5 leaf op(s): non_empty,is_not_contained_by,equal_to,is_not_contained_by,is_not_contained_by",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "DM": "SPECIAL PURPOSE"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "rule_id": "CORE-000123",
+  "fixture_type": "positive",
+  "datasets": {
+    "AE": {
+      "AESCAN": "NOT_IN_Y"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,is_not_contained_by",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "AE": "EVENTS"
+    }
+  }
+}

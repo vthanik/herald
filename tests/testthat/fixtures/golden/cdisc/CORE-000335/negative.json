@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000335",
+  "fixture_type": "negative",
+  "datasets": {
+    "TS": {
+      "TSPARMCD": "OTHER",
+      "TSVAL": "TESTvalue"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 4 leaf op(s): equal_to,non_empty,not_matches_regex,not_matches_regex (should not fire)",
+  "authored": "auto-seed@3",
+  "spec": {
+    "class_map": {
+      "TS": "TRIAL DESIGN"
+    }
+  }
+}
