@@ -184,7 +184,7 @@ validate <- function(path = NULL,
     )
   }
   # Uppercase dataset names to match rule-scope convention
-  setNames(files, toupper(names(files)))
+  stats::setNames(files, toupper(names(files)))
 }
 
 .assemble_from_path <- function(path, call) {

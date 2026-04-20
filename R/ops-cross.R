@@ -115,7 +115,7 @@ op_is_inconsistent_across_dataset <- function(data, ctx, name, value) {
 
   lhs <- .as_char(data[[name]])
   # Build a lookup: key -> reference value
-  ref_lookup <- setNames(
+  ref_lookup <- stats::setNames(
     .as_char(ref_ds[[ref_col]]),
     .as_char(ref_ds[[by_key]])
   )

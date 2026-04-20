@@ -29,15 +29,15 @@ Imports:
     rlang,
     S7,
     tibble,
-    vctrs,
-    xml2,
-    yaml
+    vctrs
 Suggests:
     hedgehog,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    withr
+    withr,
+    xml2,
+    yaml
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
