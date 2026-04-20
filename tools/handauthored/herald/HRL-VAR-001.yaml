@@ -1,0 +1,20 @@
+id: HRL-VAR-001
+version: 1
+status: Published
+standard: SDTM
+category: Consistency
+sensitivity: Study
+executability: Hardcoded
+description: A variable present in the specification is missing from the dataset.
+  This check ensures every declared variable appears in the submitted data.
+scope:
+  classes: []
+  domains: []
+check: []
+outcome:
+  message: Variable in spec but missing from data
+  severity: Error
+provenance:
+  source_doc: Herald R Package (hardcoded spec check)
+  authority: Herald
+  p21_reference: ""

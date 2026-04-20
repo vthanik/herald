@@ -1,0 +1,52 @@
+id: HRL-SD-020
+version: 1
+status: Published
+standard: SDTM
+category: SUPPQUAL
+sensitivity: Record
+executability: Fully Executable
+description: >
+  QNAM values in SUPPQUAL datasets must not exceed 8 characters. QNAM follows
+  SAS V5 naming rules (max 8 chars, starts with letter or underscore,
+  alphanumeric/underscore only, uppercase).
+scope:
+  classes: []
+  domains:
+    - SUPPAE
+    - SUPPCM
+    - SUPPLB
+    - SUPPDS
+    - SUPPDM
+    - SUPPEX
+    - SUPPVS
+    - SUPPMH
+check:
+  all:
+    - name: QNAM
+      operator: max_length
+      value: 8
+outcome:
+  message: QNAM exceeds 8-character limit
+  severity: Error
+provenance:
+  source_doc: StudySAS Blog — Dynamic SUPPQUAL Generation (2026-04)
+  authority: Herald
+  reference_url: https://studysas.blogspot.com/2026/04/dynamic-suppqual-generation-using.html
+
+tests:
+  - name: "QNAM within 8 characters"
+    type: positive
+    datasets:
+      SUPPAE:
+        variables: [STUDYID, RDOMAIN, USUBJID, QNAM, QLABEL, QVAL]
+        records:
+          - ["CDISCPILOT01", "AE", "01-701-1015", "AEACNOTH", "Other Action", "NONE"]
+    expected_findings: 0
+  - name: "QNAM exceeds 8 characters"
+    type: negative
+    datasets:
+      SUPPAE:
+        variables: [STUDYID, RDOMAIN, USUBJID, QNAM, QLABEL, QVAL]
+        records:
+          - ["CDISCPILOT01", "AE", "01-701-1015", "AEACNOTHER", "Other Action", "NONE"]
+    expected_findings: 1

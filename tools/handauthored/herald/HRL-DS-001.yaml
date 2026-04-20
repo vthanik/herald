@@ -1,0 +1,20 @@
+id: HRL-DS-001
+version: 1
+status: Published
+standard: SDTM
+category: Consistency
+sensitivity: Study
+executability: Hardcoded
+description: The dataset label assigned in the data does not match the dataset label
+  defined in the specification. Dataset labels must match exactly.
+scope:
+  classes: []
+  domains: []
+check: []
+outcome:
+  message: Dataset label mismatch vs spec
+  severity: Error
+provenance:
+  source_doc: Herald R Package (hardcoded spec check)
+  authority: Herald
+  p21_reference: ""

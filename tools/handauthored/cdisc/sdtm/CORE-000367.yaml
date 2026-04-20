@@ -1,0 +1,88 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Description of actual Arm. When an Arm is not planned
+                  (not in Trial Arms), ACTARM will be <U+201C>Unplanned Treatment<U+201D>. Randomized
+                  subjects who were not treated will be given a value of <U+201C>Not Treated<U+201D>.
+                  Values should be <U+201C>Screen Failure<U+201D> for screen failures and <U+201C>Not Assigned<U+201D>
+                  for subjects not assigned to treatment. Restricted to values in
+                  Trial Arms in all other cases.
+                Document: IG v3.2
+                Item: Specification
+                Section: '5'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0117
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Description of actual Arm. When an Arm is not planned
+                  (not in Trial Arms), ACTARM will be <U+201C>Unplanned Treatment<U+201D>. Randomized
+                  subjects who were not treated will be given a value of <U+201C>Not Treated<U+201D>.
+                  Values should be <U+201C>Screen Failure<U+201D> for screen failures and <U+201C>Not Assigned<U+201D>
+                  for subjects not assigned to treatment. Restricted to values in
+                  Trial Arms in all other cases.
+                Document: IG v3.2
+                Item: Specification
+                Section: '5'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0118
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+Check:
+  all:
+    - name: ACTARM
+      operator: is_not_contained_by
+      value:
+        - Screen Failure
+        - Not Assigned
+        - Not Treated
+        - Unplanned Treatment
+        - SCREEN FAILURE
+        - NOT ASSIGNED
+        - NOT TREATED
+        - UNPLANNED TREATMENT
+    - name: ACTARM
+      operator: is_not_contained_by
+      value: $ARMS_IN_TA
+Core:
+  Id: CORE-000367
+  Status: Published
+  Version: '1'
+Description: Raise an error when no TA.ARM exists for ACTARM in DM and ACTARM does
+  not equal Screen Failure, Not Assigned, Not Treated, or Unplanned Treatment in DM
+Executability: Fully Executable
+Operations:
+  - domain: TA
+    id: $ARMS_IN_TA
+    name: ARM
+    operator: distinct
+Outcome:
+  Message: ACTARM is not in TA.ARM, but ACTARM in DM does not equal Screen Failure,
+    Not Assigned, Not Treated, or Unplanned Treatment.
+  Output_Variables:
+    - ACTARM
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - SPECIAL PURPOSE
+  Domains:
+    Include:
+      - DM
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:57:40Z'
+

@@ -1,0 +1,77 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Further information about the parameters is included
+                  below in Table 1. TSVAL may have     controlled terminology depending
+                  on the value of TSPARMCD
+                Document: SDTM and SDTMIG Conformance Rules v2.0
+                Item: Assumption 3
+                Section: '7.4'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0444
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Further information about the parameters is included
+                  below in Table 1. TSVAL may have     controlled terminology depending
+                  on the value of TSPARMCD
+                Document: SDTM and SDTMIG Conformance Rules v2.0
+                Item: Assumption 3
+                Section: '7.4'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0444
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+Check:
+  all:
+    - any:
+        - name: TSPARMCD
+          operator: equal_to
+          value: COMPTRT
+        - name: TSPARMCD
+          operator: equal_to
+          value: CURTRT
+        - name: TSPARMCD
+          operator: equal_to
+          value: TRT
+    - name: TSVCDREF
+      operator: not_equal_to
+      value: UNII
+Core:
+  Id: CORE-000735
+  Status: Published
+  Version: '1'
+Description: When TSPARMCD is equal to COMPTRT, CURTRT or TRT, TSVCDREF should equal
+  UNII
+Executability: Fully Executable
+Outcome:
+  Message: Throw error when TSPARMCD is equal to COMPTRT, CURTRT, or TRT and TSVCDREF
+    ^= UNII
+  Output_Variables:
+    - TSPARMCD
+    - TSVCDREF
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - TRIAL DESIGN
+  Domains:
+    Include:
+      - TS
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

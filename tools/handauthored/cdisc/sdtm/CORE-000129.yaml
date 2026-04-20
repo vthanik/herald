@@ -1,0 +1,93 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Valid values are "Y" and "N" and null.
+                Document: Model v2.0
+                Item: --SOD
+                Section: Events
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0394
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Valid values are "Y" and "N" and null.
+                Document: Model v1.7
+                Item: --SOD
+                Section: 2.2.2
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0394
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Did the event occur with an overdose? Valid values
+                  are 'Y' and 'N'.
+                Document: Model v1.4
+                Item: ''
+                Section: 2.2.2
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0394
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: Valid values are "Y" and "N" and null.
+                Document: SDTM v2.1
+                Item: --SOD
+                Section: 3.1.2  The Events Observation Class
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0556
+              Version: '1'
+            Version: '1.0'
+        Substandard: SDTM
+        Version: '1.0'
+Check:
+  all:
+    - name: AESOD
+      operator: non_empty
+    - name: AESOD
+      operator: is_not_contained_by
+      value:
+        - 'Y'
+        - 'N'
+Core:
+  Id: CORE-000129
+  Status: Published
+  Version: '1'
+Description: Raise an error when AESOD is completed and value is not 'Y' or 'N'
+Executability: Fully Executable
+Outcome:
+  Message: AESOD is completed, but not equal to "N" or "Y"
+  Output_Variables:
+    - AESOD
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - EVENTS
+  Domains:
+    Include:
+      - AE
+  Use_Case: INDH
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

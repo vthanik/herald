@@ -1,0 +1,44 @@
+id: SD1484
+version: 1
+status: Published
+standard: SDTM
+category: Conformance
+sensitivity: Study
+executability: Fully Executable
+description: >
+  Last Observation Before Exposure Flag (--LOBXFL) variable should be
+  present in all custom Findings domains. Enables reviewers to locate
+  baseline records for signals analysis without re-deriving from dates.
+scope:
+  classes: [Findings]
+  domains: []
+check:
+  all:
+    - name: ""
+      operator: wildcard_variable_exists
+      value: LOBXFL
+outcome:
+  message: "--LOBXFL variable missing from custom Findings domain"
+  severity: Warning
+provenance:
+  source_doc: Pinnacle 21 Community Validator v4.1.0
+  authority: Herald-relay (pending FDA Validator v1.7 upstream source)
+  p21_reference: SD1484
+
+tests:
+  - name: "custom Findings domain with --LOBXFL -- passes"
+    type: positive
+    datasets:
+      FACM:
+        variables: [STUDYID, USUBJID, FALOBXFL]
+        records:
+          - ["S1", "S1-001", "Y"]
+    expected_findings: 0
+  - name: "custom Findings domain missing --LOBXFL -- flagged"
+    type: negative
+    datasets:
+      FACM:
+        variables: [STUDYID, USUBJID, FATESTCD]
+        records:
+          - ["S1", "S1-001", "BP"]
+    expected_findings: 1

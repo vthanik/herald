@@ -1,0 +1,73 @@
+Authorities:
+  - Organization: FDA
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: For interventional studies all treated subjects should
+                  have exposure data.
+                Document: FDA
+                Section: FDAB023
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB2305
+              Version: '1'
+            Version: '1.5'
+        Version: '3.2'
+Check:
+  all:
+    - name: ACTARMCD
+      operator: is_not_contained_by_case_insensitive
+      value:
+        - SCRNFAIL
+        - NOTASSGN
+        - NOTTRT
+    - name: TSPARMCD
+      operator: equal_to
+      value: STYPE
+      value_is_literal: yes
+    - name: TSVAL
+      operator: equal_to
+      value: INTERVENTIONAL
+      value_is_literal: yes
+    - name: USUBJID
+      operator: is_not_contained_by
+      value: $usubjids_in_ex
+Core:
+  Id: CORE-001064
+  Status: Published
+  Version: '1'
+Description: All subjects that have no record in the Exposure domain who are participating
+  in a study that includes an interventional product should not be assigned to a treatment.
+Executability: Fully Executable
+Match_Datasets:
+  - Keys:
+      - STUDYID
+    Name: TS
+Operations:
+  - domain: EX
+    id: $usubjids_in_ex
+    name: USUBJID
+    operator: distinct
+Outcome:
+  Message: Subject has a no record in EX but is assigned to a treatment while participating
+    in an interventional study
+  Output_Variables:
+    - ACTARMCD
+    - TSPARMCD
+    - TSVAL
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - SPECIAL PURPOSE
+  Domains:
+    Include:
+      - DM
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+  fetched: '2026-04-03T12:15:16Z'
+

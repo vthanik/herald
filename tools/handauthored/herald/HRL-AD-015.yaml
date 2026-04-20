@@ -1,0 +1,68 @@
+id: HRL-AD-015
+version: 2
+status: Published
+standard: ADaM
+category: Data Quality
+sensitivity: Record
+executability: Fully Executable
+description: >
+  When AVAL, BASE, and PCHG are all non-missing and BASE is non-zero,
+  PCHG must equal (AVAL - BASE) / BASE * 100 within a tolerance of ±0.005.
+  AD0225A (companion rule) covers the BASE = 0 case. The rule is a no-op
+  on AVALC-only BDS datasets (ADaMIG v1.2 permits BDS with AVALC alone,
+  e.g. ADPE body-location findings): the AVAL/BASE/PCHG presence
+  pre-conditions prevent the formula check from firing when those columns
+  are absent.
+scope:
+  classes:
+    - BASIC DATA STRUCTURE
+  domains: []
+check:
+  all:
+    - name: AVAL
+      operator: empty
+    - name: BASE
+      operator: empty
+    - name: PCHG
+      operator: empty
+    - name: PCHG
+      operator: within_tolerance_of_formula
+      formula: "(AVAL - BASE) / BASE * 100"
+      tolerance: 0.005
+      guard_nonzero: BASE
+outcome:
+  message: "Calculation issue: PCHG != (AVAL-BASE)/BASE*100"
+  severity: Error
+provenance:
+  source_doc: PMDA Validation Rules v6.0 (March 2025)
+  authority: Herald
+  p21_reference: AD0225
+
+tests:
+  - name: "PCHG correctly computed as (AVAL-BASE)/BASE*100 within tolerance"
+    type: positive
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, AVAL, BASE, PCHG]
+        records:
+          - ["S1", "S1-001", 12, 10, 20.0]
+    expected_findings: 0
+
+  - name: "PCHG deviates from formula by more than tolerance"
+    type: negative
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, AVAL, BASE, PCHG]
+        records:
+          - ["S1", "S1-001", 12, 10, 25.0]
+    expected_findings: 1
+
+  - name: "AVALC-only BDS (no AVAL column) yields no PCHG findings"
+    type: positive
+    datasets:
+      ADPE:
+        variables: [STUDYID, USUBJID, PARAMCD, AVALC]
+        records:
+          - ["S1", "S1-001", "HEAD", "NORMAL"]
+          - ["S1", "S1-001", "CHEST", "ABNORMAL"]
+    expected_findings: 0

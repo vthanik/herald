@@ -1,0 +1,52 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: The trial arms table describes each planned arm in
+                  the trial.
+                Document: IG v3.2
+                Item: Specification
+                Section: 7.2|5|7.3
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0244
+              Version: '2'
+            Version: '2.0'
+        Version: '3.2'
+Check:
+  all:
+    - name: ARM
+      operator: is_contained_by
+      value:
+        - Screen Failure
+        - Not Assigned
+        - Unplanned Treatment
+        - Not Treated
+Core:
+  Id: CORE-000371
+  Status: Published
+  Version: '1'
+Description: Raise an error when ARM is "Screen Failure", "Not Assigned", "Unplanned
+  Treatment" or "Not Treated"
+Executability: Fully Executable
+Outcome:
+  Message: ARM is "Screen Failure", "Not Assigned", "Unplanned Treatment" or "Not
+    Treated"
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - TRIAL DESIGN
+  Domains:
+    Include:
+      - TA
+      - TV
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+  fetched: '2026-04-03T12:15:16Z'
+

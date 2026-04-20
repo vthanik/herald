@@ -1,0 +1,22 @@
+id: HRL-MD-018
+version: 1
+status: Published
+standard: ADaM
+category: Specification Metadata
+sensitivity: Study
+executability: Reference
+description: Length value must be empty when Data Type is not integer, float, or text.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Invalid use of Length
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Metadata)
+  authority: Herald
+  p21_reference: MD4018
+
+notes: >
+  Blocked on conditional-field operator (length must be empty when data_type not in integer/float/text). See HANDOFF section 4b.
+

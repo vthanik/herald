@@ -1,0 +1,59 @@
+id: HRL-SD-013
+version: 1
+status: Published
+standard: SDTM
+category: Cross-Domain
+sensitivity: Record
+executability: Fully Executable
+description: >
+  RELREC link integrity: every RELREC record must reference a valid record
+  in the domain specified by RDOMAIN. The combination of RDOMAIN, IDVAR,
+  and IDVARVAL must resolve to an existing record in the referenced domain.
+scope:
+  classes: []
+  domains:
+    - RELREC
+check:
+  all:
+    - name: IDVARVAL
+      operator: empty
+    - name: __cross_check__
+      operator: no_matching_record
+      value:
+        dataset: __dynamic_rdomain__
+        by: USUBJID
+        match_var: IDVAR
+        match_val: IDVARVAL
+outcome:
+  message: RELREC references non-existent record (broken link)
+  severity: Error
+provenance:
+  source_doc: StudySAS Blog — Cross-domain SDTM QC Checks (2026-04)
+  authority: Herald
+  reference_url: https://studysas.blogspot.com/2026/04/html-sdtm-programming-sas-submission-qc.html
+
+tests:
+  - name: "RELREC link resolves to existing AE record"
+    type: positive
+    datasets:
+      AE:
+        variables: [STUDYID, USUBJID, AESEQ, AETERM]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "1", "HEADACHE"]
+      RELREC:
+        variables: [STUDYID, USUBJID, RDOMAIN, IDVAR, IDVARVAL]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "AE", "AESEQ", "1"]
+    expected_findings: 0
+  - name: "RELREC references non-existent AESEQ"
+    type: negative
+    datasets:
+      AE:
+        variables: [STUDYID, USUBJID, AESEQ, AETERM]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "1", "HEADACHE"]
+      RELREC:
+        variables: [STUDYID, USUBJID, RDOMAIN, IDVAR, IDVARVAL]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "AE", "AESEQ", "99"]
+    expected_findings: 1

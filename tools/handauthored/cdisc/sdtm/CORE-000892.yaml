@@ -1,0 +1,224 @@
+Authorities:
+  - Organization: FDA
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: When end timepoint is provided, then a related start
+                  timepoint should also be provided.
+                Document: FDA
+                Section: FDAB041
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB4301
+              Version: '1'
+            Version: '1.5'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: When end timepoint is provided, then a related start
+                  timepoint should also be provided.
+                Document: FDA
+                Section: FDAB041
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB4301
+              Version: '1'
+            Version: '1.5'
+        Version: '3.3'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: When end timepoint is provided, then a related start
+                  timepoint should also be provided.
+                Document: FDA
+                Section: FDAB041
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB4301
+              Version: '1'
+            Version: '1.5'
+        Version: '3.4'
+      - Name: SENDIG
+        References:
+          - Citations:
+              - Cited_Guidance: When end timepoint is provided, then a related start
+                  timepoint should also be provided.
+                Document: FDA
+                Section: FDAB041
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB4301
+              Version: '1'
+            Version: '1.5'
+        Version: '3.0'
+      - Name: SENDIG
+        References:
+          - Citations:
+              - Cited_Guidance: When end timepoint is provided, then a related start
+                  timepoint should also be provided.
+                Document: FDA
+                Section: FDAB041
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB4301
+              Version: '1'
+            Version: '1.5'
+        Version: '3.1'
+      - Name: SENDIG
+        References:
+          - Citations:
+              - Cited_Guidance: When end timepoint is provided, then a related start
+                  timepoint should also be provided.
+                Document: FDA
+                Section: FDAB041
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB4301
+              Version: '1'
+            Version: '1.5'
+        Version: 3.1.1
+      - Name: SENDIG-GENETOX
+        References:
+          - Citations:
+              - Cited_Guidance: When end timepoint is provided, then a related start
+                  timepoint should also be provided.
+                Document: FDA
+                Section: FDAB041
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB4301
+              Version: '1'
+            Version: '1.5'
+        Version: '1.0'
+      - Name: SENDIG-DART
+        References:
+          - Citations:
+              - Cited_Guidance: When end timepoint is provided, then a related start
+                  timepoint should also be provided.
+                Document: FDA
+                Section: FDAB041
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB4301
+              Version: '1'
+            Version: '1.5'
+        Version: '1.1'
+      - Name: SENDIG-DART
+        References:
+          - Citations:
+              - Cited_Guidance: When end timepoint is provided, then a related start
+                  timepoint should also be provided.
+                Document: FDA
+                Section: FDAB041
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB4301
+              Version: '1'
+            Version: '1.5'
+        Version: '1.2'
+      - Name: SENDIG-AR
+        References:
+          - Citations:
+              - Cited_Guidance: When end timepoint is provided, then a related start
+                  timepoint should also be provided.
+                Document: FDA
+                Section: FDAB041
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB4301
+              Version: '1'
+            Version: '1.5'
+        Version: '1.0'
+Check:
+  all:
+    - any:
+        - all:
+            - name: --ENDTC
+              operator: non_empty
+            - any:
+                - name: --STDTC
+                  operator: not_exists
+                - name: --STDTC
+                  operator: empty
+            - any:
+                - name: --STRF
+                  operator: not_exists
+                - name: --STRF
+                  operator: empty
+            - any:
+                - name: --STRTPT
+                  operator: not_exists
+                - name: --STRTPT
+                  operator: empty
+        - all:
+            - name: --ENRF
+              operator: non_empty
+            - any:
+                - name: --STDTC
+                  operator: not_exists
+                - name: --STDTC
+                  operator: empty
+            - any:
+                - name: --STRF
+                  operator: not_exists
+                - name: --STRF
+                  operator: empty
+            - any:
+                - name: --STRTPT
+                  operator: not_exists
+                - name: --STRTPT
+                  operator: empty
+        - all:
+            - name: --ENRTPT
+              operator: non_empty
+            - any:
+                - name: --STDTC
+                  operator: not_exists
+                - name: --STDTC
+                  operator: empty
+            - any:
+                - name: --STRF
+                  operator: not_exists
+                - name: --STRF
+                  operator: empty
+            - any:
+                - name: --STRTPT
+                  operator: not_exists
+                - name: --STRTPT
+                  operator: empty
+Core:
+  Id: CORE-000892
+  Status: Published
+  Version: '1'
+Description: When Eed timepoint (--ENDTC, --ENRF or --ENRTPT) is populated, related
+  start timepoint (--STDTC, --STRF or --STRTPT should also be populated.
+Executability: Fully Executable
+Outcome:
+  Message: End timepoint is populated but start timepoint is missing.
+  Output_Variables:
+    - --STDTC
+    - --STRF
+    - --STRTPT
+    - --ENDTC
+    - --ENRF
+    - --ENRTPT
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - INTERVENTIONS
+      - EVENTS
+      - FINDINGS
+  Domains:
+    Exclude:
+      - NONE
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

@@ -1,0 +1,24 @@
+id: HRL-MD-034
+version: 1
+status: Published
+standard: ADaM
+category: Specification Metadata
+sensitivity: Study
+executability: Reference
+description: SDTM Target should reference a variable in the domain specified in the
+  SDTM Target Domains column on the Forms tab. The structure of this column needs
+  to be in the form of DATASET.VARIABLE.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Invalid syntax for SDTM Target
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Metadata)
+  authority: Herald
+  p21_reference: MD4034
+
+notes: >
+  Blocked on SDTM-target domain cross-reference operator. See HANDOFF section 4d.
+

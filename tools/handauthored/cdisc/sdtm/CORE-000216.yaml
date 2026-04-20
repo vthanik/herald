@@ -1,0 +1,78 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: For Disease Milestones that can occur only once (TMRPT
+                  = "N") the value of MIDS may be the value in MIDSTYPE or may an
+                  abbreviated version.
+                Document: IG v3.4
+                Item: Assumption 2.a
+                Section: '5.4'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0545
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: For Disease Milestones that can occur only once (TMRPT
+                  = "N") the value of MIDS may be the value in MIDSTYPE or may an
+                  abbreviated version.
+                Document: IG v3.4
+                Item: Assumption 2.a
+                Section: '5.5'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0545
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+Check:
+  all:
+    - name: MIDSTYPE
+      operator: is_contained_by
+      value: $tm_midstype
+    - name: TMRPT
+      operator: equal_to
+      value: 'N'
+    - name: MIDSTYPE
+      operator: is_not_unique_set
+      value: USUBJID
+Core:
+  Id: CORE-000216
+  Status: Published
+  Version: '1'
+Description: MIDSTYPE must be unique within subject when MIDSTYPE = TM.MIDSTYPE and
+  TM.TMRPT = 'N'
+Executability: Fully Executable
+Match_Datasets:
+  - Keys:
+      - MIDSTYPE
+    Name: TM
+Operations:
+  - domain: TM
+    id: $tm_midstype
+    name: MIDSTYPE
+    operator: distinct
+Outcome:
+  Message: MIDSTYPE is not unique within subject when MIDSTYPE = TM.MIDSTYPE and TM.TMRPT
+    = 'N'
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - SPECIAL PURPOSE
+  Domains:
+    Include:
+      - SM
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

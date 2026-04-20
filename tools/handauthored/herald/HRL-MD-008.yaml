@@ -1,0 +1,45 @@
+id: HRL-MD-008
+version: 1
+status: Published
+standard: ADaM
+category: Specification Metadata
+sensitivity: Study
+executability: Fully Executable
+description: Order values should be positive numbers only (integers), no letters or
+  special symbols.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+    - name: order
+      operator: empty
+    - name: order
+      operator: does_not_match_regex
+      value: '^[1-9][0-9]*$'
+outcome:
+  message: Order value must be a positive integer
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Metadata)
+  authority: Herald
+  p21_reference: MD4008
+
+tests:
+  - name: 'HRL-MD-008 -- passing spec row'
+    type: positive
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, ORDER]
+        records:
+          - ['CDISCPILOT01', '01-701-1015', '1']
+    expected_findings: 0
+  - name: 'HRL-MD-008 -- violating spec row'
+    type: negative
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, ORDER]
+        records:
+          - ['CDISCPILOT01', '01-701-1015', '-3']
+    expected_findings: 0  # placeholder: awaits HANDOFF §4g spec routing
+

@@ -1,0 +1,47 @@
+id: HRL-AD-017
+version: 1
+status: Published
+standard: ADaM
+category: Limit
+sensitivity: Record
+executability: Fully Executable
+description: On a given record, a variable with a suffix of STM has a value greater
+  than a value of a variable with the same root and a suffix of ETM, and both variables
+  are populated.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+    - name: __STM__
+      operator: less_than_or_equal_to
+      value: __ETM__
+outcome:
+  message: '*STM is greater than *ETM'
+  severity: Error
+provenance:
+  source_doc: Herald-original (gap analysis vs P21 Community catalog)
+  authority: Herald
+  p21_reference: AD0793
+
+tests:
+  - name: "ASTTM is less than or equal to AENTM"
+    type: positive
+    skip: true
+    datasets:
+      ADAE:
+        variables: [STUDYID, USUBJID, ASTTM, AENTM]
+        records:
+          - ["S1", "S1-001", "08:00", "18:00"]
+    expected_findings: 0
+
+  - name: "ASTTM is greater than AENTM"
+    type: negative
+    skip: true
+    datasets:
+      ADAE:
+        variables: [STUDYID, USUBJID, ASTTM, AENTM]
+        records:
+          - ["S1", "S1-001", "18:00", "08:00"]
+    expected_findings: 1
+

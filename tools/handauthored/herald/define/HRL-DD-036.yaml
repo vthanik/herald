@@ -1,0 +1,56 @@
+# P21 Sheet validation against Define-XML v2.1 Specification
+# Section: 4.1.1
+id: HRL-DD-036
+version: 2
+status: Published
+standard: Define-XML
+category: Standards Reference
+sensitivity: Dataset
+executability: Fully Executable
+description: >
+  Standard name component must be one of the CDISC allowable standard names.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+    - name: standard_name
+      operator: empty
+    - name: standard_name
+      operator: in
+      value:
+        - SDTMIG
+        - SDTMIG-MD
+        - SDTMIG-AP
+        - SDTMIG-PGx
+        - SENDIG
+        - SENDIG-DART
+        - ADaMIG
+outcome:
+  message: "Standard name is not one of the allowable CDISC standard names."
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: "4.1.1"
+  cited_guidance: >
+    Type IG -- Allowable Names: SDTMIG, SDTMIG-MD, SDTMIG-AP, SDTMIG-PGx, SENDIG, SENDIG-DART, ADaMIG.
+
+tests:
+  - name: "HRL-DD-036 — compliant spec record"
+    type: positive
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, PARAMCD, AVAL]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "25"]
+    expected_findings: 0
+  - name: "HRL-DD-036 — violating spec record"
+    type: negative
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, PARAMCD, AVAL]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "25"]
+    expected_findings: 1
+

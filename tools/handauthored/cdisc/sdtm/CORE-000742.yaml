@@ -1,0 +1,88 @@
+Authorities:
+  - Organization: FDA
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: TCG, Appendix B
+                Document: FDA
+                Section: FDAB011
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB1110
+              Version: '1'
+            Version: '1.5'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: TCG, Appendix B
+                Document: FDA
+                Section: FDAB011
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB1110
+              Version: '1'
+            Version: '1.5'
+        Version: '3.3'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: TCG, Appendix B
+                Document: FDA
+                Section: FDAB011
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB1110
+              Version: '1'
+            Version: '1.5'
+        Version: '3.4'
+Check:
+  all:
+    - name: $HLTSUBJI
+      operator: not_equal_to
+      value: 1
+    - name: $INDIC
+      operator: equal_to
+      value: 1
+Core:
+  Id: CORE-000742
+  Status: Published
+  Version: '1'
+Description: TSVALNF is not equal to NA when TSPARAMCD=INDIC
+Executability: Fully Executable
+Operations:
+  - filter:
+      TSPARMCD: INDIC
+      TSVALNF: NA
+    id: $INDIC
+    operator: record_count
+  - filter:
+      TSPARMCD: HLTSUBJI
+      TSVAL: 'Y'
+    id: $HLTSUBJI
+    operator: record_count
+Outcome:
+  Message: TSVALNF is not equal to NA when TSPARAMCD=INDIC
+  Output_Variables:
+    - TSPARMCD
+    - TSVAL
+    - TSVALNF
+    - $INDIC
+    - $HLTSUBJI
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - TRIAL DESIGN
+  Domains:
+    Include:
+      - TS
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

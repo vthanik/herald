@@ -1,0 +1,24 @@
+id: HRL-MD-031
+version: 1
+status: Published
+standard: ADaM
+category: Specification Metadata
+sensitivity: Study
+executability: Reference
+description: If populated, Recommended Term must be a valid term within the Codelist
+  ID of the CT referenced on the Properties tab of the spec under the field labelled
+  Recommended Terminology.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Invalid Recommended Term value
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Metadata)
+  authority: Herald
+  p21_reference: MD4031
+
+notes: >
+  Blocked on `valid_codelist_term` cross-reference operator (term within codelist). See HANDOFF section 4e.
+

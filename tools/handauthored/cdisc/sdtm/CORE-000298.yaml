@@ -1,0 +1,98 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: 'Lower end of reference range for continuous measurements
+                  for LBSTRESC/LBSTRESN in standardized units. Should be populated  only
+                  for continuous results. '
+                Document: SDTMIG v3.4
+                Item: Specification
+                Section: 6.3.5.6
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0182
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Lower end of reference range for continuous measurements
+                  in original units. Should be populated only for continuous results.
+                Document: IG v3.2
+                Item: Specification
+                Section: '6.3'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0182
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Lower end of reference range for continuous measurements
+                  in original units. Should be populated only for continuous results.
+                Document: IG v3.3
+                Item: Specification
+                Section: 6.3.6
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0182
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: Lower end of reference range for continuous measurements
+                  for LBSTRESC/LBSTRESN in standardized units. Should be populated
+                  only for continuous results.
+                Document: TIG 1.0
+                Item: Specification-LBSTNRLO
+                Section: 2.8.10.14
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0411
+              Version: '1'
+            Version: '1.0'
+        Substandard: SDTM
+        Version: '1.0'
+Check:
+  all:
+    - name: LBORRES
+      operator: not_matches_regex
+      value: ^-?(\d+(\.\d+)?$)|(\.\d+$)
+    - name: LBSTNRLO
+      operator: non_empty
+    - name: LBORRES
+      operator: non_empty
+Core:
+  Id: CORE-000298
+  Status: Published
+  Version: '1'
+Description: Raise an error when LBORRES is not a continuous measurement and LBSTNRLO
+  is not empty. The interpretation of the guidance is that LBORRES is populated (not
+  null).
+Executability: Fully Executable
+Outcome:
+  Message: LBORRES is not a continuous measurment but LBSTNRLO is not empty.
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - FINDINGS
+  Domains:
+    Include:
+      - LB
+  Use_Case: INDH
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

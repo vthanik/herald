@@ -1,0 +1,77 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Events[Variable Qualifier of --LOC]|Interventions[Variable
+                  Qualifier of --LOC]|Findings[Variable Qualifier of --LOC]
+                Document: Model v2.0
+                Item: --LAT
+                Section: Events|Interventions|Findings
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0095
+              Version: '2'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Qualifier for anatomical location further detailing
+                  laterality.
+                Document: Model v1.4
+                Section: 2.2.2
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0095
+              Version: '2'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Qualifier for anatomical location further detailing
+                  laterality.
+                Document: Model v1.7
+                Item: 'Table 3.2.2: --LAT'
+                Section: 2.2.2
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0095
+              Version: '2'
+            Version: '2.0'
+        Version: '3.3'
+Check:
+  all:
+    - name: --LOC
+      operator: not_exists
+    - name: --LAT
+      operator: exists
+Core:
+  Id: CORE-000079
+  Status: Published
+  Version: '1'
+Description: Raise an error when --LOC is not present and --LAT is present.
+Executability: Fully Executable
+Outcome:
+  Message: --LAT is present when --LOC is not present.
+  Output_Variables:
+    - --LOC
+    - --LAT
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - ALL
+  Domains:
+    Include:
+      - ALL
+Sensitivity: Dataset
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

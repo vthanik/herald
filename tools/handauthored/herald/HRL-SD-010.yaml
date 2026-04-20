@@ -1,0 +1,57 @@
+id: HRL-SD-010
+version: 1
+status: Published
+standard: SDTM
+category: Cross-Domain
+sensitivity: Record
+executability: Fully Executable
+description: >
+  Adverse event start date (AESTDTC) should not precede the earliest exposure
+  start date (EXSTDTC) for the same subject, unless the AE is pre-treatment.
+scope:
+  classes: []
+  domains:
+    - AE
+    - EX
+check:
+  all:
+    - name: AESTDTC
+      operator: greater_than_or_equal_to
+      value:
+        name: EXSTDTC
+        aggregate: min
+        by: USUBJID
+        dataset: EX
+outcome:
+  message: AE start date precedes earliest exposure date for subject
+  severity: Warning
+provenance:
+  source_doc: StudySAS Blog — Cross-domain SDTM QC Checks (2026-04)
+  authority: Herald
+  reference_url: https://studysas.blogspot.com/2026/04/html-sdtm-programming-sas-submission-qc.html
+
+tests:
+  - name: "AESTDTC on or after earliest EXSTDTC"
+    type: positive
+    datasets:
+      EX:
+        variables: [STUDYID, USUBJID, EXSTDTC]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "2014-01-02"]
+      AE:
+        variables: [STUDYID, USUBJID, AETERM, AESTDTC]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "HEADACHE", "2014-01-05"]
+    expected_findings: 0
+  - name: "AESTDTC before earliest EXSTDTC"
+    type: negative
+    datasets:
+      EX:
+        variables: [STUDYID, USUBJID, EXSTDTC]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "2014-01-02"]
+      AE:
+        variables: [STUDYID, USUBJID, AETERM, AESTDTC]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "HEADACHE", "2013-12-20"]
+    expected_findings: 1

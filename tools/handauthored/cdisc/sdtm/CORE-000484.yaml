@@ -1,0 +1,93 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: All records for the same USUBJID that have the same
+                  RELID are considered "related/associated."
+                Document: IG v3.4
+                Item: Specification
+                Section: 8.2.1
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0200
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: All records for the same USUBJID that have the same
+                  RELID are considered "related/associated."
+                Document: IG v3.2
+                Item: Specification
+                Section: 8.2.1
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0200
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: All records for the same USUBJID that have the same
+                  RELID are considered "related/associated."
+                Document: IG v3.3
+                Item: Specification
+                Section: 8.2.1
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0200
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: All records for the same USUBJID that have the same
+                  RELID are considered "related/associated."
+                Document: TIG 1.0
+                Item: Specification-RELID
+                Section: 2.8.10.21
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0421
+              Version: '1'
+            Version: '1.0'
+        Substandard: SDTM
+        Version: '1.0'
+Check:
+  all:
+    - name: RELID
+      operator: not_present_on_multiple_rows_within
+      within: USUBJID
+Core:
+  Id: CORE-000484
+  Status: Published
+  Version: '1'
+Description: Within a subject, each unique RELID should be present on multiple RELREC
+  records
+Executability: Fully Executable
+Outcome:
+  Message: Unique RELID is NOT present on multiple RELREC records within a subject.
+  Output_Variables:
+    - RELID
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - RELATIONSHIP
+  Domains:
+    Include:
+      - RELREC
+  Use_Case: INDH, PROD
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

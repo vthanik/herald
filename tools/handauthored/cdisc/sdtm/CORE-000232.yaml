@@ -1,0 +1,80 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifier used to identify a related subject or pool
+                  of subjects. RSUBJID will be populated with either the  USUBJID
+                  of the related subject or the POOLID of the related pool.
+                Document: Model v2.0
+                Item: RSUBJID
+                Section: RELSUB
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0364
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifier used to identify a related subject or pool
+                  of subjects. RSUBJID will be populated with either the USUBJID of
+                  the related subject or the POOLID of the related pool.
+                Document: Model v1.4
+                Section: 4.1.4
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0364
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifier used to identify a related subject or pool
+                  of subjects. RSUBJID will be populated with either the USUBJID of
+                  the related subject or the POOLID of the related pool.
+                Document: Model v1.7
+                Section: Table 4.1.4.1
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0364
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+Check:
+  all:
+    - name: RSUBJID
+      operator: empty
+    - name: RSUBJID
+      operator: not_equal_to
+      value: POOLID
+Core:
+  Id: CORE-000232
+  Status: Published
+  Version: '1'
+Description: Verify when RSUBJID is populated it does not equal POOLID
+Executability: Fully Executable
+Outcome:
+  Message: When RSUBJID is populated, RUSBJID cannot equal POOLID
+  Output_Variables:
+    - RSUBJID
+    - POOLID
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - RELATIONSHIP
+  Domains:
+    Include:
+      - RELSUB
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

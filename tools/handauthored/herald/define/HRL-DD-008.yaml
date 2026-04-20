@@ -1,0 +1,41 @@
+id: HRL-DD-008
+version: 1
+status: Published
+standard: Define-XML
+category: ARM Metadata
+sensitivity: Study
+executability: Reference
+description: >
+  Analysis Results Metadata was developed specifically for ADaM and therefore should not be included with SDTM or SEND defines. Analysis Results Metadata inclusion is indicated by the presence of the arm:AnalysisResultDisplays element.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: ARM metadata included in non ADaM define.xml
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: Herald
+  p21_reference: DD0087
+
+tests:
+  - name: "HRL-DD-008 — nominal compliant record"
+    type: positive
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, PARAMCD, AVAL]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "25"]
+    expected_findings: 0
+  - name: "HRL-DD-008 — nominal violating record"
+    type: negative
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, PARAMCD, AVAL]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "25"]
+    expected_findings: 1
+
+notes: >
+  Blocked on `arm_absent_in_non_adam_define` operator (SDTM/SEND define.xml must not contain arm:AnalysisResultDisplays). See HANDOFF section 4i.
+

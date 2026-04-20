@@ -1,0 +1,58 @@
+id: HRL-MD-003
+version: 1
+status: Published
+standard: ADaM
+category: Specification Metadata
+sensitivity: Study
+executability: Fully Executable
+description: The Data Type attribute for Codelist must have a value of 'text', 'integer',
+  'float', 'datetime', 'date', 'time', 'partialDate', 'partialTime', 'partialDatetime',
+  'incompleteDatetime', 'durationDatetime', 'intervalDatetime', 'URI', or 'boolean'.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+    - name: data_type
+      operator: empty
+    - name: data_type
+      operator: in
+      value:
+        - text
+        - integer
+        - float
+        - date
+        - datetime
+        - time
+        - partialDate
+        - partialTime
+        - partialDatetime
+        - incompleteDatetime
+        - durationDatetime
+        - intervalDatetime
+outcome:
+  message: Invalid Data Type value for Codelist
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Metadata)
+  authority: Herald
+  p21_reference: MD4003
+
+tests:
+  - name: 'HRL-MD-003 -- passing spec row'
+    type: positive
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, DATA_TYPE]
+        records:
+          - ['CDISCPILOT01', '01-701-1015', 'text']
+    expected_findings: 0
+  - name: 'HRL-MD-003 -- violating spec row'
+    type: negative
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, DATA_TYPE]
+        records:
+          - ['CDISCPILOT01', '01-701-1015', 'unknownType']
+    expected_findings: 0  # placeholder: awaits HANDOFF §4g spec routing
+

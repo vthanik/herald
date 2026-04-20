@@ -1,0 +1,47 @@
+id: HRL-AD-016
+version: 1
+status: Published
+standard: ADaM
+category: Limit
+sensitivity: Record
+executability: Fully Executable
+description: On a given record, a variable with a suffix of SDT has a value greater
+  than a value of a variable with the same root and a suffix of EDT, and both variables
+  are populated.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+    - name: __SDT__
+      operator: less_than_or_equal_to
+      value: __EDT__
+outcome:
+  message: '*SDT is greater than *EDT'
+  severity: Error
+provenance:
+  source_doc: Herald-original (gap analysis vs P21 Community catalog)
+  authority: Herald
+  p21_reference: AD0792
+
+tests:
+  - name: "ASTDT is less than or equal to AENDT"
+    type: positive
+    skip: true
+    datasets:
+      ADAE:
+        variables: [STUDYID, USUBJID, ASTDT, AENDT]
+        records:
+          - ["S1", "S1-001", "2024-01-01", "2024-01-10"]
+    expected_findings: 0
+
+  - name: "ASTDT is greater than AENDT"
+    type: negative
+    skip: true
+    datasets:
+      ADAE:
+        variables: [STUDYID, USUBJID, ASTDT, AENDT]
+        records:
+          - ["S1", "S1-001", "2024-01-10", "2024-01-01"]
+    expected_findings: 1
+

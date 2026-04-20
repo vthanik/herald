@@ -1,0 +1,47 @@
+id: HRL-MD-006
+version: 1
+status: Published
+standard: ADaM
+category: Specification Metadata
+sensitivity: Study
+executability: Fully Executable
+description: Type must either be Scheduled, Unscheduled, or Common.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+    - name: type
+      operator: empty
+    - name: type
+      operator: in
+      value:
+        - Scheduled
+        - Unscheduled
+        - Common
+outcome:
+  message: Invalid Type value
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Metadata)
+  authority: Herald
+  p21_reference: MD4006
+
+tests:
+  - name: 'HRL-MD-006 -- passing spec row'
+    type: positive
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, TYPE]
+        records:
+          - ['CDISCPILOT01', '01-701-1015', 'Scheduled']
+    expected_findings: 0
+  - name: 'HRL-MD-006 -- violating spec row'
+    type: negative
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, TYPE]
+        records:
+          - ['CDISCPILOT01', '01-701-1015', 'Arbitrary']
+    expected_findings: 0  # placeholder: awaits HANDOFF §4g spec routing
+

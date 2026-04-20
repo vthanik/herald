@@ -1,0 +1,86 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: IG v3.3[7.4.2][Assumption 3][Further information about
+                  the parameters is included below in Table 1. TSVAL may have controlled
+                  terminology depending on the value of TSPARMCD]|IG v3.3[Appendix
+                  C1][If study type is INTERVENTIONAL" this parameter is required]
+                Document: IG v3.2
+                Item: IG v3.2[7.4][Assumption 3]|IG v3.2[Appendix C1]
+                Section: IG v3.2[7.4]|IG v3.2[Appendix C1]
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0276
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: IG v3.3[7.4.2][Assumption 3][Further information about
+                  the parameters is included Appendix C1, Trial Summary Codes. TSVAL
+                  may have controlled terminology depending on the value of TSPARMCD.
+                  Conditions for including parameters are included in Appendix C1,
+                  Trial Summary Codes.]|IG v3.3[Appendix C1][If study type is INTERVENTIONAL"
+                  this parameter is required]
+                Document: IG v3.3
+                Item: IG v3.3[7.4.2][Assumption 3]|IG v3.3[Appendix C1]
+                Section: IG v3.3[7.4.2]|IG v3.3[Appendix C1]
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0276
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+Check:
+  all:
+    - name: TSPARMCD
+      operator: equal_to
+      value: TRT
+    - name: $STYPE_INTERVENTIONAL
+      operator: greater_than_or_equal_to
+      value: 1
+    - name: TSVAL
+      operator: empty
+Core:
+  Id: CORE-000468
+  Status: Published
+  Version: '1'
+Description: Raise an error when a record exists in TS where TSPARMCD = STYPE and
+  TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = TRT is empty.
+Executability: Fully Executable
+Operations:
+  - filter:
+      TSPARMCD: STYPE
+      TSVAL: INTERVENTIONAL
+    group:
+      - TSGRPID
+    id: $STYPE_INTERVENTIONAL
+    operator: record_count
+Outcome:
+  Message: A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL
+    but TSVAL for TSPARMCD = TRT is empty.
+  Output_Variables:
+    - TSGRPID
+    - TSPARMCD
+    - TSVAL
+    - $STYPE_INTERVENTIONAL
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - TRIAL DESIGN
+  Domains:
+    Include:
+      - TS
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

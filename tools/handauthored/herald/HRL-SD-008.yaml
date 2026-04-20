@@ -1,0 +1,51 @@
+id: HRL-SD-008
+version: 1
+status: Published
+standard: SDTM
+category: Presence
+sensitivity: Dataset
+executability: Fully Executable
+description: Per FDA Study Data Technical Conformance Guide, an additional custom
+  domain called LC structured identically to LB should contain conventional units
+  in --STRESU for the results in conventional units in the --STRESC and --STRESN variables.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+    - name: LC
+      operator: dataset_exists_when
+      value: LB
+outcome:
+  message: Missing LC domain when LB domain is present
+  severity: Warning
+provenance:
+  source_doc: Herald-original (gap analysis vs P21 Community catalog)
+  authority: Herald
+  p21_reference: SD1485
+
+tests:
+  - name: "LC dataset present when LB dataset is present"
+    type: positive
+    skip: true
+    datasets:
+      LB:
+        variables: [STUDYID, USUBJID]
+        records:
+          - ["S1", "S1-001"]
+      LC:
+        variables: [STUDYID, USUBJID]
+        records:
+          - ["S1", "S1-001"]
+    expected_findings: 0
+
+  - name: "LB dataset present but LC dataset is missing"
+    type: negative
+    skip: true
+    datasets:
+      LB:
+        variables: [STUDYID, USUBJID]
+        records:
+          - ["S1", "S1-001"]
+    expected_findings: 1
+

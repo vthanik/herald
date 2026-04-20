@@ -1,0 +1,51 @@
+# P21 Sheet validation against Define-XML v2.1 Specification
+# Section: 5.3.14
+id: HRL-DD-080
+version: 2
+status: Published
+standard: Define-XML
+category: Method Definition
+sensitivity: Record
+executability: Fully Executable
+description: >
+  Method Type must be 'Computation' or 'Imputation'.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+    - name: type
+      operator: empty
+    - name: type
+      operator: in
+      value:
+        - Computation
+        - Imputation
+outcome:
+  message: "Method Type is not valid. Must be 'Computation' or 'Imputation'."
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: "5.3.14"
+  cited_guidance: >
+    Type -- Required. Computation, Imputation.
+
+tests:
+  - name: "HRL-DD-080 — compliant spec record"
+    type: positive
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, PARAMCD, AVAL]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "25"]
+    expected_findings: 0
+  - name: "HRL-DD-080 — violating spec record"
+    type: negative
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, PARAMCD, AVAL]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "25"]
+    expected_findings: 1
+

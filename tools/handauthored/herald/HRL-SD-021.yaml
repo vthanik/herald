@@ -1,0 +1,54 @@
+id: HRL-SD-021
+version: 1
+status: Published
+standard: SDTM
+category: SUPPQUAL
+sensitivity: Record
+executability: Fully Executable
+description: >
+  Population flag variables (COMPLT, FULLSET, ITT, PPROT, SAFETY) must not
+  appear as QNAM values in SUPPQUAL datasets. Population flags are ADaM-only
+  derivations and do not belong in SDTM, including supplemental qualifiers.
+scope:
+  classes: []
+  domains:
+    - SUPPDM
+    - SUPPDS
+check:
+  all:
+    - name: QNAM
+      operator: not_in
+      value:
+        - COMPLT
+        - FULLSET
+        - ITT
+        - PPROT
+        - SAFETY
+        - SAFFL
+        - ITTFL
+        - PPROTFL
+outcome:
+  message: Population flag found in SUPPQUAL (should be ADaM only)
+  severity: Error
+provenance:
+  source_doc: StudySAS Blog — SDTM IG 3.4 SUPPDS Assumptions (2026-04)
+  authority: Herald
+  reference_url: https://studysas.blogspot.com/2026/04/sdtm-ig-34-sr-oe-lb-domain-expansion.html
+
+tests:
+  - name: "Non-population QNAM in SUPPDM"
+    type: positive
+    datasets:
+      SUPPDM:
+        variables: [STUDYID, RDOMAIN, USUBJID, QNAM, QLABEL, QVAL]
+        records:
+          - ["CDISCPILOT01", "DM", "01-701-1015", "RACEOTH", "Race Other", "ASIAN"]
+    expected_findings: 0
+  - name: "Population flag ITT in SUPPDM"
+    type: negative
+    datasets:
+      SUPPDM:
+        variables: [STUDYID, RDOMAIN, USUBJID, QNAM, QLABEL, QVAL]
+        records:
+          - ["CDISCPILOT01", "DM", "01-701-1015", "ITT", "Intent-to-Treat", "Y"]
+    expected_findings: 1

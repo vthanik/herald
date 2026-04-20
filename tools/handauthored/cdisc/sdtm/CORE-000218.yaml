@@ -1,0 +1,203 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Comments[Value of identifying variable of the parent
+                  record(s).]|Supplemental Qualifiers[Value of identifying variable
+                  of the parent record(s).]
+                Document: Model v2.0
+                Item: IDVARVAL
+                Section: Comments|Supplemental Qualifiers
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0465
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifying variable in the parent dataset that identifies
+                  the record(s) to which the comment applies. Examples AESEQ or CMGRPID.
+                  Used only when individual comments are related to domain records.
+                  Null for comments collected on separate CRFs. Value of identifying
+                  variable of the parent record(s). Null for comments collected on
+                  separate CRFs.
+                Document: Model v1.7
+                Item: ''
+                Section: 2.2.7|5.1.2
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0465
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifying variable in the parent dataset that identifies
+                  the record(s) to which the comment applies. Examples AESEQ or CMGRPID.
+                  Used only when individual comments are related to domain records.
+                  Null for comments collected on separate CRFs. Value of identifying
+                  variable of the parent record(s). Null for comments collected on
+                  separate CRFs.
+                Document: Model v1.4
+                Item: ''
+                Section: 2.2.7
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0465
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SENDIG
+        References:
+          - Citations:
+              - Cited_Guidance: IDVARVAL is used only when individual comments are
+                  related to domain records. Cannot be populated if IDVAR is null.
+                Document: IG v3.0
+                Item: Specification
+                Section: 5.2.2.1
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND118
+              Version: '1'
+            Version: '5.0'
+        Version: '3.0'
+      - Name: SENDIG
+        References:
+          - Citations:
+              - Cited_Guidance: IDVARVAL is used only when individual comments are
+                  related to domain records. Cannot be populated if IDVAR is null.
+                Document: IG v3.1
+                Item: Specification
+                Section: 5.2.2.1
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND118
+              Version: '1'
+            Version: '5.0'
+        Version: '3.1'
+      - Name: SENDIG
+        References:
+          - Citations:
+              - Cited_Guidance: IDVARVAL is used only when individual comments are
+                  related to domain records. Cannot be populated if IDVAR is null.
+                Document: IG v3.1.1
+                Item: Specification
+                Section: 5.2.2.1
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND118
+              Version: '1'
+            Version: '5.0'
+        Version: 3.1.1
+      - Name: SENDIG-DART
+        References:
+          - Citations:
+              - Cited_Guidance: IDVARVAL is used only when individual comments are
+                  related to domain records. Cannot be populated if IDVAR is null.
+                Document: IG v3.1
+                Item: Specification
+                Section: 5.2.2.1
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND118
+              Version: '1'
+            Version: '5.0'
+        Version: '1.1'
+      - Name: SENDIG-DART
+        References:
+          - Citations:
+              - Cited_Guidance: IDVARVAL is used only when individual comments are
+                  related to domain records. Cannot be populated if IDVAR is null.
+                Document: IG v3.1.1
+                Item: Specification
+                Section: 5.2.2.1
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND118
+              Version: '1'
+            Version: '5.0'
+        Version: '1.2'
+      - Name: SENDIG-GENETOX
+        References:
+          - Citations:
+              - Cited_Guidance: IDVARVAL is used only when individual comments are
+                  related to domain records. Cannot be populated if IDVAR is null.
+                Document: IG v3.1
+                Item: Specification
+                Section: 5.2.2.1
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND118
+              Version: '1'
+            Version: '5.0'
+        Version: '1.0'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: Specification IDVARVAL
+                Document: SDTM v2.1
+                Item: IDVARVAL
+                Section: Section 3.2.2 Comments|Section 6.2 Supplemental Qualifiers
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0595
+              Version: '1'
+            Version: '1.0'
+        Substandard: SDTM
+        Version: '1.0'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: Used only when individual comments are related to
+                  domain records.  Cannot be populated if IDVAR is null.
+                Document: TIG v1.0
+                Item: IDVARVAL CDISC Notes
+                Section: 2.8.9.4 SEND Comments (CO)
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0055
+              Version: '1'
+            Version: '1.0'
+        Substandard: SEND
+        Version: '1.0'
+Check:
+  all:
+    - name: IDVAR
+      operator: empty
+    - name: IDVARVAL
+      operator: non_empty
+Core:
+  Id: CORE-000218
+  Status: Published
+  Version: '1'
+Description: Raise an error when IDVAR is empty and IDVARVAL is not empty
+Executability: Fully Executable
+Outcome:
+  Message: IDVAR is empty but IDVARVAL is not empty
+  Output_Variables:
+    - IDVAR
+    - IDVARVAL
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - SPECIAL PURPOSE
+      - RELATIONSHIP
+  Domains:
+    Include:
+      - CO
+      - SUPP--
+  Use_Case: INDH, PROD, NONCLIN
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

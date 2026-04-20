@@ -1,0 +1,93 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Subject identifier, which must be unique within the
+                  study.
+                Document: IG v3.4
+                Item: Specification
+                Section: '5.2'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0150
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Subject identifier, which must be unique within the
+                  study.
+                Document: IG v3.2
+                Item: Specification
+                Section: '5'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0150
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Subject identifier, which must be unique within the
+                  study.
+                Document: IG v3.3
+                Item: Specification
+                Section: '5.2'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0150
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: Subject identifier, which must be unique within the
+                  study.
+                Document: TIG 1.0
+                Item: Specification
+                Section: 2.8.10.4
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0391
+              Version: '1'
+            Version: '1.0'
+        Substandard: SDTM
+        Version: '1.0'
+Check:
+  all:
+    - name: SUBJID
+      operator: is_not_unique_set
+      value:
+        - STUDYID
+Core:
+  Id: CORE-000186
+  Status: Published
+  Version: '1'
+Description: Trigger error if SUBJID is not unique
+Executability: Fully Executable
+Outcome:
+  Message: SUBJID is not unique within study
+  Output_Variables:
+    - SUBJID
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - SPECIAL PURPOSE
+  Domains:
+    Include:
+      - DM
+  Use_Case: INDH
+Sensitivity: Dataset
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

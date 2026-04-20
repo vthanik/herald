@@ -1,0 +1,42 @@
+id: HRL-MD-039
+version: 1
+status: Published
+standard: ADaM
+category: Specification Metadata
+sensitivity: Study
+executability: Fully Executable
+description: Codelist Name should not contain any carriage returns.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+    - name: codelist_name
+      operator: does_not_match_regex
+      value: '[\\r\\n]'
+outcome:
+  message: Codelist Name must not contain carriage returns
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Metadata)
+  authority: Herald
+  p21_reference: MD4039
+
+tests:
+  - name: 'HRL-MD-039 -- passing spec row'
+    type: positive
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, CODELIST_NAME]
+        records:
+          - ['CDISCPILOT01', '01-701-1015', 'Race Category']
+    expected_findings: 0
+  - name: 'HRL-MD-039 -- violating spec row'
+    type: negative
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, CODELIST_NAME]
+        records:
+          - ['CDISCPILOT01', '01-701-1015', 'Race\nCategory']
+    expected_findings: 0  # placeholder: awaits HANDOFF §4g spec routing
+

@@ -1,0 +1,24 @@
+id: HRL-MD-004
+version: 1
+status: Published
+standard: ADaM
+category: Specification Metadata
+sensitivity: Study
+executability: Reference
+description: If populated, Recommended Codelist must be a valid Codelist ID within
+  the CT referenced on the Properties tab of the spec under the field labelled Recommended
+  Terminology.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Invalid Recommended Codelist value
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Metadata)
+  authority: Herald
+  p21_reference: MD4004
+
+notes: >
+  Blocked on `valid_codelist_id` cross-reference operator (CT registry lookup). See HANDOFF section 4e.
+

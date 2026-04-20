@@ -1,0 +1,23 @@
+id: HRL-SD-002
+version: 1
+status: Published
+standard: SDTM
+category: Data Quality
+sensitivity: Study
+executability: Reference
+description: Datasets greater than 5 gigabytes (GB) in size should be split into smaller
+  datasets no larger than 5 GB.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Dataset is greater than 5 GB in size
+  severity: Error
+provenance:
+  source_doc: P21 Validation Rules
+  authority: Herald
+  p21_reference: SD1071
+
+notes: >
+  Blocked on `dataset_filesize` operator (XPT filesystem metadata > 5 GB). Duplicate of FDAV-SD1071. See HANDOFF section 4a.
+

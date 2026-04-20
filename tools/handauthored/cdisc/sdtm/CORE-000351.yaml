@@ -1,0 +1,192 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifier used to uniquely identify a subject across
+                  all studies for all applications or submissions involving the product.
+                Document: IG v3.4
+                Item: Specification
+                Section: '5.2'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0151
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifier used to uniquely identify a subject across
+                  all studies
+                Document: IG v3.2
+                Item: Specification
+                Section: '5'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0151
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifier used to uniquely identify a subject across
+                  all studies
+                Document: IG v3.3
+                Item: Specification
+                Section: '5.2'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0151
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifier used to uniquely identify a subject across
+                  all studies for all applications or submissions involving the product.
+                Document: TIG 1.0
+                Item: Specification
+                Section: 2.8.10.4
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0392
+              Version: '1'
+            Version: '1.0'
+        Substandard: SDTM
+        Version: '1.0'
+      - Name: SENDIG
+        References:
+          - Citations:
+              - Cited_Guidance: No more than one animal may have the same USUBJID
+                  within a submission.
+                Document: SENDIG v3.0
+                Item: Text
+                Section: 4.2.3
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND37
+              Version: '1'
+            Version: '5.0'
+        Version: '3.0'
+      - Name: SENDIG
+        References:
+          - Citations:
+              - Cited_Guidance: No more than one animal may have the same USUBJID
+                  within a submission.
+                Document: SENDIG v3.1
+                Item: Text
+                Section: 4.2.3
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND37
+              Version: '1'
+            Version: '5.0'
+        Version: '3.1'
+      - Name: SENDIG
+        References:
+          - Citations:
+              - Cited_Guidance: No more than one animal may have the same USUBJID
+                  within a submission.
+                Document: SENDIG v3.1.1
+                Item: Text
+                Section: 4.2.3
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND37
+              Version: '1'
+            Version: '5.0'
+        Version: 3.1.1
+      - Name: SENDIG-DART
+        References:
+          - Citations:
+              - Cited_Guidance: No more than one animal may have the same USUBJID
+                  within a submission.
+                Document: SENDIG v3.1
+                Item: Text
+                Section: 4.2.3
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND37
+              Version: '1'
+            Version: '5.0'
+        Version: '1.1'
+      - Name: SENDIG-DART
+        References:
+          - Citations:
+              - Cited_Guidance: No more than one animal may have the same USUBJID
+                  within a submission.
+                Document: SENDIG v3.1.1
+                Item: Text
+                Section: 4.2.3
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND37
+              Version: '1'
+            Version: '5.0'
+        Version: '1.2'
+      - Name: SENDIG-GENETOX
+        References:
+          - Citations:
+              - Cited_Guidance: No more than one animal may have the same USUBJID
+                  within a submission.
+                Document: SENDIG v3.1.1
+                Item: Text
+                Section: 4.2.3
+            Origin: SEND Conformance Rules
+            Rule_Identifier:
+              Id: SEND37
+              Version: '1'
+            Version: '5.0'
+        Version: '1.0'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: A sequence of characters used to uniquely identify
+                  a subject across all studies for all applications or submissions
+                  involving the product.
+                Document: TIG v1.0
+                Item: Text
+                Section: SDTM v2.1, Identifiers for All Classes, USUBJID
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0255
+              Version: '1'
+            Version: '1.0'
+        Substandard: SEND
+        Version: '1.0'
+Check:
+  all:
+    - name: USUBJID
+      operator: is_not_unique_set
+      value: DOMAIN
+Core:
+  Id: CORE-000351
+  Status: Published
+  Version: '1'
+Description: USUBJID must be unique across all studies
+Executability: Partially Executable
+Outcome:
+  Message: USUBJID is not unique within study
+  Output_Variables:
+    - USUBJID
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - SPECIAL PURPOSE
+  Domains:
+    Include:
+      - DM
+  Use_Case: NONCLIN, INDH
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

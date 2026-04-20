@@ -1,0 +1,57 @@
+id: HRL-AD-024
+version: 1
+status: Published
+standard: ADaM
+category: Data Quality
+sensitivity: Record
+executability: Fully Executable
+description: >
+  For a unique combination of USUBJID, PARAMCD, and BASETYPE, only one
+  record may be flagged as the actual baseline (ABLFL = "Y").
+scope:
+  classes: []
+  domains:
+    - BDS
+    - ADNCA
+operations:
+  - id: _ablfl_key_
+    operator: compound_key
+    variables: [USUBJID, PARAMCD, BASETYPE]
+check:
+  all:
+    - name: ABLFL
+      operator: not_equal_to
+      value: "Y"
+    - name: ABLFL
+      operator: present_on_multiple_rows_within
+      within: _ablfl_key_
+outcome:
+  message: "Multiple baseline records exist for a unique USUBJID, PARAMCD, BASETYPE"
+  severity: Error
+provenance:
+  source_doc: PMDA Validation Rules v6.0
+  authority: Herald
+  p21_reference: AD0154
+
+tests:
+  - name: "only one ABLFL=Y record per USUBJID, PARAMCD, BASETYPE combination"
+    type: positive
+    skip: true
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, PARAMCD, BASETYPE, ABLFL]
+        records:
+          - ["S1", "S1-001", "AVAL", "LAST", "Y"]
+          - ["S1", "S1-001", "AVAL", "LAST", ""]
+    expected_findings: 0
+
+  - name: "multiple ABLFL=Y records for the same USUBJID, PARAMCD, BASETYPE"
+    type: negative
+    skip: true
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, PARAMCD, BASETYPE, ABLFL]
+        records:
+          - ["S1", "S1-001", "AVAL", "LAST", "Y"]
+          - ["S1", "S1-001", "AVAL", "LAST", "Y"]
+    expected_findings: 1

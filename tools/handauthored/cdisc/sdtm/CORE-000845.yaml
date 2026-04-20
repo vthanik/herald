@@ -1,0 +1,74 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: If multiple races are collected then the value of
+                  RACE should be 'MULTIPLE' and the additional information will be
+                  included in the Supplemental Qualifiers dataset.
+                Document: IG v3.3
+                Item: Assumption 6
+                Section: '5.2'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0531
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: If multiple races are collected, then the value of
+                  RACE should be <U+201C>MULTIPLE<U+201D> and the additional information will be
+                  included in the Supplemental Qualifiers dataset.
+                Document: IG v3.4
+                Item: Assumption 6
+                Section: '5.2'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0531
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+Check:
+  all:
+    - name: RACE
+      operator: equal_to
+      value: MULTIPLE
+      value_is_literal: yes
+    - name: USUBJID
+      operator: is_not_contained_by
+      value: $usubjid_distinct
+Core:
+  Id: CORE-000845
+  Status: Published
+  Version: '1'
+Description: Part B -  Raise an error when RACE in DM equals 'MULTIPLE' but no records
+  are present in SUPPDM.
+Executability: Fully Executable
+Operations:
+  - domain: SUPPDM
+    id: $usubjid_distinct
+    name: USUBJID
+    operator: distinct
+Outcome:
+  Message: RACE in DM equals 'MULTIPLE' but multiple races are not collected in SUPPDM.
+  Output_Variables:
+    - RACE
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - ALL
+  Domains:
+    Include:
+      - DM
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:57:40Z'
+

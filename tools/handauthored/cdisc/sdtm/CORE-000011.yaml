@@ -1,0 +1,103 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: The intent of the domain model is to collect responses
+                  to only those criteria that the subject did not meet, and not the
+                  responses to all criteria.<U+00A0>
+                Document: SDTMIG v3.4
+                Item: Assumption 1
+                Section: 6.3.4
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0175
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: The intent of the domain model is to collect response
+                  to only those criteria that the subject did not meet, and not the
+                  responses to all criteria.
+                Document: IG v3.2
+                Item: Assumption 2
+                Section: '6.3'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0175
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: The intent of the domain model is to collect response
+                  to only those criteria that the subject did not meet, and not the
+                  responses to all criteria.
+                Document: IG v3.3
+                Item: Assumption 1
+                Section: 6.3.4
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0175
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: The intent of the domain model is to collect responses
+                  to only those criteria that the subject did not meet, and not the
+                  responses to all criteria.
+                Document: TIG 1.0
+                Item: Assumption 1
+                Section: 2.8.10.13
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0404
+              Version: '1'
+            Version: '1.0'
+        Substandard: SDTM
+        Version: '1.0'
+Check:
+  all:
+    - name: IECAT
+      operator: not_equal_to
+      value: EXCLUSION
+      value_is_literal: yes
+    - name: IEORRES
+      operator: equal_to
+      value: 'Y'
+      value_is_literal: yes
+Core:
+  Id: CORE-000011
+  Status: Published
+  Version: '1'
+Description: Raise an error when IECAT is equal to 'EXCLUSION' and IEORRES is not
+  equal to 'Y'.
+Executability: Fully Executable
+Outcome:
+  Message: IEORRES is not equal to 'Y' when IECAT equals 'EXCLUSION'.
+  Output_Variables:
+    - IECAT
+    - IEORRES
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - FINDINGS
+  Domains:
+    Include:
+      - IE
+  Use_Case: INDH
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:57:40Z'
+

@@ -1,0 +1,68 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Further information about the parameters is included
+                  below in Table 1. TSVAL may have controlled terminology depending
+                  on the value of TSPARMCD
+                Document: IG v3.2
+                Item: Assumption 3
+                Section: 7.4|Appendix C1
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0458
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Further information about the parameters is included
+                  below in Table 1. TSVAL may have controlled terminology depending
+                  on the value of TSPARMCD
+                Document: IG v3.3
+                Item: Assumption 3
+                Section: '7.4'
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0458
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+Check:
+  all:
+    - name: TSPARMCD
+      operator: is_contained_by
+      value:
+        - INDIC
+        - TDIGRP
+    - name: TSVCDREF
+      operator: not_equal_to
+      value: SNOMED
+Core:
+  Id: CORE-000564
+  Status: Published
+  Version: '1'
+Description: Raise an error when TSPARMCD = INDIC or TSPARMCD = TDIGRP but TSVCDREF
+  is not equal to 'SNOMED'.
+Executability: Fully Executable
+Outcome:
+  Message: TSPARMCD = INDIC or TSPARMCD = TDIGRP but TSVCDREF is not equal to 'SNOMED'.
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - TRIAL DESIGN
+  Domains:
+    Include:
+      - TS
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

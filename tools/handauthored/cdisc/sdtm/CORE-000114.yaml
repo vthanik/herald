@@ -1,0 +1,76 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: MH Domain only
+                Document: Model v2.0
+                Item: --EVDTYP
+                Section: Events
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0567
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: The concept of domain-specific variables was first
+                  introduced in SDTM v1.5. These variables are for use only in a specific
+                  domain and will be identified in the appropriate implementation
+                  guide.
+                Document: Model v1.7
+                Item: MHEVDTYP
+                Section: Table 2.2.12.1
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0567
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: MH Domain only
+                Document: SDTM v2.1
+                Item: --EVDTYP
+                Section: 3.1.2 The Events Observation Class
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0652
+              Version: '1'
+            Version: '1.0'
+        Substandard: SDTM
+        Version: '1.0'
+Check:
+  all:
+    - name: --EVDTYP
+      operator: exists
+Core:
+  Id: CORE-000114
+  Status: Published
+  Version: '1'
+Description: Raise an error when --EVDTYP is present in a dataset other than MH.
+Executability: Fully Executable
+Outcome:
+  Message: --EVDTYP is present in a dataset other than MH.
+  Output_Variables:
+    - --EVDTYP
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - EVENTS
+  Domains:
+    Exclude:
+      - MH
+  Use_Case: INDH, PROD
+Sensitivity: Dataset
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

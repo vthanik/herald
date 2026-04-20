@@ -1,0 +1,64 @@
+id: HRL-SD-014
+version: 1
+status: Published
+standard: SDTM
+category: Cross-Domain
+sensitivity: Record
+executability: Fully Executable
+description: >
+  Lab collection date (LBDTC) should fall within the subject's study window
+  defined by DM.RFSTDTC and DM.RFENDTC. Records outside this window may
+  indicate data collection errors or unscheduled assessments that need
+  documentation.
+scope:
+  classes: []
+  domains:
+    - LB
+    - DM
+check:
+  any:
+    - name: LBDTC
+      operator: greater_than_or_equal_to
+      value:
+        name: RFSTDTC
+        dataset: DM
+        by: USUBJID
+    - name: LBDTC
+      operator: less_than_or_equal_to
+      value:
+        name: RFENDTC
+        dataset: DM
+        by: USUBJID
+outcome:
+  message: LB record date outside study reference window (RFSTDTC to RFENDTC)
+  severity: Warning
+provenance:
+  source_doc: StudySAS Blog — Cross-domain SDTM QC Checks (2026-04)
+  authority: Herald
+  reference_url: https://studysas.blogspot.com/2026/04/html-sdtm-programming-sas-submission-qc.html
+
+tests:
+  - name: "LBDTC within study window"
+    type: positive
+    datasets:
+      DM:
+        variables: [STUDYID, USUBJID, RFSTDTC, RFENDTC]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "2014-01-02", "2014-07-20"]
+      LB:
+        variables: [STUDYID, USUBJID, LBTESTCD, LBDTC]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "2014-03-15"]
+    expected_findings: 0
+  - name: "LBDTC before RFSTDTC"
+    type: negative
+    datasets:
+      DM:
+        variables: [STUDYID, USUBJID, RFSTDTC, RFENDTC]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "2014-01-02", "2014-07-20"]
+      LB:
+        variables: [STUDYID, USUBJID, LBTESTCD, LBDTC]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "2013-11-01"]
+    expected_findings: 1

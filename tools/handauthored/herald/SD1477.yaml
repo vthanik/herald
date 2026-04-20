@@ -1,0 +1,49 @@
+id: SD1477
+version: 1
+status: Published
+standard: SDTM
+category: Conformance
+sensitivity: Record
+executability: Fully Executable
+description: >
+  Variables requested by the relevant regulatory agency in policy documents
+  (e.g. EPOCH) should be included in the dataset and populated when the
+  corresponding collection date (--DTC) is populated. An empty EPOCH on a
+  row with a collected observation indicates a derivation gap that
+  blocks reviewers from aligning records to study epochs.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+    - name: EPOCH
+      operator: required_when_populated
+      value:
+        wildcard_suffix: DTC
+outcome:
+  message: EPOCH value missing while --DTC is populated
+  severity: Warning
+provenance:
+  source_doc: Pinnacle 21 Community Validator v4.1.0
+  authority: Herald-relay (pending FDA Validator v1.7 upstream source)
+  p21_reference: SD1477
+
+tests:
+  - name: "EPOCH populated on every --DTC-populated row -- passes"
+    type: positive
+    datasets:
+      AE:
+        variables: [STUDYID, USUBJID, AESTDTC, EPOCH]
+        records:
+          - ["S1", "S1-001", "2024-01-15", "SCREENING"]
+          - ["S1", "S1-001", "2024-02-20", "TREATMENT"]
+    expected_findings: 0
+  - name: "row with --DTC populated but EPOCH empty -- flagged"
+    type: negative
+    datasets:
+      AE:
+        variables: [STUDYID, USUBJID, AESTDTC, EPOCH]
+        records:
+          - ["S1", "S1-001", "2024-01-15", ""]
+          - ["S1", "S1-001", "", "SCREENING"]
+    expected_findings: 1

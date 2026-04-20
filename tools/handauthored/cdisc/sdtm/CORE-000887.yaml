@@ -1,0 +1,74 @@
+Authorities:
+  - Organization: FDA
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: For interventional studies all treated subjects should
+                  have exposure data.
+                Document: FDA
+                Section: FDAB023
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB2301
+              Version: '1'
+            Version: '1.5'
+        Version: '3.2'
+Check:
+  all:
+    - name: TSPARMCD
+      operator: equal_to
+      value: STYPE
+      value_is_literal: yes
+    - name: TSVAL
+      operator: equal_to
+      value: INTERVENTIONAL
+      value_is_literal: yes
+    - name: ACTARMCD
+      operator: is_not_contained_by_case_insensitive
+      value:
+        - SCRNFAIL
+        - NOTASSGN
+        - NOTTRT
+    - name: USUBJID
+      operator: is_not_contained_by
+      value: $usubjiids_in_ex
+Core:
+  Id: CORE-000887
+  Status: Published
+  Version: '1'
+Description: All subjects in the Demographics domain who are participating in a study
+  that includes an interventional product must have at least one corresponding record
+  in the Exposure domain, except for subjects who failed screening, were not fully
+  assigned to an Arm, or did not receive study treatment.
+Executability: Fully Executable
+Match_Datasets:
+  - Keys:
+      - STUDYID
+    Name: TS
+Operations:
+  - domain: EX
+    id: $usubjiids_in_ex
+    name: USUBJID
+    operator: distinct
+Outcome:
+  Message: A subject has a record in DM but not in EX while participating in an interventional
+    study
+  Output_Variables:
+    - ACTARMCD
+    - TSVAL
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - SPECIAL PURPOSE
+  Domains:
+    Include:
+      - DM
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+  fetched: '2026-04-03T12:15:16Z'
+

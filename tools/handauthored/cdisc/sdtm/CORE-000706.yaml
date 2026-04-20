@@ -1,0 +1,81 @@
+Authorities:
+  - Organization: FDA
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: All paired variables should have a one-to-one relationship.
+                  Examples include short name and name of test; parameter name and
+                  parameter code or number; variable name and variable label, etc.
+                Document: FDA
+                Section: FDAB009
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB0906
+              Version: '1'
+            Version: '1.5'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: All paired variables should have a one-to-one relationship.
+                  Examples include short name and name of test; parameter name and
+                  parameter code or number; variable name and variable label, etc.
+                Document: FDA
+                Section: FDAB009
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB0906
+              Version: '1'
+            Version: '1.5'
+        Version: '3.3'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: All paired variables should have a one-to-one relationship.
+                  Examples include short name and name of test; parameter name and
+                  parameter code or number; variable name and variable label, etc.
+                Document: FDA
+                Section: FDAB009
+            Origin: FDA Business Rules
+            Rule_Identifier:
+              Id: FB0906
+              Version: '1'
+            Version: '1.5'
+        Version: '3.4'
+Check:
+  all:
+    - name: --LLT
+      operator: exists
+    - name: --LLTCD
+      operator: exists
+    - name: --LLT
+      operator: is_not_unique_relationship
+      value: --LLTCD
+Core:
+  Id: CORE-000706
+  Status: Published
+  Version: '1'
+Description: --LLTCD and --LLT should have a one-to-one relationship.
+Executability: Fully Executable
+Outcome:
+  Message: --LLTCD and --LLT do not have a one-to-one relationship.
+  Output_Variables:
+    - --LLT
+    - --LLTCD
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - EVENTS
+  Domains:
+    Include:
+      - ALL
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

@@ -1,0 +1,41 @@
+id: HRL-DD-003
+version: 1
+status: Published
+standard: Define-XML
+category: Conformance
+sensitivity: Study
+executability: Reference
+description: The length of the value provided in Assigned Value must be less than
+  or equal to the variable length.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Length/Assigned Value mismatch
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: Herald
+  p21_reference: DD0146
+
+tests:
+  - name: "HRL-DD-003 — nominal compliant record"
+    type: positive
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, PARAMCD, AVAL]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "25"]
+    expected_findings: 0
+  - name: "HRL-DD-003 — nominal violating record"
+    type: negative
+    datasets:
+      ADLB:
+        variables: [STUDYID, USUBJID, PARAMCD, AVAL]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "25"]
+    expected_findings: 1
+
+notes: >
+  Blocked on `assigned_value_length_le_var_length` operator (VLM Assigned Value length <= parent variable length). See HANDOFF section 4g.
+

@@ -1,0 +1,22 @@
+id: HRL-MD-022
+version: 1
+status: Published
+standard: ADaM
+category: Specification Metadata
+sensitivity: Study
+executability: Reference
+description: Referenced Measurement Units must first be defined on Units tab.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Referenced Measurement Unit is missing
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Metadata)
+  authority: Herald
+  p21_reference: MD4022
+
+notes: >
+  Blocked on `valid_measurement_unit` cross-reference operator (Units tab lookup). See HANDOFF section 4d.
+

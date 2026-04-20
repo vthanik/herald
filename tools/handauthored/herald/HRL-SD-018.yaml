@@ -1,0 +1,55 @@
+id: HRL-SD-018
+version: 1
+status: Published
+standard: SDTM
+category: Value
+sensitivity: Record
+executability: Fully Executable
+description: >
+  When LBORRESU differs from LBSTRESU (unit conversion occurred), LBSTNRLO
+  and LBSTNRHI must also be converted to the standard unit. Reference ranges
+  left in the original unit while LBSTRESN is in the standard unit make
+  LBNRIND derivation incorrect.
+scope:
+  classes: []
+  domains:
+    - LB
+check:
+  all:
+    - name: LBORRESU
+      operator: empty
+    - name: LBSTRESU
+      operator: empty
+    - name: LBORRESU
+      operator: not_equal_to_variable
+      value: LBSTRESU
+    - name: LBSTNRLO
+      operator: equal_to_variable
+      value: LBORNRLO
+outcome:
+  message: >
+    LBSTNRLO appears unconverted (equals LBORNRLO) despite LBORRESU != LBSTRESU;
+    reference range may not be in standard units
+  severity: Error
+provenance:
+  source_doc: StudySAS Blog — 7 Mistakes in LB Unit Conversion (2026-04)
+  authority: Herald
+  reference_url: https://studysas.blogspot.com/2026/04/7-mistakes-in-lb-unit-conversion-that.html
+
+tests:
+  - name: "Reference range converted when units differ"
+    type: positive
+    datasets:
+      LB:
+        variables: [STUDYID, USUBJID, LBTESTCD, LBORRESU, LBSTRESU, LBORNRLO, LBSTNRLO]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "GLUC", "mg/dL", "mmol/L", "70", "3.9"]
+    expected_findings: 0
+  - name: "Reference range NOT converted (LBSTNRLO = LBORNRLO despite unit change)"
+    type: negative
+    datasets:
+      LB:
+        variables: [STUDYID, USUBJID, LBTESTCD, LBORRESU, LBSTRESU, LBORNRLO, LBSTNRLO]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "GLUC", "mg/dL", "mmol/L", "70", "70"]
+    expected_findings: 1

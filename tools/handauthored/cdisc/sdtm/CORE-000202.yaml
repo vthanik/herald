@@ -1,0 +1,118 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifies the hierarchical level of the records in
+                  the relationship. Values should be either ONE or MANY. Used only
+                  when identifying a relationship between datasets (as described in
+                  Section 8.3, Relating Datasets).
+                Document: IG 3.4
+                Section: 8.2.1
+              - Cited_Guidance: Since IDVAR identifies the keys that can be used to
+                  merge/join records between the datasets, --SEQ cannot be used because
+                  --SEQ only has meaning within a subject within a dataset, not across
+                  datasets.
+                Document: IG 3.4
+                Section: 8.3.1
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0419
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifies the hierarchical level of the records in
+                  the relationship. Values should be either ONE or MANY. Used only
+                  when identifying a relationship between datasets (as described in
+                  Section 8.3, Relating Datasets).
+                Document: IG v3.2
+                Section: 8.2.1
+              - Cited_Guidance: Since IDVAR identifies the keys that can be used to
+                  merge/join records between the datasets, --SEQ cannot be used because
+                  --SEQ only has meaning within a subject within a dataset, not across
+                  datasets.
+                Document: IG v3.2
+                Section: 8.3.1
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0419
+              Version: '1'
+            Version: '2.0'
+        Version: '3.2'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifies the hierarchical level of the records in
+                  the relationship. Values should be either ONE or MANY. Used only
+                  when identifying a relationship between datasets (as described in
+                  Section 8.3, Relating Datasets).
+                Document: IG 3.3
+                Section: 8.2.1
+              - Cited_Guidance: Since IDVAR identifies the keys that can be used to
+                  merge/join records between the datasets, --SEQ cannot be used because
+                  --SEQ only has meaning within a subject within a dataset, not across
+                  datasets.
+                Document: IG 3.3
+                Section: 8.3.1
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0419
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+      - Name: TIG
+        References:
+          - Citations:
+              - Cited_Guidance: Identifies the hierarchical level of the records in
+                  the relationship. Values should be either ONE or MANY. Used only
+                  when identifying a relationship between datasets (as described in
+                  Section 2.8.5.2.
+                Document: TIG 1.0
+                Section: 2.8.5.2|2.8.10.21
+            Origin: TIG Conformance Rules
+            Rule_Identifier:
+              Id: TIG0574
+              Version: '1'
+            Version: '1.0'
+        Substandard: SDTM
+        Version: '1.0'
+Check:
+  all:
+    - name: IDVAR
+      operator: suffix_matches_regex
+      suffix: 3
+      value: SEQ
+    - name: RELTYPE
+      operator: non_empty
+Core:
+  Id: CORE-000202
+  Status: Published
+  Version: '1'
+Description: When IDVAR is populated with a --SEQ value, RELTYPE must be null.
+Executability: Fully Executable
+Outcome:
+  Message: RELTYPE is populated when IDVAR is populated with a 'SEQ' value.
+  Output_Variables:
+    - IDVAR
+    - RELTYPE
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - RELATIONSHIP
+  Domains:
+    Include:
+      - RELREC
+  Use_Case: INDH, PROD
+Sensitivity: Record
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.2
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

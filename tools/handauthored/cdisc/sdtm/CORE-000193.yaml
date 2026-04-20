@@ -1,0 +1,64 @@
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: The start date/time of the Disease Milestone Instance
+                  Name in MIDS.
+                Document: Model v2.0
+                Item: MIDSDTC
+                Section: Timing
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0503
+              Version: '1'
+            Version: '2.0'
+        Version: '3.4'
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited_Guidance: The start date/time of the Disease Milestone Instance
+                  Name in MIDS.
+                Document: Model v1.7
+                Item: MIDSDTC
+                Section: 2.2.5
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule_Identifier:
+              Id: CG0503
+              Version: '1'
+            Version: '2.0'
+        Version: '3.3'
+Check:
+  all:
+    - name: MIDSDTC
+      operator: exists
+    - name: MIDS
+      operator: not_exists
+Core:
+  Id: CORE-000193
+  Status: Published
+  Version: '1'
+Description: Raise an error when variable MIDSDTC is present and MIDS variable is
+  missing.
+Executability: Fully Executable
+Outcome:
+  Message: MIDS variable is missing when MIDSDTC variable is present in a dataset.
+  Output_Variables:
+    - MIDSDTC
+    - MIDS
+Rule_Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - ALL
+  Domains:
+    Include:
+      - ALL
+Sensitivity: Dataset
+herald:
+  source: CDISC Library API
+  catalogs:
+    - SDTMIG 3.3
+  fetched: '2026-04-03T12:15:16Z'
+

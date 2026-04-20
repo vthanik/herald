@@ -1,0 +1,48 @@
+id: HRL-SD-015
+version: 1
+status: Published
+standard: SDTM
+category: Consistency
+sensitivity: Dataset
+executability: Fully Executable
+description: >
+  LBSTRESU (standard unit) must be consistent within each LBTESTCD. A single
+  lab test code should not have multiple distinct standard units across records
+  in the same dataset.
+scope:
+  classes: []
+  domains:
+    - LB
+check:
+  all:
+    - name: LBSTRESU
+      operator: not_consistent_within
+      value: LBTESTCD
+outcome:
+  message: Multiple distinct LBSTRESU values found for the same LBTESTCD
+  severity: Error
+provenance:
+  source_doc: StudySAS Blog — 7 Mistakes in LB Unit Conversion (2026-04)
+  authority: Herald
+  reference_url: https://studysas.blogspot.com/2026/04/7-mistakes-in-lb-unit-conversion-that.html
+
+tests:
+  - name: "Single LBSTRESU per LBTESTCD"
+    type: positive
+    datasets:
+      LB:
+        variables: [STUDYID, USUBJID, LBTESTCD, LBSTRESU]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "U/L"]
+          - ["CDISCPILOT01", "01-701-1023", "ALT", "U/L"]
+          - ["CDISCPILOT01", "01-701-1015", "GLUC", "mmol/L"]
+    expected_findings: 0
+  - name: "Multiple LBSTRESU for same LBTESTCD"
+    type: negative
+    datasets:
+      LB:
+        variables: [STUDYID, USUBJID, LBTESTCD, LBSTRESU]
+        records:
+          - ["CDISCPILOT01", "01-701-1015", "ALT", "U/L"]
+          - ["CDISCPILOT01", "01-701-1023", "ALT", "IU/L"]
+    expected_findings: 1

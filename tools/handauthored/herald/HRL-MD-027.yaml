@@ -1,0 +1,23 @@
+id: HRL-MD-027
+version: 1
+status: Published
+standard: ADaM
+category: Specification Metadata
+sensitivity: Study
+executability: Reference
+description: Codelists associated with a QNAM should have Terms less than or equal
+  to 8 characters in length to adhere to SAS XPTV5 requirements.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Invalid Display Term value for Codelist referenced by QNAM
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Metadata)
+  authority: Herald
+  p21_reference: MD4027
+
+notes: >
+  Blocked on conditional length-within-group operator (Terms of QNAM codelists <= 8 chars). See HANDOFF section 4c.
+
