@@ -66,7 +66,24 @@ op_iso8601 <- function(data, ctx, name, allow_missing = TRUE) {
   pass
 }
 
-.register_op("iso8601", op_iso8601)
+.register_op(
+  "iso8601", op_iso8601,
+  meta = list(
+    kind       = "string",
+    summary    = "SDTM ISO 8601 extended format with dash-substitution for missing components",
+    arg_schema = list(
+      name          = list(type = "string",  required = TRUE),
+      allow_missing = list(type = "logical", required = FALSE, default = TRUE)
+    ),
+    cost_hint     = "O(n)",
+    column_arg    = "name",
+    returns_na_ok = TRUE,
+    examples = list(
+      list(name = "AESTDTC"),
+      list(name = "VSDTC", allow_missing = FALSE)
+    )
+  )
+)
 
 # --- matches_regex -----------------------------------------------------------
 
@@ -87,7 +104,24 @@ op_matches_regex <- function(data, ctx, name, value, allow_missing = TRUE) {
   pass
 }
 
-.register_op("matches_regex", op_matches_regex)
+.register_op(
+  "matches_regex", op_matches_regex,
+  meta = list(
+    kind       = "string",
+    summary    = "PCRE regex match on column values",
+    arg_schema = list(
+      name          = list(type = "string",  required = TRUE),
+      value         = list(type = "string",  required = TRUE),
+      allow_missing = list(type = "logical", required = FALSE, default = TRUE)
+    ),
+    cost_hint     = "O(n)",
+    column_arg    = "name",
+    returns_na_ok = TRUE,
+    examples = list(
+      list(name = "USUBJID", value = "^[A-Z0-9-]+$")
+    )
+  )
+)
 
 # --- length_le ---------------------------------------------------------------
 
@@ -107,7 +141,23 @@ op_length_le <- function(data, ctx, name, value) {
   pass
 }
 
-.register_op("length_le", op_length_le)
+.register_op(
+  "length_le", op_length_le,
+  meta = list(
+    kind       = "string",
+    summary    = "Character byte-length <= max (matches SAS column width semantics)",
+    arg_schema = list(
+      name  = list(type = "string",  required = TRUE),
+      value = list(type = "integer", required = TRUE)
+    ),
+    cost_hint     = "O(n)",
+    column_arg    = "name",
+    returns_na_ok = TRUE,
+    examples = list(
+      list(name = "AETERM", value = 200L)
+    )
+  )
+)
 
 # --- contains ----------------------------------------------------------------
 
@@ -132,4 +182,21 @@ op_contains <- function(data, ctx, name, value, ignore_case = FALSE) {
   pass
 }
 
-.register_op("contains", op_contains)
+.register_op(
+  "contains", op_contains,
+  meta = list(
+    kind       = "string",
+    summary    = "Fixed substring containment on column values",
+    arg_schema = list(
+      name        = list(type = "string",  required = TRUE),
+      value       = list(type = "string",  required = TRUE),
+      ignore_case = list(type = "logical", required = FALSE, default = FALSE)
+    ),
+    cost_hint     = "O(n)",
+    column_arg    = "name",
+    returns_na_ok = FALSE,
+    examples = list(
+      list(name = "AETERM", value = "HEADACHE")
+    )
+  )
+)
