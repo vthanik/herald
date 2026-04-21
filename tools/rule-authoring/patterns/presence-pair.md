@@ -52,11 +52,28 @@ though each leaf mask is length `nrow(data)`. No per-row over-fire.
 - Negative fixture: dataset has both `VAR_A` and `VAR_B` → fires 0×.
 - `provenance.executability` → `predicate`.
 
-## Batch 1 scope
+## Batch 1 scope (complete)
 
-- 52 of 58 matching rules are parseable with literal variable names.
-- 6 rules with `xx`/`y` indexing (e.g. `TRTxxAN`/`TRTxxA`) are deferred
-  to a follow-up batch pending an `xx`-expansion helper.
+All 58 matching rules converted:
+
+- **52 concrete** rules with literal variable names (ARELTMU/ARELTM,
+  BTOXGR/ATOXGR, ...). Template substitutes `%var_a%` / `%var_b%`
+  from `presence-pair.ids`.
+- **6 xx/y-indexed** rules (`ADaM-64, 75, 80, 97, 201, 559` --
+  `TRTxxAN`/`TRTxxA`, `TRTPGyN`/`TRTPGy`, etc.). Each carries an
+  `expand:` key (`xx` or `y`) that the engine's
+  `R/index-expand.R::.expand_indexed()` walks at validate time
+  against the dataset's actual columns, instantiating one
+  `{all: [exists(...), not_exists(...)]}` sub-tree per concrete
+  index value found, all wrapped under `{any}`.
+
+`presence-pair.ids` carries a 4th column `expand` -- empty for the
+52 concrete rules and `xx` / `y` for the 6 indexed ones. The
+template below covers both cases: when `%expand%` is empty, the
+`expand:` key collapses away at render time and the tree is a
+plain `{all: [exists, not_exists]}`; when `%expand%` is populated,
+the `expand:` key carries through and the engine handles per-index
+expansion.
 
 ## Fixture strategy
 
