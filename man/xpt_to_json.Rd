@@ -38,6 +38,8 @@ unlink(c(xpt, json))
 Other io: 
 \code{\link{json_to_xpt}()},
 \code{\link{read_json}()},
-\code{\link{write_json}()}
+\code{\link{read_parquet}()},
+\code{\link{write_json}()},
+\code{\link{write_parquet}()}
 }
 \concept{io}

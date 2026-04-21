@@ -40,7 +40,9 @@ unlink(file)
 
 Other io: 
 \code{\link{json_to_xpt}()},
+\code{\link{read_parquet}()},
 \code{\link{write_json}()},
+\code{\link{write_parquet}()},
 \code{\link{xpt_to_json}()}
 }
 \concept{io}

@@ -1,0 +1,47 @@
+# Tests for Parquet I/O. Requires the `arrow` package (Suggests); skipped
+# in CI environments that don't have it installed.
+
+test_that("parquet round-trip preserves labels / formats / lengths / type", {
+  skip_if_not_installed("arrow")
+
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    AGE     = c(65L, 72L),
+    stringsAsFactors = FALSE
+  )
+  attr(dm, "label")                <- "Demographics"
+  attr(dm$USUBJID, "label")        <- "Unique Subject Identifier"
+  attr(dm$USUBJID, "sas.length")   <- 40L
+  attr(dm$USUBJID, "xpt_type")     <- "text"
+  attr(dm$AGE,     "label")        <- "Age"
+  attr(dm$AGE,     "format.sas")   <- "8."
+  attr(dm$AGE,     "sas.length")   <- 8L
+  attr(dm$AGE,     "xpt_type")     <- "integer"
+
+  f <- tempfile(fileext = ".parquet")
+  write_parquet(dm, f)
+  expect_true(file.exists(f))
+  out <- read_parquet(f)
+  unlink(f)
+
+  expect_equal(attr(out, "label"), "Demographics")
+  expect_equal(attr(out$USUBJID, "label"), "Unique Subject Identifier")
+  expect_equal(attr(out$USUBJID, "sas.length"), 40L)
+  expect_equal(attr(out$USUBJID, "xpt_type"),   "text")
+  expect_equal(attr(out$AGE, "label"),       "Age")
+  expect_equal(attr(out$AGE, "format.sas"),  "8.")
+  expect_equal(attr(out$AGE, "sas.length"),  8L)
+  expect_equal(attr(out$AGE, "xpt_type"),    "integer")
+
+  expect_equal(out$USUBJID, c("S1", "S2"))
+  expect_equal(out$AGE,     c(65L, 72L))
+})
+
+test_that("read_parquet errors when the file is missing", {
+  skip_if_not_installed("arrow")
+  expect_error(read_parquet("/definitely/not/here.parquet"))
+})
+
+# Note: a mocked-requireNamespace() test was considered for the "arrow not
+# installed" path but the file.exists() check fires first in read_parquet()
+# so it adds no real coverage. Left as documentation-only behaviour.

@@ -962,3 +962,241 @@ op_subject_has_matching_row <- function(data, ctx, name,
     cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
   )
 )
+
+# --- attr-reading ops (plan Q12/Q15/Q16) -------------------------------------
+# These ops read column / dataset attributes that `apply_spec()`, the XPT
+# reader, or the Dataset-JSON reader populate at ingest. Validation stays
+# pure: no spec lookup happens at runtime. When an attribute is missing on
+# either side, the op returns NA so the engine emits an advisory rather
+# than a false fire.
+
+# Friendly attribute names -> actual R attr keys used across readers.
+.ATTR_KEY <- function(attribute) {
+  map <- c(label  = "label",
+           format = "format.sas",
+           length = "sas.length",
+           type   = "xpt_type")
+  key <- as.character(attribute %||% "")
+  unname(map[key]) %||% key
+}
+
+op_attr_mismatch <- function(data, ctx, name, attribute,
+                             reference_dataset) {
+  n <- nrow(data)
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+  if (is.null(data[[name]]) || is.null(ref_ds[[name]])) {
+    return(.dataset_level_mask(FALSE, n))
+  }
+  key <- .ATTR_KEY(attribute)
+  a <- attr(data[[name]], key)
+  b <- attr(ref_ds[[name]], key)
+  if (is.null(a) || is.null(b)) return(rep(NA, n))
+  .dataset_level_mask(!identical(a, b), n)
+}
+.register_op(
+  "attr_mismatch", op_attr_mismatch,
+  meta = list(
+    kind = "cross",
+    summary = "Column attribute differs between current and reference dataset",
+    arg_schema = list(
+      name              = list(type = "string", required = TRUE),
+      attribute         = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE)
+    ),
+    cost_hint = "O(1)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_shared_attr_mismatch <- function(data, ctx, attribute,
+                                    reference_dataset, exclude = NULL) {
+  n <- nrow(data)
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+
+  shared <- intersect(names(data), names(ref_ds))
+  if (!is.null(exclude)) {
+    shared <- setdiff(shared, as.character(exclude))
+  }
+  if (length(shared) == 0L) return(.dataset_level_mask(FALSE, n))
+
+  key <- .ATTR_KEY(attribute)
+  for (c in shared) {
+    a <- attr(data[[c]], key)
+    b <- attr(ref_ds[[c]], key)
+    if (is.null(a) || is.null(b)) next
+    if (!identical(a, b)) return(.dataset_level_mask(TRUE, n))
+  }
+  .dataset_level_mask(FALSE, n)
+}
+.register_op(
+  "shared_attr_mismatch", op_shared_attr_mismatch,
+  meta = list(
+    kind = "cross",
+    summary = "Any column shared with the reference dataset has a differing attribute",
+    arg_schema = list(
+      attribute         = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE),
+      exclude           = list(type = "array",  required = FALSE)
+    ),
+    cost_hint = "O(n*m)", column_arg = NA_character_, returns_na_ok = TRUE
+  )
+)
+
+op_dataset_label_not <- function(data, ctx, expected) {
+  n <- nrow(data)
+  lbl <- attr(data, "label")
+  if (is.null(lbl)) return(rep(NA, n))
+  .dataset_level_mask(
+    toupper(trimws(as.character(lbl))) != toupper(trimws(as.character(expected))),
+    n
+  )
+}
+.register_op(
+  "dataset_label_not", op_dataset_label_not,
+  meta = list(
+    kind = "existence",
+    summary = "Dataset label (attr 'label') does not equal the expected string",
+    arg_schema = list(
+      expected = list(type = "string", required = TRUE)
+    ),
+    cost_hint = "O(1)", column_arg = NA_character_, returns_na_ok = TRUE
+  )
+)
+
+# --- treatment-var absence across datasets (plan Q18) ------------------------
+
+op_treatment_var_absent_across_datasets <- function(data, ctx,
+                                                    current_vars,
+                                                    reference_vars,
+                                                    reference_dataset = "ADSL") {
+  n <- nrow(data)
+  curr <- toupper(as.character(unlist(current_vars)))
+  curr_present <- any(curr %in% toupper(names(data)))
+  if (curr_present) return(.dataset_level_mask(FALSE, n))
+
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+
+  ref_cols_up <- toupper(names(ref_ds))
+  ref_templates <- as.character(unlist(reference_vars))
+  ref_present <- FALSE
+  phs <- names(.INDEX_PATTERNS)
+  for (tmpl in ref_templates) {
+    in_phs <- phs[vapply(phs, function(p)
+      grepl(p, tmpl, fixed = TRUE), logical(1L))]
+    if (length(in_phs) == 0L) {
+      if (toupper(tmpl) %in% ref_cols_up) { ref_present <- TRUE; break }
+      next
+    }
+    tuples <- .multi_values_in_cols(tmpl, names(ref_ds), in_phs)
+    if (length(tuples) > 0L) { ref_present <- TRUE; break }
+  }
+  .dataset_level_mask(!ref_present, n)
+}
+.register_op(
+  "treatment_var_absent_across_datasets", op_treatment_var_absent_across_datasets,
+  meta = list(
+    kind = "cross",
+    summary = "None of the current-dataset treatment vars present AND none of the ADSL treatment vars present",
+    arg_schema = list(
+      current_vars      = list(type = "array",  required = TRUE),
+      reference_vars    = list(type = "array",  required = TRUE),
+      reference_dataset = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n*m)", column_arg = NA_character_, returns_na_ok = TRUE
+  )
+)
+
+# --- per-subject indexed value check (plan Q19 / Q22 / Q23) ------------------
+# TRTP/TRTA/APHASE/ASPER: the row value must match at least one of the
+# templated columns in ADSL for the same subject (e.g. TRTP must match
+# one of TRT01P / TRT02P / ... / TRTnnP in ADSL for this USUBJID).
+
+op_value_not_in_subject_indexed_set <- function(data, ctx, name,
+                                                reference_dataset,
+                                                reference_template,
+                                                key = "USUBJID",
+                                                reference_key = NULL) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  if (is.null(data[[name]])) return(rep(NA, n))
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+
+  ref_key <- reference_key %||% key
+  if (is.null(data[[key]]) || is.null(ref_ds[[ref_key]])) return(rep(NA, n))
+
+  matching_cols <- .resolve_template_cols(reference_template, names(ref_ds))
+  if (length(matching_cols) == 0L) return(rep(NA, n))
+
+  rtrim <- function(v) {
+    v <- as.character(v)
+    r <- sub("\\s+$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+  ref_keys_all <- rtrim(ref_ds[[ref_key]])
+  subj_map <- new.env(hash = TRUE, parent = emptyenv())
+  for (col in matching_cols) {
+    vals <- rtrim(ref_ds[[col]])
+    for (i in seq_along(ref_keys_all)) {
+      s <- ref_keys_all[[i]]
+      v <- vals[[i]]
+      if (is.na(s) || is.na(v)) next
+      prev <- subj_map[[s]]
+      subj_map[[s]] <- unique(c(prev, v))
+    }
+  }
+
+  row_keys <- rtrim(data[[key]])
+  row_vals <- rtrim(data[[name]])
+  out <- logical(n)
+  for (i in seq_len(n)) {
+    s <- row_keys[[i]]
+    v <- row_vals[[i]]
+    if (is.na(s) || is.na(v)) { out[[i]] <- NA; next }
+    allowed <- subj_map[[s]]
+    if (is.null(allowed)) { out[[i]] <- NA; next }
+    out[[i]] <- !(v %in% allowed)
+  }
+  out
+}
+.register_op(
+  "value_not_in_subject_indexed_set", op_value_not_in_subject_indexed_set,
+  meta = list(
+    kind = "cross",
+    summary = "Row value is not in the set of subject-keyed values drawn from templated reference columns",
+    arg_schema = list(
+      name               = list(type = "string", required = TRUE),
+      reference_dataset  = list(type = "string", required = TRUE),
+      reference_template = list(type = "string", required = TRUE),
+      key                = list(type = "string", required = FALSE),
+      reference_key      = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n*m)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+#' Resolve a templated column name (e.g. "TRTxxP" or "PxxSw") against a
+#' dataset's column list. Returns the concrete column names that match.
+#' @noRd
+.resolve_template_cols <- function(template, cols) {
+  phs <- names(.INDEX_PATTERNS)
+  in_phs <- phs[vapply(phs, function(p)
+    grepl(p, template, fixed = TRUE), logical(1L))]
+  if (length(in_phs) == 0L) {
+    return(if (template %in% cols) template else character(0))
+  }
+  tuples <- .multi_values_in_cols(template, cols, in_phs)
+  out <- character()
+  for (tup in tuples) {
+    resolved <- template
+    for (ph in names(tup)) {
+      if (is.na(tup[[ph]])) next
+      resolved <- gsub(ph, tup[[ph]], resolved, fixed = TRUE)
+    }
+    if (resolved %in% cols) out <- c(out, resolved)
+  }
+  unique(out)
+}

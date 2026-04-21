@@ -89,9 +89,13 @@ validate <- function(path = NULL,
 
   # ---- ctx + per-rule execution -------------------------------------------
   ctx <- new_herald_ctx()
-  ctx$datasets  <- datasets
-  ctx$spec      <- spec
-  ctx$crossrefs <- build_crossrefs(datasets, spec)
+  ctx$datasets     <- datasets
+  ctx$spec         <- spec
+  ctx$crossrefs    <- build_crossrefs(datasets, spec)
+  # Pre-scan every dataset for duplicate USUBJID rows. Cross-dataset ops
+  # use this cache to surface "ref has duplicate USUBJID" as a first-class
+  # finding instead of silently first-matching (plan Q10).
+  ctx$dup_subjects <- .dup_subjects_scan(datasets)
 
   all_findings <- list()
   rules_applied <- 0L
@@ -234,7 +238,11 @@ validate <- function(path = NULL,
 # Target="Metadata" rules authored from CDISC text.
 .METADATA_OPS <- c("exists", "not_exists", "label_by_suffix_missing",
                    "any_var_name_exceeds_length",
-                   "any_var_label_exceeds_length")
+                   "any_var_label_exceeds_length",
+                   "attr_mismatch", "shared_attr_mismatch",
+                   "dataset_label_not",
+                   "treatment_var_absent_across_datasets",
+                   "no_var_with_suffix")
 
 # Walk a check_tree and return TRUE when every leaf operator is in
 # .METADATA_OPS. Narrative / empty / r_expression trees are not metadata-
@@ -250,6 +258,33 @@ validate <- function(path = NULL,
   children <- c(node[["all"]], node[["any"]])
   if (length(children) == 0L) return(FALSE)
   all(vapply(children, .is_metadata_rule, logical(1L)))
+}
+
+#' Scan every dataset once for duplicated USUBJID values and cache the
+#' result on `ctx`. Returns a named list parallel to `datasets`: each
+#' element is either a (possibly empty) character vector of duplicated
+#' USUBJID values, or NA_character_ when the dataset has no USUBJID column.
+#' @noRd
+.dup_subjects_scan <- function(datasets) {
+  out <- vector("list", length(datasets))
+  names(out) <- names(datasets)
+  for (nm in names(datasets)) {
+    d <- datasets[[nm]]
+    if (!is.data.frame(d)) {
+      out[[nm]] <- NA_character_
+      next
+    }
+    j <- match("USUBJID", toupper(names(d)))
+    if (is.na(j)) {
+      out[[nm]] <- NA_character_
+      next
+    }
+    vals <- as.character(d[[j]])
+    vals <- vals[!is.na(vals) & nzchar(vals)]
+    dup  <- unique(vals[duplicated(vals)])
+    out[[nm]] <- dup
+  }
+  out
 }
 
 #' De-duplicate advisory findings: emit at most one advisory per rule_id.

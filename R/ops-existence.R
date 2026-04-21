@@ -341,3 +341,27 @@ op_any_value_exceeds_length <- function(data, ctx, value) {
     returns_na_ok = FALSE
   )
 )
+
+# --- no_var_with_suffix (plan Q24) -------------------------------------------
+# ADSL must carry at least one flag variable (suffix `FL`). Usable beyond
+# ADSL: any rule that asserts "a variable ending in <SUFFIX> must be
+# present" can target this op. Metadata-level.
+
+op_no_var_with_suffix <- function(data, ctx, suffix) {
+  n <- nrow(data)
+  s <- toupper(as.character(suffix %||% ""))
+  if (!nzchar(s)) return(.dataset_level_mask(FALSE, n))
+  any_present <- any(endsWith(toupper(names(data)), s))
+  .dataset_level_mask(!any_present, n)
+}
+.register_op(
+  "no_var_with_suffix", op_no_var_with_suffix,
+  meta = list(
+    kind = "existence",
+    summary = "No column in the dataset has a name ending with the given suffix",
+    arg_schema = list(suffix = list(type = "string", required = TRUE)),
+    cost_hint = "O(n)",
+    column_arg = NA_character_,
+    returns_na_ok = FALSE
+  )
+)

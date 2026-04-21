@@ -114,6 +114,54 @@ emit_findings <- function(rule, ds_name, mask, data, variable = NA_character_) {
   out
 }
 
+# -----------------------------------------------------------------------------
+# Submission-level findings
+# -----------------------------------------------------------------------------
+# Some rules live above the dataset layer (e.g. "ADSL dataset does not
+# exist"). These emit a single finding with dataset = "<submission>"
+# and row = NA so that reviewers see a first-class entry rather than a
+# silent rule-disable.
+
+#' Sentinel dataset name for submission-level findings.
+#' @noRd
+.SUBMISSION_DATASET <- "<submission>"
+
+#' Emit a single submission-level finding.
+#'
+#' @param rule Single-row slice of rules.rds or equivalent named list.
+#' @param status One of `"fired"` or `"advisory"`. Defaults to `"fired"`.
+#' @param message Optional override; defaults to `rule$message`.
+#' @param severity Optional override; defaults to `rule$severity`.
+#' @param variable Optional variable attribution (e.g. the dataset name
+#'   that is missing); passed through to the `variable` column.
+#' @param value Optional `value` column content.
+#'
+#' @return A one-row tibble matching `empty_findings()`.
+#' @noRd
+emit_submission_finding <- function(rule, status = "fired", message = NULL,
+                                    severity = NULL, variable = NA_character_,
+                                    value = NA_character_) {
+  if (!status %in% c("fired", "advisory")) {
+    cli::cli_abort("{.arg status} must be one of {.val fired} or {.val advisory}.")
+  }
+  tibble::tibble(
+    rule_id           = rule[["id"]]        %||% NA_character_,
+    authority         = rule[["authority"]] %||% NA_character_,
+    standard          = rule[["standard"]]  %||% NA_character_,
+    severity          = severity %||% rule[["severity"]] %||% "Medium",
+    status            = status,
+    dataset           = .SUBMISSION_DATASET,
+    variable          = variable,
+    row               = NA_integer_,
+    value             = value,
+    expected          = NA_character_,
+    message           = message %||% rule[["message"]] %||% NA_character_,
+    source_url        = rule[["source_url"]] %||% NA_character_,
+    p21_id_equivalent = rule[["p21_id_equivalent"]] %||% NA_character_,
+    license           = rule[["license"]] %||% NA_character_
+  )
+}
+
 #' Peek at a check_tree and guess the primary variable for finding attribution
 #'
 #' Walks the tree looking for the first leaf with a `name` field. Returns
