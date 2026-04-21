@@ -1,0 +1,3 @@
+"rule_id","study_day_var","target_date_var","ref_ds","ref_col"
+"CG0220","--STDY","--STDTC","DM","RFSTDTC"
+"CG0222","--ENDY","--ENDTC","DM","RFSTDTC"

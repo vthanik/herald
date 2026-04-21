@@ -12,8 +12,14 @@ scope:
   exclude_domains: []
 variable: DSSTDTC
 check:
-  narrative: For each subject, earliest DSSTDTC = DM.RFICDTC
-  condition: Multiple informed consents obtained and DSDECOD = 'INFORMED CONSENT OBTAINED'
+  all:
+  - operator: non_empty
+    name: DSSTDTC
+  - operator: less_than_by_key
+    name: DSSTDTC
+    reference_dataset: DM
+    reference_column: RFICDTC
+    key: USUBJID
 outcome:
   message: For each subject, earliest DSSTDTC = DM.RFICDTC
   severity: Medium
@@ -26,5 +32,4 @@ provenance:
     that protocol milestone is documented.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

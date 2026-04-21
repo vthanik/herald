@@ -380,6 +380,110 @@ if (run_all) {
     return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
   }
 
+  # Special-case synth for value-compare-subject-ordinal pattern:
+  # {all: [non_empty(row_var), <ordinal_op>_by_key(row_var, ref_ds, ref_col, key=USUBJID)]}
+  # Positive: row date violates the ordinal relation. Negative: compliant.
+  if (length(lv) == 2L &&
+      ops[[1L]] == "non_empty" &&
+      ops[[2L]] %in% c("less_than_by_key","less_than_or_equal_by_key",
+                       "greater_than_by_key","greater_than_or_equal_by_key")) {
+    row_var <- as.character(lv[[1L]]$name)
+    ref_ds  <- toupper(as.character(lv[[2L]]$reference_dataset %||% "DM"))
+    ref_col <- as.character(lv[[2L]]$reference_column %||% "")
+    cmp_op  <- ops[[2L]]
+    if (nzchar(ref_col)) {
+      scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+      pick  <- pick_dataset_for_scope(scope)
+      rule_std <- toupper(as.character(rule$standard %||% ""))
+      if (!is.na(pick$dataset) && pick$dataset != ref_ds) {
+        ds_name <- pick$dataset
+        spec    <- if (pick$via %in% c("class","domain") &&
+                       !is.na(pick$class) && nzchar(pick$class))
+          list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+      } else {
+        ds_name <- "DS"; spec <- NULL
+      }
+      dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+      exp <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+      row_var_r <- exp(row_var)
+      mk <- function(fire) {
+        if (cmp_op %in% c("less_than_by_key","less_than_or_equal_by_key")) {
+          pos_row_val <- "2023-01-01"; neg_row_val <- "2025-01-01"
+          ref_val     <- "2024-01-01"
+        } else {
+          pos_row_val <- "2025-01-01"; neg_row_val <- "2023-01-01"
+          ref_val     <- "2024-01-01"
+        }
+        main_cols <- list(USUBJID = c("S1","S2"))
+        main_cols[[row_var_r]] <- if (isTRUE(fire)) c(pos_row_val, pos_row_val)
+                                  else              c(neg_row_val, neg_row_val)
+        ref_cols  <- list(USUBJID = c("S1","S2"))
+        ref_cols[[ref_col]] <- c(ref_val, ref_val)
+        datasets <- list(main = main_cols, ref = ref_cols)
+        names(datasets) <- c(ds_name, ref_ds)
+        list(
+          rule_id      = as.character(rule$id),
+          fixture_type = if (isTRUE(fire)) "positive" else "negative",
+          datasets     = datasets,
+          expected     = list(fires = fire,
+                              rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+          notes        = "synth value-compare-subject-ordinal",
+          authored     = "pattern-fixture-synth@1",
+          spec         = spec, `_path` = NA_character_
+        )
+      }
+      return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+    }
+  }
+
+  # Special-case synth for value-study-day pattern:
+  # single-leaf study_day_mismatch op.
+  if (length(lv) == 1L && ops[[1L]] == "study_day_mismatch") {
+    sdy_var    <- as.character(lv[[1L]]$name)
+    ref_ds     <- toupper(as.character(lv[[1L]]$reference_dataset %||% "DM"))
+    ref_col    <- as.character(lv[[1L]]$reference_column %||% "RFSTDTC")
+    target_dtc <- as.character(lv[[1L]]$target_date_column %||% "")
+    if (nzchar(target_dtc)) {
+      scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+      pick  <- pick_dataset_for_scope(scope)
+      rule_std <- toupper(as.character(rule$standard %||% ""))
+      if (!is.na(pick$dataset) && pick$dataset != ref_ds) {
+        ds_name <- pick$dataset
+        spec    <- if (pick$via %in% c("class","domain") &&
+                       !is.na(pick$class) && nzchar(pick$class))
+          list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+      } else {
+        ds_name <- "AE"; spec <- NULL
+      }
+      dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+      exp <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+      sdy_r <- exp(sdy_var); target_r <- exp(target_dtc)
+      mk <- function(fire) {
+        anchor <- "2024-01-10"; target <- "2024-01-11"
+        correct_day <- 2L
+        stored_day <- if (isTRUE(fire)) 99L else correct_day
+        main_cols <- list(USUBJID = c("S1","S2"))
+        main_cols[[target_r]] <- c(target, target)
+        main_cols[[sdy_r]]    <- c(stored_day, stored_day)
+        ref_cols <- list(USUBJID = c("S1","S2"))
+        ref_cols[[ref_col]] <- c(anchor, anchor)
+        datasets <- list(main = main_cols, ref = ref_cols)
+        names(datasets) <- c(ds_name, ref_ds)
+        list(
+          rule_id      = as.character(rule$id),
+          fixture_type = if (isTRUE(fire)) "positive" else "negative",
+          datasets     = datasets,
+          expected     = list(fires = fire,
+                              rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+          notes        = "synth value-study-day",
+          authored     = "pattern-fixture-synth@1",
+          spec         = spec, `_path` = NA_character_
+        )
+      }
+      return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+    }
+  }
+
   # Special-case synth for value-conditional-null-crossref pattern:
   # {all: [non_empty(target), ref_col_empty(USUBJID, DM.RFCOL)]}.
   # Positive: main dataset row has target populated AND its USUBJID has

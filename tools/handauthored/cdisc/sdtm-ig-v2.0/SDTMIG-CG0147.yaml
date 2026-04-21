@@ -13,7 +13,7 @@ scope:
 variable: RFXENDTC
 check:
   narrative: RFXENDTC = latest value of EX.EXSTDTC or EX.EXENDTC
-  condition: EX records present for subject
+  condition: ''
 outcome:
   message: RFXENDTC = latest value of EX.EXSTDTC or EX.EXENDTC
   severity: Medium
@@ -26,4 +26,3 @@ provenance:
   source_version: '1'
   license: CC-BY-4.0
   executability: narrative
-

@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: --STDY
 check:
-  narrative: --STDY is properly calculated per study day algorithm
-  condition: --STDTC and DM.RFSTDTC both contain complete values in their date portion
+  operator: study_day_mismatch
+  name: --STDY
+  reference_dataset: DM
+  reference_column: RFSTDTC
+  target_date_column: --STDTC
+  key: USUBJID
 outcome:
   message: --STDY is properly calculated per study day algorithm
   severity: Medium
@@ -32,5 +36,4 @@ provenance:
     should be used across all domains.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -395,3 +395,280 @@ op_matches_by_key <- function(data, ctx, name,
     cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
   )
 )
+
+# --- ordinal by-key comparators --------------------------------------------
+# Extend the by-key join family with ordinal comparisons. Semantics: each
+# fires TRUE when the row's `name` value is STRICTLY <operator> the joined
+# reference value. ISO 8601 dates sort lexicographically so string compare
+# is sufficient for CDISC date columns (RFSTDTC, RFICDTC, DTHDTC, etc.).
+# For numeric columns both sides are coerced via as.numeric.
+#
+# Mirrors P21's DSL: `SUB:RFICDTC @lteq %Domain%STDTC` checks that the
+# subject's RFICDTC is <= the row's STDTC. `SUB:` is P21 syntax for
+# subject-level variables sourced from DM; herald expresses the same
+# concept via reference_dataset="DM" + reference_key="USUBJID".
+#
+# See `Comparison.java:160-207` for P21's ordinal logic and
+# `DataEntryFactory.java:160-180` for the type-aware compareToAny path.
+
+.cmp_by_key <- function(data, ctx, name, reference_dataset, reference_column,
+                        key, reference_key, fn) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  if (is.null(data[[name]])) return(rep(NA, n))
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+
+  join_key     <- key           %||% "USUBJID"
+  ref_join_key <- reference_key %||% join_key
+  if (is.null(data[[join_key]]) ||
+      is.null(ref_ds[[ref_join_key]]) ||
+      is.null(ref_ds[[reference_column]])) {
+    return(rep(NA, n))
+  }
+
+  # rtrim-null (P21 DataEntryFactory.java:313-328) on both sides so
+  # "2024-01-15 " and "2024-01-15" compare equal; all-whitespace -> NA.
+  rtrim_null <- function(v) {
+    v <- as.character(v)
+    r <- sub("\\s+$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+  mine  <- rtrim_null(data[[name]])
+  ref_keys <- rtrim_null(ref_ds[[ref_join_key]])
+  ref_vals <- rtrim_null(ref_ds[[reference_column]])
+  # When a subject has multiple matching ref rows (e.g. multi-domain),
+  # use the first non-NA value -- subject-level columns like RFSTDTC in DM
+  # are single-valued per subject; only one row per USUBJID in DM.
+  ok <- !is.na(ref_keys)
+  lut <- stats::setNames(ref_vals[ok], ref_keys[ok])
+  lut <- lut[!duplicated(names(lut))]
+
+  row_keys <- rtrim_null(data[[join_key]])
+  their <- unname(lut[row_keys])
+
+  # Attempt numeric compare when both sides parse as numeric; else
+  # lexicographic string compare (ISO dates sort correctly this way).
+  mine_num  <- suppressWarnings(as.numeric(mine))
+  their_num <- suppressWarnings(as.numeric(their))
+  numeric_path <- !any(is.na(mine_num) & !is.na(mine)) &&
+                  !any(is.na(their_num) & !is.na(their))
+  out <- if (numeric_path) fn(mine_num, their_num) else fn(mine, their)
+  out[is.na(mine) | is.na(their)] <- NA
+  out
+}
+
+op_less_than_by_key <- function(data, ctx, name,
+                                reference_dataset, reference_column,
+                                key = NULL, reference_key = NULL) {
+  .cmp_by_key(data, ctx, name, reference_dataset, reference_column,
+              key, reference_key, fn = function(a, b) a < b)
+}
+.register_op(
+  "less_than_by_key", op_less_than_by_key,
+  meta = list(
+    kind = "cross",
+    summary = "Row value is strictly less than the joined reference value",
+    arg_schema = list(
+      name              = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE),
+      reference_column  = list(type = "string", required = TRUE),
+      key               = list(type = "string", required = FALSE),
+      reference_key     = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_less_than_or_equal_by_key <- function(data, ctx, name,
+                                         reference_dataset, reference_column,
+                                         key = NULL, reference_key = NULL) {
+  .cmp_by_key(data, ctx, name, reference_dataset, reference_column,
+              key, reference_key, fn = function(a, b) a <= b)
+}
+.register_op(
+  "less_than_or_equal_by_key", op_less_than_or_equal_by_key,
+  meta = list(
+    kind = "cross",
+    summary = "Row value is less than or equal to the joined reference value",
+    arg_schema = list(
+      name              = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE),
+      reference_column  = list(type = "string", required = TRUE),
+      key               = list(type = "string", required = FALSE),
+      reference_key     = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_greater_than_by_key <- function(data, ctx, name,
+                                   reference_dataset, reference_column,
+                                   key = NULL, reference_key = NULL) {
+  .cmp_by_key(data, ctx, name, reference_dataset, reference_column,
+              key, reference_key, fn = function(a, b) a > b)
+}
+.register_op(
+  "greater_than_by_key", op_greater_than_by_key,
+  meta = list(
+    kind = "cross",
+    summary = "Row value is strictly greater than the joined reference value",
+    arg_schema = list(
+      name              = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE),
+      reference_column  = list(type = "string", required = TRUE),
+      key               = list(type = "string", required = FALSE),
+      reference_key     = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_greater_than_or_equal_by_key <- function(data, ctx, name,
+                                            reference_dataset, reference_column,
+                                            key = NULL, reference_key = NULL) {
+  .cmp_by_key(data, ctx, name, reference_dataset, reference_column,
+              key, reference_key, fn = function(a, b) a >= b)
+}
+.register_op(
+  "greater_than_or_equal_by_key", op_greater_than_or_equal_by_key,
+  meta = list(
+    kind = "cross",
+    summary = "Row value is greater than or equal to the joined reference value",
+    arg_schema = list(
+      name              = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE),
+      reference_column  = list(type = "string", required = TRUE),
+      key               = list(type = "string", required = FALSE),
+      reference_key     = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+# --- study-day algorithm op --------------------------------------------
+# SDTM --STDY / --ENDY rule: for each record, the stored study-day should
+# equal the computed day offset from DM.RFSTDTC (or RFICDTC) to the row's
+# --STDTC (or --ENDTC). CDISC formula (SDTMIG section 4.4):
+#
+#   if target_date >= anchor_date:  study_day = target - anchor + 1
+#   if target_date <  anchor_date:  study_day = target - anchor       (no +1)
+#
+# Mirrors P21's `:DY(SUB:RFSTDTC, %Domain%STDTC)` function, e.g.
+# SD1089 (CG0221), SD1091 (CG0220). We only operate on ISO-8601 dates
+# where the date portion is at least YYYY-MM-DD.
+#
+# Fires TRUE on rows where the stored study-day differs from the computed
+# value. Skips (NA) when either date is missing / incomplete.
+
+op_study_day_mismatch <- function(data, ctx, name,
+                                  reference_dataset,
+                                  reference_column,
+                                  target_date_column,
+                                  key = NULL, reference_key = NULL) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  if (is.null(data[[name]]) || is.null(data[[target_date_column]])) {
+    return(rep(NA, n))
+  }
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+
+  join_key     <- key %||% "USUBJID"
+  ref_join_key <- reference_key %||% join_key
+  if (is.null(data[[join_key]]) ||
+      is.null(ref_ds[[ref_join_key]]) ||
+      is.null(ref_ds[[reference_column]])) {
+    return(rep(NA, n))
+  }
+
+  # Build subject -> anchor_date lookup. Only accept complete YYYY-MM-DD
+  # dates (possibly with time suffix).
+  iso_date_prefix <- function(x) {
+    x <- as.character(x)
+    m <- regmatches(x, regexpr("^[0-9]{4}-[0-9]{2}-[0-9]{2}", x))
+    # regexpr returns empty for non-matches; pad to full length
+    out <- rep(NA_character_, length(x))
+    hit <- regmatches(x, regexpr("^[0-9]{4}-[0-9]{2}-[0-9]{2}", x))
+    idx <- which(nchar(x) >= 10L & grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}", x))
+    out[idx] <- substr(x[idx], 1L, 10L)
+    out
+  }
+  ref_keys <- as.character(ref_ds[[ref_join_key]])
+  anchor_iso <- iso_date_prefix(ref_ds[[reference_column]])
+  ok <- !is.na(ref_keys) & !is.na(anchor_iso)
+  lut <- stats::setNames(anchor_iso[ok], ref_keys[ok])
+  lut <- lut[!duplicated(names(lut))]
+
+  row_keys <- as.character(data[[join_key]])
+  anchor_for_row <- unname(lut[row_keys])
+  target_iso <- iso_date_prefix(data[[target_date_column]])
+  stored_day <- suppressWarnings(as.integer(data[[name]]))
+
+  # Convert to Date, compute day offset
+  anchor_date <- suppressWarnings(as.Date(anchor_for_row))
+  target_date <- suppressWarnings(as.Date(target_iso))
+  diff <- as.integer(target_date - anchor_date)
+  # CDISC rule: +1 when target >= anchor (no day zero); else raw diff.
+  computed <- ifelse(is.na(diff), NA_integer_,
+                     ifelse(diff >= 0L, diff + 1L, diff))
+
+  mismatch <- !is.na(stored_day) & !is.na(computed) & stored_day != computed
+  # Rows with missing data -> NA (advisory).
+  mismatch[is.na(stored_day) | is.na(computed)] <- NA
+  mismatch
+}
+.register_op(
+  "study_day_mismatch", op_study_day_mismatch,
+  meta = list(
+    kind = "cross",
+    summary = "SDTM --STDY/--ENDY stored value differs from CDISC-computed day offset from subject's anchor date",
+    arg_schema = list(
+      name               = list(type = "string", required = TRUE),
+      reference_dataset  = list(type = "string", required = TRUE),
+      reference_column   = list(type = "string", required = TRUE),
+      target_date_column = list(type = "string", required = TRUE),
+      key                = list(type = "string", required = FALSE),
+      reference_key      = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+# --- exists_in_ref / missing_in_ref (multi-domain cross-ref) ------------
+# For each row in the current dataset, check whether a related dataset has
+# AT LEAST ONE row matching the key (e.g. multiple DS records per subject).
+# Mirrors P21's multi-row Lookup semantic (DS:DSSTDTC iteration in SD2047
+# etc.). Where `op_ref_col_empty` tests the ref column's nullity,
+# `op_exists_in_ref` just tests row-existence.
+
+op_missing_in_ref <- function(data, ctx, name,
+                              reference_dataset,
+                              key = NULL, reference_key = NULL) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+  join_key     <- key %||% name
+  ref_join_key <- reference_key %||% join_key
+  if (is.null(data[[join_key]]) || is.null(ref_ds[[ref_join_key]])) {
+    return(rep(NA, n))
+  }
+  ref_keys <- unique(as.character(ref_ds[[ref_join_key]]))
+  !(as.character(data[[join_key]]) %in% ref_keys)
+}
+.register_op(
+  "missing_in_ref", op_missing_in_ref,
+  meta = list(
+    kind = "cross",
+    summary = "Row's key has no matching record in the reference dataset",
+    arg_schema = list(
+      name              = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE),
+      key               = list(type = "string", required = FALSE),
+      reference_key     = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)

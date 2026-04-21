@@ -12,8 +12,14 @@ scope:
   exclude_domains: []
 variable: DVSTDTC
 check:
-  narrative: DVSTDTC >= DM.RFICDTC
-  condition: ''
+  all:
+  - operator: non_empty
+    name: DVSTDTC
+  - operator: less_than_by_key
+    name: DVSTDTC
+    reference_dataset: DM
+    reference_column: RFICDTC
+    key: USUBJID
 outcome:
   message: DVSTDTC >= DM.RFICDTC
   severity: Medium
@@ -26,5 +32,4 @@ provenance:
     or deviated from by the subject and not a response to each violation or deviation.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

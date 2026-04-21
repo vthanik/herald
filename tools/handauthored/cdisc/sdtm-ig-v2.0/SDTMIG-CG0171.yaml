@@ -12,8 +12,14 @@ scope:
   exclude_domains: []
 variable: SSDTC
 check:
-  narrative: SSDTC >= DM.DTHDTC
-  condition: SSSTRESC = 'DEAD'
+  all:
+  - operator: non_empty
+    name: SSDTC
+  - operator: less_than_by_key
+    name: SSDTC
+    reference_dataset: DM
+    reference_column: DTHDTC
+    key: USUBJID
 outcome:
   message: SSDTC >= DM.DTHDTC
   severity: Medium
@@ -29,5 +35,4 @@ provenance:
     collection date, the status question and the status response are stored in SS.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

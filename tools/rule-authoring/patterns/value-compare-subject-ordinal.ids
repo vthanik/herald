@@ -1,0 +1,5 @@
+"rule_id","row_var","cmp_op","ref_ds","ref_col"
+"CG0068","DSSTDTC","less_than_by_key","DM","RFICDTC"
+"CG0075","DVSTDTC","less_than_by_key","DM","RFICDTC"
+"CG0079","MHSTDTC","greater_than_by_key","DM","RFSTDTC"
+"CG0171","SSDTC","less_than_by_key","DM","DTHDTC"

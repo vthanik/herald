@@ -13,7 +13,7 @@ scope:
 variable: RFXSTDTC
 check:
   narrative: RFXSTDTC = earliest EX.EXSTDTC
-  condition: EX records present for subject
+  condition: ''
 outcome:
   message: RFXSTDTC = earliest EX.EXSTDTC
   severity: Medium
@@ -26,4 +26,3 @@ provenance:
   source_version: '2'
   license: CC-BY-4.0
   executability: narrative
-

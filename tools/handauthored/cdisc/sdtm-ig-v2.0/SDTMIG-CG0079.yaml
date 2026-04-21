@@ -12,8 +12,14 @@ scope:
   exclude_domains: []
 variable: MHSTDTC
 check:
-  narrative: MHSTDTC < DM.RFSTDTC
-  condition: MHSTDTC ^= null
+  all:
+  - operator: non_empty
+    name: MHSTDTC
+  - operator: greater_than_by_key
+    name: MHSTDTC
+    reference_dataset: DM
+    reference_column: RFSTDTC
+    key: USUBJID
 outcome:
   message: MHSTDTC < DM.RFSTDTC
   severity: Medium
@@ -36,5 +42,4 @@ provenance:
     conditions at the start of the trial.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
