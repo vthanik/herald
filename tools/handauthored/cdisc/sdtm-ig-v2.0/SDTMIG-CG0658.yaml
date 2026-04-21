@@ -9,8 +9,11 @@ scope:
   exclude_domains: []
 variable: VISITDY
 check:
-  narrative: VISITDY = null
-  condition: SVPRESP = null
+  all:
+  - operator: empty
+    name: SVPRESP
+  - operator: non_empty
+    name: VISITDY
 outcome:
   message: VISITDY = null
   severity: Medium
@@ -22,5 +25,4 @@ provenance:
     for unplanned visits.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

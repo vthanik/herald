@@ -11,8 +11,11 @@ scope:
   exclude_domains: []
 variable: ARM
 check:
-  narrative: ARM = null
-  condition: ARMCD = null
+  all:
+  - operator: empty
+    name: ARMCD
+  - operator: non_empty
+    name: ARM
 outcome:
   message: ARM = null
   severity: Medium
@@ -24,5 +27,4 @@ provenance:
     with the reason ARMCD is null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

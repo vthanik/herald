@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: ELEMENT
 check:
-  narrative: ELEMENT = null
-  condition: ETCD = 'UNPLAN'
+  all:
+  - operator: equal_to
+    name: ETCD
+    value: UNPLAN
+  - operator: non_empty
+    name: ELEMENT
 outcome:
   message: ELEMENT = null
   severity: Medium
@@ -25,5 +29,4 @@ provenance:
     should be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -9,8 +9,12 @@ scope:
   exclude_domains: []
 variable: EPOCH
 check:
-  narrative: EPOCH = null
-  condition: DSCAT = 'PROTOCOL MILESTONE'
+  all:
+  - operator: equal_to
+    name: DSCAT
+    value: PROTOCOL MILESTONE
+  - operator: non_empty
+    name: EPOCH
 outcome:
   message: EPOCH = null
   severity: Medium
@@ -24,5 +28,4 @@ provenance:
     populated when DSCAT = "PROTOCOL MILESTONE".
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

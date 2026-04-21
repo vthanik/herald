@@ -1,0 +1,4 @@
+"rule_id","cond_var","cond_lit","target_var"
+"CG0073","DSCAT","PROTOCOL MILESTONE","EPOCH"
+"CG0152","ETCD","UNPLAN","ELEMENT"
+"CG0206","ETCD","UNPLAN","TAETORD"

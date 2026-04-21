@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: TAETORD
 check:
-  narrative: TAETORD = null
-  condition: ETCD = 'UNPLAN'
+  all:
+  - operator: equal_to
+    name: ETCD
+    value: UNPLAN
+  - operator: non_empty
+    name: TAETORD
 outcome:
   message: TAETORD = null
   severity: Medium
@@ -35,5 +39,4 @@ provenance:
     Comments column of the define.xml.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

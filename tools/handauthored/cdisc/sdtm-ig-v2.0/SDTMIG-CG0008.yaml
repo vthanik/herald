@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: --ELTM
 check:
-  narrative: --ELTM = null
-  condition: --TPTREF = null
+  all:
+  - operator: empty
+    name: --TPTREF
+  - operator: non_empty
+    name: --ELTM
 outcome:
   message: --ELTM = null
   severity: Medium
@@ -25,5 +28,4 @@ provenance:
     planned fixed reference (--TPTREF) such as "Previous Dose" or "Previous Meal".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

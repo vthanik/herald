@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: IDVAR
 check:
-  narrative: IDVAR = null
-  condition: RDOMAIN = null
+  all:
+  - operator: empty
+    name: RDOMAIN
+  - operator: non_empty
+    name: IDVAR
 outcome:
   message: IDVAR = null
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     CRFs.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

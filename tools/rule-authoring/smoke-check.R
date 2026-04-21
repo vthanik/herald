@@ -51,15 +51,6 @@ pick_dataset_for_scope <- function(scope) {
     return(list(dataset = "SUPPAE", class = "RELATIONSHIP", via = "domain",
                 topic_col = "QNAM"))
   }
-  doms <- doms_raw[nzchar(doms_raw) & doms_raw != "ALL" & nchar(doms_raw) >= 2L &
-                   nchar(doms_raw) <= 8L & !grepl("^SUPP", doms_raw)]
-  doms <- setdiff(doms, exclude)
-  if (length(doms) > 0L) {
-    ds  <- doms[[1L]]
-    cls <- herald:::infer_class(ds)
-    return(list(dataset = ds, class = cls, via = "domain",
-                topic_col = .topic_col_for(cls, ds)))
-  }
   .normalise_cls <- function(cls) {
     switch(toupper(cls),
            EVT   = "EVENTS",       INT = "INTERVENTIONS",
@@ -70,6 +61,24 @@ pick_dataset_for_scope <- function(scope) {
            BDS   = "BASIC DATA STRUCTURE",
            OCCDS = "OCCURRENCE DATA STRUCTURE",
            toupper(cls))
+  }
+  doms <- doms_raw[nzchar(doms_raw) & doms_raw != "ALL" & nchar(doms_raw) >= 2L &
+                   nchar(doms_raw) <= 8L & !grepl("^SUPP", doms_raw)]
+  doms <- setdiff(doms, exclude)
+  if (length(doms) > 0L) {
+    ds  <- doms[[1L]]
+    cls <- herald:::infer_class(ds)
+    # Fall back to the rule's declared scope.classes when the picked
+    # domain isn't in herald's taxonomy (e.g. RELSUB, novel SDTM 3.3+
+    # domains). Using the author's declared class ensures the scope
+    # filter accepts the synthetic dataset.
+    if (is.na(cls) || !nzchar(cls)) {
+      declared <- as.character(unlist(scope$classes %||% character()))
+      declared <- declared[nzchar(declared) & toupper(declared) != "ALL"]
+      if (length(declared) > 0L) cls <- .normalise_cls(declared[[1L]])
+    }
+    return(list(dataset = ds, class = cls, via = "domain",
+                topic_col = .topic_col_for(cls, ds)))
   }
   classes <- as.character(unlist(scope$classes %||% character()))
   classes <- classes[nzchar(classes) & toupper(classes) != "ALL"]
@@ -247,7 +256,7 @@ if (run_all) {
       rule_std <- toupper(as.character(rule$standard %||% ""))
       if (!is.na(pick$dataset)) {
         ds_name <- pick$dataset
-        spec <- if (pick$via == "class" && !is.na(pick$class))
+        spec <- if (pick$via %in% c("class","domain") && !is.na(pick$class) && nzchar(pick$class))
           list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
       } else if (grepl("ADAM", rule_std)) {
         ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
@@ -290,7 +299,7 @@ if (run_all) {
     rule_std <- toupper(as.character(rule$standard %||% ""))
     if (!is.na(pick$dataset)) {
       ds_name <- pick$dataset
-      spec    <- if (pick$via == "class" && !is.na(pick$class)) {
+      spec    <- if (pick$via %in% c("class","domain") && !is.na(pick$class) && nzchar(pick$class)) {
         list(class_map = stats::setNames(list(pick$class), ds_name))
       } else NULL
     } else if (grepl("ADAM", rule_std)) {
@@ -320,6 +329,51 @@ if (run_all) {
                 synth = TRUE))
   }
 
+  # Special-case synth for value-conditional-null-eq pattern:
+  # {all: [equal_to(cond_var, LIT), non_empty(target_var)]} where
+  # value_is_literal is TRUE (or not set, defaulting to literal).
+  # Positive: row 1 has cond_var == LIT and target populated (fires).
+  # Negative: row 1 has cond_var == LIT and target empty (no fire).
+  if (length(lv) == 2L &&
+      ops[[1L]] == "equal_to" &&
+      ops[[2L]] == "non_empty" &&
+      !isFALSE(lv[[1L]]$value_is_literal)) {
+    cond_var <- as.character(lv[[1L]]$name)
+    cond_lit <- as.character(lv[[1L]]$value)
+    target   <- as.character(lv[[2L]]$name)
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class", "domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else {
+      ds_name <- "DS"; spec <- NULL
+    }
+    topic_col <- if (!is.na(pick$topic_col)) pick$topic_col else NA_character_
+    mk <- function(fire) {
+      cols_list <- list(USUBJID = c("S1", "S2"))
+      cols_list[[cond_var]] <- c(cond_lit, cond_lit)
+      cols_list[[target]]   <- if (isTRUE(fire)) c("VAL", "VAL") else c("", "")
+      if (!is.na(topic_col) && !topic_col %in% names(cols_list)) {
+        cols_list[[topic_col]] <- c("T", "T")
+      }
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) 1L else integer()),
+        notes        = "synth value-conditional-null-eq",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
   # Special-case synth for value-equal-column pattern: single-leaf
   # not_equal_to(var_a, var_b, value_is_literal=false). Positive has a !=
   # b on every row, negative has a == b.
@@ -332,7 +386,7 @@ if (run_all) {
     rule_std <- toupper(as.character(rule$standard %||% ""))
     if (!is.na(pick$dataset)) {
       ds_name <- pick$dataset
-      spec    <- if (pick$via == "class" && !is.na(pick$class))
+      spec    <- if (pick$via %in% c("class","domain") && !is.na(pick$class) && nzchar(pick$class))
         list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
     } else if (grepl("ADAM", rule_std)) {
       ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
@@ -382,7 +436,7 @@ if (run_all) {
     rule_std <- toupper(as.character(rule$standard %||% ""))
     if (!is.na(pick$dataset)) {
       ds_name <- pick$dataset
-      spec    <- if (pick$via == "class" && !is.na(pick$class))
+      spec    <- if (pick$via %in% c("class","domain") && !is.na(pick$class) && nzchar(pick$class))
         list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
     } else if (grepl("ADAM", rule_std)) {
       ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
@@ -442,7 +496,7 @@ if (run_all) {
     rule_std <- toupper(as.character(rule$standard %||% ""))
     if (!is.na(pick$dataset)) {
       ds_name <- pick$dataset
-      spec    <- if (pick$via == "class" && !is.na(pick$class))
+      spec    <- if (pick$via %in% c("class","domain") && !is.na(pick$class) && nzchar(pick$class))
         list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
     } else if (grepl("ADAM", rule_std)) {
       ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
@@ -530,7 +584,7 @@ if (run_all) {
 
   if (!is.na(pick$dataset)) {
     ds_name <- pick$dataset
-    spec    <- if (pick$via == "class" && !is.na(pick$class)) {
+    spec    <- if (pick$via %in% c("class","domain") && !is.na(pick$class) && nzchar(pick$class)) {
       list(class_map = stats::setNames(list(pick$class), ds_name))
     } else NULL
   } else {
