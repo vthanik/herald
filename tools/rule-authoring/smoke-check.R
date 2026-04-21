@@ -20,6 +20,15 @@ suppressPackageStartupMessages({
   devtools::load_all(quiet = TRUE)
 })
 
+# Class -> representative dataset map derived from P21's def:Class taxonomy.
+# Loaded into this script's env; used by .synth_rule_fixture.
+local({
+  cargs <- commandArgs(trailingOnly = FALSE)
+  f <- sub("^--file=", "", grep("^--file=", cargs, value = TRUE))
+  here <- if (length(f) > 0L) dirname(normalizePath(f[[1L]])) else "tools/rule-authoring"
+  source(file.path(here, "class-map.R"), local = FALSE)
+})
+
 args <- commandArgs(trailingOnly = TRUE)
 get_arg <- function(flag) {
   idx <- which(args == flag)
@@ -108,27 +117,24 @@ if (run_all) {
   names_req <- vapply(lv, function(l) as.character(l$name %||% ""), character(1L))
   wants_pres <- ops == "exists"
 
-  # Use the dataset name from the default fixture (first key). For the spec,
-  # prefer the rule's own declared scope.class so that synth fixtures work
-  # for rules outside the default fixture's scope (e.g. ADSL-scoped rules
-  # when the default fixture is BDS-scoped). Pick a representative ADaM
-  # dataset name for each known class; map otherwise.
-  rule_class <- tryCatch({
-    cls <- rule$scope[[1L]]$classes
-    cls[!is.na(cls) & nzchar(cls)][[1L]]
-  }, error = function(e) NULL)
+  # Resolve the rule's scope into a concrete dataset name + class using the
+  # P21-derived class taxonomy in class-map.R. Covers all ADaM and SDTM
+  # classes (SUBJECT LEVEL ANALYSIS DATASET, BASIC DATA STRUCTURE, OCCURRENCE
+  # DATA STRUCTURE, ADAM OTHER, EVENTS, INTERVENTIONS, FINDINGS,
+  # FINDINGS ABOUT, SPECIAL PURPOSE, TRIAL DESIGN, RELATIONSHIP). Explicit
+  # scope.domains takes precedence over class fallback.
+  scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+  pick  <- pick_dataset_for_scope(scope)
 
-  ds_name <- if (!is.null(rule_class)) {
-    switch(toupper(rule_class),
-           "SUBJECT LEVEL ANALYSIS DATASET" = "ADSL",
-           "BASIC DATA STRUCTURE"           = "ADVS",
-           "OCCURRENCE DATA STRUCTURE"      = "ADAE",
-           names(default_fx$pos$datasets)[[1L]])
-  } else names(default_fx$pos$datasets)[[1L]]
-
-  spec <- if (!is.null(rule_class)) {
-    list(class_map = stats::setNames(list(rule_class), ds_name))
-  } else default_fx$pos$spec
+  if (!is.na(pick$dataset)) {
+    ds_name <- pick$dataset
+    spec    <- if (pick$via == "class" && !is.na(pick$class)) {
+      list(class_map = stats::setNames(list(pick$class), ds_name))
+    } else NULL
+  } else {
+    ds_name <- names(default_fx$pos$datasets)[[1L]]
+    spec    <- default_fx$pos$spec
+  }
 
   pos_cols <- stats::setNames(
     c(list(USUBJID = "S1"),
