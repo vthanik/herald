@@ -12,8 +12,14 @@ scope:
   exclude_domains: []
 variable: --ENRF
 check:
-  narrative: --ENRF = null
-  condition: DM.RFENDTC = null
+  all:
+  - operator: non_empty
+    name: --ENRF
+  - operator: ref_col_empty
+    name: USUBJID
+    value:
+      reference_dataset: DM
+      reference_column: RFENDTC
 outcome:
   message: --ENRF = null
   severity: Medium
@@ -27,5 +33,4 @@ provenance:
     ending point represented by RFSTDTC and RFENDTC in Demographics.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

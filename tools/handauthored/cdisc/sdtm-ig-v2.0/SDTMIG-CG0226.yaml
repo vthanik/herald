@@ -12,8 +12,14 @@ scope:
   exclude_domains: []
 variable: --STRF
 check:
-  narrative: --STRF = null
-  condition: DM.RFSTDTC = null
+  all:
+  - operator: non_empty
+    name: --STRF
+  - operator: ref_col_empty
+    name: USUBJID
+    value:
+      reference_dataset: DM
+      reference_column: RFSTDTC
 outcome:
   message: --STRF = null
   severity: Medium
@@ -27,5 +33,4 @@ provenance:
     ending point represented by RFSTDTC and RFENDTC in Demographics.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

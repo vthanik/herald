@@ -564,8 +564,6 @@
 "CG0222","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--ENDY is properly calculated per study day algorithm",NA,NA,"narrative",NA,NA,NA
 "CG0223","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--ENDY = null",NA,NA,"narrative",NA,NA,NA
 "CG0225","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","VISITDY = null",NA,NA,"narrative",NA,NA,NA
-"CG0226","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STRF = null",NA,NA,"narrative",NA,NA,NA
-"CG0227","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--ENRF = null",NA,NA,"narrative",NA,NA,NA
 "CG0232","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STRTPT in ('BEFORE', 'COINCIDENT', 'UNKNOWN')",NA,NA,"narrative",NA,NA,NA
 "CG0233","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STRTPT in ('BEFORE', 'COINCIDENT', 'AFTER', 'UNKNOWN')",NA,NA,"narrative",NA,NA,NA
 "CG0234","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--ENRTPT in ('BEFORE', 'COINCIDENT', 'ONGOING', 'UNKNOWN')",NA,NA,"narrative",NA,NA,NA
@@ -1687,6 +1685,8 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0213","CDISC","SDTM-IG","3.2,3.3","Medium","VISITNUM in TV.VISITNUM","cross-lookup","is_not_contained_by(VISITNUM,TV.VISITNUM)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0215","CDISC","SDTM-IG","3.2,3.3","Medium","VISIT in TV.VISIT","cross-lookup","is_not_contained_by(VISIT,TV.VISIT)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0216","CDISC","SDTM-IG","3.2,3.3","Medium","VISITDY = null","value-conditional-null-populated","non_empty(SVUPDES) & non_empty(VISITDY)","predicate","2026-04-21T13:51:48Z",NA,NA
+"CG0226","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STRF = null","value-conditional-null-crossref","non_empty(--STRF) & ref_col_empty(USUBJID,DM,RFSTDTC)","predicate","2026-04-21T15:40:47Z",NA,NA
+"CG0227","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--ENRF = null","value-conditional-null-crossref","non_empty(--ENRF) & ref_col_empty(USUBJID,DM,RFENDTC)","predicate","2026-04-21T15:40:47Z",NA,NA
 "CG0246","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ETCD value length <= 8","value-length-le","longer_than(ETCD,8)","predicate","2026-04-21T13:31:48Z",NA,NA
 "CG0251","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TABRANCH ^= null","value-not-null","empty(TABRANCH)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0252","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TATRANS ^= null","value-not-null","empty(TATRANS)","predicate","2026-04-21T11:05:30Z","required",NA

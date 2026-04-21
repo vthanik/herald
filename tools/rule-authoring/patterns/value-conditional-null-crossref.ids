@@ -1,0 +1,3 @@
+"rule_id","target_var","ref_ds","ref_col"
+"CG0226","--STRF","DM","RFSTDTC"
+"CG0227","--ENRF","DM","RFENDTC"

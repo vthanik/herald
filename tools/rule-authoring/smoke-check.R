@@ -380,6 +380,81 @@ if (run_all) {
     return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
   }
 
+  # Special-case synth for value-conditional-null-crossref pattern:
+  # {all: [non_empty(target), ref_col_empty(USUBJID, DM.RFCOL)]}.
+  # Positive: main dataset row has target populated AND its USUBJID has
+  # no matching populated RFCOL in DM (fires). Negative: DM has populated
+  # RFCOL for the subject (no fire).
+  if (length(lv) == 2L &&
+      ops[[1L]] == "non_empty" &&
+      ops[[2L]] == "ref_col_empty") {
+    target <- as.character(lv[[1L]]$name)
+    # Parse ref arg -- prefer the structured form (reference_dataset /
+    # reference_column) since the dotted string would be eagerly resolved
+    # by substitute_crossrefs.
+    rv <- lv[[2L]]$value
+    ref_ds  <- NA_character_; ref_col <- NA_character_
+    if (is.list(rv)) {
+      ref_ds  <- toupper(as.character(rv$reference_dataset %||% ""))
+      ref_col <- as.character(rv$reference_column %||% rv$column %||% "")
+    } else if (is.character(rv) && length(rv) == 1L &&
+               grepl("^[A-Z][A-Z0-9]*\\.[A-Z][A-Z0-9_]*$", rv)) {
+      parts   <- strsplit(rv, ".", fixed = TRUE)[[1L]]
+      ref_ds  <- parts[[1L]]
+      ref_col <- parts[[2L]]
+    }
+    if (!is.na(ref_ds) && nzchar(ref_ds) && nzchar(ref_col)) {
+      scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+      pick  <- pick_dataset_for_scope(scope)
+      rule_std <- toupper(as.character(rule$standard %||% ""))
+      if (!is.na(pick$dataset) && pick$dataset != ref_ds) {
+        ds_name <- pick$dataset
+        spec    <- if (pick$via %in% c("class","domain") &&
+                       !is.na(pick$class) && nzchar(pick$class))
+          list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+      } else {
+        ds_name <- "AE"; spec <- NULL
+      }
+      dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+      exp <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+      target_r <- exp(target)
+      mk <- function(fire) {
+        main_cols <- list(
+          USUBJID = c("S1", "S2")
+        )
+        main_cols[[target_r]] <- c("VAL", "VAL")
+        # DM: Subject S1 has RFCOL populated (negative); Subject S2 has
+        # RFCOL null (positive fires for S2's row in main).
+        if (isTRUE(fire)) {
+          ref_cols <- list(
+            USUBJID = c("S1", "S2"),
+            X       = c("POP", "")
+          )
+          names(ref_cols)[2] <- ref_col
+        } else {
+          ref_cols <- list(
+            USUBJID = c("S1", "S2"),
+            X       = c("POP", "POP")
+          )
+          names(ref_cols)[2] <- ref_col
+        }
+        datasets <- list(main = main_cols, ref = ref_cols)
+        names(datasets) <- c(ds_name, ref_ds)
+        list(
+          rule_id      = as.character(rule$id),
+          fixture_type = if (isTRUE(fire)) "positive" else "negative",
+          datasets     = datasets,
+          expected     = list(fires = fire,
+                              rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+          notes        = "synth value-conditional-null-crossref",
+          authored     = "pattern-fixture-synth@1",
+          spec         = spec, `_path` = NA_character_
+        )
+      }
+      return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+    }
+  }
+
   # Special-case synth for value-conditional-populated-eq-lit pattern:
   # {all: [non_empty(cond_var), not_equal_to(target, 'LIT')]}.
   # Positive row 1: cond populated + target != LIT (violation). Row 2:

@@ -190,6 +190,109 @@ op_has_next_corresponding_record <- function(data, ctx, name, value) {
   m <- op_does_not_have_next_corresponding_record(data, ctx, name, value)
   ifelse(is.na(m), NA, !m)
 }
+
+# --- ref_col_empty / ref_col_populated (cross-dataset null checks) ----------
+# For each row in the current dataset, look up a reference dataset by key
+# and test whether the referenced column is populated or null in the matching
+# row.
+#
+# Mirrors P21's val:Lookup primitive with a Where/Search clause on a null
+# check (e.g. SD1030 for CG0226):
+#   Variable="USUBJID == USUBJID" Where="RFSTDTC != ''" From="DM"
+# which asserts that the matching DM row has RFSTDTC populated.
+#
+# Argument shape:
+#   { name: "USUBJID", operator: "ref_col_empty",
+#     value: "DM.RFSTDTC" }               # dotted short form
+# or:
+#   { name: "USUBJID", operator: "ref_col_empty",
+#     value: { reference_dataset: "DM", reference_column: "RFSTDTC",
+#             by: "USUBJID" } }
+#
+# Semantics:
+# - `ref_col_empty`: TRUE when the reference row exists AND its column is
+#   null/empty; also TRUE when there is no matching reference row (the
+#   reference is "missing" for this key). Mirrors P21's Lookup-failure
+#   = no-match => fires path.
+# - `ref_col_populated`: logical complement; TRUE when the reference row
+#   exists AND its column is populated.
+#
+# rtrim-null applies to the reference column before the null test
+# (DataEntryFactory.java:313-328 parity).
+
+.parse_ref_arg <- function(name, value) {
+  if (is.list(value)) {
+    list(ref_ds   = toupper(as.character(value$reference_dataset %||% "")),
+         ref_col  = as.character(value$reference_column %||% value$column %||% ""),
+         by       = as.character(value$by %||% value$key %||% name))
+  } else if (is.character(value) && length(value) == 1L &&
+             grepl("^[A-Za-z][A-Za-z0-9]*\\.[A-Za-z][A-Za-z0-9_]*$", value)) {
+    parts <- strsplit(value, ".", fixed = TRUE)[[1L]]
+    list(ref_ds = toupper(parts[[1L]]),
+         ref_col = parts[[2L]],
+         by      = as.character(name))
+  } else {
+    NULL
+  }
+}
+
+op_ref_col_empty <- function(data, ctx, name, value) {
+  n <- nrow(data)
+  args <- .parse_ref_arg(name, value)
+  if (is.null(args) || !nzchar(args$ref_ds) || !nzchar(args$ref_col)) {
+    return(rep(NA, n))
+  }
+  ref <- .ref_ds(ctx, args$ref_ds)
+  if (is.null(ref) || is.null(ref[[args$by]]) || is.null(ref[[args$ref_col]])) {
+    return(rep(NA, n))
+  }
+
+  rtrim_null <- function(v) {
+    if (!is.character(v)) return(as.character(v))
+    r <- sub("\\s+$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+  ref_keys  <- as.character(ref[[args$by]])
+  ref_vals  <- rtrim_null(ref[[args$ref_col]])
+  # For each ref key, is the column POPULATED on at least one row?
+  # P21's Lookup with Where=<col> != '' passes when ANY row matches.
+  by_key    <- split(ref_vals, ref_keys)
+  populated_keys <- names(by_key)[vapply(by_key, function(v) any(!is.na(v)),
+                                          logical(1L))]
+  row_keys <- as.character(data[[args$by]] %||% rep(NA_character_, n))
+  # TRUE where the reference is EMPTY (key absent, or present but all-null).
+  !(row_keys %in% populated_keys)
+}
+.register_op(
+  "ref_col_empty", op_ref_col_empty,
+  meta = list(
+    kind = "cross",
+    summary = "Reference dataset's column is null/empty (or no matching ref row) for this row's key",
+    arg_schema = list(
+      name  = list(type = "string", required = TRUE),
+      value = list(type = "any",    required = TRUE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_ref_col_populated <- function(data, ctx, name, value) {
+  m <- op_ref_col_empty(data, ctx, name, value)
+  ifelse(is.na(m), NA, !m)
+}
+.register_op(
+  "ref_col_populated", op_ref_col_populated,
+  meta = list(
+    kind = "cross",
+    summary = "Reference dataset has a matching ref row and its column is populated",
+    arg_schema = list(
+      name  = list(type = "string", required = TRUE),
+      value = list(type = "any",    required = TRUE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
 .register_op(
   "has_next_corresponding_record", op_has_next_corresponding_record,
   meta = list(
