@@ -683,6 +683,67 @@ op_study_day_mismatch <- function(data, ctx, name,
 # -- only the ItemDef metadata exists. herald authors this pattern
 # directly from the CDISC narrative.
 
+# --- any_index_missing_ref_var --------------------------------------------
+# For each DISTINCT value of an integer-index column (e.g. APERIOD), check
+# that a corresponding variable exists in a reference dataset, where the
+# expected variable name is derived by substituting the index value into a
+# name template like `TRTxxP`, `APxxSDT`, `TRxxSDT`, `TRxxEDT`.
+#
+# ADaMIG Section 3.2.3: APERIOD value must match one of the xx values in
+# ADSL TRTxxP variable names (and analogous start/end date variables for
+# analysis period timing in ADaMIG Section 3.2.7).
+#
+# Metadata-level: fires once per (rule x dataset) when ANY unique index
+# value has a missing reference variable. P21 SDTM-IG 3.3 does NOT encode
+# CDISC 102/103/104 explicitly; herald authors them from ADaMIG narrative.
+
+op_any_index_missing_ref_var <- function(data, ctx, name,
+                                         reference_dataset,
+                                         name_template,
+                                         placeholder = "xx") {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  if (is.null(data[[name]])) return(rep(NA, n))
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+
+  vals <- suppressWarnings(as.integer(data[[name]]))
+  uniq <- unique(vals[!is.na(vals)])
+  if (length(uniq) == 0L) return(.dataset_level_mask(FALSE, n))
+
+  # Format per ADaMIG convention: xx/zz = 2-digit zero-padded,
+  # y/w = single digit unpadded.
+  ph  <- tolower(as.character(placeholder %||% "xx"))
+  fmt <- switch(ph,
+                "xx" = "%02d", "zz" = "%02d",
+                "y"  = "%d",   "w"  = "%d",
+                "%02d")
+  formatted <- sprintf(fmt, uniq)
+
+  ph_tok <- placeholder
+  expected_names <- vapply(formatted, function(v)
+    gsub(ph_tok, v, name_template, fixed = TRUE),
+    character(1L))
+
+  ref_cols_upper <- toupper(names(ref_ds))
+  missing_any <- any(!toupper(expected_names) %in% ref_cols_upper)
+  .dataset_level_mask(isTRUE(missing_any), n)
+}
+.register_op(
+  "any_index_missing_ref_var", op_any_index_missing_ref_var,
+  meta = list(
+    kind = "cross",
+    summary = "For each unique value of the index column, the reference dataset is missing the templated variable",
+    arg_schema = list(
+      name              = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE),
+      name_template     = list(type = "string", required = TRUE),
+      placeholder       = list(type = "string", default  = "xx")
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
 op_value_not_var_in_ref_dataset <- function(data, ctx, name,
                                              reference_dataset,
                                              name_suffix = NULL) {
