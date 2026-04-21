@@ -12,8 +12,13 @@ scope:
   exclude_domains: []
 variable: RSUBJID
 check:
-  narrative: RSUBJID ^= POOLID
-  condition: RSUBJID ^= null
+  all:
+  - operator: non_empty
+    name: RSUBJID
+  - operator: equal_to
+    name: RSUBJID
+    value: POOLID
+    value_is_literal: no
 outcome:
   message: RSUBJID ^= POOLID
   severity: Medium
@@ -26,5 +31,4 @@ provenance:
     POOLID of the related pool.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

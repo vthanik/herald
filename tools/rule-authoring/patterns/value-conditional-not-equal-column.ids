@@ -1,0 +1,4 @@
+"rule_id","cond_var","var_a","var_b"
+"CG0027","--SCAT","--SCAT","--CAT"
+"CG0363","RSUBJID","RSUBJID","USUBJID"
+"CG0364","RSUBJID","RSUBJID","POOLID"

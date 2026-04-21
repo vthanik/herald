@@ -4,8 +4,8 @@ Scanned 1814 handauthored rules.
 
 | status | count |
 |---|---:|
-| narrative (needs authoring) | 1296 |
-| predicate (converted) | 518 |
+| narrative (needs authoring) | 1289 |
+| predicate (converted) | 525 |
 | skipped / blocked | 0 |
 | **total** | 1814 |
 
@@ -15,8 +15,8 @@ Scanned 1814 handauthored rules.
 |---|---|---:|
 | ADaM-IG | narrative | 467 |
 | ADaM-IG | predicate | 323 |
-| SDTM-IG | narrative | 339 |
-| SDTM-IG | predicate | 195 |
+| SDTM-IG | narrative | 332 |
+| SDTM-IG | predicate | 202 |
 
 ## By pattern (converted)
 
@@ -36,6 +36,8 @@ Scanned 1814 handauthored rules.
 | value-length-le | 8 |
 | value-conditional-literal-assert | 7 |
 | value-conditional-equal-column | 5 |
+| value-not-equal-column | 4 |
+| value-conditional-not-equal-column | 3 |
 | value-conditional-null-eq | 3 |
 | value-equal-column | 1 |
 

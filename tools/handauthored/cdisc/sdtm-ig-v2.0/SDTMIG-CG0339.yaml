@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: --CAT
 check:
-  narrative: --CAT ^= --BODSYS
-  condition: ''
+  operator: equal_to
+  name: --CAT
+  value: --BODSYS
+  value_is_literal: no
 outcome:
   message: --CAT ^= --BODSYS
   severity: Medium
@@ -25,5 +27,4 @@ provenance:
     name or dictionary classification provided by --DECOD and --BODSYS.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
