@@ -120,8 +120,9 @@ validate <- function(path = NULL,
         # Indexed rule: walk each concrete-index instance separately so
         # finding messages carry the resolved variable names (e.g.
         # "TRT01AN is present and TRT01A is not present") instead of the
-        # template ("TRTxxAN is present and TRTxxA is not present").
-        ph <- xp$placeholder
+        # template ("TRTxxAN is present and TRTxxA is not present"). For
+        # multi-placeholder rules (`expand: xx,y`), render the message
+        # by applying each (placeholder -> value) pair from the tuple.
         any_fired_this_ds <- FALSE
         for (idx_val in names(xp$instances)) {
           inst_ct <- xp$instances[[idx_val]]
@@ -132,10 +133,17 @@ validate <- function(path = NULL,
           }
           if (!any(!is.na(m) & m)) next
           any_fired_this_ds <- TRUE
+          tuple <- xp$tuples[[idx_val]]
+          msg <- rule$message
+          var_inst <- primary_variable(rule$check_tree)
+          for (p in names(tuple)) {
+            v <- tuple[[p]]
+            if (is.na(v) || !nzchar(as.character(v))) next
+            msg <- .render_indexed_text(msg, p, v)
+            var_inst <- .render_indexed_text(var_inst, p, v)
+          }
           inst_rule <- rule
-          inst_rule$message <- .render_indexed_text(rule$message, ph, idx_val)
-          var_inst <- .render_indexed_text(primary_variable(rule$check_tree),
-                                           ph, idx_val)
+          inst_rule$message <- msg
           f <- emit_findings(inst_rule, ds_name, m, d, variable = var_inst)
           if (nrow(f) > 0L) {
             all_findings[[length(all_findings) + 1L]] <- f

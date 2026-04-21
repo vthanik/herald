@@ -203,13 +203,18 @@ if (run_all) {
   # If the rule declares an `expand:` placeholder (xx/y/zz), substitute a
   # concrete probe value so the synth dataset carries the right
   # instantiated column names.
-  probe_value <- NULL
+  probe_map <- c(xx = "01", y = "1", zz = "01", w = "1", stem = "ATOX")
   if (is.list(ct) && !is.null(ct$expand)) {
-    probe_value <- switch(as.character(ct$expand)[[1L]],
-                          xx = "01", y = "1", zz = "01", w = "1", NULL)
-    if (!is.null(probe_value)) {
+    # Parse expand into one or more placeholders (scalar "xx", list, or
+    # comma/pipe separated "xx,y"). Substitute each with a probe value
+    # so the synth dataset carries the right instantiated column names.
+    raw <- as.character(unlist(ct$expand))
+    if (length(raw) == 1L && grepl("[,;| ]", raw)) {
+      raw <- trimws(strsplit(raw, "[,;| ]+", perl = TRUE)[[1L]])
+    }
+    phs <- raw[nzchar(raw) & raw %in% names(probe_map)]
+    if (length(phs) > 0L) {
       ct <- ct; ct$expand <- NULL
-      # Replace the placeholder in every leaf's name with the probe.
       .sub <- function(node, ph, v) {
         if (!is.list(node) || length(node) == 0L) return(node)
         if (!is.null(node$name)) node$name <- gsub(ph, v, as.character(node$name), fixed = TRUE)
@@ -217,7 +222,10 @@ if (run_all) {
         if (!is.null(node$not)) node$not <- .sub(node$not, ph, v)
         node
       }
-      ct <- .sub(ct, as.character(rule$check_tree[[1L]]$expand)[[1L]], probe_value)
+      # Substitute longest placeholders first so `xx` inside a name
+      # isn't clobbered by a later one-char `y` substitution.
+      phs <- phs[order(-nchar(phs))]
+      for (p in phs) ct <- .sub(ct, p, probe_map[[p]])
     }
   }
   lv <- .extract_leaves_flat(ct)

@@ -92,24 +92,32 @@ instance with `A populated + B empty` fires.
 - Negative: both populated -> fires 0x. Both blank -> fires 0x.
 - `provenance.executability` -> `predicate`.
 
-## Batch scope (48 of 54 candidate rules)
+## Batch scope (54 of 54 candidate rules)
 
-Covered: 48 rules whose two variable names share a single placeholder
-(`xx`, `y`, `zz`, or `w`) and whose names are literal patterns, e.g.
-`TRTxxP` / `TRTxxPN`, `MCRITyML` / `MCRITyMN`, `STRATwR` / `STRATwRN`.
-Different-stem pairs like `AVALCATy` / `AVALCAyN` also work because
-`.collect_indexed_names()` unions the y-values found across both
-templates.
+All 54 matching rules covered. Three mechanical shapes:
 
-Deferred:
-
-- **Suffix-style** (2 rules: 375, 376) -- messages say *"a variable
-  which has a suffix of GRyN is populated..."*, meaning the check
-  must iterate every column ending in that suffix. Needs a
-  suffix-expansion mechanism in the engine.
-- **Multi-placeholder** (4 rules: 419, 420, 421, 422) --
-  `TRxxPGy` / `TRxxPGyN` has both `xx` AND `y`. Needs nested-expand
-  support; engine's current `.expand_indexed` is single-placeholder.
+1. **Single placeholder** (48 rules, `expand: xx` / `y` / `zz` / `w`)
+   -- `TRTxxP` / `TRTxxPN`, `MCRITyML` / `MCRITyMN`, `STRATwR` /
+   `STRATwRN`. Different-stem pairs like `AVALCATy` / `AVALCAyN` also
+   fit because `.collect_indexed_names_any()` unions the values
+   found across both templates.
+2. **Multi-placeholder** (4 rules, `expand: xx,y`) -- `TRxxPGy` /
+   `TRxxPGyN` combines both `xx` AND `y` in the same name. The engine
+   compiles one regex per template (e.g. `^TR([0-9]{2})PG([1-9])N$`),
+   iterates the Cartesian product of (xx, y) tuples actually found
+   in columns, and substitutes the whole tuple into each instance.
+   Mirrors P21's `MagicVariable.regexify` which maps each `#` / `@`
+   / `_` wildcard to a separate regex capture group
+   (MagicVariable.java:198-223).
+3. **Stem + index** (2 rules, `expand: stem,y`) -- `stemGRyN` /
+   `stemGRy`. The `stem` placeholder is a prefix wildcard
+   (`[A-Z][A-Z0-9]+`) that matches any alphanumeric root. The engine
+   extracts per-column (stem, y) pairs the same way as multi-index;
+   each discovered stem becomes its own instance (ATOX, BTOX, ...)
+   so messages render as "ATOXGR1N is populated and ATOXGR1 is not
+   populated" rather than the template form. Rule 375 / 376 scope
+   to `classes: ALL` because CDISC's suffix-style text does not
+   bind to a single ADaM structural class.
 
 ## Fixture strategy
 

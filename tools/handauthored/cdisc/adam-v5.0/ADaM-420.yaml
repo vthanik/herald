@@ -13,9 +13,12 @@ variable: TRxxPGyN where xx is an integer [01-99, zero-padded] and y is an integ
   [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRxxPGy is populated
+  expand: xx,y
+  all:
+  - name: TRxxPGy
+    operator: non_empty
+  - name: TRxxPGyN
+    operator: empty
 outcome:
   message: On a given record, TRxxPGy is populated and TRxxPGyN is not populated
   severity: Medium
@@ -28,5 +31,4 @@ provenance:
     TRxxPGyN cannot be present unless TRxxPGy is also present. When TRxxPGy and TRxxPGyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

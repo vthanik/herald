@@ -12,9 +12,12 @@ scope:
 variable: '*GRy where y is an integer [1-99, not zero-padded]'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: '*GRyN is populated'
+  expand: stem,y
+  all:
+  - name: stemGRyN
+    operator: non_empty
+  - name: stemGRy
+    operator: empty
 outcome:
   message: On a given record, a variable which has a suffix of GRyN is populated and
     a variable with the same root name and suffix of GRy is not populated
@@ -29,5 +32,4 @@ provenance:
     ADaMIG v1.2, Section 3.1.1, Item 6: In a pair of corresponding variables (e.g., TRTP and TRTPN), the primary or most commonly used variable does not have the suffix or extension (i.e., N for numeric or C for character). The relevant suffix is used only on the name of the secondary member of the variable pair. For example, in the (TRTP, TRTPN) pair, the primary variable, TRTP, is character, but it is not named TRTPC. Similarly in the (APERIOD, APERIODC) pair, the primary variable, APERIOD, is numeric, but it is not named APERIODN. When a secondary variable is included in the dataset, then the primary variable must also be included. If both variables of a variable pair are present, there must be a one-to-one relationship between the values of the two variables, as described in Item 5 above.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
