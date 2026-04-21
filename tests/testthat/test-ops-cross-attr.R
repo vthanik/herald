@@ -271,6 +271,41 @@ test_that("not_equal_subject_templated_ref returns NA when resolved column absen
   expect_true(all(is.na(out)))
 })
 
+test_that("ASPRSDTM compares cleanly when XPT ingest gave POSIXct and JSON gave ISO", {
+  # Simulates BDS from XPT (POSIXct) vs ADSL from JSON (ISO-8601 string).
+  adsl <- data.frame(
+    USUBJID = "S1",
+    P01S1SDM = "2024-01-01T00:00:00",
+    stringsAsFactors = FALSE
+  )
+  bds <- data.frame(
+    USUBJID = "S1",
+    APERIOD = 1L, ASPER = 1L,
+    ASPRSDTM = as.POSIXct("2024-01-01 00:00:00", tz = "UTC"),
+    stringsAsFactors = FALSE
+  )
+  out <- op_not_equal_subject_templated_ref(
+    bds, .ctx(ADSL = adsl, BDS = bds),
+    name = "ASPRSDTM", reference_dataset = "ADSL",
+    reference_template = "PxxSwSDM",
+    index_cols = list(xx = "APERIOD", w = "ASPER")
+  )
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("shared_values_mismatch_by_key compares R Date vs ISO string", {
+  adsl <- data.frame(USUBJID = "S1", RFSTDTC = "2024-01-01",
+                     stringsAsFactors = FALSE)
+  cur  <- data.frame(USUBJID = "S1",
+                     RFSTDTC = as.Date("2024-01-01"),
+                     stringsAsFactors = FALSE)
+  out  <- op_shared_values_mismatch_by_key(
+    cur, .ctx(ADSL = adsl, CUR = cur),
+    reference_dataset = "ADSL"
+  )
+  expect_false(isTRUE(out[[1L]]))
+})
+
 test_that("ASPRSDTM treats datetime prefix equality as match (P21 fuzzy)", {
   adsl <- data.frame(
     USUBJID = "S1",

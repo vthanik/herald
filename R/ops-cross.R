@@ -28,6 +28,37 @@
   ")?)?)?)?$"
 )
 
+#' Convert R temporal classes (POSIXct / Date / difftime) to CDISC
+#' ISO-8601 strings so they parse through the fuzzy-date path. Called
+#' before `as.character()` in `.cdisc_value_equal()` because R's default
+#' `as.character(POSIXct)` produces a space separator ("2024-01-01
+#' 10:00:00") that does NOT match the CDISC ISO regex; we need
+#' "2024-01-01T10:00:00". Non-temporal inputs pass through unchanged.
+#' @noRd
+.to_iso_if_temporal <- function(x) {
+  if (inherits(x, "POSIXt")) {
+    out <- format(x, "%Y-%m-%dT%H:%M:%S", tz = "UTC")
+    out[is.na(x)] <- NA_character_
+    return(out)
+  }
+  if (inherits(x, "Date")) {
+    out <- format(x, "%Y-%m-%d")
+    out[is.na(x)] <- NA_character_
+    return(out)
+  }
+  if (inherits(x, "difftime")) {
+    # ISO time: seconds since midnight -> HH:MM:SS
+    secs <- as.numeric(x, units = "secs")
+    h <- floor(secs / 3600)
+    m <- floor((secs %% 3600) / 60)
+    s <- floor(secs %% 60)
+    out <- sprintf("%02d:%02d:%02d", h, m, s)
+    out[is.na(secs)] <- NA_character_
+    return(out)
+  }
+  x
+}
+
 #' CDISC-semantic value equality.
 #'
 #' Mirrors Pinnacle 21's `DataEntryFactory.compareToAny()` semantics so
@@ -38,6 +69,10 @@
 #'   * Both numeric    -> BigDecimal-style equality ("1" == "1.0")
 #'   * Both datetime   -> prefix equality ("2024" == "2024-01-01")
 #'   * Else            -> case-sensitive string compare on rtrimmed values.
+#'
+#' R temporal classes (POSIXct / Date / difftime) are canonicalised to
+#' CDISC ISO-8601 first so an XPT-ingested DTM column compares cleanly
+#' against a JSON-ingested ISO-string column.
 #'
 #' Accepts scalar or vector inputs; returns logical of length `max(len)`.
 #' Inputs are coerced to character and space-rtrimmed. Empty string after
@@ -50,8 +85,8 @@
     r[is.na(v) | !nzchar(r)] <- NA_character_
     r
   }
-  av <- rtrim(a)
-  bv <- rtrim(b)
+  av <- rtrim(.to_iso_if_temporal(a))
+  bv <- rtrim(.to_iso_if_temporal(b))
 
   out <- logical(max(length(av), length(bv)))
   out[] <- NA
