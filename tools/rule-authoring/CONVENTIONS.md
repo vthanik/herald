@@ -254,7 +254,37 @@ file and document it under `patterns/<new-pattern>.md`.
 
 ---
 
-## 4. Clean-room notice
+## 4. P21 edge cases we mirror (source-code audit)
+
+Structural quirks in Pinnacle 21's rule execution that a naive R
+implementation would silently get wrong. herald mirrors the CDISC
+intent (not P21's expression) but respects the same semantics:
+
+| P21 behaviour | File:line | herald decision |
+|---|---|---|
+| **Right-trim null** -- "   " treated as null; leading whitespace preserved | `DataEntryFactory.java:313-328` | `op_empty`/`op_non_empty` use `sub("\\s+$","",x)` before `nzchar`. Numeric zero + "NA" / "null" literals are populated. |
+| **Regex full-match** -- `matcher.matches()` (anchored), case-sensitive by default | `RegularExpressionValidationRule.java:71` | `.anchor_regex()` wraps unanchored patterns in `^(?:...)$`. Explicit `^...$` from rule authors passes through. |
+| **Case-insensitive compare uses JVM locale** | `Comparison.java:178-181` | herald's `tolower()` uses R's default locale. CDISC data is generally ASCII English; revisit if non-English strings surface. |
+| **Fuzzy date prefix match** -- "2024" equals "2024-01-15" by prefix | `DataEntryFactory.compareToAny:172-180` | herald parses dates before comparison (`.parse_sdtm_dt()`); no fuzzy prefix match. herald is STRICTER than P21 here; preferred. |
+| **`val:Required` column-absent -> disable rule** (no findings) | `AbstractValidationRule.java:148-161` | herald's `op_empty`/`op_non_empty` return NA on missing column -> one advisory per (rule x dataset) rather than silent skip. herald is MORE TRANSPARENT. |
+| **`SUPP--` wildcard domain** | `ConfigurationManager.prepare` | `.rule_scope_matches_ctx` accepts SUPP-- against any `SUPP`-prefixed dataset; class filter skipped in that branch to avoid SPC-vs-RELATIONSHIP false reject. |
+
+P21 implementation details we do **not** mirror:
+
+- `FindValidationRule` counter-inversion for Terms lists
+  (`FindValidationRule.java:234-243`): herald's `is_contained_by`
+  evaluates directly; no dual counter.
+- `MatchValidationRule` paired-variable silent-pass when the first
+  var isn't in `Terms` (`MatchValidationRule.java:131`): P21 bug; we
+  treat the leaf as NA -> advisory, not silent pass.
+- `Expression.evaluate` non-standard OR/AND precedence fallback
+  (`Expression.java:259-283`): herald uses explicit `{all}/{any}`
+  combinators; no ambiguity.
+- `val:Unique` single-row + no-`GroupBy` creates per-value groupings
+  that never trip: herald's `op_is_unique_set` uses `duplicated()`
+  directly; no hidden grouping.
+
+## 5. Clean-room notice
 
 The conventions above are extracted from the CDISC IG PDFs (CC-BY
 license) and from structural observation of P21's XML/Java source.

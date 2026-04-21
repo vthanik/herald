@@ -93,6 +93,20 @@ op_iso8601 <- function(data, ctx, name, allow_missing = TRUE) {
 #' considered compliant unless allow_missing = FALSE.
 #'
 #' @noRd
+#' Anchor a user-supplied regex so the match is against the ENTIRE value,
+#' not a substring. Mirrors Pinnacle 21's
+#' `RegularExpressionValidationRule.java:71`, which uses `matcher.matches()`
+#' (full-string match) rather than `find()` (substring). A pattern that is
+#' already anchored (starts with `^`, ends with `$`) is left untouched so
+#' explicit intent is preserved.
+.anchor_regex <- function(pat) {
+  pat <- as.character(pat)
+  if (!nzchar(pat)) return(pat)
+  if (!startsWith(pat, "^"))   pat <- paste0("^(?:", pat, ")")
+  if (!endsWith(pat,   "$"))   pat <- paste0(pat, "$")
+  pat
+}
+
 op_matches_regex <- function(data, ctx, name, value, allow_missing = TRUE) {
   values <- data[[name]]
   if (is.null(values)) return(rep(NA, nrow(data)))
@@ -100,7 +114,7 @@ op_matches_regex <- function(data, ctx, name, value, allow_missing = TRUE) {
   missing <- is.na(values) | !nzchar(values)
   pass <- logical(length(values))
   pass[missing] <- allow_missing
-  pass[!missing] <- grepl(value, values[!missing], perl = TRUE)
+  pass[!missing] <- grepl(.anchor_regex(value), values[!missing], perl = TRUE)
   pass
 }
 
@@ -403,7 +417,8 @@ op_prefix_matches_regex <- function(data, ctx, name, value, prefix_length = 2L) 
   missing <- is.na(values)
   out <- logical(length(values))
   out[missing]  <- NA
-  out[!missing] <- grepl(value, .prefix(values[!missing], prefix_length),
+  out[!missing] <- grepl(.anchor_regex(value),
+                         .prefix(values[!missing], prefix_length),
                          perl = TRUE)
   out
 }

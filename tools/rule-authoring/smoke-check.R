@@ -230,8 +230,17 @@ if (run_all) {
       list(class_map = stats::setNames(list(pick$class), ds_name))
     } else NULL
   } else {
-    ds_name <- names(default_fx$pos$datasets)[[1L]]
-    spec    <- default_fx$pos$spec
+    # Scope didn't yield a dataset (e.g. scope.classes="ALL" with no
+    # domains). Default to a standard-appropriate dataset so herald's
+    # ADaM/SDTM symmetry filter doesn't false-reject.
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"
+      spec    <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- names(default_fx$pos$datasets)[[1L]]
+      spec    <- default_fx$pos$spec
+    }
   }
 
   # Expand --VAR in requested names against the picked dataset's 2-char
@@ -271,10 +280,14 @@ if (run_all) {
   pres_idx <- which(wants_pres)
 
   # Positive: columns wanted present (with the right content), columns
-  # wanted absent (not_exists) left out.
+  # wanted absent (not_exists) left out. Skip the auto-injected USUBJID
+  # when the rule itself targets USUBJID (e.g. ADaM-89 not_exists(USUBJID)).
+  usubjid_is_target <- "USUBJID" %in% names_req
   pos_cell <- vapply(pres_idx, pos_val_for, character(1L))
+  base_cols <- if (usubjid_is_target) list(`_placeholder_` = "x")
+                else                   list(USUBJID = "S1")
   pos_cols <- c(
-    list(USUBJID = "S1"),
+    base_cols,
     topic_extra,
     stats::setNames(as.list(pos_cell), names_req[pres_idx])
   )
@@ -290,7 +303,7 @@ if (run_all) {
   )
   neg_names <- c(names_req[neg_meta_present_idx], names_req[neg_row_idx])
   neg_cols <- c(
-    list(USUBJID = "S1"),
+    base_cols,
     topic_extra,
     stats::setNames(as.list(neg_cell), neg_names)
   )

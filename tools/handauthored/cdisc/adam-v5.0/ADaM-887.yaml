@@ -12,9 +12,9 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: EVID
+    operator: not_exists
 outcome:
   message: EVID is not present
   severity: Medium
@@ -25,5 +25,4 @@ provenance:
   cited_guidance: 'ADPPKIG v1.0, Section 3.2, Table 3.2: Core Value is required.  '
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

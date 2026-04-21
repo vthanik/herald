@@ -16,9 +16,9 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: AETERM
+    operator: not_exists
 outcome:
   message: AETERM is not present
   severity: Medium
@@ -30,4 +30,4 @@ provenance:
     SubClass=ADVERSE EVENT.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

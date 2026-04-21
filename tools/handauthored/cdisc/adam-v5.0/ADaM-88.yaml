@@ -14,9 +14,9 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: STUDYID
+    operator: not_exists
 outcome:
   message: STUDYID is not present
   severity: Medium
@@ -30,4 +30,4 @@ provenance:
     ADaMIG v1.0, Section 3.2, Table 3.2.1.1: STUDYID has Core=Req.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

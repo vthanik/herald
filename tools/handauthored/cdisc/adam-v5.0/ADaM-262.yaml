@@ -16,9 +16,9 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: AEBODSYS
+    operator: not_exists
 outcome:
   message: AEBODSYS is not present
   severity: Medium
@@ -32,4 +32,4 @@ provenance:
     OCCDS v1.1, Section 3.2.3, Table 3.2.3.1: --BODSYS has Core=Req for SubClass=ADVERSE EVENT and the CDISC Notes state "Required for Adverse Event data".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

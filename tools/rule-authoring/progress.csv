@@ -64,8 +64,6 @@
 "182","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BASETYPE is not present, BTOXGR is populated, and BTOXGR is not equal to ATOXGR where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
 "183","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BASETYPE is not present, BNRIND is populated, and BNRIND is not equal to ANRIND where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
 "19","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COMPLFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
-"194","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not present",NA,NA,"narrative",NA,NA,NA
-"195","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not present",NA,NA,"narrative",NA,NA,NA
 "196","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not populated",NA,NA,"narrative",NA,NA,NA
 "197","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not populated",NA,NA,"narrative",NA,NA,NA
 "198","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is not present and AVALC is not present",NA,NA,"narrative",NA,NA,NA
@@ -114,15 +112,12 @@
 "254","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is present",NA,NA,"narrative",NA,NA,NA
 "256","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The values of USUBJID are not present in ADSL",NA,NA,"narrative",NA,NA,NA
 "26","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COMPLFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"261","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEDECOD is not present",NA,NA,"narrative",NA,NA,NA
-"262","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEBODSYS is not present",NA,NA,"narrative",NA,NA,NA
 "268","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ADURN is populated and ADURU is not populated",NA,NA,"narrative",NA,NA,NA
 "269","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEMFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
 "27","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","FASFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
 "270","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PREFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
 "271","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","FUPFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
 "272","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a prefix of AOCC and a suffix of FL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
-"278","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESER is not present",NA,NA,"narrative",NA,NA,NA
 "279","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESEVN is not equal to 1, 2, 3, or null",NA,NA,"narrative",NA,NA,NA
 "28","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ITTFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
 "280","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AESEV for a given value of AESEVN",NA,NA,"narrative",NA,NA,NA
@@ -212,8 +207,6 @@
 "369","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","*DTF is populated and neither *DT nor *DTM is populated",NA,NA,"narrative",NA,NA,NA
 "37","CDISC","ADaM-IG","1.0","Medium","There is more than one value of a variable which has a suffix of GRyN for a given value of a variable with the same root name and suffix of GRy",NA,NA,"narrative",NA,NA,NA
 "370","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","*TMF is populated and neither *TM nor *DTM is populated",NA,NA,"narrative",NA,NA,NA
-"373","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CNSR is not present",NA,NA,"narrative",NA,NA,NA
-"374","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is not present",NA,NA,"narrative",NA,NA,NA
 "375","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, a variable which has a suffix of GRyN is populated and a variable with the same root name and suffix of GRy is not populated",NA,NA,"narrative",NA,NA,NA
 "376","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, a variable which has a suffix of GRy is populated and a variable with the same root name and suffix of GRyN is not populated",NA,NA,"narrative",NA,NA,NA
 "377","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxP is populated and TRTxxPN is not populated",NA,NA,"narrative",NA,NA,NA
@@ -449,26 +442,7 @@
 "616","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRCMPGy for a given value of TRCMPGyN, where y is an integer [1-99, not zero-padded], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "617","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRCMPGyN for a given value of TRCMPGy, where y is an integer [1-99, not zero-padded], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "619","CDISC","ADaM-IG","1.0,1.1","Medium","LVOTFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
-"620","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AETERM is not present",NA,NA,"narrative",NA,NA,NA
-"621","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEMFL is not present",NA,NA,"narrative",NA,NA,NA
 "622","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEOCCUR is present",NA,NA,"narrative",NA,NA,NA
-"623","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESEQ is not present",NA,NA,"narrative",NA,NA,NA
-"624","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AELLT is not present",NA,NA,"narrative",NA,NA,NA
-"625","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEBDSYCD is not present",NA,NA,"narrative",NA,NA,NA
-"626","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AELLTCD is not present",NA,NA,"narrative",NA,NA,NA
-"627","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLT is not present",NA,NA,"narrative",NA,NA,NA
-"628","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLTCD is not present",NA,NA,"narrative",NA,NA,NA
-"629","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLGT is not present",NA,NA,"narrative",NA,NA,NA
-"630","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLGTCD is not present",NA,NA,"narrative",NA,NA,NA
-"631","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEPTCD is not present",NA,NA,"narrative",NA,NA,NA
-"632","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESOC is not present",NA,NA,"narrative",NA,NA,NA
-"633","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESOCCD is not present",NA,NA,"narrative",NA,NA,NA
-"634","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESTDTC is not present",NA,NA,"narrative",NA,NA,NA
-"635","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ASTDT is not present",NA,NA,"narrative",NA,NA,NA
-"636","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEENDTC is not present",NA,NA,"narrative",NA,NA,NA
-"637","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AENDT is not present",NA,NA,"narrative",NA,NA,NA
-"638","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ASTDY is not present",NA,NA,"narrative",NA,NA,NA
-"639","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AENDY is not present",NA,NA,"narrative",NA,NA,NA
 "640","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SUPPAE.QNAM=AETRTEM is present but AETRTEM is not present",NA,NA,"narrative",NA,NA,NA
 "641","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AESTDY is present but AESTDY is not present",NA,NA,"narrative",NA,NA,NA
 "642","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AEENDY is present but AEENDY is not present",NA,NA,"narrative",NA,NA,NA
@@ -484,9 +458,6 @@
 "652","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ONTRTwFL is present but ONTRTFL is not present",NA,NA,"narrative",NA,NA,NA
 "653","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SRCDOM is present",NA,NA,"narrative",NA,NA,NA
 "654","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SRCSEQ is present",NA,NA,"narrative",NA,NA,NA
-"655","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","DOSEA is not present",NA,NA,"narrative",NA,NA,NA
-"656","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","DOSEU is not present",NA,NA,"narrative",NA,NA,NA
-"657","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVISIT is not present",NA,NA,"narrative",NA,NA,NA
 "658","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","NCAXFN is present and has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
 "659","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PKSUMXFN is present and has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
 "66","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a prefix of TR, containing PG and a suffix of N is present and a variable with the same root without a suffix of N is not present",NA,NA,"narrative",NA,NA,NA
@@ -499,7 +470,6 @@
 "667","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","DOSPCTDF is populated and TRTA is not populated",NA,NA,"narrative",NA,NA,NA
 "668","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, ACYCLE is populated and ACYCLEC is not populated",NA,NA,"narrative",NA,NA,NA
 "669","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, ACYCLEC is populated and ACYCLE is present and not populated",NA,NA,"narrative",NA,NA,NA
-"671","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVALU is not present",NA,NA,"narrative",NA,NA,NA
 "672","CDISC","ADaM-IG","1.3","Medium","SPDEVID is not present within ADDL",NA,NA,"narrative",NA,NA,NA
 "673","CDISC","ADaM-IG","1.3","Medium","There is more than one value of DEVGRy for a given value of DEVGRyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "674","CDISC","ADaM-IG","1.3","Medium","There is more than one value of DEVGRyN for a given value of DEVGRy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -702,18 +672,10 @@
 "876","CDISC","ADaM-IG","1.3","Medium","COUNTRYN is populated and COUNTRY is not populated",NA,NA,"narrative",NA,NA,NA
 "877","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRYN for a given value of COUNTRY, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "878","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRY for a given value of COUNTRYN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"88","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","STUDYID is not present",NA,NA,"narrative",NA,NA,NA
 "880","CDISC","ADaM-IG","1.3","Medium","COUNTRY is populated and COUNTRYL is not populated",NA,NA,"narrative",NA,NA,NA
 "881","CDISC","ADaM-IG","1.3","Medium","COUNTRYL is populated and COUNTRY is not populated",NA,NA,"narrative",NA,NA,NA
 "882","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRYL for a given value of COUNTRY, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "883","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRY for a given value of COUNTRYL, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"885","CDISC","ADaM-IG","1.3","Medium","USUBJIDN is not present",NA,NA,"narrative",NA,NA,NA
-"886","CDISC","ADaM-IG","1.3","Medium","AFRLT is not present",NA,NA,"narrative",NA,NA,NA
-"887","CDISC","ADaM-IG","1.3","Medium","EVID is not present",NA,NA,"narrative",NA,NA,NA
-"888","CDISC","ADaM-IG","1.3","Medium","DV is not present",NA,NA,"narrative",NA,NA,NA
-"889","CDISC","ADaM-IG","1.3","Medium","MDV is not present",NA,NA,"narrative",NA,NA,NA
-"89","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","USUBJID is not present",NA,NA,"narrative",NA,NA,NA
-"890","CDISC","ADaM-IG","1.3","Medium","AMT is not present",NA,NA,"narrative",NA,NA,NA
 "891","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, there is more than one value of COHORTN for a given value of COHORT",NA,NA,"narrative",NA,NA,NA
 "892","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, there is more than one value of COHORT for a given value of COHORTN",NA,NA,"narrative",NA,NA,NA
 "893","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, there is more than one value of ACYCLEC for a given value of ACYCLE",NA,NA,"narrative",NA,NA,NA
@@ -723,7 +685,6 @@
 "897","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A non-missing value of TRTA is not equal to at least one value of the character actual treatment variables in ADSL defined in the IG",NA,NA,"narrative",NA,NA,NA
 "898","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For a value of AD*.USUBJID that is a value of --.USUBJID, a value of AD*.--SEQ is not a value of --.--SEQ",NA,NA,"narrative",NA,NA,NA
 "899","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AD*.USUBJID equals --.USUBJID, AD*.--SEQ equals --.--SEQ, and the values of a variable with prefix -- which is present in both datasets are not equal",NA,NA,"narrative",NA,NA,NA
-"90","CDISC","ADaM-IG","1.0","Medium","TRTP is not present",NA,NA,"narrative",NA,NA,NA
 "92","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTPN for a given value of TRTP",NA,NA,"narrative",NA,NA,NA
 "93","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTP for a given value of TRTPN",NA,NA,"narrative",NA,NA,NA
 "95","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTAN for a given value of TRTA",NA,NA,"narrative",NA,NA,NA
@@ -1641,7 +1602,14 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "164","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BTOXGR is present and ABLFL is not present","presence-pair","exists(BTOXGR) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z","find",NA
 "166","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BNRIND is present and ANRIND is not present","presence-pair","exists(BNRIND) & not_exists(ANRIND)","predicate","2026-04-21T09:19:57Z","find",NA
 "167","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BNRIND is present and ABLFL is not present","presence-pair","exists(BNRIND) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z","find",NA
+"194","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not present","presence-required","not_exists(PARAM)","predicate","2026-04-21T11:26:53Z","required",NA
+"195","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not present","presence-required","not_exists(PARAMCD)","predicate","2026-04-21T11:26:53Z","required",NA
 "201","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTAGyN is present and TRTAGy is not present","presence-pair","exists(TRTAGyN) & not_exists(TRTAGy)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
+"261","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEDECOD is not present","presence-required","not_exists(AEDECOD)","predicate","2026-04-21T11:26:53Z","required",NA
+"262","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEBODSYS is not present","presence-required","not_exists(AEBODSYS)","predicate","2026-04-21T11:26:53Z","required",NA
+"278","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESER is not present","presence-required","not_exists(AESER)","predicate","2026-04-21T11:26:53Z","required",NA
+"373","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CNSR is not present","presence-required","not_exists(CNSR)","predicate","2026-04-21T11:26:53Z","required",NA
+"374","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is not present","presence-required","not_exists(AVAL)","predicate","2026-04-21T11:26:53Z","required",NA
 "499","CDISC","ADaM-IG","1.2,1.3","Medium","ASPER is present and APERIOD is not present","presence-pair","exists(ASPER) & not_exists(APERIOD)","predicate","2026-04-21T09:19:57Z","find",NA
 "522","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","BTOXGRN is present and BTOXGR is not present","presence-pair","exists(BTOXGRN) & not_exists(BTOXGR)","predicate","2026-04-21T09:19:57Z","find",NA
 "523","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ATOXGRLN is present and ATOXGRL is not present","presence-pair","exists(ATOXGRLN) & not_exists(ATOXGRL)","predicate","2026-04-21T09:19:57Z","find",NA
@@ -1670,9 +1638,32 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "562","CDISC","ADaM-IG","1.2,1.3","Medium","STRATAVN is present and STRATAV is not present","presence-pair","exists(STRATAVN) & not_exists(STRATAV)","predicate","2026-04-21T09:19:57Z","find",NA
 "568","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ONTRTFN is present and ONTRTFL is not present","presence-pair","exists(ONTRTFN) & not_exists(ONTRTFL)","predicate","2026-04-21T09:19:57Z","find",NA
 "569","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","LVOTFN is present and LVOTFL is not present","presence-pair","exists(LVOTFN) & not_exists(LVOTFL)","predicate","2026-04-21T09:19:57Z","find",NA
+"620","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AETERM is not present","presence-required","not_exists(AETERM)","predicate","2026-04-21T11:26:53Z","required",NA
+"621","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEMFL is not present","presence-required","not_exists(TRTEMFL)","predicate","2026-04-21T11:26:53Z","required",NA
+"623","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESEQ is not present","presence-required","not_exists(AESEQ)","predicate","2026-04-21T11:26:53Z","required",NA
+"624","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AELLT is not present","presence-required","not_exists(AELLT)","predicate","2026-04-21T11:26:53Z","required",NA
+"625","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEBDSYCD is not present","presence-required","not_exists(AEBDSYCD)","predicate","2026-04-21T11:26:53Z","required",NA
+"626","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AELLTCD is not present","presence-required","not_exists(AELLTCD)","predicate","2026-04-21T11:26:53Z","required",NA
+"627","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLT is not present","presence-required","not_exists(AEHLT)","predicate","2026-04-21T11:26:53Z","required",NA
+"628","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLTCD is not present","presence-required","not_exists(AEHLTCD)","predicate","2026-04-21T11:26:53Z","required",NA
+"629","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLGT is not present","presence-required","not_exists(AEHLGT)","predicate","2026-04-21T11:26:53Z","required",NA
+"630","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLGTCD is not present","presence-required","not_exists(AEHLGTCD)","predicate","2026-04-21T11:26:53Z","required",NA
+"631","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEPTCD is not present","presence-required","not_exists(AEPTCD)","predicate","2026-04-21T11:26:53Z","required",NA
+"632","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESOC is not present","presence-required","not_exists(AESOC)","predicate","2026-04-21T11:26:53Z","required",NA
+"633","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESOCCD is not present","presence-required","not_exists(AESOCCD)","predicate","2026-04-21T11:26:53Z","required",NA
+"634","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESTDTC is not present","presence-required","not_exists(AESTDTC)","predicate","2026-04-21T11:26:53Z","required",NA
+"635","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ASTDT is not present","presence-required","not_exists(ASTDT)","predicate","2026-04-21T11:26:53Z","required",NA
+"636","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEENDTC is not present","presence-required","not_exists(AEENDTC)","predicate","2026-04-21T11:26:53Z","required",NA
+"637","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AENDT is not present","presence-required","not_exists(AENDT)","predicate","2026-04-21T11:26:53Z","required",NA
+"638","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ASTDY is not present","presence-required","not_exists(ASTDY)","predicate","2026-04-21T11:26:53Z","required",NA
+"639","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AENDY is not present","presence-required","not_exists(AENDY)","predicate","2026-04-21T11:26:53Z","required",NA
 "64","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxAN is present and TRTxxA is not present","presence-pair","exists(TRTxxAN) & not_exists(TRTxxA)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
+"655","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","DOSEA is not present","presence-required","not_exists(DOSEA)","predicate","2026-04-21T11:26:53Z","required",NA
+"656","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","DOSEU is not present","presence-required","not_exists(DOSEU)","predicate","2026-04-21T11:26:53Z","required",NA
+"657","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVISIT is not present","presence-required","not_exists(AVISIT)","predicate","2026-04-21T11:26:53Z","required",NA
 "665","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COHORTN is present and COHORT is not present","presence-pair","exists(COHORTN) & not_exists(COHORT)","predicate","2026-04-21T09:19:57Z","find",NA
 "670","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ACYCLEC is present and ACYCLE is not present","presence-pair","exists(ACYCLEC) & not_exists(ACYCLE)","predicate","2026-04-21T09:19:57Z","find",NA
+"671","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVALU is not present","presence-required","not_exists(AVALU)","predicate","2026-04-21T11:26:53Z","required",NA
 "75","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxPN is present and TRTxxP is not present","presence-pair","exists(TRTxxPN) & not_exists(TRTxxP)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
 "799","CDISC","ADaM-IG","1.3","Medium","PROJIDN is present and PROJID is not present","presence-pair","exists(PROJIDN) & not_exists(PROJID)","predicate","2026-04-21T09:19:57Z","find",NA
 "80","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxA is present and TRTxxP is not present","presence-pair","exists(TRTxxA) & not_exists(TRTxxP)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
@@ -1692,7 +1683,16 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "869","CDISC","ADaM-IG","1.3","Medium","RACEN is present and RACE is not present","presence-pair","exists(RACEN) & not_exists(RACE)","predicate","2026-04-21T09:19:57Z","find",NA
 "874","CDISC","ADaM-IG","1.3","Medium","SEXN is present and SEX is not present","presence-pair","exists(SEXN) & not_exists(SEX)","predicate","2026-04-21T09:19:57Z","find",NA
 "879","CDISC","ADaM-IG","1.3","Medium","COUNTRYN is present and COUNTRY is not present","presence-pair","exists(COUNTRYN) & not_exists(COUNTRY)","predicate","2026-04-21T09:19:57Z","find",NA
+"88","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","STUDYID is not present","presence-required","not_exists(STUDYID)","predicate","2026-04-21T11:26:53Z","required",NA
 "884","CDISC","ADaM-IG","1.3","Medium","COUNTRYL is present and COUNTRY is not present","presence-pair","exists(COUNTRYL) & not_exists(COUNTRY)","predicate","2026-04-21T09:19:57Z","find",NA
+"885","CDISC","ADaM-IG","1.3","Medium","USUBJIDN is not present","presence-required","not_exists(USUBJIDN)","predicate","2026-04-21T11:26:53Z","required",NA
+"886","CDISC","ADaM-IG","1.3","Medium","AFRLT is not present","presence-required","not_exists(AFRLT)","predicate","2026-04-21T11:26:53Z","required",NA
+"887","CDISC","ADaM-IG","1.3","Medium","EVID is not present","presence-required","not_exists(EVID)","predicate","2026-04-21T11:26:53Z","required",NA
+"888","CDISC","ADaM-IG","1.3","Medium","DV is not present","presence-required","not_exists(DV)","predicate","2026-04-21T11:26:53Z","required",NA
+"889","CDISC","ADaM-IG","1.3","Medium","MDV is not present","presence-required","not_exists(MDV)","predicate","2026-04-21T11:26:53Z","required",NA
+"89","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","USUBJID is not present","presence-required","not_exists(USUBJID)","predicate","2026-04-21T11:26:53Z","required",NA
+"890","CDISC","ADaM-IG","1.3","Medium","AMT is not present","presence-required","not_exists(AMT)","predicate","2026-04-21T11:26:53Z","required",NA
+"90","CDISC","ADaM-IG","1.0","Medium","TRTP is not present","presence-required","not_exists(TRTP)","predicate","2026-04-21T11:26:53Z","required",NA
 "97","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTPGyN is present and TRTPGy is not present","presence-pair","exists(TRTPGyN) & not_exists(TRTPGy)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
 "CG0040","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","AEOCCUR not present in dataset","presence-forbidden","exists(AEOCCUR)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA
 "CG0044","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","AESTAT not present in dataset","presence-forbidden","exists(AESTAT)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA

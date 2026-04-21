@@ -17,9 +17,9 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: CNSR
+    operator: not_exists
 outcome:
   message: CNSR is not present
   severity: Medium
@@ -32,4 +32,4 @@ provenance:
     with respect to the ADaM BDS.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

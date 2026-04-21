@@ -10,9 +10,9 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: TRTP
+    operator: not_exists
 outcome:
   message: TRTP is not present
   severity: Medium
@@ -23,4 +23,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.0, Section 3.2, Table 3.2.2.1: TRTP has Core=Req.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

@@ -110,3 +110,22 @@ test_that("string operators are all registered", {
   expect_true(all(c("iso8601", "matches_regex", "length_le", "contains")
                   %in% .list_ops()))
 })
+
+test_that("matches_regex requires full-string match (P21 parity)", {
+  # A pattern `[0-9]` should NOT match "1X" or "X1" under P21's
+  # `matcher.matches()` semantic (anchored, full-string). Our
+  # .anchor_regex() wraps the pattern if not already anchored.
+  d <- data.frame(x = c("1", "1X", "X1", "123"), stringsAsFactors = FALSE)
+  expect_equal(op_matches_regex(d, NULL, "x", "[0-9]"),
+               c(TRUE, FALSE, FALSE, FALSE))
+  # Multi-digit pattern matches the whole value only when fully digits.
+  expect_equal(op_matches_regex(d, NULL, "x", "[0-9]+"),
+               c(TRUE, FALSE, FALSE, TRUE))
+})
+
+test_that("explicitly anchored patterns are left untouched", {
+  d <- data.frame(x = c("ABC", "AB", "XY"), stringsAsFactors = FALSE)
+  # User-provided ^[A-Z]+$ should behave identically to [A-Z]+.
+  expect_equal(op_matches_regex(d, NULL, "x", "^[A-Z]+$"),
+               op_matches_regex(d, NULL, "x", "[A-Z]+"))
+})

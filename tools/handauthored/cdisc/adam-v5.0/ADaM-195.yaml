@@ -14,9 +14,9 @@ scope:
 variable: PARAMCD
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: PARAMCD
+    operator: not_exists
 outcome:
   message: PARAMCD is not present
   severity: Medium
@@ -27,4 +27,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.0, Section 3.2.4, Table 3.2.4.1: PARAMCD has Core=Req.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
