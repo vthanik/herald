@@ -2,7 +2,7 @@ id: '163'
 authority: CDISC
 standard: ADaM-IG
 standard_versions:
-- '1'
+- '1.0'
 - '1.1'
 - '1.2'
 - '1.3'

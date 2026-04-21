@@ -69,11 +69,17 @@ emit_yaml <- function(rec, path) {
 # exactly as authored.
 .clean_version <- function(x) {
   s <- as.character(x)
+  # Strip IEEE 754 precision artifacts like "1.1000000000000001".
   suspect <- !is.na(s) & grepl("^[0-9]+\\.[0-9]{10,}$", s)
   if (any(suspect)) {
     nums <- suppressWarnings(as.numeric(s[suspect]))
     s[suspect] <- trimws(formatC(nums, digits = 6, format = "fg"))
   }
+  # Normalise bare integer major versions to <major>.0: CDISC IGs always use
+  # two-part versions (1.0, 1.1, 3.2, ...). Bare "1" comes from Excel reading
+  # a cell typed as integer; we want "1.0" in the catalog for consistency.
+  bare_int <- !is.na(s) & grepl("^[0-9]+$", s)
+  if (any(bare_int)) s[bare_int] <- paste0(s[bare_int], ".0")
   s
 }
 

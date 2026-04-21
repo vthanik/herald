@@ -2,7 +2,7 @@ id: '123'
 authority: CDISC
 standard: ADaM-IG
 standard_versions:
-- '1'
+- '1.0'
 - '1.1'
 severity: Medium
 scope:
@@ -27,4 +27,3 @@ provenance:
   source_version: '1'
   license: CC-BY-4.0
   executability: narrative
-

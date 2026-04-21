@@ -1,166 +1,166 @@
 "rule_id","authority","standard","ig_version","severity","message","pattern","check_tree_preview","status","converted_at","p21_primitive","notes"
-"1","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ADSL dataset does not exist",NA,NA,"narrative",NA,NA,NA
-"10","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to Y and a variable with the same root and a suffix of FN is not equal to 1",NA,NA,"narrative",NA,NA,NA
-"102","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRTxxP",NA,NA,"narrative",NA,NA,NA
-"103","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxSDT",NA,NA,"narrative",NA,NA,NA
-"104","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxEDT",NA,NA,"narrative",NA,NA,NA
-"105","CDISC","ADaM-IG","1","Medium","There is more than one value of APERIODC for a given value of APERIOD",NA,NA,"narrative",NA,NA,NA
-"106","CDISC","ADaM-IG","1","Medium","There is more than one value of APERIOD for a given value of APERIODC",NA,NA,"narrative",NA,NA,NA
-"109","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD, there is more than one value of AVISITN for a given value of AVISIT",NA,NA,"narrative",NA,NA,NA
-"11","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to N and a variable with the same root and a suffix of FN is not equal to 0",NA,NA,"narrative",NA,NA,NA
-"110","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD, there is more than one value of AVISIT for a given value of AVISITN",NA,NA,"narrative",NA,NA,NA
-"112","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ARELTM is populated and ARELTMU is not populated",NA,NA,"narrative",NA,NA,NA
-"117","CDISC","ADaM-IG","1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of ATPT for a given value of ATPTN",NA,NA,"narrative",NA,NA,NA
-"118","CDISC","ADaM-IG","1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of ATPTN for a given value of ATPT",NA,NA,"narrative",NA,NA,NA
-"12","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to null and a variable with the same root and a suffix of FN is not equal to null",NA,NA,"narrative",NA,NA,NA
-"121","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of a variable with a suffix of SDT is greater than the value of a variable with the same root and a suffix of EDT, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"122","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of a variable with a suffix of SDTM is greater than the value of a variable with the same root and a suffix of EDTM, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"123","CDISC","ADaM-IG","1,1.1","Medium","There is more than one value of PARAMTYP for a given value of PARAMCD",NA,NA,"narrative",NA,NA,NA
-"124","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","There is more than one value of PARCATy for a given value of PARAMCD",NA,NA,"narrative",NA,NA,NA
-"125","CDISC","ADaM-IG","1","Medium","There is more than one value of PARCATy for a given value of PARCATyN",NA,NA,"narrative",NA,NA,NA
-"126","CDISC","ADaM-IG","1","Medium","There is more than one value of PARCATyN for a given value of PARCATy",NA,NA,"narrative",NA,NA,NA
-"127","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BASE is populated and there is not at least one record with ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
-"128","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BASEC is populated and there is not at least one record with ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
-"129","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD for a subject, there is more than one value of BASE for a given value of BASEC",NA,NA,"narrative",NA,NA,NA
-"13","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The length of a variable name exceeds 8 characters",NA,NA,"narrative",NA,NA,NA
-"130","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD for a subject, there is more than one value of BASEC for a given value of BASE",NA,NA,"narrative",NA,NA,NA
-"131","CDISC","ADaM-IG","1,1.2","Medium","Within a given value of PARAMCD, BASETYPE is populated for at least one record and is not populated for at least one record",NA,NA,"narrative",NA,NA,NA
-"132","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","R2BASE is not equal to AVAL divided by BASE",NA,NA,"narrative",NA,NA,NA
-"133","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","R2AyLO is not equal to AVAL divided by AyLO",NA,NA,"narrative",NA,NA,NA
-"134","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","R2AyHI is not equal to AVAL divided by AyHI",NA,NA,"narrative",NA,NA,NA
-"135","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTy for a given value of SHIFTyN",NA,NA,"narrative",NA,NA,NA
-"136","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTyN for a given value of SHIFTy",NA,NA,"narrative",NA,NA,NA
-"137","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","CRITyFL is populated and CRITy is not populated",NA,NA,"narrative",NA,NA,NA
-"14","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable name does not start with a letter (A-Z)",NA,NA,"narrative",NA,NA,NA
-"141","CDISC","ADaM-IG","1","Medium","There is more than one value of PARAM for a given value of PARAMCD",NA,NA,"narrative",NA,NA,NA
-"142","CDISC","ADaM-IG","1","Medium","There is more than one value of PARAMCD for a given value of PARAM",NA,NA,"narrative",NA,NA,NA
-"143","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PARAMCD has more than 8 characters in length",NA,NA,"narrative",NA,NA,NA
-"144","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PARAMCD starts with a character other than a letter",NA,NA,"narrative",NA,NA,NA
-"145","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PARAMCD has characters that are not letters, digits, and underscores",NA,NA,"narrative",NA,NA,NA
-"146","CDISC","ADaM-IG","1","Medium","Within a dataset, there is more than one value of PARAM for a given value of PARAMN",NA,NA,"narrative",NA,NA,NA
-"147","CDISC","ADaM-IG","1","Medium","Within a dataset, there is more than one value of PARAMN for a given value of PARAM",NA,NA,"narrative",NA,NA,NA
-"148","CDISC","ADaM-IG","1","Medium","PARAMN is not an integer",NA,NA,"narrative",NA,NA,NA
-"149","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD, there is more than one value of AVALC for a given value of AVAL",NA,NA,"narrative",NA,NA,NA
-"15","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable name contains a character other than letters (A-Z), underscores (_), or numerals (0-9)",NA,NA,"narrative",NA,NA,NA
-"150","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD, there is more than one value of AVAL for a given value of AVALC",NA,NA,"narrative",NA,NA,NA
-"151","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of CRITy",NA,NA,"narrative",NA,NA,NA
-"152","CDISC","ADaM-IG","1,1.1,1.2","Medium","BASETYPE is present, BASE is populated, and BASE is not equal to AVAL where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject",NA,NA,"narrative",NA,NA,NA
-"154","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","Within a given PARAMCD and BASETYPE for a subject, more than one record has ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
-"155","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","Within a given PARAMCD for a subject, more than one record has ABLFL equal to Y and BASETYPE is not present",NA,NA,"narrative",NA,NA,NA
-"156","CDISC","ADaM-IG","1","Medium","A variable with a prefix of CRIT, a suffix of FL and containing a one-digit number (CRITyFL) is present and a variable with the same root without a suffix of FL (CRITy) is not present",NA,NA,"narrative",NA,NA,NA
-"157","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a prefix of CRIT and a suffix of a one-digit number (CRITy) is present and a variable with the same root with a suffix of FL (CRITyFL) is not present",NA,NA,"narrative",NA,NA,NA
-"159","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AWTDIFF is populated and AWTARGET is not populated",NA,NA,"narrative",NA,NA,NA
-"16","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The length of a variable label is greater than 40 characters",NA,NA,"narrative",NA,NA,NA
-"160","CDISC","ADaM-IG","1,1.1","Medium","AWU is present and both AWLO and AWHI are not present",NA,NA,"narrative",NA,NA,NA
-"165","CDISC","ADaM-IG","1,1.1,1.2","Medium","BASETYPE is present, BTOXGR is populated, and BTOXGR is not equal to ATOXGR where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE",NA,NA,"narrative",NA,NA,NA
-"168","CDISC","ADaM-IG","1,1.1,1.2","Medium","BASETYPE is present, BNRIND is populated, and BNRIND is not equal to ANRIND where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE",NA,NA,"narrative",NA,NA,NA
-"169","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of CNSR is not a positive integer or 0",NA,NA,"narrative",NA,NA,NA
-"17","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The length of a character value is greater than 200 characters",NA,NA,"narrative",NA,NA,NA
-"176","CDISC","ADaM-IG","1,1.1","Medium","ABLFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
-"178","CDISC","ADaM-IG","1,1.1","Medium","ANLzzFL is not equal to Y or null where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
-"18","CDISC","ADaM-IG","1","Medium","Labels for ADaM variables do not match the standard labels for ADaM variables listed in the implementation guide that cannot be modified (with the exception of 1) variables whose names contain indexes “y”, ""xx"", or “zz”; and (2) variable labels with asterisks (*) and ellipses (...) indicated for sponsor appropriate text)",NA,NA,"narrative",NA,NA,NA
-"180","CDISC","ADaM-IG","1","Medium","SRCDOM has a value that is not an SDTM domain name or null",NA,NA,"narrative",NA,NA,NA
-"181","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","BASETYPE is not present, BASE is populated, and BASE is not equal to AVAL where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
-"182","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","BASETYPE is not present, BTOXGR is populated, and BTOXGR is not equal to ATOXGR where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
-"183","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","BASETYPE is not present, BNRIND is populated, and BNRIND is not equal to ANRIND where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
-"19","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","COMPLFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
-"194","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PARAM is not present",NA,NA,"narrative",NA,NA,NA
-"195","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PARAMCD is not present",NA,NA,"narrative",NA,NA,NA
-"196","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PARAM is not populated",NA,NA,"narrative",NA,NA,NA
-"197","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PARAMCD is not populated",NA,NA,"narrative",NA,NA,NA
-"198","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AVAL is not present and AVALC is not present",NA,NA,"narrative",NA,NA,NA
-"199","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable present in SDTM but the variables do not have identical data types",NA,NA,"narrative",NA,NA,NA
-"2","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable present in SDTM but the variables do not have identical labels",NA,NA,"narrative",NA,NA,NA
-"20","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","FASFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
-"200","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable defined in the ADaM IG but the variables do not have identical data types",NA,NA,"narrative",NA,NA,NA
-"201","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRTAGyN is present and TRTAGy is not present",NA,NA,"narrative",NA,NA,NA
-"204","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.AGE is not equal to DM.AGE",NA,NA,"narrative",NA,NA,NA
-"205","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.AGEU is not equal to DM.AGEU",NA,NA,"narrative",NA,NA,NA
-"206","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.SEX is not equal to DM.SEX",NA,NA,"narrative",NA,NA,NA
-"207","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.RACE is not equal to DM.RACE",NA,NA,"narrative",NA,NA,NA
-"208","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.SUBJID is not equal to DM.SUBJID",NA,NA,"narrative",NA,NA,NA
-"209","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.SITEID is not equal to DM.SITEID",NA,NA,"narrative",NA,NA,NA
-"21","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ITTFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
-"210","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.ARM is not equal to DM.ARM",NA,NA,"narrative",NA,NA,NA
-"211","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ABLFN is not equal to 1 or null",NA,NA,"narrative",NA,NA,NA
-"212","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ANLzzFN is not equal to 1 or null where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
-"22","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PPROTFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
-"221","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD, there is more than one value of AVALCATy for a given value of AVAL",NA,NA,"narrative",NA,NA,NA
-"222","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD, there is more than one value of BASECATy for a given value of BASE and y",NA,NA,"narrative",NA,NA,NA
-"223","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, CHG is populated and is not equal to AVAL - BASE",NA,NA,"narrative",NA,NA,NA
-"224","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD, there is more than one value of CHGCATy for a given value of CHG and y",NA,NA,"narrative",NA,NA,NA
-"225","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PCHG is populated and is not equal to ((AVAL - BASE)/BASE)*100",NA,NA,"narrative",NA,NA,NA
-"226","CDISC","ADaM-IG","1","Medium","Within a given value of PARAMCD, there is more than one value of PCHGCATy for a given value of PCHG and y",NA,NA,"narrative",NA,NA,NA
-"227","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTSEQP for a given value of TRTSEQPN",NA,NA,"narrative",NA,NA,NA
-"228","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTSEQPN for a given value of TRTSEQP",NA,NA,"narrative",NA,NA,NA
-"229","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTSEQA for a given value of TRTSEQAN",NA,NA,"narrative",NA,NA,NA
-"23","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SAFFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
-"230","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTSEQAN for a given value of TRTSEQA",NA,NA,"narrative",NA,NA,NA
-"231","CDISC","ADaM-IG","1","Medium","Within a given value of TRTxxP, there is more than one value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"232","CDISC","ADaM-IG","1","Medium","There is more than one value of TRxxPGy for a given value of TRxxPGyN, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"233","CDISC","ADaM-IG","1","Medium","There is more than one value of TRxxPGyN for a given value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"234","CDISC","ADaM-IG","1","Medium","Within a given value of TRTxxA, there is more than one value of TRxxAGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"235","CDISC","ADaM-IG","1","Medium","There is more than one value of TRxxAGy for a given value of TRxxAGyN, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"236","CDISC","ADaM-IG","1","Medium","There is more than one value of TRxxAGyN for a given value of TRxxAGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"237","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTPGy for a given value of TRTPGyN, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"238","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTPGyN for a given value of TRTPGy, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"239","CDISC","ADaM-IG","1","Medium","TRTPGy is present and TRTA is present but TRTAGy is not present, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"24","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","RANDFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
-"240","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTAGy for a given value of TRTAGyN, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"241","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTAGyN for a given value of TRTAGy, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"242","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTxxAN for a given value of TRTxxA, where xx is an integer [01-99, zero-padded]",NA,NA,"narrative",NA,NA,NA
-"243","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTxxA for a given value of TRTxxAN, where xx is an integer [01-99, zero-padded]",NA,NA,"narrative",NA,NA,NA
-"25","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ENRLFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
-"252","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AVAL is present or AVALC is present",NA,NA,"narrative",NA,NA,NA
-"254","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PARAM is present",NA,NA,"narrative",NA,NA,NA
-"256","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The values of USUBJID are not present in ADSL",NA,NA,"narrative",NA,NA,NA
-"26","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","COMPLFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"261","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AEDECOD is not present",NA,NA,"narrative",NA,NA,NA
-"262","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AEBODSYS is not present",NA,NA,"narrative",NA,NA,NA
-"268","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ADURN is populated and ADURU is not populated",NA,NA,"narrative",NA,NA,NA
-"269","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRTEMFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
-"27","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","FASFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"270","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PREFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
-"271","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","FUPFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
-"272","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a prefix of AOCC and a suffix of FL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
-"278","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AESER is not present",NA,NA,"narrative",NA,NA,NA
-"279","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AESEVN is not equal to 1, 2, 3, or null",NA,NA,"narrative",NA,NA,NA
-"28","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ITTFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"280","CDISC","ADaM-IG","1","Medium","There is more than one value of AESEV for a given value of AESEVN",NA,NA,"narrative",NA,NA,NA
-"281","CDISC","ADaM-IG","1","Medium","There is more than one value of AESEVN for a given value of AESEV",NA,NA,"narrative",NA,NA,NA
-"282","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ASEVN is not equal to 1, 2, 3, or null",NA,NA,"narrative",NA,NA,NA
-"283","CDISC","ADaM-IG","1","Medium","There is more than one value of ASEV for a given value of ASEVN",NA,NA,"narrative",NA,NA,NA
-"284","CDISC","ADaM-IG","1","Medium","There is more than one value of ASEVN for a given value of ASEV",NA,NA,"narrative",NA,NA,NA
-"285","CDISC","ADaM-IG","1","Medium","There is more than one value of SEVGRy for a given value of SEVGRyN",NA,NA,"narrative",NA,NA,NA
-"286","CDISC","ADaM-IG","1","Medium","There is more than one value of SEVGRyN for a given value of SEVGRy",NA,NA,"narrative",NA,NA,NA
-"287","CDISC","ADaM-IG","1","Medium","There is more than one value of AEREL for a given value of AERELN",NA,NA,"narrative",NA,NA,NA
-"288","CDISC","ADaM-IG","1","Medium","There is more than one value of AERELN for a given value of AEREL",NA,NA,"narrative",NA,NA,NA
-"289","CDISC","ADaM-IG","1","Medium","There is more than one value of AREL for a given value of ARELN",NA,NA,"narrative",NA,NA,NA
-"29","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PPROTFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"290","CDISC","ADaM-IG","1","Medium","There is more than one value of ARELN for a given value of AREL",NA,NA,"narrative",NA,NA,NA
-"291","CDISC","ADaM-IG","1","Medium","There is more than one value of RELGRy for a given value of RELGRyN",NA,NA,"narrative",NA,NA,NA
-"292","CDISC","ADaM-IG","1","Medium","There is more than one value of RELGRyN for a given value of RELGRy",NA,NA,"narrative",NA,NA,NA
-"293","CDISC","ADaM-IG","1","Medium","There is more than one value of AETOXGR for a given value of AETOXGRN",NA,NA,"narrative",NA,NA,NA
-"294","CDISC","ADaM-IG","1","Medium","There is more than one value of AETOXGRN for a given value of AETOXGR",NA,NA,"narrative",NA,NA,NA
-"295","CDISC","ADaM-IG","1","Medium","There is more than one value of ATOXGR for a given value of ATOXGRN",NA,NA,"narrative",NA,NA,NA
-"296","CDISC","ADaM-IG","1","Medium","There is more than one value of ATOXGRN for a given value of ATOXGR",NA,NA,"narrative",NA,NA,NA
-"297","CDISC","ADaM-IG","1","Medium","There is more than one value of TOXGGRy for a given value of TOXGGRyN",NA,NA,"narrative",NA,NA,NA
-"298","CDISC","ADaM-IG","1","Medium","There is more than one value of TOXGGRyN for a given value of TOXGGRy",NA,NA,"narrative",NA,NA,NA
-"30","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SAFFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"304","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SMQzzNAM is populated and SMQzzCD is not populated",NA,NA,"narrative",NA,NA,NA
-"305","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SMQzzNAM is populated and SMQzzSC is not populated",NA,NA,"narrative",NA,NA,NA
-"306","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SMQzzCD is populated and SMQzzNAM is not populated",NA,NA,"narrative",NA,NA,NA
-"307","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SMQzzCD is populated and SMQzzSC is not populated",NA,NA,"narrative",NA,NA,NA
-"308","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SMQzzSC is populated and SMQzzNAM is not populated",NA,NA,"narrative",NA,NA,NA
-"309","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SMQzzSC is populated and SMQzzCD is not populated",NA,NA,"narrative",NA,NA,NA
-"31","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","RANDFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"310","CDISC","ADaM-IG","1","Medium","There is more than one value of SMQzzSC for a given value of SMQzzSCN",NA,NA,"narrative",NA,NA,NA
-"311","CDISC","ADaM-IG","1","Medium","There is more than one value of SMQzzSCN for a given value of SMQzzSC",NA,NA,"narrative",NA,NA,NA
-"312","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SMQzzSC is not equal to BROAD or NARROW, where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
-"313","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SMQzzSCN is not equal to 1 or 2, where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
-"32","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ENRLFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"320","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A dataset is named ADSL and the dataset label is not ""Subject-Level Analysis Dataset""",NA,NA,"narrative",NA,NA,NA
-"321","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A dataset label is ""Subject-Level Analysis Dataset"" and the dataset is not named ADSL",NA,NA,"narrative",NA,NA,NA
+"1","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ADSL dataset does not exist",NA,NA,"narrative",NA,NA,NA
+"10","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to Y and a variable with the same root and a suffix of FN is not equal to 1",NA,NA,"narrative",NA,NA,NA
+"102","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRTxxP",NA,NA,"narrative",NA,NA,NA
+"103","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxSDT",NA,NA,"narrative",NA,NA,NA
+"104","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxEDT",NA,NA,"narrative",NA,NA,NA
+"105","CDISC","ADaM-IG","1.0","Medium","There is more than one value of APERIODC for a given value of APERIOD",NA,NA,"narrative",NA,NA,NA
+"106","CDISC","ADaM-IG","1.0","Medium","There is more than one value of APERIOD for a given value of APERIODC",NA,NA,"narrative",NA,NA,NA
+"109","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVISITN for a given value of AVISIT",NA,NA,"narrative",NA,NA,NA
+"11","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to N and a variable with the same root and a suffix of FN is not equal to 0",NA,NA,"narrative",NA,NA,NA
+"110","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVISIT for a given value of AVISITN",NA,NA,"narrative",NA,NA,NA
+"112","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARELTM is populated and ARELTMU is not populated",NA,NA,"narrative",NA,NA,NA
+"117","CDISC","ADaM-IG","1.0,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of ATPT for a given value of ATPTN",NA,NA,"narrative",NA,NA,NA
+"118","CDISC","ADaM-IG","1.0,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of ATPTN for a given value of ATPT",NA,NA,"narrative",NA,NA,NA
+"12","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to null and a variable with the same root and a suffix of FN is not equal to null",NA,NA,"narrative",NA,NA,NA
+"121","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of a variable with a suffix of SDT is greater than the value of a variable with the same root and a suffix of EDT, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
+"122","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of a variable with a suffix of SDTM is greater than the value of a variable with the same root and a suffix of EDTM, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
+"123","CDISC","ADaM-IG","1.0,1.1","Medium","There is more than one value of PARAMTYP for a given value of PARAMCD",NA,NA,"narrative",NA,NA,NA
+"124","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","There is more than one value of PARCATy for a given value of PARAMCD",NA,NA,"narrative",NA,NA,NA
+"125","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARCATy for a given value of PARCATyN",NA,NA,"narrative",NA,NA,NA
+"126","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARCATyN for a given value of PARCATy",NA,NA,"narrative",NA,NA,NA
+"127","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BASE is populated and there is not at least one record with ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
+"128","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BASEC is populated and there is not at least one record with ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
+"129","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD for a subject, there is more than one value of BASE for a given value of BASEC",NA,NA,"narrative",NA,NA,NA
+"13","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a variable name exceeds 8 characters",NA,NA,"narrative",NA,NA,NA
+"130","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD for a subject, there is more than one value of BASEC for a given value of BASE",NA,NA,"narrative",NA,NA,NA
+"131","CDISC","ADaM-IG","1.0,1.2","Medium","Within a given value of PARAMCD, BASETYPE is populated for at least one record and is not populated for at least one record",NA,NA,"narrative",NA,NA,NA
+"132","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","R2BASE is not equal to AVAL divided by BASE",NA,NA,"narrative",NA,NA,NA
+"133","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","R2AyLO is not equal to AVAL divided by AyLO",NA,NA,"narrative",NA,NA,NA
+"134","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","R2AyHI is not equal to AVAL divided by AyHI",NA,NA,"narrative",NA,NA,NA
+"135","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTy for a given value of SHIFTyN",NA,NA,"narrative",NA,NA,NA
+"136","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTyN for a given value of SHIFTy",NA,NA,"narrative",NA,NA,NA
+"137","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CRITyFL is populated and CRITy is not populated",NA,NA,"narrative",NA,NA,NA
+"14","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable name does not start with a letter (A-Z)",NA,NA,"narrative",NA,NA,NA
+"141","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARAM for a given value of PARAMCD",NA,NA,"narrative",NA,NA,NA
+"142","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARAMCD for a given value of PARAM",NA,NA,"narrative",NA,NA,NA
+"143","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD has more than 8 characters in length",NA,NA,"narrative",NA,NA,NA
+"144","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD starts with a character other than a letter",NA,NA,"narrative",NA,NA,NA
+"145","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD has characters that are not letters, digits, and underscores",NA,NA,"narrative",NA,NA,NA
+"146","CDISC","ADaM-IG","1.0","Medium","Within a dataset, there is more than one value of PARAM for a given value of PARAMN",NA,NA,"narrative",NA,NA,NA
+"147","CDISC","ADaM-IG","1.0","Medium","Within a dataset, there is more than one value of PARAMN for a given value of PARAM",NA,NA,"narrative",NA,NA,NA
+"148","CDISC","ADaM-IG","1.0","Medium","PARAMN is not an integer",NA,NA,"narrative",NA,NA,NA
+"149","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVALC for a given value of AVAL",NA,NA,"narrative",NA,NA,NA
+"15","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable name contains a character other than letters (A-Z), underscores (_), or numerals (0-9)",NA,NA,"narrative",NA,NA,NA
+"150","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVAL for a given value of AVALC",NA,NA,"narrative",NA,NA,NA
+"151","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of CRITy",NA,NA,"narrative",NA,NA,NA
+"152","CDISC","ADaM-IG","1.0,1.1,1.2","Medium","BASETYPE is present, BASE is populated, and BASE is not equal to AVAL where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject",NA,NA,"narrative",NA,NA,NA
+"154","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given PARAMCD and BASETYPE for a subject, more than one record has ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
+"155","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given PARAMCD for a subject, more than one record has ABLFL equal to Y and BASETYPE is not present",NA,NA,"narrative",NA,NA,NA
+"156","CDISC","ADaM-IG","1.0","Medium","A variable with a prefix of CRIT, a suffix of FL and containing a one-digit number (CRITyFL) is present and a variable with the same root without a suffix of FL (CRITy) is not present",NA,NA,"narrative",NA,NA,NA
+"157","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a prefix of CRIT and a suffix of a one-digit number (CRITy) is present and a variable with the same root with a suffix of FL (CRITyFL) is not present",NA,NA,"narrative",NA,NA,NA
+"159","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AWTDIFF is populated and AWTARGET is not populated",NA,NA,"narrative",NA,NA,NA
+"16","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a variable label is greater than 40 characters",NA,NA,"narrative",NA,NA,NA
+"160","CDISC","ADaM-IG","1.0,1.1","Medium","AWU is present and both AWLO and AWHI are not present",NA,NA,"narrative",NA,NA,NA
+"165","CDISC","ADaM-IG","1.0,1.1,1.2","Medium","BASETYPE is present, BTOXGR is populated, and BTOXGR is not equal to ATOXGR where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE",NA,NA,"narrative",NA,NA,NA
+"168","CDISC","ADaM-IG","1.0,1.1,1.2","Medium","BASETYPE is present, BNRIND is populated, and BNRIND is not equal to ANRIND where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE",NA,NA,"narrative",NA,NA,NA
+"169","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of CNSR is not a positive integer or 0",NA,NA,"narrative",NA,NA,NA
+"17","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a character value is greater than 200 characters",NA,NA,"narrative",NA,NA,NA
+"176","CDISC","ADaM-IG","1.0,1.1","Medium","ABLFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
+"178","CDISC","ADaM-IG","1.0,1.1","Medium","ANLzzFL is not equal to Y or null where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
+"18","CDISC","ADaM-IG","1.0","Medium","Labels for ADaM variables do not match the standard labels for ADaM variables listed in the implementation guide that cannot be modified (with the exception of 1) variables whose names contain indexes “y”, ""xx"", or “zz”; and (2) variable labels with asterisks (*) and ellipses (...) indicated for sponsor appropriate text)",NA,NA,"narrative",NA,NA,NA
+"180","CDISC","ADaM-IG","1.0","Medium","SRCDOM has a value that is not an SDTM domain name or null",NA,NA,"narrative",NA,NA,NA
+"181","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BASETYPE is not present, BASE is populated, and BASE is not equal to AVAL where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
+"182","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BASETYPE is not present, BTOXGR is populated, and BTOXGR is not equal to ATOXGR where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
+"183","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BASETYPE is not present, BNRIND is populated, and BNRIND is not equal to ANRIND where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
+"19","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COMPLFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
+"194","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not present",NA,NA,"narrative",NA,NA,NA
+"195","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not present",NA,NA,"narrative",NA,NA,NA
+"196","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not populated",NA,NA,"narrative",NA,NA,NA
+"197","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not populated",NA,NA,"narrative",NA,NA,NA
+"198","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is not present and AVALC is not present",NA,NA,"narrative",NA,NA,NA
+"199","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable present in SDTM but the variables do not have identical data types",NA,NA,"narrative",NA,NA,NA
+"2","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable present in SDTM but the variables do not have identical labels",NA,NA,"narrative",NA,NA,NA
+"20","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","FASFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
+"200","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable defined in the ADaM IG but the variables do not have identical data types",NA,NA,"narrative",NA,NA,NA
+"201","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTAGyN is present and TRTAGy is not present",NA,NA,"narrative",NA,NA,NA
+"204","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.AGE is not equal to DM.AGE",NA,NA,"narrative",NA,NA,NA
+"205","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.AGEU is not equal to DM.AGEU",NA,NA,"narrative",NA,NA,NA
+"206","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.SEX is not equal to DM.SEX",NA,NA,"narrative",NA,NA,NA
+"207","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.RACE is not equal to DM.RACE",NA,NA,"narrative",NA,NA,NA
+"208","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.SUBJID is not equal to DM.SUBJID",NA,NA,"narrative",NA,NA,NA
+"209","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.SITEID is not equal to DM.SITEID",NA,NA,"narrative",NA,NA,NA
+"21","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ITTFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
+"210","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.ARM is not equal to DM.ARM",NA,NA,"narrative",NA,NA,NA
+"211","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ABLFN is not equal to 1 or null",NA,NA,"narrative",NA,NA,NA
+"212","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ANLzzFN is not equal to 1 or null where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
+"22","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PPROTFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
+"221","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVALCATy for a given value of AVAL",NA,NA,"narrative",NA,NA,NA
+"222","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of BASECATy for a given value of BASE and y",NA,NA,"narrative",NA,NA,NA
+"223","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, CHG is populated and is not equal to AVAL - BASE",NA,NA,"narrative",NA,NA,NA
+"224","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of CHGCATy for a given value of CHG and y",NA,NA,"narrative",NA,NA,NA
+"225","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PCHG is populated and is not equal to ((AVAL - BASE)/BASE)*100",NA,NA,"narrative",NA,NA,NA
+"226","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of PCHGCATy for a given value of PCHG and y",NA,NA,"narrative",NA,NA,NA
+"227","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQP for a given value of TRTSEQPN",NA,NA,"narrative",NA,NA,NA
+"228","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQPN for a given value of TRTSEQP",NA,NA,"narrative",NA,NA,NA
+"229","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQA for a given value of TRTSEQAN",NA,NA,"narrative",NA,NA,NA
+"23","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SAFFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
+"230","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQAN for a given value of TRTSEQA",NA,NA,"narrative",NA,NA,NA
+"231","CDISC","ADaM-IG","1.0","Medium","Within a given value of TRTxxP, there is more than one value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"232","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRxxPGy for a given value of TRxxPGyN, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"233","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRxxPGyN for a given value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"234","CDISC","ADaM-IG","1.0","Medium","Within a given value of TRTxxA, there is more than one value of TRxxAGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"235","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRxxAGy for a given value of TRxxAGyN, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"236","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRxxAGyN for a given value of TRxxAGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"237","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTPGy for a given value of TRTPGyN, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"238","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTPGyN for a given value of TRTPGy, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"239","CDISC","ADaM-IG","1.0","Medium","TRTPGy is present and TRTA is present but TRTAGy is not present, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"24","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","RANDFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
+"240","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTAGy for a given value of TRTAGyN, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"241","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTAGyN for a given value of TRTAGy, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
+"242","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTxxAN for a given value of TRTxxA, where xx is an integer [01-99, zero-padded]",NA,NA,"narrative",NA,NA,NA
+"243","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTxxA for a given value of TRTxxAN, where xx is an integer [01-99, zero-padded]",NA,NA,"narrative",NA,NA,NA
+"25","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ENRLFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
+"252","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is present or AVALC is present",NA,NA,"narrative",NA,NA,NA
+"254","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is present",NA,NA,"narrative",NA,NA,NA
+"256","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The values of USUBJID are not present in ADSL",NA,NA,"narrative",NA,NA,NA
+"26","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COMPLFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"261","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEDECOD is not present",NA,NA,"narrative",NA,NA,NA
+"262","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEBODSYS is not present",NA,NA,"narrative",NA,NA,NA
+"268","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ADURN is populated and ADURU is not populated",NA,NA,"narrative",NA,NA,NA
+"269","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEMFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
+"27","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","FASFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"270","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PREFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
+"271","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","FUPFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
+"272","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a prefix of AOCC and a suffix of FL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
+"278","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESER is not present",NA,NA,"narrative",NA,NA,NA
+"279","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESEVN is not equal to 1, 2, 3, or null",NA,NA,"narrative",NA,NA,NA
+"28","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ITTFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"280","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AESEV for a given value of AESEVN",NA,NA,"narrative",NA,NA,NA
+"281","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AESEVN for a given value of AESEV",NA,NA,"narrative",NA,NA,NA
+"282","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ASEVN is not equal to 1, 2, 3, or null",NA,NA,"narrative",NA,NA,NA
+"283","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ASEV for a given value of ASEVN",NA,NA,"narrative",NA,NA,NA
+"284","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ASEVN for a given value of ASEV",NA,NA,"narrative",NA,NA,NA
+"285","CDISC","ADaM-IG","1.0","Medium","There is more than one value of SEVGRy for a given value of SEVGRyN",NA,NA,"narrative",NA,NA,NA
+"286","CDISC","ADaM-IG","1.0","Medium","There is more than one value of SEVGRyN for a given value of SEVGRy",NA,NA,"narrative",NA,NA,NA
+"287","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AEREL for a given value of AERELN",NA,NA,"narrative",NA,NA,NA
+"288","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AERELN for a given value of AEREL",NA,NA,"narrative",NA,NA,NA
+"289","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AREL for a given value of ARELN",NA,NA,"narrative",NA,NA,NA
+"29","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PPROTFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"290","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ARELN for a given value of AREL",NA,NA,"narrative",NA,NA,NA
+"291","CDISC","ADaM-IG","1.0","Medium","There is more than one value of RELGRy for a given value of RELGRyN",NA,NA,"narrative",NA,NA,NA
+"292","CDISC","ADaM-IG","1.0","Medium","There is more than one value of RELGRyN for a given value of RELGRy",NA,NA,"narrative",NA,NA,NA
+"293","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AETOXGR for a given value of AETOXGRN",NA,NA,"narrative",NA,NA,NA
+"294","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AETOXGRN for a given value of AETOXGR",NA,NA,"narrative",NA,NA,NA
+"295","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ATOXGR for a given value of ATOXGRN",NA,NA,"narrative",NA,NA,NA
+"296","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ATOXGRN for a given value of ATOXGR",NA,NA,"narrative",NA,NA,NA
+"297","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TOXGGRy for a given value of TOXGGRyN",NA,NA,"narrative",NA,NA,NA
+"298","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TOXGGRyN for a given value of TOXGGRy",NA,NA,"narrative",NA,NA,NA
+"30","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SAFFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"304","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzNAM is populated and SMQzzCD is not populated",NA,NA,"narrative",NA,NA,NA
+"305","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzNAM is populated and SMQzzSC is not populated",NA,NA,"narrative",NA,NA,NA
+"306","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzCD is populated and SMQzzNAM is not populated",NA,NA,"narrative",NA,NA,NA
+"307","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzCD is populated and SMQzzSC is not populated",NA,NA,"narrative",NA,NA,NA
+"308","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzSC is populated and SMQzzNAM is not populated",NA,NA,"narrative",NA,NA,NA
+"309","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzSC is populated and SMQzzCD is not populated",NA,NA,"narrative",NA,NA,NA
+"31","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","RANDFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"310","CDISC","ADaM-IG","1.0","Medium","There is more than one value of SMQzzSC for a given value of SMQzzSCN",NA,NA,"narrative",NA,NA,NA
+"311","CDISC","ADaM-IG","1.0","Medium","There is more than one value of SMQzzSCN for a given value of SMQzzSC",NA,NA,"narrative",NA,NA,NA
+"312","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzSC is not equal to BROAD or NARROW, where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
+"313","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzSCN is not equal to 1 or 2, where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
+"32","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ENRLFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"320","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A dataset is named ADSL and the dataset label is not ""Subject-Level Analysis Dataset""",NA,NA,"narrative",NA,NA,NA
+"321","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A dataset label is ""Subject-Level Analysis Dataset"" and the dataset is not named ADSL",NA,NA,"narrative",NA,NA,NA
 "322","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of TRTP, there is more than one value of TRTPGy, where y is an integer [1-99, not zero-padded]",NA,NA,"narrative",NA,NA,NA
 "323","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a study, there is more than one value of APHASEN for a given value of APHASE, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "324","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a study, there is more than one value of APHASE for a given value of APHASEN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -169,18 +169,18 @@
 "327","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AVALCATy for a given value of AVALCAyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "328","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AVALCAyN for a given value of AVALCATy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "329","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of BASECATy for a given value of BASECAyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"33","CDISC","ADaM-IG","1,1.1","Medium","A variable with a suffix of RFL has a value that is not Y or null",NA,NA,"narrative",NA,NA,NA
+"33","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of RFL has a value that is not Y or null",NA,NA,"narrative",NA,NA,NA
 "330","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of BASECAyN for a given value of BASECATy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "331","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of CHGCATy for a given value of CHGCATyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "332","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of CHGCATyN for a given value of CHGCATy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "333","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of PCHGCATy for a given value of PCHGCAyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "334","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of PCHGCAyN for a given value of PCHGCATy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"335","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","CRITyFL is present and CRITy is not present",NA,NA,"narrative",NA,NA,NA
-"336","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","CRITy is present and CRITyFL is not present",NA,NA,"narrative",NA,NA,NA
+"335","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CRITyFL is present and CRITy is not present",NA,NA,"narrative",NA,NA,NA
+"336","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CRITy is present and CRITyFL is not present",NA,NA,"narrative",NA,NA,NA
 "337","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","MCRITyML is present and MCRITy is not present",NA,NA,"narrative",NA,NA,NA
 "338","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","MCRITy is present and MCRITyML is not present",NA,NA,"narrative",NA,NA,NA
 "339","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","MCRITyML is populated and MCRITy is not populated",NA,NA,"narrative",NA,NA,NA
-"34","CDISC","ADaM-IG","1,1.1","Medium","A variable with a suffix of PFL has a value that is not Y or null",NA,NA,"narrative",NA,NA,NA
+"34","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of PFL has a value that is not Y or null",NA,NA,"narrative",NA,NA,NA
 "340","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of MCRITyML for a given value of MCRITyMN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "341","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of MCRITyMN for a given value of MCRITyML, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "342","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of ANRLO for a given value of ANRLOC",NA,NA,"narrative",NA,NA,NA
@@ -191,7 +191,7 @@
 "347","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyLO for a given value of AyLOC",NA,NA,"narrative",NA,NA,NA
 "348","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyLOC for a given value of AyLO",NA,NA,"narrative",NA,NA,NA
 "349","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","R2AyHI is present and AyHI is not present",NA,NA,"narrative",NA,NA,NA
-"35","CDISC","ADaM-IG","1,1.1","Medium","A variable with a suffix of RFN has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
+"35","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of RFN has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
 "350","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyHI for a given value of AyHIC",NA,NA,"narrative",NA,NA,NA
 "351","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyHIC for a given value of AyHI",NA,NA,"narrative",NA,NA,NA
 "352","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","AyIND is present and AyLO, AyHI, AyLOC, and AyHIC are all not present",NA,NA,"narrative",NA,NA,NA
@@ -200,27 +200,27 @@
 "355","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of REGIONy for a given value of REGIONyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "356","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of REGIONyN for a given value of REGIONy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "359","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUS for a given value of DTHCAUSN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"36","CDISC","ADaM-IG","1,1.1","Medium","A variable with a suffix of PFN has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
+"36","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of PFN has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
 "360","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUSN for a given value of DTHCAUS, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"361","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of ASTDT is greater than the value of AENDT, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"362","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of ASTDTM is greater than the value of AENDTM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"363","CDISC","ADaM-IG","1,1.1","Medium","ONTRTFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
+"361","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ASTDT is greater than the value of AENDT, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
+"362","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ASTDTM is greater than the value of AENDTM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
+"363","CDISC","ADaM-IG","1.0,1.1","Medium","ONTRTFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
 "364","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","DOSEON or DOSCUMA is present and DOSEU is not present",NA,NA,"narrative",NA,NA,NA
-"365","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SDTM.EX is present and neither TRTEDT or TRTEDTM are present",NA,NA,"narrative",NA,NA,NA
-"366","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","RANDDT is not present when RANDFL is equal to Y for at least one record",NA,NA,"narrative",NA,NA,NA
+"365","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SDTM.EX is present and neither TRTEDT or TRTEDTM are present",NA,NA,"narrative",NA,NA,NA
+"366","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","RANDDT is not present when RANDFL is equal to Y for at least one record",NA,NA,"narrative",NA,NA,NA
 "367","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.ACTARM is not equal to DM.ACTARM",NA,NA,"narrative",NA,NA,NA
-"368","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRxxAGy is not present and both TRxxPGy and TRTxxA are present",NA,NA,"narrative",NA,NA,NA
-"369","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","*DTF is populated and neither *DT nor *DTM is populated",NA,NA,"narrative",NA,NA,NA
-"37","CDISC","ADaM-IG","1","Medium","There is more than one value of a variable which has a suffix of GRyN for a given value of a variable with the same root name and suffix of GRy",NA,NA,"narrative",NA,NA,NA
-"370","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","*TMF is populated and neither *TM nor *DTM is populated",NA,NA,"narrative",NA,NA,NA
-"373","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","CNSR is not present",NA,NA,"narrative",NA,NA,NA
-"374","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AVAL is not present",NA,NA,"narrative",NA,NA,NA
+"368","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRxxAGy is not present and both TRxxPGy and TRTxxA are present",NA,NA,"narrative",NA,NA,NA
+"369","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","*DTF is populated and neither *DT nor *DTM is populated",NA,NA,"narrative",NA,NA,NA
+"37","CDISC","ADaM-IG","1.0","Medium","There is more than one value of a variable which has a suffix of GRyN for a given value of a variable with the same root name and suffix of GRy",NA,NA,"narrative",NA,NA,NA
+"370","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","*TMF is populated and neither *TM nor *DTM is populated",NA,NA,"narrative",NA,NA,NA
+"373","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CNSR is not present",NA,NA,"narrative",NA,NA,NA
+"374","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is not present",NA,NA,"narrative",NA,NA,NA
 "375","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, a variable which has a suffix of GRyN is populated and a variable with the same root name and suffix of GRy is not populated",NA,NA,"narrative",NA,NA,NA
 "376","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, a variable which has a suffix of GRy is populated and a variable with the same root name and suffix of GRyN is not populated",NA,NA,"narrative",NA,NA,NA
 "377","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxP is populated and TRTxxPN is not populated",NA,NA,"narrative",NA,NA,NA
 "378","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxPN is populated and TRTxxP is not populated",NA,NA,"narrative",NA,NA,NA
 "379","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRN is populated and BTOXGR is not populated",NA,NA,"narrative",NA,NA,NA
-"38","CDISC","ADaM-IG","1","Medium","There is more than one value of a variable which has a suffix of GRy for a given value of a variable with the same root name and suffix of GRyN",NA,NA,"narrative",NA,NA,NA
+"38","CDISC","ADaM-IG","1.0","Medium","There is more than one value of a variable which has a suffix of GRy for a given value of a variable with the same root name and suffix of GRyN",NA,NA,"narrative",NA,NA,NA
 "380","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGR is populated and BTOXGRN is not populated",NA,NA,"narrative",NA,NA,NA
 "381","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGR for a given value of BTOXGRN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "382","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRN for a given value of BTOXGR, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -231,7 +231,7 @@
 "387","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRH for a given value of BTOXGRHN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "388","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRHN for a given value of BTOXGRH, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "389","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRH is populated and BTOXGRHN is not populated",NA,NA,"narrative",NA,NA,NA
-"39","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of DTF has a value that is not within Controlled Terminology for DATEFL",NA,NA,"narrative",NA,NA,NA
+"39","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DTF has a value that is not within Controlled Terminology for DATEFL",NA,NA,"narrative",NA,NA,NA
 "390","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRHN is populated and BTOXGRH is not populated",NA,NA,"narrative",NA,NA,NA
 "391","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGR is populated and ATOXGRN is not populated",NA,NA,"narrative",NA,NA,NA
 "392","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGRN is populated and ATOXGR is not populated",NA,NA,"narrative",NA,NA,NA
@@ -242,7 +242,7 @@
 "397","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGRH is populated and ATOXGRHN is not populated",NA,NA,"narrative",NA,NA,NA
 "398","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGRHN is populated and ATOXGRH is not populated",NA,NA,"narrative",NA,NA,NA
 "399","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of ATOXGRH for a given value of ATOXGRHN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"40","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of TMF has a value that is not within Controlled Terminology for TIMEFL",NA,NA,"narrative",NA,NA,NA
+"40","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of TMF has a value that is not within Controlled Terminology for TIMEFL",NA,NA,"narrative",NA,NA,NA
 "400","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of ATOXGRHN for a given value of ATOXGRH, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "401","CDISC","ADaM-IG","1.2,1.3","Medium","AVAL is not populated or ATOXGRL is not populated, and ATOXDSCL is populated",NA,NA,"narrative",NA,NA,NA
 "402","CDISC","ADaM-IG","1.2,1.3","Medium","AVAL is not populated or ATOXGRH is not populated, and ATOXDSCH is populated",NA,NA,"narrative",NA,NA,NA
@@ -251,7 +251,7 @@
 "407","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ABLFN is populated and ABLFL is not populated",NA,NA,"narrative",NA,NA,NA
 "408","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ABLFL is populated and ABLFN is not populated",NA,NA,"narrative",NA,NA,NA
 "409","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ABLFN for a given value of ABLFL, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"41","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A numeric variable with a suffix of DT does not have a date format",NA,NA,"narrative",NA,NA,NA
+"41","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A numeric variable with a suffix of DT does not have a date format",NA,NA,"narrative",NA,NA,NA
 "410","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ABLFL for a given value of ABLFN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "411","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ANLzzFN is populated and ANLzzFL is not populated",NA,NA,"narrative",NA,NA,NA
 "412","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ANLzzFL is populated and ANLzzFN is not populated",NA,NA,"narrative",NA,NA,NA
@@ -262,7 +262,7 @@
 "417","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTSEQAN is populated and TRTSEQA is not populated",NA,NA,"narrative",NA,NA,NA
 "418","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTSEQA is populated and TRTSEQAN is not populated",NA,NA,"narrative",NA,NA,NA
 "419","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRxxPGyN is populated and TRxxPGy is not populated",NA,NA,"narrative",NA,NA,NA
-"42","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A numeric variable with a suffix of TM does not have a time format, excluding ARELTM and variables with a suffix of DTM",NA,NA,"narrative",NA,NA,NA
+"42","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A numeric variable with a suffix of TM does not have a time format, excluding ARELTM and variables with a suffix of DTM",NA,NA,"narrative",NA,NA,NA
 "420","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRxxPGy is populated and TRxxPGyN is not populated",NA,NA,"narrative",NA,NA,NA
 "421","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRxxAGyN is populated and TRxxAGy is not populated",NA,NA,"narrative",NA,NA,NA
 "422","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRxxAGy is populated and TRxxAGyN is not populated",NA,NA,"narrative",NA,NA,NA
@@ -273,7 +273,7 @@
 "427","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxA is populated and TRTxxAN is not populated",NA,NA,"narrative",NA,NA,NA
 "428","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxAN is populated and TRTxxA is not populated",NA,NA,"narrative",NA,NA,NA
 "429","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APERIOD is populated and APERIODC is not populated",NA,NA,"narrative",NA,NA,NA
-"43","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A numeric variable with a suffix of DTM does not have a datetime format",NA,NA,"narrative",NA,NA,NA
+"43","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A numeric variable with a suffix of DTM does not have a datetime format",NA,NA,"narrative",NA,NA,NA
 "430","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APERIODC is populated and APERIOD is not populated",NA,NA,"narrative",NA,NA,NA
 "431","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASE is populated and APHASEN is not populated",NA,NA,"narrative",NA,NA,NA
 "432","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is populated and APHASE is not populated",NA,NA,"narrative",NA,NA,NA
@@ -284,7 +284,7 @@
 "437","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, AVALCATy is populated and AVALCAyN is not populated",NA,NA,"narrative",NA,NA,NA
 "438","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, AVALCAyN is populated and AVALCATy is not populated",NA,NA,"narrative",NA,NA,NA
 "439","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BASECATy is populated and BASECAyN is not populated",NA,NA,"narrative",NA,NA,NA
-"44","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of TM and a variable with a suffix of DTM with the same root name have different time values",NA,NA,"narrative",NA,NA,NA
+"44","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of TM and a variable with a suffix of DTM with the same root name have different time values",NA,NA,"narrative",NA,NA,NA
 "440","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BASECAyN is populated and BASECATy is not populated",NA,NA,"narrative",NA,NA,NA
 "441","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CHGCATy is populated and CHGCATyN is not populated",NA,NA,"narrative",NA,NA,NA
 "442","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CHGCATyN is populated and CHGCATy is not populated",NA,NA,"narrative",NA,NA,NA
@@ -295,7 +295,7 @@
 "447","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, AVISITN is populated and AVISIT is not populated",NA,NA,"narrative",NA,NA,NA
 "448","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, DTHCAUS is populated and DTHCAUSN is not populated",NA,NA,"narrative",NA,NA,NA
 "449","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, DTHCAUSN is populated and DTHCAUS is not populated",NA,NA,"narrative",NA,NA,NA
-"45","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of DT and a variable with a suffix of DTM with the same root name have different date values",NA,NA,"narrative",NA,NA,NA
+"45","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DT and a variable with a suffix of DTM with the same root name have different date values",NA,NA,"narrative",NA,NA,NA
 "450","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, MCRITyML is populated and MCRITyMN is not populated",NA,NA,"narrative",NA,NA,NA
 "451","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, MCRITyMN is populated and MCRITyML is not populated",NA,NA,"narrative",NA,NA,NA
 "452","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, REGIONy is populated and REGIONyN is not populated",NA,NA,"narrative",NA,NA,NA
@@ -306,7 +306,7 @@
 "457","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTAN is populated and TRTA is not populated",NA,NA,"narrative",NA,NA,NA
 "458","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTP is populated and TRTPN is not populated",NA,NA,"narrative",NA,NA,NA
 "459","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTPN is populated and TRTP is not populated",NA,NA,"narrative",NA,NA,NA
-"46","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of DY has a value of zero",NA,NA,"narrative",NA,NA,NA
+"46","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DY has a value of zero",NA,NA,"narrative",NA,NA,NA
 "460","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQPGy is populated and TSEQPGyN is not populated",NA,NA,"narrative",NA,NA,NA
 "461","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQPGyN is populated and TSEQPGy is not populated",NA,NA,"narrative",NA,NA,NA
 "462","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQAGy is populated and TSEQAGyN is not populated",NA,NA,"narrative",NA,NA,NA
@@ -317,7 +317,7 @@
 "467","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATARN is populated and STRATAR is not populated",NA,NA,"narrative",NA,NA,NA
 "468","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAR for a given value of STRATARN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "469","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATARN for a given value of STRATAR, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"47","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SITEID is not present within ADSL",NA,NA,"narrative",NA,NA,NA
+"47","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SITEID is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "470","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwR is populated and STRATwRN is not populated",NA,NA,"narrative",NA,NA,NA
 "471","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwRN is populated and STRATwR is not populated",NA,NA,"narrative",NA,NA,NA
 "472","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwR for a given value of STRATwRN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -328,7 +328,7 @@
 "477","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAVN for a given value of STRATAV, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "478","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwV is populated and STRATwVN is not populated",NA,NA,"narrative",NA,NA,NA
 "479","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwVN is populated and STRATwV is not populated",NA,NA,"narrative",NA,NA,NA
-"48","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of FL is not present in ADSL",NA,NA,"narrative",NA,NA,NA
+"48","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is not present in ADSL",NA,NA,"narrative",NA,NA,NA
 "480","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwV for a given value of STRATwVN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "481","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwVN for a given value of STRATwV, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "482","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BCHGCATy is populated and BCHGCAyN is not populated",NA,NA,"narrative",NA,NA,NA
@@ -339,17 +339,17 @@
 "487","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CRITyFN is populated and CRITyFL is not populated",NA,NA,"narrative",NA,NA,NA
 "488","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ONTRTFL is populated and ONTRTFN is not populated",NA,NA,"narrative",NA,NA,NA
 "489","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ONTRTFN is populated and ONTRTFL is not populated",NA,NA,"narrative",NA,NA,NA
-"49","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AGE is not present within ADSL",NA,NA,"narrative",NA,NA,NA
+"49","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AGE is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "490","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, LVOTFL is populated and LVOTFN is not populated",NA,NA,"narrative",NA,NA,NA
 "491","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, LVOTFN is populated and LVOTFL is not populated",NA,NA,"narrative",NA,NA,NA
 "492","CDISC","ADaM-IG","1.2,1.3","Medium","SHIFTy is present and all of the following variable pairs (BASECATy, AVALCATy), (BNRIND, ANRIND), (ByIND, AyIND), (BTOXGR, ATOXGR), (BTOXGRL, ATOXGRL), (BTOXGRH, ATOXGRH), (BASE, AVAL) and (BASEC, AVALC) are not present",NA,NA,"narrative",NA,NA,NA
 "493","CDISC","ADaM-IG","1.2,1.3","Medium","ANLzzFL is equal to ""N"" where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
 "494","CDISC","ADaM-IG","1.2,1.3","Medium","ABLFL is equal to ""N""",NA,NA,"narrative",NA,NA,NA
-"496","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A dataset name does not start with ""AD"" when dataset class is not missing",NA,NA,"narrative",NA,NA,NA
+"496","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A dataset name does not start with ""AD"" when dataset class is not missing",NA,NA,"narrative",NA,NA,NA
 "497","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A dataset name starts with ""AD"" when the dataset class is missing",NA,NA,"narrative",NA,NA,NA
 "498","CDISC","ADaM-IG","1.2,1.3","Medium","For every unique combination of a w value of ASPER and xx value of APERIOD in BDS or OCCDS datasets, there is not a variable PxxSw",NA,NA,"narrative",NA,NA,NA
-"5","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of FL has a value that is not Y, N or null",NA,NA,"narrative",NA,NA,NA
-"50","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AGEU is not present within ADSL",NA,NA,"narrative",NA,NA,NA
+"5","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL has a value that is not Y, N or null",NA,NA,"narrative",NA,NA,NA
+"50","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AGEU is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "500","CDISC","ADaM-IG","1.2,1.3","Medium","There is a value of APHASE without a matching value in an ADSL variable APHASEw",NA,NA,"narrative",NA,NA,NA
 "501","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ASPER is populated and APERIOD is not populated",NA,NA,"narrative",NA,NA,NA
 "503","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in DT must contain ""Date"" in the label",NA,NA,"narrative",NA,NA,NA
@@ -359,7 +359,7 @@
 "507","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in DTF must contain ""Date Imputation Flag"" in the label",NA,NA,"narrative",NA,NA,NA
 "508","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in TMF must contain ""Time Imputation Flag"" in the label",NA,NA,"narrative",NA,NA,NA
 "509","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in SDT must contain ""Start Date"" in the label",NA,NA,"narrative",NA,NA,NA
-"51","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SEX is not present within ADSL",NA,NA,"narrative",NA,NA,NA
+"51","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SEX is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "510","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in STM must contain ""Start Time"" in the label",NA,NA,"narrative",NA,NA,NA
 "511","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in SDTM must contain ""Start Datetime"" in the label",NA,NA,"narrative",NA,NA,NA
 "512","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in SDY must contain ""Relative Start Day"" in the label",NA,NA,"narrative",NA,NA,NA
@@ -370,22 +370,22 @@
 "517","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in EDTM must contain ""End Datetime"" in the label",NA,NA,"narrative",NA,NA,NA
 "518","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in EDY must contain ""Relative End Day"" in the label",NA,NA,"narrative",NA,NA,NA
 "519","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in EDTF must contain ""End Date Imputation Flag"" in the label",NA,NA,"narrative",NA,NA,NA
-"52","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","RACE is not present within ADSL",NA,NA,"narrative",NA,NA,NA
+"52","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","RACE is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "520","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in ETMF must contain ""End Time Imputation Flag"" in the label",NA,NA,"narrative",NA,NA,NA
 "521","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A variable which has a suffix of GRyN is present and a variable with the same root name and suffix of GRy is not present",NA,NA,"narrative",NA,NA,NA
 "526","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ANLzzFN is present and ANLzzFL is not present",NA,NA,"narrative",NA,NA,NA
-"53","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","The value of USUBJID is not present in SDTM.DM",NA,NA,"narrative",NA,NA,NA
+"53","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of USUBJID is not present in SDTM.DM",NA,NA,"narrative",NA,NA,NA
 "531","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","SEVGRyN is present and SEVGRy is not present",NA,NA,"narrative",NA,NA,NA
 "534","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","RELGRyN is present and RELGRy is not present",NA,NA,"narrative",NA,NA,NA
 "537","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","TOXGGRyN is present and TOXGGRy is not present",NA,NA,"narrative",NA,NA,NA
 "538","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","SMQzzSCN is present and SMQzzSC is not present",NA,NA,"narrative",NA,NA,NA
-"54","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","Within ADSL there is more than one record for a unique value of USUBJID",NA,NA,"narrative",NA,NA,NA
+"54","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within ADSL there is more than one record for a unique value of USUBJID",NA,NA,"narrative",NA,NA,NA
 "543","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","AVALCAyN is present and AVALCATy is not present",NA,NA,"narrative",NA,NA,NA
 "544","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","BASECAyN is present and BASECATy is not present",NA,NA,"narrative",NA,NA,NA
 "545","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","CHGCATyN is present and CHGCATy is not present",NA,NA,"narrative",NA,NA,NA
 "546","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","PCHGCAyN is present and PCHGCATy is not present",NA,NA,"narrative",NA,NA,NA
 "547","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","PARCATyN is present and PARCATy is not present",NA,NA,"narrative",NA,NA,NA
-"55","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SUBJID is not present within ADSL",NA,NA,"narrative",NA,NA,NA
+"55","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SUBJID is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "552","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","MCRITyMN is present and MCRITyML is not present",NA,NA,"narrative",NA,NA,NA
 "553","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","REGIONyN is present and REGIONy is not present",NA,NA,"narrative",NA,NA,NA
 "554","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","SHIFTyN is present and SHIFTy is not present",NA,NA,"narrative",NA,NA,NA
@@ -407,7 +407,7 @@
 "577","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwEDM is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
 "578","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwETM is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
 "579","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwEDF is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
-"58","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of DT is not a numeric variable",NA,NA,"narrative",NA,NA,NA
+"58","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DT is not a numeric variable",NA,NA,"narrative",NA,NA,NA
 "580","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwETF is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
 "581","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","None of TRTP, TRTPGy, TRTA, and TRTAGy are present and none of the character treatment variables in ADSL defined in the IG are present",NA,NA,"narrative",NA,NA,NA
 "582","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BCHG is populated and is not equal to BASE-AVAL",NA,NA,"narrative",NA,NA,NA
@@ -418,7 +418,7 @@
 "587","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of PBCHGCAy for a given value of PBCHG and y, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "588","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of PBCHGCAy for a given value of PBCHGCyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "589","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of PBCHGCyN for a given value of PBCHGCAy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"59","CDISC","ADaM-IG","1","Medium","A variable with a suffix of TM is not a numeric variable",NA,NA,"narrative",NA,NA,NA
+"59","CDISC","ADaM-IG","1.0","Medium","A variable with a suffix of TM is not a numeric variable",NA,NA,"narrative",NA,NA,NA
 "590","CDISC","ADaM-IG","1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical data types",NA,NA,"narrative",NA,NA,NA
 "591","CDISC","ADaM-IG","1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical values for a given value of USUBJID",NA,NA,"narrative",NA,NA,NA
 "592","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APERSDT is not equal to the value of variable APxxSDT where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
@@ -429,8 +429,8 @@
 "597","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APEREDTM is not equal to the value of variable APxxEDTM where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
 "598","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRSDT is not equal to the value of variable PxxSwSDT where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
 "599","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRSTM is not equal to the value of variable PxxSwSTM where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
-"6","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of FL is present and a variable with the same root and a suffix of FN has a value that is not  0, 1 or null",NA,NA,"narrative",NA,NA,NA
-"60","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of DTM is not a numeric variable",NA,NA,"narrative",NA,NA,NA
+"6","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is present and a variable with the same root and a suffix of FN has a value that is not  0, 1 or null",NA,NA,"narrative",NA,NA,NA
+"60","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DTM is not a numeric variable",NA,NA,"narrative",NA,NA,NA
 "600","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRSDTM is not equal to the value of variable PxxSwSDM where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
 "601","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPREDT is not equal to the value of variable PxxSwEDT where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
 "602","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRETM is not equal to the value of variable PxxSwETM where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
@@ -441,7 +441,7 @@
 "607","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is present and the value of PHSTM is not equal to the value of variable PHwSTM where w equals the value of APHASEN",NA,NA,"narrative",NA,NA,NA
 "608","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is not present and the value of PHSDTM is not equal to the value of at least one PHwSDTM variable",NA,NA,"narrative",NA,NA,NA
 "609","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is present and the value of PHSDTM is not equal to the value of variable PHwSDTM where w equals the value of APHASEN",NA,NA,"narrative",NA,NA,NA
-"61","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SDTM.EX is present and neither TRTSDT or TRTSDTM are present",NA,NA,"narrative",NA,NA,NA
+"61","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SDTM.EX is present and neither TRTSDT or TRTSDTM are present",NA,NA,"narrative",NA,NA,NA
 "610","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is not present and the value of PHEDT is not equal to the value of at least one PHwEDT variable",NA,NA,"narrative",NA,NA,NA
 "611","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is present and the value of PHEDT is not equal to the value of variable PHwEDT where w equals the value of APHASEN",NA,NA,"narrative",NA,NA,NA
 "612","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is not present and the value of PHETM is not equal to the value of at least one PHwETM variable",NA,NA,"narrative",NA,NA,NA
@@ -450,59 +450,59 @@
 "615","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is present and the value of PHEDTM is not equal to the value of variable PHwEDTM where w equals the value of APHASEN",NA,NA,"narrative",NA,NA,NA
 "616","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRCMPGy for a given value of TRCMPGyN, where y is an integer [1-99, not zero-padded], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "617","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRCMPGyN for a given value of TRCMPGy, where y is an integer [1-99, not zero-padded], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"619","CDISC","ADaM-IG","1,1.1","Medium","LVOTFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
-"620","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AETERM is not present",NA,NA,"narrative",NA,NA,NA
-"621","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRTEMFL is not present",NA,NA,"narrative",NA,NA,NA
-"622","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AEOCCUR is present",NA,NA,"narrative",NA,NA,NA
-"623","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AESEQ is not present",NA,NA,"narrative",NA,NA,NA
-"624","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AELLT is not present",NA,NA,"narrative",NA,NA,NA
-"625","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AEBDSYCD is not present",NA,NA,"narrative",NA,NA,NA
-"626","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AELLTCD is not present",NA,NA,"narrative",NA,NA,NA
-"627","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AEHLT is not present",NA,NA,"narrative",NA,NA,NA
-"628","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AEHLTCD is not present",NA,NA,"narrative",NA,NA,NA
-"629","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AEHLGT is not present",NA,NA,"narrative",NA,NA,NA
-"630","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AEHLGTCD is not present",NA,NA,"narrative",NA,NA,NA
-"631","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AEPTCD is not present",NA,NA,"narrative",NA,NA,NA
-"632","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AESOC is not present",NA,NA,"narrative",NA,NA,NA
-"633","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AESOCCD is not present",NA,NA,"narrative",NA,NA,NA
-"634","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AESTDTC is not present",NA,NA,"narrative",NA,NA,NA
-"635","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ASTDT is not present",NA,NA,"narrative",NA,NA,NA
-"636","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AEENDTC is not present",NA,NA,"narrative",NA,NA,NA
-"637","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AENDT is not present",NA,NA,"narrative",NA,NA,NA
-"638","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ASTDY is not present",NA,NA,"narrative",NA,NA,NA
-"639","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AENDY is not present",NA,NA,"narrative",NA,NA,NA
-"64","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRTxxAN is present and TRTxxA is not present",NA,NA,"narrative",NA,NA,NA
-"640","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SUPPAE.QNAM=AETRTEM is present but AETRTEM is not present",NA,NA,"narrative",NA,NA,NA
-"641","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AE.AESTDY is present but AESTDY is not present",NA,NA,"narrative",NA,NA,NA
-"642","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AE.AEENDY is present but AEENDY is not present",NA,NA,"narrative",NA,NA,NA
-"643","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AE.AEDUR is present but AEDUR is not present",NA,NA,"narrative",NA,NA,NA
-"644","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AE.AESEV is present but AESEV is not present",NA,NA,"narrative",NA,NA,NA
-"645","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AE.AETOXGR is present but AETOXGR is not present",NA,NA,"narrative",NA,NA,NA
-"646","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AE.AEACN is present and populated on at least one record but AEACN is not present",NA,NA,"narrative",NA,NA,NA
-"647","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TREMxxFL is Y but TRTEMFL is not Y",NA,NA,"narrative",NA,NA,NA
-"648","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRTEMwFL is Y but TRTEMFL is not Y",NA,NA,"narrative",NA,NA,NA
-"649","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ONTRxxFL is Y but ONTRTFL is not Y",NA,NA,"narrative",NA,NA,NA
-"650","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ONTRTwFL is Y but ONTRTFL is not Y",NA,NA,"narrative",NA,NA,NA
-"651","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ONTRxxFL is present but ONTRTFL is not present",NA,NA,"narrative",NA,NA,NA
-"652","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ONTRTwFL is present but ONTRTFL is not present",NA,NA,"narrative",NA,NA,NA
-"653","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SRCDOM is present",NA,NA,"narrative",NA,NA,NA
-"654","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","SRCSEQ is present",NA,NA,"narrative",NA,NA,NA
-"655","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","DOSEA is not present",NA,NA,"narrative",NA,NA,NA
-"656","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","DOSEU is not present",NA,NA,"narrative",NA,NA,NA
-"657","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AVISIT is not present",NA,NA,"narrative",NA,NA,NA
-"658","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","NCAXFN is present and has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
-"659","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","PKSUMXFN is present and has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
-"66","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a prefix of TR, containing PG and a suffix of N is present and a variable with the same root without a suffix of N is not present",NA,NA,"narrative",NA,NA,NA
-"660","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","METABFL is present and has a value that is not Y or null",NA,NA,"narrative",NA,NA,NA
-"661","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ADOSEDUR is present and NDOSEDUR or DOSEDURU is not present",NA,NA,"narrative",NA,NA,NA
-"662","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TMPCTDF is populated and ARRLT and NRRLT are not populated",NA,NA,"narrative",NA,NA,NA
-"663","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, COHORTN is populated and COHORT is not populated",NA,NA,"narrative",NA,NA,NA
-"664","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, COHORT is populated and COHORTN is present and not populated",NA,NA,"narrative",NA,NA,NA
-"666","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","DOSPCTDF is populated and DOSEP and DOSEA are not populated",NA,NA,"narrative",NA,NA,NA
-"667","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","DOSPCTDF is populated and TRTA is not populated",NA,NA,"narrative",NA,NA,NA
-"668","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, ACYCLE is populated and ACYCLEC is not populated",NA,NA,"narrative",NA,NA,NA
-"669","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, ACYCLEC is populated and ACYCLE is present and not populated",NA,NA,"narrative",NA,NA,NA
-"671","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AVALU is not present",NA,NA,"narrative",NA,NA,NA
+"619","CDISC","ADaM-IG","1.0,1.1","Medium","LVOTFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
+"620","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AETERM is not present",NA,NA,"narrative",NA,NA,NA
+"621","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEMFL is not present",NA,NA,"narrative",NA,NA,NA
+"622","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEOCCUR is present",NA,NA,"narrative",NA,NA,NA
+"623","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESEQ is not present",NA,NA,"narrative",NA,NA,NA
+"624","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AELLT is not present",NA,NA,"narrative",NA,NA,NA
+"625","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEBDSYCD is not present",NA,NA,"narrative",NA,NA,NA
+"626","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AELLTCD is not present",NA,NA,"narrative",NA,NA,NA
+"627","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLT is not present",NA,NA,"narrative",NA,NA,NA
+"628","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLTCD is not present",NA,NA,"narrative",NA,NA,NA
+"629","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLGT is not present",NA,NA,"narrative",NA,NA,NA
+"630","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEHLGTCD is not present",NA,NA,"narrative",NA,NA,NA
+"631","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEPTCD is not present",NA,NA,"narrative",NA,NA,NA
+"632","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESOC is not present",NA,NA,"narrative",NA,NA,NA
+"633","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESOCCD is not present",NA,NA,"narrative",NA,NA,NA
+"634","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESTDTC is not present",NA,NA,"narrative",NA,NA,NA
+"635","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ASTDT is not present",NA,NA,"narrative",NA,NA,NA
+"636","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEENDTC is not present",NA,NA,"narrative",NA,NA,NA
+"637","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AENDT is not present",NA,NA,"narrative",NA,NA,NA
+"638","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ASTDY is not present",NA,NA,"narrative",NA,NA,NA
+"639","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AENDY is not present",NA,NA,"narrative",NA,NA,NA
+"64","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxAN is present and TRTxxA is not present",NA,NA,"narrative",NA,NA,NA
+"640","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SUPPAE.QNAM=AETRTEM is present but AETRTEM is not present",NA,NA,"narrative",NA,NA,NA
+"641","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AESTDY is present but AESTDY is not present",NA,NA,"narrative",NA,NA,NA
+"642","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AEENDY is present but AEENDY is not present",NA,NA,"narrative",NA,NA,NA
+"643","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AEDUR is present but AEDUR is not present",NA,NA,"narrative",NA,NA,NA
+"644","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AESEV is present but AESEV is not present",NA,NA,"narrative",NA,NA,NA
+"645","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AETOXGR is present but AETOXGR is not present",NA,NA,"narrative",NA,NA,NA
+"646","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AEACN is present and populated on at least one record but AEACN is not present",NA,NA,"narrative",NA,NA,NA
+"647","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TREMxxFL is Y but TRTEMFL is not Y",NA,NA,"narrative",NA,NA,NA
+"648","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEMwFL is Y but TRTEMFL is not Y",NA,NA,"narrative",NA,NA,NA
+"649","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ONTRxxFL is Y but ONTRTFL is not Y",NA,NA,"narrative",NA,NA,NA
+"650","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ONTRTwFL is Y but ONTRTFL is not Y",NA,NA,"narrative",NA,NA,NA
+"651","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ONTRxxFL is present but ONTRTFL is not present",NA,NA,"narrative",NA,NA,NA
+"652","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ONTRTwFL is present but ONTRTFL is not present",NA,NA,"narrative",NA,NA,NA
+"653","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SRCDOM is present",NA,NA,"narrative",NA,NA,NA
+"654","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SRCSEQ is present",NA,NA,"narrative",NA,NA,NA
+"655","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","DOSEA is not present",NA,NA,"narrative",NA,NA,NA
+"656","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","DOSEU is not present",NA,NA,"narrative",NA,NA,NA
+"657","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVISIT is not present",NA,NA,"narrative",NA,NA,NA
+"658","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","NCAXFN is present and has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
+"659","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PKSUMXFN is present and has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
+"66","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a prefix of TR, containing PG and a suffix of N is present and a variable with the same root without a suffix of N is not present",NA,NA,"narrative",NA,NA,NA
+"660","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","METABFL is present and has a value that is not Y or null",NA,NA,"narrative",NA,NA,NA
+"661","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ADOSEDUR is present and NDOSEDUR or DOSEDURU is not present",NA,NA,"narrative",NA,NA,NA
+"662","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TMPCTDF is populated and ARRLT and NRRLT are not populated",NA,NA,"narrative",NA,NA,NA
+"663","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, COHORTN is populated and COHORT is not populated",NA,NA,"narrative",NA,NA,NA
+"664","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, COHORT is populated and COHORTN is present and not populated",NA,NA,"narrative",NA,NA,NA
+"666","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","DOSPCTDF is populated and DOSEP and DOSEA are not populated",NA,NA,"narrative",NA,NA,NA
+"667","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","DOSPCTDF is populated and TRTA is not populated",NA,NA,"narrative",NA,NA,NA
+"668","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, ACYCLE is populated and ACYCLEC is not populated",NA,NA,"narrative",NA,NA,NA
+"669","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, ACYCLEC is populated and ACYCLE is present and not populated",NA,NA,"narrative",NA,NA,NA
+"671","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVALU is not present",NA,NA,"narrative",NA,NA,NA
 "672","CDISC","ADaM-IG","1.3","Medium","SPDEVID is not present within ADDL",NA,NA,"narrative",NA,NA,NA
 "673","CDISC","ADaM-IG","1.3","Medium","There is more than one value of DEVGRy for a given value of DEVGRyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "674","CDISC","ADaM-IG","1.3","Medium","There is more than one value of DEVGRyN for a given value of DEVGRy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -530,8 +530,8 @@
 "697","CDISC","ADaM-IG","1.3","Medium","Within a given PARAMCD for a combination of device and subject, more than one record has ABLFL equal to Y and BASETYPE is not present",NA,NA,"narrative",NA,NA,NA
 "698","CDISC","ADaM-IG","1.3","Medium","BASETYPE is not present, BASE is populated, and BASE is not equal to AVAL where ABLFL is equal to Y for a given value of PARAMCD for a combination of device and subject",NA,NA,"narrative",NA,NA,NA
 "699","CDISC","ADaM-IG","1.3","Medium","BASETYPE is not present, BNRIND is populated, and BNRIND is not equal to ANRIND where ABLFL is equal to Y for a given value of PARAMCD for a combination of device and subject",NA,NA,"narrative",NA,NA,NA
-"7","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a suffix of FN is present but a variable with the same root and a suffix of FL is not present",NA,NA,"narrative",NA,NA,NA
-"70","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable with a prefix of TR, containing AG with a suffix of N is present and a variable with the same root without a suffix of N is not present",NA,NA,"narrative",NA,NA,NA
+"7","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FN is present but a variable with the same root and a suffix of FL is not present",NA,NA,"narrative",NA,NA,NA
+"70","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a prefix of TR, containing AG with a suffix of N is present and a variable with the same root without a suffix of N is not present",NA,NA,"narrative",NA,NA,NA
 "700","CDISC","ADaM-IG","1.3","Medium","Within a given value of PARAMCD for a combination of device and subject, CHG is populated and is not equal to AVAL - BASE",NA,NA,"narrative",NA,NA,NA
 "701","CDISC","ADaM-IG","1.3","Medium","Within a given value of PARAMCD for a combination of device and subject, PCHG is populated and is not equal to ((AVAL - BASE)/BASE)*100",NA,NA,"narrative",NA,NA,NA
 "702","CDISC","ADaM-IG","1.3","Medium","BASETYPE is present, ByIND is populated, and ByIND is not equal to AyIND where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a combination of device and subject",NA,NA,"narrative",NA,NA,NA
@@ -542,7 +542,7 @@
 "707","CDISC","ADaM-IG","1.2,1.3","Medium","For every unique w value of ASPER in BDS or OCCDS datasets, there is not a variable PxxSw",NA,NA,"narrative",NA,NA,NA
 "708","CDISC","ADaM-IG","1.1","Medium","Labels for ADaM variables do not match the standard labels for ADaM variables listed in the implementation guide that cannot be modified (with the exception of (1) variables whose names contain indexes ""w"", “y”, ""xx"", or “zz”; and (2) variable labels with asterisks (*), braces ({...}), and ellipses (...) indicated for sponsor appropriate text)",NA,NA,"narrative",NA,NA,NA
 "709","CDISC","ADaM-IG","1.2,1.3","Medium","Labels for ADaM variables do not match the standard labels for ADaM variables listed in the implementation guide that cannot be modified (with the exception of (1) variables whose names contain indexes ""w"", “y”, or “zz”; and (2) variable labels with asterisks (*), braces ({...}), and ellipses (...) indicated for sponsor appropriate text)",NA,NA,"narrative",NA,NA,NA
-"71","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ARM is not present within ADSL",NA,NA,"narrative",NA,NA,NA
+"71","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARM is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "710","CDISC","ADaM-IG","1.2,1.3","Medium","A variable with a suffix of RFL has a value that is not Y, N, or null",NA,NA,"narrative",NA,NA,NA
 "711","CDISC","ADaM-IG","1.2,1.3","Medium","A variable with a suffix of PFL has a value that is not Y, N, or null",NA,NA,"narrative",NA,NA,NA
 "712","CDISC","ADaM-IG","1.2,1.3","Medium","A variable with a suffix of RFN has a value that is not 1, 0 or null",NA,NA,"narrative",NA,NA,NA
@@ -553,7 +553,7 @@
 "717","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTxxPN for a given value of TRTxxP, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "718","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTxxP for a given value of TRTxxPN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "719","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","None of the subject-level or record-level treatment variables defined in the IG is present",NA,NA,"narrative",NA,NA,NA
-"72","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRT01P is not present within ADSL",NA,NA,"narrative",NA,NA,NA
+"72","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRT01P is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "720","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A non-missing value of TRTP is not equal to at least one value of the character planned treatment variables in ADSL defined in the IG",NA,NA,"narrative",NA,NA,NA
 "721","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTPN for a given value of TRTP, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "722","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTP for a given value of TRTPN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -584,7 +584,7 @@
 "747","CDISC","ADaM-IG","1.1","Medium","Within a given value of PARAMCD, there is more than one value of AVALCATy for a given value of AVAL, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "748","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of AVALCATy for a given value of AVAL and y, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "749","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of BASECATy for a given value of BASE and y, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"75","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRTxxPN is present and TRTxxP is not present",NA,NA,"narrative",NA,NA,NA
+"75","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxPN is present and TRTxxP is not present",NA,NA,"narrative",NA,NA,NA
 "750","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of CHGCATy for a given value of CHG and y, where y is an integer [1-99, not zero-padded]",NA,NA,"narrative",NA,NA,NA
 "751","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of PCHGCATy for a given value of PCHG and y, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "752","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQP for a given value of TRTSEQPN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -595,7 +595,7 @@
 "757","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRxxPGy for a given value of TRxxPGyN, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "758","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRxxPGyN for a given value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "759","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of TRTxxA, there is more than one value of TRxxAGy, where xx is an integer [01-99, zero-padded] and y is an integer [1-99, not zero-padded]",NA,NA,"narrative",NA,NA,NA
-"76","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTxxPN for a given value of TRTxxP",NA,NA,"narrative",NA,NA,NA
+"76","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTxxPN for a given value of TRTxxP",NA,NA,"narrative",NA,NA,NA
 "760","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRxxAGy for a given value of TRxxAGyN, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "761","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRxxAGyN for a given value of TRxxAGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "762","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTPGy for a given value of TRTPGyN, where y is an integer [1-99, not zero-padded], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -606,7 +606,7 @@
 "767","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTxxAN for a given value of TRTxxA, where xx is an integer [01-99, zero-padded], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "768","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTxxA for a given value of TRTxxAN, where xx is an integer [01-99, zero-padded], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "769","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AESEV for a given value of AESEVN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"77","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTxxP for a given value of TRTxxPN",NA,NA,"narrative",NA,NA,NA
+"77","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTxxP for a given value of TRTxxPN",NA,NA,"narrative",NA,NA,NA
 "770","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AESEVN for a given value of AESEV, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "771","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ASEV for a given value of ASEVN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "772","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ASEVN for a given value of ASEV, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -617,7 +617,7 @@
 "777","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AREL for a given value of ARELN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "778","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ARELN for a given value of AREL, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "779","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of RELGRy for a given value of RELGRyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"78","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","At least one TRTxxP is present where xx is greater than 01 and TRxxSDT is not present",NA,NA,"narrative",NA,NA,NA
+"78","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","At least one TRTxxP is present where xx is greater than 01 and TRxxSDT is not present",NA,NA,"narrative",NA,NA,NA
 "780","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of RELGRyN for a given value of RELGRy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "781","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AETOXGR for a given value of AETOXGRN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "782","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AETOXGRN for a given value of AETOXGR, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -628,17 +628,17 @@
 "787","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of SMQzzSC for a given value of SMQzzSCN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "788","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of SMQzzSCN for a given value of SMQzzSC, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "789","CDISC","ADaM-IG","1.3","Medium","BASETYPE is populated, BASE is populated, and BASE is not equal to AVAL where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject",NA,NA,"narrative",NA,NA,NA
-"79","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","At least one TRTxxP is present where xx is greater than 01 and TRxxEDT is not present",NA,NA,"narrative",NA,NA,NA
+"79","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","At least one TRTxxP is present where xx is greater than 01 and TRxxEDT is not present",NA,NA,"narrative",NA,NA,NA
 "790","CDISC","ADaM-IG","1.3","Medium","BASETYPE is populated, ByIND is populated, and ByIND is not equal to AyIND where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject",NA,NA,"narrative",NA,NA,NA
 "791","CDISC","ADaM-IG","1.1","Medium","Within a given value of PARAMCD, there is more than one value of ATPT for a given value of ATPTN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"792","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of SDT has a value greater than a value of a variable with the same root and a suffix of EDT, and both variables are populated",NA,NA,"narrative",NA,NA,NA
-"793","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of STM has a value greater than a value of a variable with the same root and a suffix of ETM, and both variables are populated",NA,NA,"narrative",NA,NA,NA
-"794","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of SDTM has a value greater than a value of a variable with the same root and a suffix of EDTM, and both variables are populated",NA,NA,"narrative",NA,NA,NA
+"792","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of SDT has a value greater than a value of a variable with the same root and a suffix of EDT, and both variables are populated",NA,NA,"narrative",NA,NA,NA
+"793","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of STM has a value greater than a value of a variable with the same root and a suffix of ETM, and both variables are populated",NA,NA,"narrative",NA,NA,NA
+"794","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of SDTM has a value greater than a value of a variable with the same root and a suffix of EDTM, and both variables are populated",NA,NA,"narrative",NA,NA,NA
 "795","CDISC","ADaM-IG","1.3","Medium","PROJID is populated and PROJIDN is not populated",NA,NA,"narrative",NA,NA,NA
 "796","CDISC","ADaM-IG","1.3","Medium","PROJIDN is populated and PROJID is not populated",NA,NA,"narrative",NA,NA,NA
 "797","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of PROJIDN for a given value of PROJID, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "798","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of PROJID for a given value of PROJIDN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"80","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRTxxA is present and TRTxxP is not present",NA,NA,"narrative",NA,NA,NA
+"80","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxA is present and TRTxxP is not present",NA,NA,"narrative",NA,NA,NA
 "800","CDISC","ADaM-IG","1.3","Medium","STUDYID is populated and STUDYIDN is not populated",NA,NA,"narrative",NA,NA,NA
 "801","CDISC","ADaM-IG","1.3","Medium","STUDYIDN is populated and STUDYID is not populated",NA,NA,"narrative",NA,NA,NA
 "802","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of STUDYIDN for a given value of STUDYID, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
@@ -647,7 +647,7 @@
 "806","CDISC","ADaM-IG","1.3","Medium","SUBJTYPC is populated and SUBJTYP is not populated",NA,NA,"narrative",NA,NA,NA
 "807","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SUBJTYPC for a given value of SUBJTYP, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "808","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SUBJTYP for a given value of SUBJTYPC, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"81","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRTxxP is present and xx is greater than 01 and TRT{xx-1}P is not present",NA,NA,"narrative",NA,NA,NA
+"81","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxP is present and xx is greater than 01 and TRT{xx-1}P is not present",NA,NA,"narrative",NA,NA,NA
 "810","CDISC","ADaM-IG","1.3","Medium","USUBJID is populated and USUBJIDN is not populated",NA,NA,"narrative",NA,NA,NA
 "811","CDISC","ADaM-IG","1.3","Medium","USUBJIDN is populated and USUBJID is not populated",NA,NA,"narrative",NA,NA,NA
 "812","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of USUBJIDN for a given value of USUBJID, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
@@ -672,7 +672,7 @@
 "836","CDISC","ADaM-IG","1.3","Medium","BLQFN is populated and BLQFL is not populated",NA,NA,"narrative",NA,NA,NA
 "837","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of BLQFN for a given value of BLQFL, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "838","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of BLQFL for a given value of BLQFN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"84","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRTEDT is not equal to the maximum value of all TRxxEDT variables",NA,NA,"narrative",NA,NA,NA
+"84","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEDT is not equal to the maximum value of all TRxxEDT variables",NA,NA,"narrative",NA,NA,NA
 "840","CDISC","ADaM-IG","1.3","Medium","ALQFL is populated and ALQFN is not populated",NA,NA,"narrative",NA,NA,NA
 "841","CDISC","ADaM-IG","1.3","Medium","ALQFN is populated and ALQFL is not populated",NA,NA,"narrative",NA,NA,NA
 "842","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ALQFN for a given value of ALQFL, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
@@ -681,7 +681,7 @@
 "846","CDISC","ADaM-IG","1.3","Medium","FORMN is populated and FORM is not populated",NA,NA,"narrative",NA,NA,NA
 "847","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FORMN for a given value of FORM, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "848","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FORM for a given value of FORMN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"85","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical labels",NA,NA,"narrative",NA,NA,NA
+"85","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical labels",NA,NA,"narrative",NA,NA,NA
 "850","CDISC","ADaM-IG","1.3","Medium","ROUTE is populated and ROUTEN is not populated",NA,NA,"narrative",NA,NA,NA
 "851","CDISC","ADaM-IG","1.3","Medium","ROUTEN is populated and ROUTE is not populated",NA,NA,"narrative",NA,NA,NA
 "852","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ROUTEN for a given value of ROUTE, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
@@ -690,7 +690,7 @@
 "856","CDISC","ADaM-IG","1.3","Medium","ACYCLEC is populated and ACYCLE is not populated",NA,NA,"narrative",NA,NA,NA
 "857","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ACYCLEC for a given value of ACYCLE, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "858","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ACYCLE for a given value of ACYCLEC, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"86","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical formats",NA,NA,"narrative",NA,NA,NA
+"86","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical formats",NA,NA,"narrative",NA,NA,NA
 "860","CDISC","ADaM-IG","1.3","Medium","COHORT is populated and COHORTC is not populated",NA,NA,"narrative",NA,NA,NA
 "861","CDISC","ADaM-IG","1.3","Medium","COHORTC is populated and COHORT is not populated",NA,NA,"narrative",NA,NA,NA
 "862","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COHORTC for a given value of COHORT, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
@@ -707,7 +707,7 @@
 "876","CDISC","ADaM-IG","1.3","Medium","COUNTRYN is populated and COUNTRY is not populated",NA,NA,"narrative",NA,NA,NA
 "877","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRYN for a given value of COUNTRY, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "878","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRY for a given value of COUNTRYN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"88","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","STUDYID is not present",NA,NA,"narrative",NA,NA,NA
+"88","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","STUDYID is not present",NA,NA,"narrative",NA,NA,NA
 "880","CDISC","ADaM-IG","1.3","Medium","COUNTRY is populated and COUNTRYL is not populated",NA,NA,"narrative",NA,NA,NA
 "881","CDISC","ADaM-IG","1.3","Medium","COUNTRYL is populated and COUNTRY is not populated",NA,NA,"narrative",NA,NA,NA
 "882","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRYL for a given value of COUNTRY, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
@@ -717,25 +717,25 @@
 "887","CDISC","ADaM-IG","1.3","Medium","EVID is not present",NA,NA,"narrative",NA,NA,NA
 "888","CDISC","ADaM-IG","1.3","Medium","DV is not present",NA,NA,"narrative",NA,NA,NA
 "889","CDISC","ADaM-IG","1.3","Medium","MDV is not present",NA,NA,"narrative",NA,NA,NA
-"89","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","USUBJID is not present",NA,NA,"narrative",NA,NA,NA
+"89","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","USUBJID is not present",NA,NA,"narrative",NA,NA,NA
 "890","CDISC","ADaM-IG","1.3","Medium","AMT is not present",NA,NA,"narrative",NA,NA,NA
-"891","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, there is more than one value of COHORTN for a given value of COHORT",NA,NA,"narrative",NA,NA,NA
-"892","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, there is more than one value of COHORT for a given value of COHORTN",NA,NA,"narrative",NA,NA,NA
-"893","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, there is more than one value of ACYCLEC for a given value of ACYCLE",NA,NA,"narrative",NA,NA,NA
-"894","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, there is more than one value of ACYCLE for a given value of ACYCLEC",NA,NA,"narrative",NA,NA,NA
+"891","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, there is more than one value of COHORTN for a given value of COHORT",NA,NA,"narrative",NA,NA,NA
+"892","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, there is more than one value of COHORT for a given value of COHORTN",NA,NA,"narrative",NA,NA,NA
+"893","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, there is more than one value of ACYCLEC for a given value of ACYCLE",NA,NA,"narrative",NA,NA,NA
+"894","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, there is more than one value of ACYCLE for a given value of ACYCLEC",NA,NA,"narrative",NA,NA,NA
 "895","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A variable with a prefix of CRIT, a suffix of FL and containing either a one-digit or two-digit number (CRITyFL) is present and a variable with the same root without a suffix of FL (CRITy) is not present",NA,NA,"narrative",NA,NA,NA
 "896","CDISC","ADaM-IG","1.2,1.3","Medium","AWU is present and AWLO, AWHI, AWTARGET, and AWTDIFF are not present",NA,NA,"narrative",NA,NA,NA
 "897","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A non-missing value of TRTA is not equal to at least one value of the character actual treatment variables in ADSL defined in the IG",NA,NA,"narrative",NA,NA,NA
-"898","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","For a value of AD*.USUBJID that is a value of --.USUBJID, a value of AD*.--SEQ is not a value of --.--SEQ",NA,NA,"narrative",NA,NA,NA
-"899","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","AD*.USUBJID equals --.USUBJID, AD*.--SEQ equals --.--SEQ, and the values of a variable with prefix -- which is present in both datasets are not equal",NA,NA,"narrative",NA,NA,NA
-"90","CDISC","ADaM-IG","1","Medium","TRTP is not present",NA,NA,"narrative",NA,NA,NA
-"92","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTPN for a given value of TRTP",NA,NA,"narrative",NA,NA,NA
-"93","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTP for a given value of TRTPN",NA,NA,"narrative",NA,NA,NA
-"95","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTAN for a given value of TRTA",NA,NA,"narrative",NA,NA,NA
-"96","CDISC","ADaM-IG","1","Medium","There is more than one value of TRTA for a given value of TRTAN",NA,NA,"narrative",NA,NA,NA
-"97","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","TRTPGyN is present and TRTPGy is not present",NA,NA,"narrative",NA,NA,NA
-"98","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of SDY has a value greater than a value of a variable with the same root and a suffix of EDY, and both variables are populated",NA,NA,"narrative",NA,NA,NA
-"99","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of STDY has a value greater than a value of a variable with the same root and a suffix of ENDY, and both variables are populated",NA,NA,"narrative",NA,NA,NA
+"898","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For a value of AD*.USUBJID that is a value of --.USUBJID, a value of AD*.--SEQ is not a value of --.--SEQ",NA,NA,"narrative",NA,NA,NA
+"899","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AD*.USUBJID equals --.USUBJID, AD*.--SEQ equals --.--SEQ, and the values of a variable with prefix -- which is present in both datasets are not equal",NA,NA,"narrative",NA,NA,NA
+"90","CDISC","ADaM-IG","1.0","Medium","TRTP is not present",NA,NA,"narrative",NA,NA,NA
+"92","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTPN for a given value of TRTP",NA,NA,"narrative",NA,NA,NA
+"93","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTP for a given value of TRTPN",NA,NA,"narrative",NA,NA,NA
+"95","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTAN for a given value of TRTA",NA,NA,"narrative",NA,NA,NA
+"96","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTA for a given value of TRTAN",NA,NA,"narrative",NA,NA,NA
+"97","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTPGyN is present and TRTPGy is not present",NA,NA,"narrative",NA,NA,NA
+"98","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of SDY has a value greater than a value of a variable with the same root and a suffix of EDY, and both variables are populated",NA,NA,"narrative",NA,NA,NA
+"99","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of STDY has a value greater than a value of a variable with the same root and a suffix of ENDY, and both variables are populated",NA,NA,"narrative",NA,NA,NA
 "CG0001","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DOMAIN = valid Domain Code published by CDISC",NA,NA,"narrative",NA,NA,NA
 "CG0002","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--DUR collected and not derived",NA,NA,"narrative",NA,NA,NA
 "CG0006","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--DY calculated as per the study day algorithm as a non-zero integer value",NA,NA,"narrative",NA,NA,NA
@@ -1762,12 +1762,12 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
-"111","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ARELTM is present and ARELTMU is not present",NA,"exists(ARELTM) & not_exists(ARELTMU)","predicate",NA,NA,NA
-"113","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ARELTMU is present and ARELTM is not present","presence-pair","exists(ARELTMU) & not_exists(ARELTM)","predicate","2026-04-21T09:19:57Z",NA,NA
-"163","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","BTOXGR is present and ATOXGR is not present","presence-pair","exists(BTOXGR) & not_exists(ATOXGR)","predicate","2026-04-21T09:19:57Z",NA,NA
-"164","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","BTOXGR is present and ABLFL is not present","presence-pair","exists(BTOXGR) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z",NA,NA
-"166","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","BNRIND is present and ANRIND is not present","presence-pair","exists(BNRIND) & not_exists(ANRIND)","predicate","2026-04-21T09:19:57Z",NA,NA
-"167","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","BNRIND is present and ABLFL is not present","presence-pair","exists(BNRIND) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z",NA,NA
+"111","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARELTM is present and ARELTMU is not present",NA,"exists(ARELTM) & not_exists(ARELTMU)","predicate",NA,NA,NA
+"113","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARELTMU is present and ARELTM is not present","presence-pair","exists(ARELTMU) & not_exists(ARELTM)","predicate","2026-04-21T09:19:57Z",NA,NA
+"163","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BTOXGR is present and ATOXGR is not present","presence-pair","exists(BTOXGR) & not_exists(ATOXGR)","predicate","2026-04-21T09:19:57Z",NA,NA
+"164","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BTOXGR is present and ABLFL is not present","presence-pair","exists(BTOXGR) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z",NA,NA
+"166","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BNRIND is present and ANRIND is not present","presence-pair","exists(BNRIND) & not_exists(ANRIND)","predicate","2026-04-21T09:19:57Z",NA,NA
+"167","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BNRIND is present and ABLFL is not present","presence-pair","exists(BNRIND) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z",NA,NA
 "499","CDISC","ADaM-IG","1.2,1.3","Medium","ASPER is present and APERIOD is not present","presence-pair","exists(ASPER) & not_exists(APERIOD)","predicate","2026-04-21T09:19:57Z",NA,NA
 "522","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","BTOXGRN is present and BTOXGR is not present","presence-pair","exists(BTOXGRN) & not_exists(BTOXGR)","predicate","2026-04-21T09:19:57Z",NA,NA
 "523","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ATOXGRLN is present and ATOXGRL is not present","presence-pair","exists(ATOXGRLN) & not_exists(ATOXGRL)","predicate","2026-04-21T09:19:57Z",NA,NA
@@ -1795,8 +1795,8 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "562","CDISC","ADaM-IG","1.2,1.3","Medium","STRATAVN is present and STRATAV is not present","presence-pair","exists(STRATAVN) & not_exists(STRATAV)","predicate","2026-04-21T09:19:57Z",NA,NA
 "568","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ONTRTFN is present and ONTRTFL is not present","presence-pair","exists(ONTRTFN) & not_exists(ONTRTFL)","predicate","2026-04-21T09:19:57Z",NA,NA
 "569","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","LVOTFN is present and LVOTFL is not present","presence-pair","exists(LVOTFN) & not_exists(LVOTFL)","predicate","2026-04-21T09:19:57Z",NA,NA
-"665","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","COHORTN is present and COHORT is not present","presence-pair","exists(COHORTN) & not_exists(COHORT)","predicate","2026-04-21T09:19:57Z",NA,NA
-"670","CDISC","ADaM-IG","1,1.1,1.2,1.3","Medium","ACYCLEC is present and ACYCLE is not present","presence-pair","exists(ACYCLEC) & not_exists(ACYCLE)","predicate","2026-04-21T09:19:57Z",NA,NA
+"665","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COHORTN is present and COHORT is not present","presence-pair","exists(COHORTN) & not_exists(COHORT)","predicate","2026-04-21T09:19:57Z",NA,NA
+"670","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ACYCLEC is present and ACYCLE is not present","presence-pair","exists(ACYCLEC) & not_exists(ACYCLE)","predicate","2026-04-21T09:19:57Z",NA,NA
 "799","CDISC","ADaM-IG","1.3","Medium","PROJIDN is present and PROJID is not present","presence-pair","exists(PROJIDN) & not_exists(PROJID)","predicate","2026-04-21T09:19:57Z",NA,NA
 "804","CDISC","ADaM-IG","1.3","Medium","STUDYIDN is present and STUDYID is not present","presence-pair","exists(STUDYIDN) & not_exists(STUDYID)","predicate","2026-04-21T09:19:57Z",NA,NA
 "809","CDISC","ADaM-IG","1.3","Medium","SUBJTYPC is present and SUBJTYP is not present","presence-pair","exists(SUBJTYPC) & not_exists(SUBJTYP)","predicate","2026-04-21T09:19:57Z",NA,NA

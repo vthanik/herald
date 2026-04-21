@@ -1,7 +1,7 @@
 id: '296'
 authority: CDISC
 standard: ADaM-IG
-standard_versions: '1'
+standard_versions: '1.0'
 severity: Medium
 scope:
   classes: OCCURRENCE DATA STRUCTURE
@@ -29,4 +29,3 @@ provenance:
   source_version: '1'
   license: CC-BY-4.0
   executability: narrative
-
