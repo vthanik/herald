@@ -6,20 +6,25 @@ approach**, alternatives rank-ordered after.
 
 Use Ctrl-F on rule_id to find the decision that covers a rule.
 
-## Coverage commitment (set at Q20)
+## Coverage commitment (set at Q20, hardened after Q32)
 
-| state | max share | current (696 / 1814) | post-cycle target |
+| state | allowed | current (696 / 1814) | post-cycle target |
 |---|---:|---:|---:|
-| `predicate` | -- | 38.4% | **>= 95%** |
+| `predicate` | -- | 38.4% | **100% of addressable rules** (>= 99%) |
 | `narrative` | 0 | 61.6% | 0 |
-| `blocker:<reason>` | < 5% | 0 | <= 90 rules |
+| `blocker:<reason>` | **0 unless provably unaddressable** | 0 | 0 (none expected) |
 | `drop:` / `deprecated:` | -- | 0 | only when CDISC retires a rule |
 
-Every Q4-Q20 decision is executed with this target in mind.
-Prior deferrals (Q9 study metadata, Q13 FDA SRS, Q11 CT
-confirmation, Q2 LB continuous-measurement, Q14 singletons) are
-all wired to concrete implementation paths -- no "park
-indefinitely" allowed. See Q20 for the stretch plan.
+**Hard rule:** a rule may stay `blocker` ONLY when there is no
+feasible path -- under any combination of engine work,
+user-supplied data, external registry, or escape hatch -- to
+evaluate it. If ANY path exists (even one requiring the user
+to supply a licensed dictionary), the rule is converted.
+Missing user data becomes NA -> advisory, not "didn't run".
+
+Every prior "deferred" / "stay narrative" branch across Q1-Q32
+is re-written to a concrete conversion path below. See the
+re-audit lines under each question for specifics.
 
 ---
 
@@ -191,7 +196,7 @@ condition grammar story).
   alongside the Q1 CT/conditional-null work).
 - Slots: `(var, literal | literal_list, when_clause)`.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -226,7 +231,7 @@ exact join-by-USUBJID-and-compare shape. No new op needed.
 - CDISC rule-ID granularity preserved -- one finding per
   mismatching variable (matches P21).
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -266,7 +271,7 @@ Neither needs a new op.
 - Null-on-ref-side path (CG0069 DSSTDTC vs DM.DTHDTC) returns
   NA -> advisory in `op_differs_by_key`; matches P21.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -299,7 +304,7 @@ already handles dataset-qualified names via the crossrefs table
 - 5 .ids rows: ADaM-641..645 against AE source.
 - No new op.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -356,7 +361,7 @@ group), SD1353 (ORRES == STRESC when units match).
   always numeric by definition. When we later author CG0425
   (`--ORRESU` / `--ORRES`), extend to the full P21 guard list.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -386,7 +391,7 @@ landed (ADaM-1 pattern). Same mechanism works here.
 **User answer:** (a).
 
 **Decisions locked:**
-- Split the 10 rules by sub-shape:
+- Split the 10 rules by sub-shape, **all converted this cycle**:
   - **Unconditional** (CG0368 DM required, CG0501 / CG0502 TM
     required, CG0646 SJ must not be present) -- two patterns:
     `submission-dataset-required` (`op_not_exists` +
@@ -395,17 +400,20 @@ landed (ADaM-1 pattern). Same mechanism works here.
     ADaM-1 routing already landed.
   - **Meta-existence** (CG0373 `SUPP--`.RDOMAIN, CG0374
     RELREC.RDOMAIN) -- new op `op_ref_column_domains_exist(
-    reference_dataset, reference_column)` that iterates distinct
-    values of `<ref>.<col>` and fires if any named domain is
-    absent from the submission. Pattern
+    reference_dataset, reference_column)`. Pattern
     `submission-domains-from-ref-column`.
   - **Conditional required** (CG0191 MB "if microbiology
-    collected", CG0318 PC "if PK collected") -- remain narrative;
-    tag `blocker: requires-study-metadata` in progress.csv.
-    Revisit once a study-metadata schema lands.
-- Converts 5 or 6 of 10 this pass; remaining 4-5 tagged.
+    collected", CG0318 PC "if PK collected") -- **convert via
+    `validate(study_metadata = ...)` stretch path**. New op
+    `op_study_metadata_is(key, value)` consumes a sponsor-
+    supplied small list/YAML (`collected_domains: [MB, PC, ...]`,
+    `study_type: ...`). When no study_metadata is supplied the
+    op returns NA -> advisory ("this rule could not be
+    evaluated: supply study_metadata"); when supplied, the rule
+    fires normally. No rules remain narrative.
+- All 10 rules convert. 0 blockers.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -453,7 +461,7 @@ accepts `group_by: [c1, c2, ...]`. No new op needed.
   (e.g. "within PARAMCD=HR, AVALCAT1 has multiple values for
   AVAL=70") for reviewer clarity.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -520,7 +528,7 @@ needs a tiny op.
   TIMEFL are confirmed in the bundled CT, + 7 via existing
   `value-flag-yn`).
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -576,7 +584,7 @@ sibling pair). Composite-key lookup with a selector row.
 - Findings include the anchor row's (PARAMCD, USUBJID[, BASETYPE])
   in the message for reviewer clarity.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -607,26 +615,26 @@ https://www.fda.gov/industry/fda-resources-data-standards/).
 **Decisions locked:**
 - Not bundled. Do NOT ship UNII inside the package (would blow
   the 5 MB CRAN cap; UNII is ~15-20 MB RDS).
-- 6 rules (CG0442, CG0443, CG0445, CG0446, CG0450, CG0451) stay
-  narrative with a `blocker: ext-registry-srs` tag in
-  progress.csv.
-- Follow-on work (separate pass, not in the Q4-Q14 cycle):
+- **All 6 rules convert this cycle** (CG0442, CG0443, CG0445,
+  CG0446, CG0450, CG0451). No `blocker:` tag.
+- Work plan, in-cycle:
   - New file `R/srs-fetch.R` reusing Q2's downloader
     architecture: `download_srs(version, dest = user_cache)`
     fetches from the FDA public bulk download, parses into a
     tidy (unii, preferred_name, synonyms) table, writes RDS to
     `tools::R_user_dir("herald","cache")`.
   - New op `op_value_in_srs_table(name, field = "preferred_name"
-    | "unii")` lazy-loads from cache via `ctx$srs`, returns NA
-    when the cache is empty (so the rule advises rather than
-    fires in offline / un-downloaded environments).
-  - After op + downloader land, convert the 6 rules via a new
-    pattern `value-in-srs-registry` with slots `(var, field)`.
-- Source of truth (record now to save lookup later):
+    | "unii")` lazy-loads from cache via `ctx$srs`. When cache
+    is empty the op returns NA -> advisory ("SRS table not
+    downloaded; run download_srs() to enable this check"); when
+    present, rule fires normally. Rule predicate exists either
+    way -- no narrative status.
+  - Pattern `value-in-srs-registry` with slots `(var, field)`.
+- Source of truth:
   - https://fis.fda.gov/extensions/FDA_SRS_UNII/FDA_SRS_UNII.html
   - https://precision.fda.gov/uniisearch/ (search UI)
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -697,25 +705,23 @@ https://www.fda.gov/industry/fda-resources-data-standards/).
        pattern + `.ids`; no new op.
 
   3. **Residual ~30 singletons** (1-2 rules each, bespoke prose):
-     - **Revised: triage NOW, not later.** Run
-       `tools/rule-authoring/triage-residual.R` during the
-       Q4-Q14 authoring cycle (not after) -- the same context
-       that's converting Q4-Q14 will spot singletons that share
-       shape with patterns already being authored. Every
-       singleton lands in one of three buckets:
+     - Triage NOW during the Q4-Q14 cycle. Every singleton
+       converts; none stay narrative. Four-bucket sort:
          (1) absorbs into a Q4-Q14 pattern's .ids -- no new work.
          (2) cheap enough to author its own pattern now
              (1-2 rules, existing ops) -- convert inline.
-         (3) genuinely needs new engine work -- tag
-             `blocker: needs-op-<short_name>` and move on.
-     - Expect most singletons to fall in buckets (1) or (2);
-       only (3) stays narrative.
+         (3) needs a small new op -- author the op in-cycle,
+             don't defer.
+         (4) prose is genuinely bespoke -- use the
+             `r_expression:` escape hatch to express the
+             predicate inline in the rule YAML. Still counts as
+             predicate; never blocker.
 
 - Net target after Q4-Q14 executions: predicate coverage ~80%
   (~1450/1814). Remaining ~20% is the true long tail + the
   FDA-SRS six (Q13) + conditional dataset-required rules (Q9).
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -943,10 +949,14 @@ subscription). Not distributable inside herald.
 - CG0174 in-set with wildcard literals: convert via Q4's
   `value-conditional-in-literal-set` pattern with `--` wildcard
   expansion. ~2 rules.
-- Genuinely MedDRA/WhoDrug-dependent rules (if any remain ~6)
-  stay `blocker:requires-licensed-dict` with a documented path
-  for user-supplied dictionary injection via
-  `register_ct(name = "meddra", path = ...)`.  *[recommended]*
+- Genuinely MedDRA/WhoDrug-dependent rules (~6) **convert this
+  cycle** via a user-side `register_ct(name = "meddra", path =
+  ...)` injection. Sponsors with MedDRA licences load their
+  dictionary; rule predicate references the registered codelist
+  by name. When no dictionary is registered the op returns NA
+  -> advisory ("MedDRA not registered; run
+  `register_ct('meddra', ...)` to enable"). Rule is always
+  predicate; never narrative. 0 blockers.  *[recommended]*
 
 **(b)** Mark the entire cluster as `blocker:external-dict`.
 Loses the 12+ easy wins.
@@ -1153,7 +1163,7 @@ across Q1/Q4/Q9 consume a stable vocabulary.
   as the authoritative leaf list so future patterns can't
   invent ad-hoc leaf names.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -1204,7 +1214,7 @@ fixtures at all. Unblocks a consistent test surface.
   shows "data that triggers the rule"; neg shows "data that
   passes". Reviewers open them directly.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -1253,7 +1263,7 @@ misleading (engine ignores it entirely today).
   one-off `data-raw/normalise-variables.R` script. Not part of
   routine authoring.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -1302,7 +1312,7 @@ severity is hardcoded in the rule YAML's `outcome.severity`.
 - Documented in the `validate()` manpage with a worked example
   covering all three match modes.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -1396,7 +1406,7 @@ findings tibble.
 - Default title for the report when not supplied: format of
   `"Conformance Report -- <N> datasets -- <timestamp>"`.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
@@ -1444,7 +1454,7 @@ from the target corpus" looks like vs "keep narrative indefinitely".
   | Q13 FDA SRS / UNII (ext-registry-srs) | 6 | Ship `download_srs()` + `op_value_in_srs_table()` in the same cycle, not a follow-on. Cache-only (no bundle); rule runs advisory when cache empty with a hint. |
   | Q11 DATEFL / TIMEFL CT | 2 | Already unblocked (codelists present in adam-ct.rds); convert now. |
   | Q2 LBORRES "continuous measurement" | 5 | New op `op_test_category_is_continuous(name, ref_dataset)` reading LB domain CT categorisation (LBTESTCD -> classification). If NCI EVS doesn't ship the classification, curate a small deterministic mapping (~50 LB test codes) inline and ship in `inst/extdata/lb-category.rds`. |
-  | Q14 residual singletons | ~30 | Triaged inline during Q4-Q14. Target: convert >25 of 30 via existing or 3-5 new small ops. Only genuinely unparseable prose (< 5 rules) allowed to stay `blocker:prose-ambiguous`. |
+  | Q14 residual singletons | ~30 | Triaged inline during Q4-Q14. **All 30 convert this cycle.** Buckets: (1) absorbs into an existing pattern; (2) new 1-2 rule pattern inline; (3) new small op authored in-cycle; (4) `r_expression:` escape hatch for prose-bespoke cases. No rule stays narrative. |
 
 - **`drop:` and `deprecated:` are reserved for CDISC-side
   decisions only:**
@@ -1454,19 +1464,22 @@ from the target corpus" looks like vs "keep narrative indefinitely".
   - `drop:` -- CDISC explicitly retired the rule; no replacement.
     Requires citation to the retirement note in the YAML.
 
-- **Hard coverage commitment:**
-  - narrative   : 0 rules after the full Q4-Q14 + stretch cycle.
-  - predicate   : >= 1724 (>=95%).
-  - blocker:*   : <= 90 (< 5%), each with a scheduled
-    delivery milestone, not indefinite.
-  - drop/deprecated : only where CDISC guidance supports it.
+- **Hard coverage commitment (post-hardening):**
+  - narrative   : **0 rules** after the full Q4-Q32 cycle.
+  - predicate   : **100% of addressable rules** (>= 99%).
+  - blocker:*   : **0** unless the rule is provably
+    unaddressable -- no engine work, external registry, user-
+    supplied data, or escape hatch resolves it. None expected.
+  - drop/deprecated : only when CDISC itself retires or
+    replaces the rule.
 
-- **Delivery cadence:** Q4-Q14 patterns land first (target 1450
-  predicate). Stretch work (SRS downloader, study_metadata arg,
-  LB category map, singleton sweep) lands in the next cycle to
-  close the last 15%.
+- **Delivery cadence:** Q4-Q32 patterns all land in-cycle. No
+  follow-on pass. Every stretch item (SRS downloader,
+  study_metadata arg, LB category map, MedDRA register_ct,
+  Define.xml reader, r_expression escape for residuals) ships
+  alongside the pattern conversions that need it.
 
-**Delivered:** _(pending -- deferred to user implementation)_
+**Delivered:** _(pending -- not yet implemented)_
 
 ---
 
