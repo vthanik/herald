@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --DETECT
 check:
-  narrative: --DETECT not present in dataset
-  condition: ''
+  all:
+  - name: --DETECT
+    operator: exists
 outcome:
   message: --DETECT not present in dataset
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
     trials: --DTHREL (Findings) --EXCLFL (Findings) --REASEX (Findings) --DETECT (Findings)'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

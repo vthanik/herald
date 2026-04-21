@@ -17,8 +17,9 @@ scope:
   exclude_domains: []
 variable: --STAT
 check:
-  narrative: --STAT not present in dataset
-  condition: --PRESP not present in dataset
+  all:
+  - name: --STAT
+    operator: exists
 outcome:
   message: --STAT not present in dataset
   severity: Medium
@@ -35,5 +36,4 @@ provenance:
     event was not answered. Should be null or hav a value of NOT DONE]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

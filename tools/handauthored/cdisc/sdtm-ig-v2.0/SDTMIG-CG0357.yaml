@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: STRAIN
 check:
-  narrative: STRAIN not present in dataset
-  condition: ''
+  all:
+  - name: STRAIN
+    operator: exists
 outcome:
   message: STRAIN not present in dataset
   severity: Medium
@@ -28,5 +29,4 @@ provenance:
     (Demographics) - STRAIN (Demographics) - SBSTRAIN (Demographics)'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

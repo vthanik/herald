@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: RPATHCD
 check:
-  narrative: RPATHCD not present in dataset
-  condition: ''
+  all:
+  - name: RPATHCD
+    operator: exists
 outcome:
   message: RPATHCD not present in dataset
   severity: Medium
@@ -23,5 +24,4 @@ provenance:
   cited_guidance: Not to be used with human clinical trials.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --TPTREF
 check:
-  narrative: --TPTREF not present in dataset
-  condition: --ELTM, --TPTNUM, and --TPT not present in dataset
+  all:
+  - name: --TPTREF
+    operator: exists
 outcome:
   message: --TPTREF not present in dataset
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     by --ELTM, --TPTNUM, and --TPT. Examples: PREVIOUS DOSE, PREVIOUS MEAL.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

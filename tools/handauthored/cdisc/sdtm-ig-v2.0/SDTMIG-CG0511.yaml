@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: --NOMLBL
 check:
-  narrative: --NOMLBL not present in dataset
-  condition: ''
+  all:
+  - name: --NOMLBL
+    operator: exists
 outcome:
   message: --NOMLBL not present in dataset
   severity: Medium
@@ -27,5 +28,4 @@ provenance:
     --DETECT (Timing Variables), --NOMDY (Timing Variables), --NOMLBL (Timing Variables)'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

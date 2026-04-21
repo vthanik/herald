@@ -17,8 +17,9 @@ scope:
   exclude_domains: []
 variable: --REASND
 check:
-  narrative: --REASND not present in dataset
-  condition: --PRESP not present in dataset
+  all:
+  - name: --REASND
+    operator: exists
 outcome:
   message: --REASND not present in dataset
   severity: Medium
@@ -33,5 +34,4 @@ provenance:
     with --STAT when value is NOT DONE
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

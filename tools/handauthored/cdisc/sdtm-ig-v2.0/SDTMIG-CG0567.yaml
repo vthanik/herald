@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: --EVDTYP
 check:
-  narrative: --EVDTYP not present in dataset
-  condition: ''
+  all:
+  - name: --EVDTYP
+    operator: exists
 outcome:
   message: --EVDTYP not present in dataset
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     in the appropriate implementation guide.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

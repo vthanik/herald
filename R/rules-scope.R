@@ -129,15 +129,29 @@ scoped_datasets <- function(rule, ctx) {
       if ("ALL" %in% cls_up) return(TRUE)
       return(FALSE)
     }
-    adam_long <- c(
+    # Normalise short ADaM + SDTM class codes to their canonical long
+    # forms so a rule scoped to "EVT" matches a dataset inferred as
+    # "EVENTS", etc. The SDTM short codes (EVT, INT, FND, SPC, TDM,
+    # FAB, REL) are used by CDISC's v2.0 conformance XLSX; ADaM short
+    # codes (ADSL, BDS, OCCDS, TTE) come from ADaMIG appendices.
+    class_long <- c(
+      # ADaM
       "ADSL"  = "SUBJECT LEVEL ANALYSIS DATASET",
       "BDS"   = "BASIC DATA STRUCTURE",
       "OCCDS" = "OCCURRENCE DATA STRUCTURE",
-      "TTE"   = "TIME-TO-EVENT"
+      "TTE"   = "TIME-TO-EVENT",
+      # SDTM
+      "EVT"   = "EVENTS",
+      "INT"   = "INTERVENTIONS",
+      "FND"   = "FINDINGS",
+      "FAB"   = "FINDINGS ABOUT",
+      "SPC"   = "SPECIAL PURPOSE",
+      "TDM"   = "TRIAL DESIGN",
+      "REL"   = "RELATIONSHIP"
     )
     norm <- function(x) {
       up  <- toupper(trimws(x))
-      exp <- adam_long[up]
+      exp <- class_long[up]
       ifelse(is.na(exp), up, exp)
     }
     ds_norm  <- norm(ds_class)

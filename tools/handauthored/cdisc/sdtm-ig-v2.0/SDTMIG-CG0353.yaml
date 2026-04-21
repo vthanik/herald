@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --EXCLFL
 check:
-  narrative: --EXCLFL not present in dataset
-  condition: ''
+  all:
+  - name: --EXCLFL
+    operator: exists
 outcome:
   message: --EXCLFL not present in dataset
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
     trials: --DTHREL (Findings) --EXCLFL (Findings) --REASEX (Findings) --DETECT (Findings)'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

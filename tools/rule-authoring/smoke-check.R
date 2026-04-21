@@ -20,14 +20,70 @@ suppressPackageStartupMessages({
   devtools::load_all(quiet = TRUE)
 })
 
-# Class -> representative dataset map derived from P21's def:Class taxonomy.
-# Loaded into this script's env; used by .synth_rule_fixture.
-local({
-  cargs <- commandArgs(trailingOnly = FALSE)
-  f <- sub("^--file=", "", grep("^--file=", cargs, value = TRUE))
-  here <- if (length(f) > 0L) dirname(normalizePath(f[[1L]])) else "tools/rule-authoring"
-  source(file.path(here, "class-map.R"), local = FALSE)
-})
+# Class-detection cascades through the package's infer_class() and its
+# prototype table (R/class-detect.R). Wrapper scopes the package helpers
+# so the synth fixture picks a sensible dataset name + class_map spec.
+
+.topic_col_for <- function(cls, ds_name) {
+  topic <- switch(toupper(as.character(cls %||% "")),
+                  "EVENTS"         = "--TERM",
+                  "INTERVENTIONS"  = "--TRT",
+                  "FINDINGS"       = "--TESTCD",
+                  "FINDINGS ABOUT" = "--OBJ",
+                  "RELATIONSHIP"   = "QNAM",
+                  NA_character_)
+  if (is.na(topic)) return(NA_character_)
+  if (startsWith(topic, "--")) {
+    return(paste0(substring(toupper(as.character(ds_name)), 1, 2),
+                  sub("^--", "", topic)))
+  }
+  topic
+}
+
+pick_dataset_for_scope <- function(scope) {
+  exclude <- toupper(as.character(unlist(scope$exclude_domains %||% character())))
+  exclude <- exclude[nzchar(exclude)]
+
+  doms <- toupper(as.character(unlist(scope$domains %||% character())))
+  doms <- doms[nzchar(doms) & doms != "ALL" & nchar(doms) >= 2L &
+               nchar(doms) <= 8L & !grepl("^SUPP", doms)]
+  doms <- setdiff(doms, exclude)
+  if (length(doms) > 0L) {
+    ds  <- doms[[1L]]
+    cls <- herald:::infer_class(ds)
+    return(list(dataset = ds, class = cls, via = "domain",
+                topic_col = .topic_col_for(cls, ds)))
+  }
+  .normalise_cls <- function(cls) {
+    switch(toupper(cls),
+           EVT   = "EVENTS",       INT = "INTERVENTIONS",
+           FND   = "FINDINGS",     FAB = "FINDINGS ABOUT",
+           SPC   = "SPECIAL PURPOSE", TDM = "TRIAL DESIGN",
+           REL   = "RELATIONSHIP",
+           ADSL  = "SUBJECT LEVEL ANALYSIS DATASET",
+           BDS   = "BASIC DATA STRUCTURE",
+           OCCDS = "OCCURRENCE DATA STRUCTURE",
+           toupper(cls))
+  }
+  classes <- as.character(unlist(scope$classes %||% character()))
+  classes <- classes[nzchar(classes) & toupper(classes) != "ALL"]
+  # Iterate classes in order, picking the first member-dataset that isn't in
+  # exclude_domains.
+  for (cls in classes) {
+    long <- .normalise_cls(cls)
+    cand <- names(herald:::.DATASET_CLASS)[
+      unname(herald:::.DATASET_CLASS) == long
+    ]
+    cand <- setdiff(cand, exclude)
+    if (length(cand) > 0L) {
+      ds <- sort(cand)[[1L]]
+      return(list(dataset = ds, class = long, via = "class",
+                  topic_col = .topic_col_for(long, ds)))
+    }
+  }
+  list(dataset = NA_character_, class = NA_character_,
+       topic_col = NA_character_, via = "none")
+}
 
 args <- commandArgs(trailingOnly = TRUE)
 get_arg <- function(flag) {
@@ -137,6 +193,10 @@ if (run_all) {
   names_req <- vapply(lv, function(l) as.character(l$name %||% ""), character(1L))
   wants_pres <- ops == "exists"
 
+  # Pre-expand --VAR names against the dataset prefix we're about to pick, so
+  # the synthetic dataset has columns named like the engine will look them up
+  # at walk time (e.g. AEREASND when ds_name=AE, not literal --REASND).
+
   # Resolve the rule's scope into a concrete dataset name + class using the
   # P21-derived class taxonomy in class-map.R. Covers all ADaM and SDTM
   # classes (SUBJECT LEVEL ANALYSIS DATASET, BASIC DATA STRUCTURE, OCCURRENCE
@@ -156,6 +216,13 @@ if (run_all) {
     spec    <- default_fx$pos$spec
   }
 
+  # Expand --VAR in requested names against the picked dataset's 2-char
+  # prefix (matches the engine's own .expand_wildcard_args).
+  dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+  names_req <- vapply(names_req, function(nm) {
+    if (startsWith(nm, "--")) paste0(dom2, sub("^--", "", nm)) else nm
+  }, character(1L), USE.NAMES = FALSE)
+
   # If the scope resolved via class, include the class's topic variable
   # column in the synth fixture so the dataset is structurally valid for
   # that class (P21's val:Prototype KeyVariables convention: --TERM for
@@ -168,15 +235,21 @@ if (run_all) {
     stats::setNames(list(""), topic_col)
   } else list()
 
+  # Positive: include cols that `exists` leaves want present, exclude cols
+  # that `not_exists` leaves want absent.
   pos_cols <- c(
     list(USUBJID = "S1"),
     topic_extra,
     stats::setNames(rep(list(""), sum(wants_pres)), names_req[wants_pres])
   )
+  # Negative: the DUAL -- exclude cols wanted by `exists`, include cols
+  # wanted absent by `not_exists`. Guarantees the check_tree is FALSE
+  # under {all} even for single-leaf trees (e.g. presence-forbidden's
+  # sole `exists(X)`).
   neg_cols <- c(
     list(USUBJID = "S1"),
     topic_extra,
-    stats::setNames(rep(list(""), length(names_req)), names_req)
+    stats::setNames(rep(list(""), sum(!wants_pres)), names_req[!wants_pres])
   )
 
   mk_fx <- function(cols, fire) {
@@ -205,9 +278,29 @@ for (pat in patterns) {
   cat(sprintf("\n=== smoke-checking pattern: %s ===\n", pat))
   fx <- .load_pattern_fixtures(pat)
   if (is.null(fx)) {
-    cat("  [skip] no fixtures at ",
-        file.path(fixtures_root, pat), "\n", sep = "")
-    next
+    # No shared pattern fixture on disk. We can still smoke-check via
+    # per-rule synthesis using each rule's own check_tree -- synthesize a
+    # minimal default envelope so .synth_rule_fixture has the ds_name
+    # + spec skeleton to work from.
+    cat("  (no shared fixture; using per-rule synth only)\n")
+    fx <- list(
+      pos = list(
+        rule_id = paste0("__pattern-", pat, "__"),
+        fixture_type = "positive",
+        datasets = list(AE = list(USUBJID = "S1")),   # arbitrary; synth overrides
+        expected = list(fires = TRUE, rows = 1L),
+        spec = NULL,
+        `_path` = NA_character_
+      ),
+      neg = list(
+        rule_id = paste0("__pattern-", pat, "__"),
+        fixture_type = "negative",
+        datasets = list(AE = list(USUBJID = "S1")),
+        expected = list(fires = FALSE, rows = integer()),
+        spec = NULL,
+        `_path` = NA_character_
+      )
+    )
   }
   rids <- prog$rule_id[!is.na(prog$pattern) & prog$pattern == pat &
                        prog$status == "predicate"]

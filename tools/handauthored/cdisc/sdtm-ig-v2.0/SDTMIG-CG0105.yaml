@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: EXVAMT
 check:
-  narrative: EXVAMT not present in dataset
-  condition: EC domain is present
+  all:
+  - name: EXVAMT
+    operator: exists
 outcome:
   message: EXVAMT not present in dataset
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
     instead would be represented in ECDOSE and ECDOSU
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

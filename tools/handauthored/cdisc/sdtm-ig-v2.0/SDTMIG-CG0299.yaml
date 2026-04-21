@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: TRLOC
 check:
-  narrative: TRLOC not present in dataset
-  condition: ''
+  all:
+  - name: TRLOC
+    operator: exists
 outcome:
   message: TRLOC not present in dataset
   severity: Medium
@@ -27,5 +28,4 @@ provenance:
     approach to representing this data.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

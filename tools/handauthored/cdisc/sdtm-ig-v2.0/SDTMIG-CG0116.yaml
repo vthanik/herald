@@ -15,8 +15,9 @@ scope:
   exclude_domains: []
 variable: --DIR
 check:
-  narrative: --DIR not present in dataset
-  condition: --LOC not present in dataset
+  all:
+  - name: --DIR
+    operator: exists
 outcome:
   message: --DIR not present in dataset
   severity: Medium
@@ -28,5 +29,4 @@ provenance:
     ...
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

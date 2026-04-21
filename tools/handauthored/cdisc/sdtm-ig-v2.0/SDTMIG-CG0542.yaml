@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: --BEATNO
 check:
-  narrative: --BEATNO not present in dataset
-  condition: ''
+  all:
+  - name: --BEATNO
+    operator: exists
 outcome:
   message: --BEATNO not present in dataset
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     in the appropriate implementation guide.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

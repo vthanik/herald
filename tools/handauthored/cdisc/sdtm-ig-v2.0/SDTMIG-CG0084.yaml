@@ -14,8 +14,9 @@ scope:
   exclude_domains: []
 variable: --TOX
 check:
-  narrative: --TOX not present in dataset
-  condition: --TOXGR not present in dataset
+  all:
+  - name: --TOX
+    operator: exists
 outcome:
   message: --TOX not present in dataset
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
   cited_guidance: Variable Qualifier of --TOXGR
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

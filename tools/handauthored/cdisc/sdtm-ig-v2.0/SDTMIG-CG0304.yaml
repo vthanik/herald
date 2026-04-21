@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: AEREASND
 check:
-  narrative: AEREASND not present in dataset
-  condition: ''
+  all:
+  - name: AEREASND
+    operator: exists
 outcome:
   message: AEREASND not present in dataset
   severity: Medium
@@ -27,5 +28,4 @@ provenance:
     for adverse events that actually occurred.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

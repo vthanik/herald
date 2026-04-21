@@ -100,6 +100,76 @@ row_from_core_yaml <- function(yml, path) {
   )
 }
 
+# Normalise a scope list from a handauthored YAML into clean character
+# vectors. Handles three shortcuts used by CDISC's v2.0 conformance XLSX:
+#
+#   "EVT,INT"       -- comma-joined class list (split into c("EVT","INT"))
+#   "NOT(DS,DV,EX)" -- negation list; move to exclude_domains and set
+#                      domains to character(0) (= all domains implied)
+#   "ALL" or ""     -- kept as-is (handled downstream by the scope filter)
+#
+# Returns a list with `classes`, `domains`, `exclude_domains` as
+# character vectors.
+.normalise_scope <- function(sc) {
+  classes <- as.character(unlist(sc$classes %||% character(0)))
+  domains <- as.character(unlist(sc$domains %||% character(0)))
+  exclude <- as.character(unlist(sc$exclude_domains %||% character(0)))
+
+  .split_csv <- function(x) {
+    x <- as.character(x)
+    x <- x[!is.na(x) & nzchar(x)]
+    if (length(x) == 0L) return(character(0))
+    trimws(unlist(strsplit(x, "[,;|]"), use.names = FALSE))
+  }
+  # Upstream XLSX-derived YAMLs sometimes stored `NOT(DS,DV,EX)` as a
+  # comma-split YAML list `c("NOT(DS","DV","EX)")`. Rejoin fragments whose
+  # open-paren count doesn't match close-paren count back into a single
+  # entry before further processing.
+  .rejoin_parens <- function(v) {
+    if (length(v) == 0L) return(v)
+    out <- character(0); buf <- ""; depth <- 0L
+    for (x in as.character(v)) {
+      if (depth == 0L) {
+        d <- nchar(gsub("[^(]", "", x)) - nchar(gsub("[^)]", "", x))
+        if (d > 0L) { buf <- x; depth <- d
+        } else { out <- c(out, x) }
+      } else {
+        d <- nchar(gsub("[^(]", "", x)) - nchar(gsub("[^)]", "", x))
+        buf <- paste(buf, x, sep = ",")
+        depth <- depth + d
+        if (depth <= 0L) { out <- c(out, buf); buf <- ""; depth <- 0L }
+      }
+    }
+    if (nzchar(buf)) out <- c(out, buf)
+    out
+  }
+  classes <- .split_csv(classes)
+  dom_raw <- .rejoin_parens(domains)
+  dom_raw <- unlist(lapply(dom_raw, function(x) {
+    if (grepl("^NOT\\s*\\(", x)) x else .split_csv(x)
+  }), use.names = FALSE)
+
+  # Parse "NOT(DOM1,DOM2,...)" negation syntax out of the domains list.
+  # Anything captured goes into exclude; the remaining domain entries
+  # (e.g. "ALL" or positive names) stay in `domains`.
+  dom_pos <- character(0)
+  for (d in dom_raw) {
+    m <- regmatches(d, regexec("^NOT\\s*\\(([^)]*)\\)$", d, perl = FALSE))[[1L]]
+    if (length(m) >= 2L) {
+      exclude <- c(exclude, trimws(strsplit(m[[2L]], ",")[[1L]]))
+    } else {
+      dom_pos <- c(dom_pos, d)
+    }
+  }
+  exclude <- exclude[nzchar(exclude) & !is.na(exclude)]
+
+  list(
+    classes         = classes,
+    domains         = dom_pos,
+    exclude_domains = exclude
+  )
+}
+
 row_from_herald_yaml <- function(yml, path) {
   # herald-own schema: lowercase
   id <- yml$id %||% tools::file_path_sans_ext(basename(path))
@@ -107,11 +177,7 @@ row_from_herald_yaml <- function(yml, path) {
   severity <- normalize_severity(yml$outcome$severity)
   message  <- yml$outcome$message %||% yml$description %||% ""
 
-  scope <- list(
-    classes = yml$scope$classes %||% character(0),
-    domains = yml$scope$domains %||% character(0),
-    exclude_domains = yml$scope$exclude_domains %||% character(0)
-  )
+  scope <- .normalise_scope(yml$scope)
   check_tree <- yml$check
 
   # Provenance: HRL-* rules are all self-authored by the herald team.

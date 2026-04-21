@@ -9,8 +9,9 @@ scope:
   exclude_domains: []
 variable: EXMETHOD
 check:
-  narrative: EXMETHOD not present in dataset
-  condition: ''
+  all:
+  - name: EXMETHOD
+    operator: exists
 outcome:
   message: EXMETHOD not present in dataset
   severity: Medium
@@ -22,5 +23,4 @@ provenance:
     clinical trials.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

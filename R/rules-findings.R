@@ -53,10 +53,16 @@ emit_findings <- function(rule, ds_name, mask, data, variable = NA_character_) {
   # but at least one row was NA (narrative / unknown op / op error).
   adv_once <- any(is_na) && !any(is_true)
 
+  # Render SDTM `--` placeholders in message / variable against this
+  # dataset's domain prefix, so findings on AE show "AEREASND" rather
+  # than "--REASND". Safe no-op for ADaM (skips the substitution).
+  msg_txt <- .render_domain_prefix(rule[["message"]] %||% "", ds_name)
+  var_txt <- .render_domain_prefix(variable, ds_name)
+
   out <- empty_findings()
   if (length(fired_rows) > 0L) {
-    val <- if (!is.na(variable) && variable %in% names(data)) {
-      as.character(data[[variable]][fired_rows])
+    val <- if (!is.na(var_txt) && var_txt %in% names(data)) {
+      as.character(data[[var_txt]][fired_rows])
     } else {
       rep(NA_character_, length(fired_rows))
     }
@@ -67,11 +73,11 @@ emit_findings <- function(rule, ds_name, mask, data, variable = NA_character_) {
       severity          = rep(rule[["severity"]] %||% "Medium", length(fired_rows)),
       status            = rep("fired", length(fired_rows)),
       dataset           = rep(ds_name, length(fired_rows)),
-      variable          = rep(variable, length(fired_rows)),
+      variable          = rep(var_txt, length(fired_rows)),
       row               = as.integer(fired_rows),
       value             = val,
       expected          = rep(NA_character_, length(fired_rows)),
-      message           = rep(rule[["message"]] %||% "", length(fired_rows)),
+      message           = rep(msg_txt, length(fired_rows)),
       source_url        = rep(rule[["source_url"]] %||% NA_character_, length(fired_rows)),
       p21_id_equivalent = rep(rule[["p21_id_equivalent"]] %||% NA_character_, length(fired_rows)),
       license           = rep(rule[["license"]] %||% NA_character_, length(fired_rows))
@@ -86,11 +92,11 @@ emit_findings <- function(rule, ds_name, mask, data, variable = NA_character_) {
       severity          = rule[["severity"]] %||% "Medium",
       status            = "advisory",
       dataset           = ds_name,
-      variable          = variable,
+      variable          = var_txt,
       row               = NA_integer_,
       value             = NA_character_,
       expected          = NA_character_,
-      message           = rule[["message"]] %||% "",
+      message           = msg_txt,
       source_url        = rule[["source_url"]] %||% NA_character_,
       p21_id_equivalent = rule[["p21_id_equivalent"]] %||% NA_character_,
       license           = rule[["license"]] %||% NA_character_

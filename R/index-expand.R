@@ -150,3 +150,29 @@
   if (is.null(txt) || is.na(txt) || !nzchar(txt)) return(txt)
   gsub(ph, value, as.character(txt), fixed = TRUE)
 }
+
+#' Render a rule-message template by replacing all `--` occurrences with
+#' the dataset's 2-char prefix. SDTM rules express variable wildcards as
+#' `--VAR` (e.g. `--REASND`); when the rule fires on dataset `AE` the
+#' finding message should read `AEREASND not present in dataset` rather
+#' than `--REASND not present in dataset`.
+#'
+#' The substitution only runs when ds_name begins with two uppercase
+#' letters and is NOT an ADaM dataset (ADaMIG does not use `--`). This
+#' mirrors `.domain_prefix_candidates()` in R/rules-walk.R.
+#' @noRd
+.render_domain_prefix <- function(txt, ds_name) {
+  if (is.null(txt) || is.na(txt) || !nzchar(txt)) return(txt)
+  if (!grepl("--", txt, fixed = TRUE)) return(txt)
+  u <- toupper(as.character(ds_name %||% ""))
+  if (!nzchar(u) || nchar(u) < 2L) return(txt)
+  # ADaM datasets do not use -- wildcards.
+  if (startsWith(u, "AD") && nchar(u) >= 3L) return(txt)
+  # SUPP-- domains expand via parent 2 chars (SUPPAE -> AE).
+  prefix <- if (startsWith(u, "SUPP") && nchar(u) >= 6L) substr(u, 5L, 6L)
+            else substr(u, 1L, 2L)
+  gsub("--", prefix, as.character(txt), fixed = TRUE)
+}
+
+`%||%` <- function(a, b) if (is.null(a) || length(a) == 0L ||
+                             (length(a) == 1L && is.na(a))) b else a

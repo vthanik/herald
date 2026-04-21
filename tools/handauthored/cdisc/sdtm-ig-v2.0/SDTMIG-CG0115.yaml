@@ -15,8 +15,9 @@ scope:
   exclude_domains: []
 variable: --PORTOT
 check:
-  narrative: --PORTOT not present in dataset
-  condition: --LOC not present in dataset
+  all:
+  - name: --PORTOT
+    operator: exists
 outcome:
   message: --PORTOT not present in dataset
   severity: Medium
@@ -28,5 +29,4 @@ provenance:
     which means arrangement of, apportioning of the intervention administration.
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

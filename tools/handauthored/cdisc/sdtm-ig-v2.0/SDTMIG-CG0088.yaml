@@ -18,8 +18,9 @@ scope:
   exclude_domains: []
 variable: --OCCUR
 check:
-  narrative: --OCCUR not present in dataset
-  condition: --PRESP not present in dataset
+  all:
+  - name: --OCCUR
+    operator: exists
 outcome:
   message: --OCCUR not present in dataset
   severity: Medium
@@ -38,5 +39,4 @@ provenance:
     occurrence of a specific event is solicited.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

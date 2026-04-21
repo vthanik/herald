@@ -12,9 +12,9 @@ scope:
   exclude_domains: []
 variable: --EVALID
 check:
-  narrative: --EVALID not present in dataset
-  condition: Domain in ('QS', 'FT') or (Domain = 'RS' and it's the Clinical Classification
-    Use Case)
+  all:
+  - name: --EVALID
+    operator: exists
 outcome:
   message: --EVALID not present in dataset
   severity: Medium
@@ -28,5 +28,4 @@ provenance:
     used to model QRS data in SDTM.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

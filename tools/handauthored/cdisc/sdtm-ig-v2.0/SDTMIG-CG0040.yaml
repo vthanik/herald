@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: AEOCCUR
 check:
-  narrative: AEOCCUR not present in dataset
-  condition: ''
+  all:
+  - name: AEOCCUR
+    operator: exists
 outcome:
   message: AEOCCUR not present in dataset
   severity: Medium
@@ -27,5 +28,4 @@ provenance:
     for adverse events that actually occurred.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
