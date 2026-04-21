@@ -14,9 +14,10 @@ scope:
 variable: APHASE
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: APHASE is populated
+  operator: value_not_in_subject_indexed_set
+  name: APHASE
+  reference_dataset: ADSL
+  reference_template: APHASEw
 outcome:
   message: There is a value of APHASE without a matching value in an ADSL variable
     APHASEw
@@ -29,5 +30,4 @@ provenance:
     (if populated) must be one of the values found in the ADSL APHASEw variables.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

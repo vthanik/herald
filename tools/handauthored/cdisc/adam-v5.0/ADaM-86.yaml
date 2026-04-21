@@ -14,10 +14,9 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: A variable is present with the same name as a variable present
-    in ADSL
+  operator: shared_attr_mismatch
+  attribute: format
+  reference_dataset: ADSL
 outcome:
   message: A variable is present with the same name as a variable present in ADSL
     but the variables do not have identical formats
@@ -31,4 +30,4 @@ provenance:
     enable analysis.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

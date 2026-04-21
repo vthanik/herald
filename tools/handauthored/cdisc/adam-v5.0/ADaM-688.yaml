@@ -10,9 +10,10 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: is_not_unique_set
+  name:
+  - USUBJID
+  - SPDEVID
 outcome:
   message: Within ADDL there is more than one record for unique values of USUBJID
     and SPDEVID
@@ -25,5 +26,5 @@ provenance:
     device per subject.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
 

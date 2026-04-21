@@ -14,9 +14,8 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: no_var_with_suffix
+  suffix: FL
 outcome:
   message: A variable with a suffix of FL is not present in ADSL
   severity: Medium
@@ -29,4 +28,4 @@ provenance:
     is required for every clinical trial.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

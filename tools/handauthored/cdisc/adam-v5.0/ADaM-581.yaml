@@ -13,9 +13,16 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: treatment_var_absent_across_datasets
+  current_vars:
+  - TRTP
+  - TRTPGy
+  - TRTA
+  - TRTAGy
+  reference_vars:
+  - TRTxxP
+  - TRTxxA
+  reference_dataset: ADSL
 outcome:
   message: None of TRTP, TRTPGy, TRTA, and TRTAGy are present and none of the character
     treatment variables in ADSL defined in the IG are present
@@ -33,5 +40,5 @@ provenance:
     for examples of treatment variables.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
 

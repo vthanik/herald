@@ -14,9 +14,8 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: Dataset is named ADSL
+  operator: dataset_label_not
+  expected: Subject-Level Analysis Dataset
 outcome:
   message: A dataset is named ADSL and the dataset label is not "Subject-Level Analysis
     Dataset"
@@ -35,4 +34,4 @@ provenance:
     other analysis datasets are submitted.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

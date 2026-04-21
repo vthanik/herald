@@ -14,9 +14,9 @@ scope:
 variable: USUBJID
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: is_not_unique_set
+  name:
+  - USUBJID
 outcome:
   message: Within ADSL there is more than one record for a unique value of USUBJID
   severity: Medium
@@ -32,4 +32,4 @@ provenance:
     ADaMIG v1.0, Section 3.1: The structure of ADSL is one record per subject, regardless of the type of clinical trial design.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

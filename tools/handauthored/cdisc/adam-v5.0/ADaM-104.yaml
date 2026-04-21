@@ -14,9 +14,11 @@ scope:
 variable: APERIOD
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: APERIOD is greater than 1
+  operator: any_index_missing_ref_var
+  name: APERIOD
+  reference_dataset: ADSL
+  name_template: TRxxEDT
+  placeholder: xx
 outcome:
   message: For every unique xx value of APERIOD, there is not an ADSL variable TRxxEDT
   severity: Medium
@@ -30,4 +32,4 @@ provenance:
     TRxx and APxx.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

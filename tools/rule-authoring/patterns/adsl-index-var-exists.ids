@@ -1,0 +1,4 @@
+rule_id,name,ref_ds,template,placeholder
+102,APERIOD,ADSL,TRTxxP,xx
+103,APERIOD,ADSL,TRxxSDT,xx
+104,APERIOD,ADSL,TRxxEDT,xx
