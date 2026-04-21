@@ -1,25 +1,17 @@
 "rule_id","authority","standard","ig_version","severity","message","pattern","check_tree_preview","status","converted_at","p21_primitive","notes"
-"1","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ADSL dataset does not exist","submission-dataset-exists",NA,"predicate","2026-04-21T20:31:18Z",NA,NA
 "10","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to Y and a variable with the same root and a suffix of FN is not equal to 1",NA,NA,"narrative",NA,NA,NA
-"102","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRTxxP","adsl-index-var-exists","operator: any_index_missing_ref_var name: APERIOD reference_dataset: ADSL name_template: TRTxxP placeholder: xx","predicate","2026-04-21T20:08:03Z",NA,NA
-"103","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxSDT","adsl-index-var-exists","operator: any_index_missing_ref_var name: APERIOD reference_dataset: ADSL name_template: TRxxSDT placeholder: xx","predicate","2026-04-21T20:08:03Z",NA,NA
-"104","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxEDT","adsl-index-var-exists","operator: any_index_missing_ref_var name: APERIOD reference_dataset: ADSL name_template: TRxxEDT placeholder: xx","predicate","2026-04-21T20:08:03Z",NA,NA
 "11","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to N and a variable with the same root and a suffix of FN is not equal to 0",NA,NA,"narrative",NA,NA,NA
 "12","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to null and a variable with the same root and a suffix of FN is not equal to null",NA,NA,"narrative",NA,NA,NA
 "121","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of a variable with a suffix of SDT is greater than the value of a variable with the same root and a suffix of EDT, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "122","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of a variable with a suffix of SDTM is greater than the value of a variable with the same root and a suffix of EDTM, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "127","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BASE is populated and there is not at least one record with ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
 "128","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BASEC is populated and there is not at least one record with ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
-"13","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a variable name exceeds 8 characters","metadata-var-name-length","any_var_name_exceeds_length(8)","predicate","2026-04-21T17:40:33Z",NA,NA
 "131","CDISC","ADaM-IG","1.0,1.2","Medium","Within a given value of PARAMCD, BASETYPE is populated for at least one record and is not populated for at least one record",NA,NA,"narrative",NA,NA,NA
 "132","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","R2BASE is not equal to AVAL divided by BASE",NA,NA,"narrative",NA,NA,NA
 "133","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","R2AyLO is not equal to AVAL divided by AyLO",NA,NA,"narrative",NA,NA,NA
 "134","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","R2AyHI is not equal to AVAL divided by AyHI",NA,NA,"narrative",NA,NA,NA
 "137","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CRITyFL is populated and CRITy is not populated",NA,NA,"narrative",NA,NA,NA
 "14","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable name does not start with a letter (A-Z)",NA,NA,"narrative",NA,NA,NA
-"143","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD has more than 8 characters in length","value-length-le","operator: longer_than name: PARAMCD value: 8","predicate","2026-04-21T17:32:45Z",NA,NA
-"144","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD starts with a character other than a letter","value-regex-format","operator: not_matches_regex name: PARAMCD value: '^[A-Za-z]'","predicate","2026-04-21T17:32:45Z",NA,NA
-"145","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD has characters that are not letters, digits, and underscores","value-regex-format","operator: matches_regex name: PARAMCD value: '[^A-Za-z0-9_]'","predicate","2026-04-21T17:32:45Z",NA,NA
 "148","CDISC","ADaM-IG","1.0","Medium","PARAMN is not an integer",NA,NA,"narrative",NA,NA,NA
 "15","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable name contains a character other than letters (A-Z), underscores (_), or numerals (0-9)",NA,NA,"narrative",NA,NA,NA
 "151","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of CRITy",NA,NA,"narrative",NA,NA,NA
@@ -28,12 +20,10 @@
 "155","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given PARAMCD for a subject, more than one record has ABLFL equal to Y and BASETYPE is not present",NA,NA,"narrative",NA,NA,NA
 "156","CDISC","ADaM-IG","1.0","Medium","A variable with a prefix of CRIT, a suffix of FL and containing a one-digit number (CRITyFL) is present and a variable with the same root without a suffix of FL (CRITy) is not present",NA,NA,"narrative",NA,NA,NA
 "157","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a prefix of CRIT and a suffix of a one-digit number (CRITy) is present and a variable with the same root with a suffix of FL (CRITyFL) is not present",NA,NA,"narrative",NA,NA,NA
-"16","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a variable label is greater than 40 characters","metadata-var-label-length","any_var_label_exceeds_length(40)","predicate","2026-04-21T17:40:33Z",NA,NA
 "160","CDISC","ADaM-IG","1.0,1.1","Medium","AWU is present and both AWLO and AWHI are not present",NA,NA,"narrative",NA,NA,NA
 "165","CDISC","ADaM-IG","1.0,1.1,1.2","Medium","BASETYPE is present, BTOXGR is populated, and BTOXGR is not equal to ATOXGR where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE",NA,NA,"narrative",NA,NA,NA
 "168","CDISC","ADaM-IG","1.0,1.1,1.2","Medium","BASETYPE is present, BNRIND is populated, and BNRIND is not equal to ANRIND where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE",NA,NA,"narrative",NA,NA,NA
 "169","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of CNSR is not a positive integer or 0",NA,NA,"narrative",NA,NA,NA
-"17","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a character value is greater than 200 characters","value-all-vars-length-le","any_value_exceeds_length(200)","predicate","2026-04-21T17:40:33Z",NA,NA
 "176","CDISC","ADaM-IG","1.0,1.1","Medium","ABLFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
 "178","CDISC","ADaM-IG","1.0,1.1","Medium","ANLzzFL is not equal to Y or null where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
 "18","CDISC","ADaM-IG","1.0","Medium","Labels for ADaM variables do not match the standard labels for ADaM variables listed in the implementation guide that cannot be modified (with the exception of 1) variables whose names contain indexes “y”, ""xx"", or “zz”; and (2) variable labels with asterisks (*) and ellipses (...) indicated for sponsor appropriate text)",NA,NA,"narrative",NA,NA,NA
@@ -42,8 +32,6 @@
 "182","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BASETYPE is not present, BTOXGR is populated, and BTOXGR is not equal to ATOXGR where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
 "183","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BASETYPE is not present, BNRIND is populated, and BNRIND is not equal to ANRIND where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
 "19","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COMPLFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
-"196","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not populated","value-populated-required","operator: empty name: %var%","predicate","2026-04-21T17:32:45Z",NA,NA
-"197","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not populated","value-populated-required","operator: empty name: %var%","predicate","2026-04-21T17:32:45Z",NA,NA
 "198","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is not present and AVALC is not present",NA,NA,"narrative",NA,NA,NA
 "199","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable present in SDTM but the variables do not have identical data types",NA,NA,"narrative",NA,NA,NA
 "2","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable present in SDTM but the variables do not have identical labels",NA,NA,"narrative",NA,NA,NA
@@ -104,7 +92,6 @@
 "312","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzSC is not equal to BROAD or NARROW, where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
 "313","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzSCN is not equal to 1 or 2, where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
 "32","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ENRLFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"320","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A dataset is named ADSL and the dataset label is not ""Subject-Level Analysis Dataset""","dataset-label-match","operator: dataset_label_not expected: %expected%","predicate","2026-04-21T20:10:58Z",NA,NA
 "321","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A dataset label is ""Subject-Level Analysis Dataset"" and the dataset is not named ADSL",NA,NA,"narrative",NA,NA,NA
 "322","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of TRTP, there is more than one value of TRTPGy, where y is an integer [1-99, not zero-padded]",NA,NA,"narrative",NA,NA,NA
 "323","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a study, there is more than one value of APHASEN for a given value of APHASE, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -183,7 +170,6 @@
 "46","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DY has a value of zero",NA,NA,"narrative",NA,NA,NA
 "472","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwR for a given value of STRATwRN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "473","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwRN for a given value of STRATwR, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"48","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is not present in ADSL","dataset-suffix-var-required","operator: no_var_with_suffix suffix: %suffix%","predicate","2026-04-21T20:10:58Z",NA,NA
 "480","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwV for a given value of STRATwVN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "481","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwVN for a given value of STRATwV, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "492","CDISC","ADaM-IG","1.2,1.3","Medium","SHIFTy is present and all of the following variable pairs (BASECATy, AVALCATy), (BNRIND, ANRIND), (ByIND, AyIND), (BTOXGR, ATOXGR), (BTOXGRL, ATOXGRL), (BTOXGRH, ATOXGRH), (BASE, AVAL) and (BASEC, AVALC) are not present",NA,NA,"narrative",NA,NA,NA
@@ -193,7 +179,6 @@
 "497","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A dataset name starts with ""AD"" when the dataset class is missing",NA,NA,"narrative",NA,NA,NA
 "498","CDISC","ADaM-IG","1.2,1.3","Medium","For every unique combination of a w value of ASPER and xx value of APERIOD in BDS or OCCDS datasets, there is not a variable PxxSw",NA,NA,"narrative",NA,NA,NA
 "5","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL has a value that is not Y, N or null",NA,NA,"narrative",NA,NA,NA
-"500","CDISC","ADaM-IG","1.2,1.3","Medium","There is a value of APHASE without a matching value in an ADSL variable APHASEw","value-in-subject-indexed-set","operator: value_not_in_subject_indexed_set name: APHASE reference_dataset: ADSL reference_template: APHASEw","predicate","2026-04-21T20:10:59Z",NA,NA
 "521","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A variable which has a suffix of GRyN is present and a variable with the same root name and suffix of GRy is not present",NA,NA,"narrative",NA,NA,NA
 "526","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ANLzzFN is present and ANLzzFL is not present",NA,NA,"narrative",NA,NA,NA
 "53","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of USUBJID is not present in SDTM.DM",NA,NA,"narrative",NA,NA,NA
@@ -201,7 +186,6 @@
 "534","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","RELGRyN is present and RELGRy is not present",NA,NA,"narrative",NA,NA,NA
 "537","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","TOXGGRyN is present and TOXGGRy is not present",NA,NA,"narrative",NA,NA,NA
 "538","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","SMQzzSCN is present and SMQzzSC is not present",NA,NA,"narrative",NA,NA,NA
-"54","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within ADSL there is more than one record for a unique value of USUBJID","uniqueness-composite-key",NA,"predicate","2026-04-21T20:13:13Z",NA,NA
 "543","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","AVALCAyN is present and AVALCATy is not present",NA,NA,"narrative",NA,NA,NA
 "544","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","BASECAyN is present and BASECATy is not present",NA,NA,"narrative",NA,NA,NA
 "545","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","CHGCATyN is present and CHGCATy is not present",NA,NA,"narrative",NA,NA,NA
@@ -229,7 +213,6 @@
 "579","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwEDF is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
 "58","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DT is not a numeric variable",NA,NA,"narrative",NA,NA,NA
 "580","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwETF is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
-"581","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","None of TRTP, TRTPGy, TRTA, and TRTAGy are present and none of the character treatment variables in ADSL defined in the IG are present","adsl-treatment-presence",NA,"predicate","2026-04-21T20:13:13Z",NA,NA
 "583","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of BCHGCATy for a given value of BCHG and y, where y is an integer [1-99, not zero-padded]",NA,NA,"narrative",NA,NA,NA
 "584","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BCHGCATy for a given value of BCHGCAyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "585","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BCHGCAyN for a given value of BCHGCATy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -237,8 +220,6 @@
 "588","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of PBCHGCAy for a given value of PBCHGCyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "589","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of PBCHGCyN for a given value of PBCHGCAy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "59","CDISC","ADaM-IG","1.0","Medium","A variable with a suffix of TM is not a numeric variable",NA,NA,"narrative",NA,NA,NA
-"590","CDISC","ADaM-IG","1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical data types","adsl-var-attr-consistency","operator: shared_attr_mismatch attribute: %attribute% reference_dataset: ADSL","predicate","2026-04-21T20:05:57Z",NA,NA
-"591","CDISC","ADaM-IG","1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical values for a given value of USUBJID","adsl-var-values-consistency",NA,"predicate","2026-04-21T20:31:18Z",NA,NA
 "592","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APERSDT is not equal to the value of variable APxxSDT where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
 "593","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APERSTM is not equal to the value of variable APxxSTM where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
 "594","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APERSDTM is not equal to the value of variable APxxSDTM where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
@@ -249,10 +230,8 @@
 "599","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRSTM is not equal to the value of variable PxxSwSTM where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
 "6","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is present and a variable with the same root and a suffix of FN has a value that is not  0, 1 or null",NA,NA,"narrative",NA,NA,NA
 "60","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DTM is not a numeric variable",NA,NA,"narrative",NA,NA,NA
-"600","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRSDTM is not equal to the value of variable PxxSwSDM where xx equals the value of APERIOD and w equals the value of ASPER","value-compare-subject-templated-ref",NA,"predicate","2026-04-21T20:31:18Z",NA,NA
 "601","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPREDT is not equal to the value of variable PxxSwEDT where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
 "602","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRETM is not equal to the value of variable PxxSwETM where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
-"603","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPREDTM is not equal to the value of variable PxxSwEDM where xx equals the value of APERIOD and w equals the value of ASPER","value-compare-subject-templated-ref",NA,"predicate","2026-04-21T20:31:18Z",NA,NA
 "604","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is not present and the value of PHSDT is not equal to the value of at least one PHwSDT variable",NA,NA,"narrative",NA,NA,NA
 "605","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is present and the value of PHSDT is not equal to the value of variable PHwSDT where w equals the value of APHASEN",NA,NA,"narrative",NA,NA,NA
 "606","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is not present and the value of PHSTM is not equal to the value of at least one PHwSTM variable",NA,NA,"narrative",NA,NA,NA
@@ -301,7 +280,6 @@
 "681","CDISC","ADaM-IG","1.3","Medium","There is more than one value of MODELGy for a given value of MODELGyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "682","CDISC","ADaM-IG","1.3","Medium","There is more than one value of MODELGyN for a given value of MODELGy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "687","CDISC","ADaM-IG","1.3","Medium","The value of DEVIPDT is greater than the value of DEVXPDT, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"688","CDISC","ADaM-IG","1.3","Medium","Within ADDL there is more than one record for unique values of USUBJID and SPDEVID","uniqueness-composite-key",NA,"predicate","2026-04-21T20:13:13Z",NA,NA
 "691","CDISC","ADaM-IG","1.3","Medium","Within a given value of PARAMCD for a combination of device and subject, BASE is populated and there is not at least one record with ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
 "692","CDISC","ADaM-IG","1.3","Medium","Within a given value of PARAMCD for a combination of device and subject, BASEC is populated and there is not at least one record with ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
 "693","CDISC","ADaM-IG","1.3","Medium","Within a given value of PARAMCD for a combination of device and subject, there is more than one value of BASE for a given value of BASEC, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -410,12 +388,10 @@
 "843","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ALQFL for a given value of ALQFN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "847","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FORMN for a given value of FORM, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "848","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FORM for a given value of FORMN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"85","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical labels","adsl-var-attr-consistency","operator: shared_attr_mismatch attribute: %attribute% reference_dataset: ADSL","predicate","2026-04-21T20:05:57Z",NA,NA
 "852","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ROUTEN for a given value of ROUTE, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "853","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ROUTE for a given value of ROUTEN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "857","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ACYCLEC for a given value of ACYCLE, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "858","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ACYCLE for a given value of ACYCLEC, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"86","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical formats","adsl-var-attr-consistency","operator: shared_attr_mismatch attribute: %attribute% reference_dataset: ADSL","predicate","2026-04-21T20:05:57Z",NA,NA
 "862","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COHORTC for a given value of COHORT, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
 "863","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COHORT for a given value of COHORTC, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "867","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of RACEN for a given value of RACE, considering only those rows on which both variables are populated.  ",NA,NA,"narrative",NA,NA,NA
@@ -566,8 +542,6 @@
 "CG0303","CDISC","SDTM-IG","3.2","Medium","Variable Label = IG Label",NA,NA,"narrative",NA,NA,NA
 "CG0308","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DOMAIN value length = 2",NA,NA,"narrative",NA,NA,NA
 "CG0309","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DOMAIN value length = 4",NA,NA,"narrative",NA,NA,NA
-"CG0310","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Variable name length <= 8","metadata-var-name-length","any_var_name_exceeds_length(8)","predicate","2026-04-21T17:40:33Z",NA,NA
-"CG0311","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Variable label length <= 40","metadata-var-label-length","any_var_label_exceeds_length(40)","predicate","2026-04-21T17:40:33Z",NA,NA
 "CG0312","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DOMAIN not in reserved or modeled standard",NA,NA,"narrative",NA,NA,NA
 "CG0313","CDISC","SDTM-IG","3.2","Medium","STUDYID, USUBJID or POOLID, DOMAIN, and --SEQ exist",NA,NA,"narrative",NA,NA,NA
 "CG0314","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Value of SUPP--.QNAM ^= any variable name defined in the corresponding SDTM version",NA,NA,"narrative",NA,NA,NA
@@ -604,7 +578,6 @@
 "CG0372","CDISC","SDTM-IG","3.2,3.3,3.4","Low","--TESTCD <= 8 chars and contains only letters, numbers, and underscores and can not start with a number",NA,NA,"narrative",NA,NA,NA
 "CG0373","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset present in study with DOMAIN = SUPP--.RDOMAIN",NA,NA,"narrative",NA,NA,NA
 "CG0374","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset present in study with DOMAIN = RELREC.RDOMAIN",NA,NA,"narrative",NA,NA,NA
-"CG0375","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TDANCVAR = date variable name in ADSL","value-var-name-in-ref-dataset","value_not_var_in_ref_dataset(TDANCVAR, ADSL, (DT|DTC|DTM))","predicate","2026-04-21T17:50:20Z",NA,NA
 "CG0376","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TDSTOFF = 0 or positive value in ISO 8601 Duration format",NA,NA,"narrative",NA,NA,NA
 "CG0377","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLT = MedDRA lowest level TERM",NA,NA,"narrative",NA,NA,NA
 "CG0378","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLTCD = MedDRA lowest level code",NA,NA,"narrative",NA,NA,NA
@@ -733,496 +706,500 @@
 "CG0662","CDISC","SDTM-IG","3.2","Medium","--SEQ is in consistent chronological order",NA,NA,"narrative",NA,NA,NA
 "CG0663","CDISC","SDTM-IG","3.4","Medium","Value length = 4 characters beginning with 'AP' and ending with 2 character SDTM domain ",NA,NA,"narrative",NA,NA,NA
 "CG0664","CDISC","SDTM-IG","3.4","Medium","Variables are ordered with Identifiers first, followed by the Topic, Qualifier, and Timing variables. Within each role, variables are ordered as shown in SDTM tables in sections 3.1.1, 3.1.2, 3.1.3, 3.1.3.1, 3.1.4, and 3.1.5",NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+"1","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ADSL dataset does not exist","submission-dataset-exists","not_exists(ADSL)","predicate","2026-04-21T20:31:18Z",NA,NA
+"102","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRTxxP","adsl-index-var-exists","any_index_missing_ref_var(APERIOD,ADSL,TRTxxP,xx)","predicate","2026-04-21T20:08:03Z",NA,NA
+"103","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxSDT","adsl-index-var-exists","any_index_missing_ref_var(APERIOD,ADSL,TRxxSDT,xx)","predicate","2026-04-21T20:08:03Z",NA,NA
+"104","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxEDT","adsl-index-var-exists","any_index_missing_ref_var(APERIOD,ADSL,TRxxEDT,xx)","predicate","2026-04-21T20:08:03Z",NA,NA
 "105","CDISC","ADaM-IG","1.0","Medium","There is more than one value of APERIODC for a given value of APERIOD","uniqueness-grouped","is_not_unique_relationship(APERIOD,APERIODC)","predicate","2026-04-21T11:50:50Z","unique",NA
 "106","CDISC","ADaM-IG","1.0","Medium","There is more than one value of APERIOD for a given value of APERIODC","uniqueness-grouped","is_not_unique_relationship(APERIODC,APERIOD)","predicate","2026-04-21T11:50:50Z","unique",NA
 "109","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVISITN for a given value of AVISIT","uniqueness-grouped-scoped","is_not_unique_relationship(AVISIT,AVISITN,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
@@ -1237,22 +1214,30 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "125","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARCATy for a given value of PARCATyN","uniqueness-grouped","is_not_unique_relationship(PARCATyN,PARCATy)","predicate","2026-04-21T15:33:29Z",NA,NA
 "126","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARCATyN for a given value of PARCATy","uniqueness-grouped","is_not_unique_relationship(PARCATy,PARCATyN)","predicate","2026-04-21T15:33:29Z",NA,NA
 "129","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD for a subject, there is more than one value of BASE for a given value of BASEC","uniqueness-grouped-scoped","is_not_unique_relationship(BASEC,BASE,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
+"13","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a variable name exceeds 8 characters","metadata-var-name-length","any_var_name_exceeds_length(8)","predicate","2026-04-21T17:40:33Z",NA,NA
 "130","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD for a subject, there is more than one value of BASEC for a given value of BASE","uniqueness-grouped-scoped","is_not_unique_relationship(BASE,BASEC,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
 "135","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTy for a given value of SHIFTyN","uniqueness-grouped-scoped","is_not_unique_relationship(SHIFTyN,SHIFTy,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
 "136","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTyN for a given value of SHIFTy","uniqueness-grouped-scoped","is_not_unique_relationship(SHIFTy,SHIFTyN,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
 "141","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARAM for a given value of PARAMCD","uniqueness-grouped","is_not_unique_relationship(PARAMCD,PARAM)","predicate","2026-04-21T11:50:50Z","unique",NA
 "142","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARAMCD for a given value of PARAM","uniqueness-grouped","is_not_unique_relationship(PARAM,PARAMCD)","predicate","2026-04-21T11:50:50Z","unique",NA
+"143","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD has more than 8 characters in length","value-length-le","longer_than(PARAMCD,8)","predicate","2026-04-21T17:32:45Z",NA,NA
+"144","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD starts with a character other than a letter","value-regex-format","not_matches_regex(PARAMCD,^[A-Za-z])","predicate","2026-04-21T17:32:45Z",NA,NA
+"145","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD has characters that are not letters, digits, and underscores","value-regex-format","not_matches_regex(PARAMCD,^[A-Za-z0-9_]+$)","predicate","2026-04-21T17:32:45Z",NA,NA
 "146","CDISC","ADaM-IG","1.0","Medium","Within a dataset, there is more than one value of PARAM for a given value of PARAMN","uniqueness-grouped","is_not_unique_relationship(PARAMN,PARAM)","predicate","2026-04-21T15:33:29Z",NA,NA
 "147","CDISC","ADaM-IG","1.0","Medium","Within a dataset, there is more than one value of PARAMN for a given value of PARAM","uniqueness-grouped","is_not_unique_relationship(PARAM,PARAMN)","predicate","2026-04-21T15:33:29Z",NA,NA
 "149","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVALC for a given value of AVAL","uniqueness-grouped-scoped","is_not_unique_relationship(AVAL,AVALC,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
 "150","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVAL for a given value of AVALC","uniqueness-grouped-scoped","is_not_unique_relationship(AVALC,AVAL,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
 "159","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AWTDIFF is populated and AWTARGET is not populated","value-conditional-populated","non_empty(AWTDIFF) & empty(AWTARGET)","predicate","2026-04-21T11:35:41Z","condition",NA
+"16","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a variable label is greater than 40 characters","metadata-var-label-length","any_var_label_exceeds_length(40)","predicate","2026-04-21T17:40:33Z",NA,NA
 "163","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BTOXGR is present and ATOXGR is not present","presence-pair","exists(BTOXGR) & not_exists(ATOXGR)","predicate","2026-04-21T09:19:57Z","find",NA
 "164","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BTOXGR is present and ABLFL is not present","presence-pair","exists(BTOXGR) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z","find",NA
 "166","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BNRIND is present and ANRIND is not present","presence-pair","exists(BNRIND) & not_exists(ANRIND)","predicate","2026-04-21T09:19:57Z","find",NA
 "167","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BNRIND is present and ABLFL is not present","presence-pair","exists(BNRIND) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z","find",NA
+"17","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a character value is greater than 200 characters","value-all-vars-length-le","any_value_exceeds_length(200)","predicate","2026-04-21T17:40:33Z",NA,NA
 "194","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not present","presence-required","not_exists(PARAM)","predicate","2026-04-21T11:26:53Z","required",NA
 "195","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not present","presence-required","not_exists(PARAMCD)","predicate","2026-04-21T11:26:53Z","required",NA
+"196","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not populated","value-populated-required","empty(PARAM)","predicate","2026-04-21T17:32:45Z",NA,NA
+"197","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not populated","value-populated-required","empty(PARAMCD)","predicate","2026-04-21T17:32:45Z",NA,NA
 "201","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTAGyN is present and TRTAGy is not present","presence-pair","exists(TRTAGyN) & not_exists(TRTAGy)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
 "223","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, CHG is populated and is not equal to AVAL - BASE","value-arith-check","is_not_diff(CHG,AVAL,BASE)","predicate","2026-04-21T16:38:04Z",NA,NA
 "225","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PCHG is populated and is not equal to ((AVAL - BASE)/BASE)*100","value-arith-check","is_not_pct_diff(PCHG,AVAL,BASE)","predicate","2026-04-21T16:38:04Z",NA,NA
@@ -1284,6 +1269,7 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "298","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TOXGGRyN for a given value of TOXGGRy","uniqueness-grouped","is_not_unique_relationship(TOXGGRy,TOXGGRyN)","predicate","2026-04-21T15:33:29Z",NA,NA
 "310","CDISC","ADaM-IG","1.0","Medium","There is more than one value of SMQzzSC for a given value of SMQzzSCN","uniqueness-grouped","is_not_unique_relationship(SMQzzSCN,SMQzzSC)","predicate","2026-04-21T15:33:29Z",NA,NA
 "311","CDISC","ADaM-IG","1.0","Medium","There is more than one value of SMQzzSCN for a given value of SMQzzSC","uniqueness-grouped","is_not_unique_relationship(SMQzzSC,SMQzzSCN)","predicate","2026-04-21T15:33:29Z",NA,NA
+"320","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A dataset is named ADSL and the dataset label is not ""Subject-Level Analysis Dataset""","dataset-label-match","dataset_label_not(Subject-Level Analysis Dataset)","predicate","2026-04-21T20:10:58Z",NA,NA
 "359","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUS for a given value of DTHCAUSN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(DTHCAUSN,DTHCAUS)","predicate","2026-04-21T11:50:50Z","unique",NA
 "360","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUSN for a given value of DTHCAUS, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(DTHCAUS,DTHCAUSN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "373","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CNSR is not present","presence-required","not_exists(CNSR)","predicate","2026-04-21T11:26:53Z","required",NA
@@ -1374,6 +1360,7 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "477","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAVN for a given value of STRATAV, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(STRATAV,STRATAVN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "478","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwV is populated and STRATwVN is not populated","value-pair-coupled","non_empty(STRATwV) & empty(STRATwVN)","predicate","2026-04-21T13:12:28Z",NA,NA
 "479","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwVN is populated and STRATwV is not populated","value-pair-coupled","non_empty(STRATwVN) & empty(STRATwV)","predicate","2026-04-21T13:12:28Z",NA,NA
+"48","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is not present in ADSL","dataset-suffix-var-required","no_var_with_suffix(FL)","predicate","2026-04-21T20:10:58Z",NA,NA
 "482","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BCHGCATy is populated and BCHGCAyN is not populated","value-pair-coupled","non_empty(BCHGCATy) & empty(BCHGCAyN)","predicate","2026-04-21T13:12:28Z",NA,NA
 "483","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BCHGCAyN is populated and BCHGCATy is not populated","value-pair-coupled","non_empty(BCHGCAyN) & empty(BCHGCATy)","predicate","2026-04-21T13:12:28Z",NA,NA
 "484","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PBCHGCAy is populated and PBCHGCyN is not populated","value-pair-coupled","non_empty(PBCHGCAy) & empty(PBCHGCyN)","predicate","2026-04-21T13:12:28Z",NA,NA
@@ -1387,6 +1374,7 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "491","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, LVOTFN is populated and LVOTFL is not populated","value-conditional-populated","non_empty(LVOTFN) & empty(LVOTFL)","predicate","2026-04-21T11:35:41Z","condition",NA
 "499","CDISC","ADaM-IG","1.2,1.3","Medium","ASPER is present and APERIOD is not present","presence-pair","exists(ASPER) & not_exists(APERIOD)","predicate","2026-04-21T09:19:57Z","find",NA
 "50","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AGEU is not present within ADSL","presence-required","not_exists(AGEU)","predicate","2026-04-21T13:35:21Z",NA,NA
+"500","CDISC","ADaM-IG","1.2,1.3","Medium","There is a value of APHASE without a matching value in an ADSL variable APHASEw","value-in-subject-indexed-set","value_not_in_subject_indexed_set(APHASE,ADSL,APHASEw)","predicate","2026-04-21T20:10:59Z",NA,NA
 "501","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ASPER is populated and APERIOD is not populated","value-conditional-populated","non_empty(ASPER) & empty(APERIOD)","predicate","2026-04-21T11:35:41Z","condition",NA
 "503","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in DT must contain ""Date"" in the label","metadata-label-contains","label_by_suffix_missing(DT,Date)","predicate","2026-04-21T12:47:14Z",NA,NA
 "504","CDISC","ADaM-IG","1.1,1.2,1.3","High","A variable ending in TM must contain ""Time"" in the label","metadata-label-contains","label_by_suffix_missing(TM,Time)","predicate","2026-04-21T12:47:14Z",NA,NA
@@ -1421,6 +1409,7 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "535","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","AETOXGRN is present and AETOXGR is not present","presence-pair","exists(AETOXGRN) & not_exists(AETOXGR)","predicate","2026-04-21T09:19:57Z","find",NA
 "536","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ATOXGRN is present and ATOXGR is not present","presence-pair","exists(ATOXGRN) & not_exists(ATOXGR)","predicate","2026-04-21T09:19:57Z","find",NA
 "539","CDISC","ADaM-IG","1.2,1.3","Medium","APERIODC is present and APERIOD is not present","presence-pair","exists(APERIODC) & not_exists(APERIOD)","predicate","2026-04-21T09:19:57Z","find",NA
+"54","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within ADSL there is more than one record for a unique value of USUBJID","uniqueness-composite-key","is_not_unique_set(USUBJID)","predicate","2026-04-21T20:13:13Z",NA,NA
 "540","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","APHASEN is present and APHASE is not present","presence-pair","exists(APHASEN) & not_exists(APHASE)","predicate","2026-04-21T09:19:57Z","find",NA
 "541","CDISC","ADaM-IG","1.2,1.3","Medium","ASPERC is present and ASPER is not present","presence-pair","exists(ASPERC) & not_exists(ASPER)","predicate","2026-04-21T09:19:57Z","find",NA
 "542","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ATPTN is present and ATPT is not present","presence-pair","exists(ATPTN) & not_exists(ATPT)","predicate","2026-04-21T09:19:57Z","find",NA
@@ -1436,8 +1425,13 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "562","CDISC","ADaM-IG","1.2,1.3","Medium","STRATAVN is present and STRATAV is not present","presence-pair","exists(STRATAVN) & not_exists(STRATAV)","predicate","2026-04-21T09:19:57Z","find",NA
 "568","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ONTRTFN is present and ONTRTFL is not present","presence-pair","exists(ONTRTFN) & not_exists(ONTRTFL)","predicate","2026-04-21T09:19:57Z","find",NA
 "569","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","LVOTFN is present and LVOTFL is not present","presence-pair","exists(LVOTFN) & not_exists(LVOTFL)","predicate","2026-04-21T09:19:57Z","find",NA
+"581","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","None of TRTP, TRTPGy, TRTA, and TRTAGy are present and none of the character treatment variables in ADSL defined in the IG are present","adsl-treatment-presence","treatment_var_absent_across_datasets(TRTP,TRTPGy,TRTA,TRTAGy,TRTxxP,TRTxxA,ADSL)","predicate","2026-04-21T20:13:13Z",NA,NA
 "582","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BCHG is populated and is not equal to BASE-AVAL","value-arith-check","is_not_diff(BCHG,BASE,AVAL)","predicate","2026-04-21T16:38:04Z",NA,NA
 "586","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PBCHG is populated and is not equal to ((BASE-AVAL)/AVAL)*100","value-arith-check","is_not_pct_diff(PBCHG,BASE,AVAL)","predicate","2026-04-21T16:38:04Z",NA,NA
+"590","CDISC","ADaM-IG","1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical data types","adsl-var-attr-consistency","shared_attr_mismatch(type,ADSL)","predicate","2026-04-21T20:05:57Z",NA,NA
+"591","CDISC","ADaM-IG","1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical values for a given value of USUBJID","adsl-var-values-consistency","shared_values_mismatch_by_key(ADSL,USUBJID)","predicate","2026-04-21T20:31:18Z",NA,NA
+"600","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRSDTM is not equal to the value of variable PxxSwSDM where xx equals the value of APERIOD and w equals the value of ASPER","value-compare-subject-templated-ref","not_equal_subject_templated_ref(ASPRSDTM,ADSL,PxxSwSDM,APERIOD,ASPER)","predicate","2026-04-21T20:31:18Z",NA,NA
+"603","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPREDTM is not equal to the value of variable PxxSwEDM where xx equals the value of APERIOD and w equals the value of ASPER","value-compare-subject-templated-ref","not_equal_subject_templated_ref(ASPREDTM,ADSL,PxxSwEDM,APERIOD,ASPER)","predicate","2026-04-21T20:31:18Z",NA,NA
 "620","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AETERM is not present","presence-required","not_exists(AETERM)","predicate","2026-04-21T11:26:53Z","required",NA
 "621","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEMFL is not present","presence-required","not_exists(TRTEMFL)","predicate","2026-04-21T11:26:53Z","required",NA
 "623","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESEQ is not present","presence-required","not_exists(AESEQ)","predicate","2026-04-21T11:26:53Z","required",NA
@@ -1476,6 +1470,7 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "684","CDISC","ADaM-IG","1.3","Medium","On a given record, MODELGyN is populated and MODELGy is not populated ","value-pair-coupled","non_empty(MODELGyN) & empty(MODELGy)","predicate","2026-04-21T13:12:28Z",NA,NA
 "685","CDISC","ADaM-IG","1.3","Medium","DEVSDT is not present within ADDL","presence-required","not_exists(DEVSDT)","predicate","2026-04-21T13:35:21Z",NA,NA
 "686","CDISC","ADaM-IG","1.3","Medium","DEVEDT is not present within ADDL","presence-required","not_exists(DEVEDT)","predicate","2026-04-21T13:35:21Z",NA,NA
+"688","CDISC","ADaM-IG","1.3","Medium","Within ADDL there is more than one record for unique values of USUBJID and SPDEVID","uniqueness-composite-key","is_not_unique_set(USUBJID,SPDEVID)","predicate","2026-04-21T20:13:13Z",NA,NA
 "689","CDISC","ADaM-IG","1.3","Medium","SPDEVID is not present within dataset","presence-required","not_exists(SPDEVID)","predicate","2026-04-21T13:35:21Z",NA,NA
 "71","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARM is not present within ADSL","presence-required","not_exists(ARM)","predicate","2026-04-21T13:35:21Z",NA,NA
 "72","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRT01P is not present within ADSL","presence-required","not_exists(TRT01P)","predicate","2026-04-21T13:35:21Z",NA,NA
@@ -1540,12 +1535,14 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "845","CDISC","ADaM-IG","1.3","Medium","FORM is populated and FORMN is not populated","value-conditional-populated","non_empty(FORM) & empty(FORMN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "846","CDISC","ADaM-IG","1.3","Medium","FORMN is populated and FORM is not populated","value-conditional-populated","non_empty(FORMN) & empty(FORM)","predicate","2026-04-21T11:35:41Z","condition",NA
 "849","CDISC","ADaM-IG","1.3","Medium","FORMN is present and FORM is not present","presence-pair","exists(FORMN) & not_exists(FORM)","predicate","2026-04-21T09:19:57Z","find",NA
+"85","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical labels","adsl-var-attr-consistency","shared_attr_mismatch(label,ADSL)","predicate","2026-04-21T20:05:57Z",NA,NA
 "850","CDISC","ADaM-IG","1.3","Medium","ROUTE is populated and ROUTEN is not populated","value-conditional-populated","non_empty(ROUTE) & empty(ROUTEN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "851","CDISC","ADaM-IG","1.3","Medium","ROUTEN is populated and ROUTE is not populated","value-conditional-populated","non_empty(ROUTEN) & empty(ROUTE)","predicate","2026-04-21T11:35:41Z","condition",NA
 "854","CDISC","ADaM-IG","1.3","Medium","ROUTEN is present and ROUTE is not present","presence-pair","exists(ROUTEN) & not_exists(ROUTE)","predicate","2026-04-21T09:19:57Z","find",NA
 "855","CDISC","ADaM-IG","1.3","Medium","ACYCLE is populated and ACYCLEC is not populated","value-conditional-populated","non_empty(ACYCLE) & empty(ACYCLEC)","predicate","2026-04-21T11:35:41Z","condition",NA
 "856","CDISC","ADaM-IG","1.3","Medium","ACYCLEC is populated and ACYCLE is not populated","value-conditional-populated","non_empty(ACYCLEC) & empty(ACYCLE)","predicate","2026-04-21T11:35:41Z","condition",NA
 "859","CDISC","ADaM-IG","1.3","Medium","ACYCLEC is present and ACYCLE is not present","presence-pair","exists(ACYCLEC) & not_exists(ACYCLE)","predicate","2026-04-21T09:19:57Z","find",NA
+"86","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical formats","adsl-var-attr-consistency","shared_attr_mismatch(format,ADSL)","predicate","2026-04-21T20:05:57Z",NA,NA
 "860","CDISC","ADaM-IG","1.3","Medium","COHORT is populated and COHORTC is not populated","value-conditional-populated","non_empty(COHORT) & empty(COHORTC)","predicate","2026-04-21T11:35:41Z","condition",NA
 "861","CDISC","ADaM-IG","1.3","Medium","COHORTC is populated and COHORT is not populated","value-conditional-populated","non_empty(COHORTC) & empty(COHORT)","predicate","2026-04-21T11:35:41Z","condition",NA
 "864","CDISC","ADaM-IG","1.3","Medium","COHORTC is present and COHORT is not present","presence-pair","exists(COHORTC) & not_exists(COHORT)","predicate","2026-04-21T09:19:57Z","find",NA
@@ -1710,6 +1707,8 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0302","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TRPORTOT not present in dataset","presence-forbidden","exists(TRPORTOT)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA
 "CG0304","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","AEREASND not present in dataset","presence-forbidden","exists(AEREASND)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA
 "CG0307","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSPARM and TSPARMCD have a one-to-one relationship","uniqueness-grouped","is_not_unique_relationship(TSPARM,TSPARMCD)","predicate","2026-04-21T16:25:34Z",NA,NA
+"CG0310","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Variable name length <= 8","metadata-var-name-length","any_var_name_exceeds_length(8)","predicate","2026-04-21T17:40:33Z",NA,NA
+"CG0311","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Variable label length <= 40","metadata-var-label-length","any_var_label_exceeds_length(40)","predicate","2026-04-21T17:40:33Z",NA,NA
 "CG0328","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TEENRL ^= null","value-not-null","empty(TEENRL)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0329","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TEDUR ^= null","value-not-null","empty(TEDUR)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0337","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--CAT ^= --DECOD","value-not-equal-column","equal_to(--CAT,--DECOD,FALSE)","predicate","2026-04-21T15:03:22Z",NA,NA
@@ -1728,6 +1727,7 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0362","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","USUBJID = null","value-conditional-null-populated","non_empty(POOLID) & non_empty(USUBJID)","predicate","2026-04-21T13:51:48Z",NA,NA
 "CG0363","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RSUBJID ^= USUBJID","value-conditional-not-equal-column","non_empty(RSUBJID) & equal_to(RSUBJID,USUBJID,FALSE)","predicate","2026-04-21T15:03:22Z",NA,NA
 "CG0364","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RSUBJID ^= POOLID","value-conditional-not-equal-column","non_empty(RSUBJID) & equal_to(RSUBJID,POOLID,FALSE)","predicate","2026-04-21T15:03:22Z",NA,NA
+"CG0375","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TDANCVAR = date variable name in ADSL","value-var-name-in-ref-dataset","value_not_var_in_ref_dataset(TDANCVAR,ADSL,(DT|DTC|DTM))","predicate","2026-04-21T17:50:20Z",NA,NA
 "CG0397","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STRESC ^= null","value-not-null","empty(--STRESC)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0410","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","VISITNUM identifies unique record within subject","uniqueness-composite-key","is_not_unique_set(STUDYID,USUBJID,VISITNUM)","predicate","2026-04-21T16:24:26Z",NA,NA
 "CG0416","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","QLABEL value length <= 40","value-length-le","longer_than(QLABEL,40)","predicate","2026-04-21T13:31:48Z",NA,NA

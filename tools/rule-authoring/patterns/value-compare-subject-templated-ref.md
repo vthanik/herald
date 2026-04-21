@@ -33,13 +33,24 @@ collapses the substitution into the op, with explicit placeholder
 
 ## P21 edge-case audit
 
+P21 does NOT encode ADaM-600 / ADaM-603 in its XML configs (the rule is
+authored from the ADaMIG narrative directly). Value-equality semantics
+below track P21's `DataEntryFactory.compareToAny()` so when P21 does
+author equivalents in the future, herald and P21 agree on every
+value-pair verdict.
+
 | P21 behaviour | File:line | herald decision |
 |---|---|---|
 | Index column value not integer -> skip row | `Integer.parseInt` | `suppressWarnings(as.integer(...))`; NA -> row NA (advisory). Matches. |
-| Resolved column missing in ref -> skip row | `MagicVariable.isMissing` | row NA (advisory). Matches. |
-| Subject missing in ref -> skip row | `Lookup` miss | row NA (advisory). Matches. |
-| rtrim trailing spaces both sides | `DataEntryFactory:313-328` | `sub("\\s+$","",...)`. Matches. |
-| Case-sensitive compare default | `String.equals` | `!=` on rtrimmed strings. Matches. |
+| Resolved column missing in ref -> skip row | lookup miss | row NA (advisory). Matches. |
+| Subject not in ref -> skip row (Lookup no-match) | `LookupValidationRule` | row NA (advisory). Matches. |
+| rtrim trailing SPACE on both sides | `DataEntryFactory.java:313-328` | `sub(" +$","",...)` on the key; value rtrim is done inside `.cdisc_value_equal`. Matches. |
+| Both sides NULL -> equal (no fire) | `NullDataEntry.compareToAny:355-356` | `.cdisc_value_equal(NA,NA) == TRUE`. Matches. |
+| One side NULL -> not equal (fire) | same | `.cdisc_value_equal` returns FALSE when one is NA and the other is not. Matches. |
+| Both sides numeric -> BigDecimal equality (`"1" == "1.0"`) | `DataEntryFactory.java:159-160` | `as.numeric()` on both, `==` when both parse. Matches. |
+| Both sides datetime -> prefix equality (`"2024-01-01" == "2024-01-01T00:00:00"`) | `DataEntryFactory.java:172-180` | Match `.CDISC_DATE_RX` (same ISO regex as P21 DATE_PATTERN) on both, `startsWith` both ways. Matches. |
+| 4-digit integer treated as year | `DataEntryFactory.java:173,175` | `nchar == 4 & !grepl("\\.", .)` marks numeric-year candidates as date for fuzzy compare. Matches. |
+| Case-sensitive `==` default | `Comparison.java:195` | `==` on strings is case-sensitive. Matches. |
 
 ## herald check_tree template
 

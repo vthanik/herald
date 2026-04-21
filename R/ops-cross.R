@@ -15,6 +15,84 @@
 
 .as_char <- function(x) as.character(x)
 
+# CDISC ISO-8601 partial-date pattern -- mirrors P21's DATE_PATTERN
+# (DataEntryFactory.java:31-46). Covers bare year through full datetime,
+# with "-" as the CDISC partial-unknown placeholder.
+.CDISC_DATE_RX <- paste0(
+  "^(?:-|[0-9]{4})",
+  "(?:-(?:-|0[0-9]|1[0-2])",
+  "(?:-(?:-|[0-2][0-9]|3[0-1])",
+  "(?:T(?:-|[0-1][0-9]|2[0-4])",
+  "(?::(?:-|[0-5][0-9])",
+  "(?::[0-5][0-9])?",
+  ")?)?)?)?$"
+)
+
+#' CDISC-semantic value equality.
+#'
+#' Mirrors Pinnacle 21's `DataEntryFactory.compareToAny()` semantics so
+#' herald's cross-dataset compares behave the same way as the reference
+#' implementation:
+#'   * Both sides NULL -> equal        (NullDataEntry.compareToAny:355-356)
+#'   * One side NULL   -> not equal    (same)
+#'   * Both numeric    -> BigDecimal-style equality ("1" == "1.0")
+#'   * Both datetime   -> prefix equality ("2024" == "2024-01-01")
+#'   * Else            -> case-sensitive string compare on rtrimmed values.
+#'
+#' Accepts scalar or vector inputs; returns logical of length `max(len)`.
+#' Inputs are coerced to character and space-rtrimmed. Empty string after
+#' rtrim is treated as NULL.
+#' @noRd
+.cdisc_value_equal <- function(a, b) {
+  rtrim <- function(v) {
+    v <- as.character(v)
+    r <- sub(" +$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+  av <- rtrim(a)
+  bv <- rtrim(b)
+
+  out <- logical(max(length(av), length(bv)))
+  out[] <- NA
+
+  both_null <- is.na(av) & is.na(bv)
+  one_null  <- xor(is.na(av), is.na(bv))
+  out[both_null] <- TRUE
+  out[one_null]  <- FALSE
+
+  cmp <- which(!is.na(av) & !is.na(bv))
+  if (length(cmp) == 0L) return(out)
+
+  av_c <- av[cmp]; bv_c <- bv[cmp]
+
+  a_num <- suppressWarnings(as.numeric(av_c))
+  b_num <- suppressWarnings(as.numeric(bv_c))
+  numeric_path <- !is.na(a_num) & !is.na(b_num)
+
+  a_is_date <- grepl(.CDISC_DATE_RX, av_c, perl = TRUE)
+  b_is_date <- grepl(.CDISC_DATE_RX, bv_c, perl = TRUE)
+  # 4-digit integers are treated as dates per P21 heuristic (year).
+  a_is_date <- a_is_date | (numeric_path & nchar(av_c) == 4L & !grepl("\\.", av_c))
+  b_is_date <- b_is_date | (numeric_path & nchar(bv_c) == 4L & !grepl("\\.", bv_c))
+  date_path <- a_is_date & b_is_date
+
+  eq <- logical(length(cmp))
+  # Date fuzzy equality takes precedence over numeric -- matches P21's
+  # ordering (datetime check after numeric-both gate, but date heuristic
+  # applies even when numeric parses the 4-digit year).
+  eq[date_path] <- startsWith(av_c[date_path], bv_c[date_path]) |
+                   startsWith(bv_c[date_path], av_c[date_path])
+  num_only <- numeric_path & !date_path
+  eq[num_only] <- a_num[num_only] == b_num[num_only]
+  str_path <- !numeric_path & !date_path
+  eq[str_path] <- av_c[str_path] == bv_c[str_path]
+
+  out[cmp] <- eq
+  out
+}
+
+
 # --- is_not_unique_relationship ----------------------------------------------
 #
 # For two columns (X, Y) within a dataset, a row is flagged if value X maps
@@ -1207,14 +1285,16 @@ op_not_equal_subject_templated_ref <- function(data, ctx, name,
   missing_cols <- !vapply(idx, function(c) c %in% names(data), logical(1L))
   if (any(missing_cols)) return(rep(NA, n))
 
-  rtrim <- function(v) {
+  key_rtrim <- function(v) {
     v <- as.character(v)
-    r <- sub("\\s+$", "", v)
+    r <- sub(" +$", "", v)
     r[is.na(v) | !nzchar(r)] <- NA_character_
     r
   }
-  row_keys <- rtrim(data[[key]])
-  row_vals <- rtrim(data[[name]])
+  row_keys <- key_rtrim(data[[key]])
+  # Row values are passed raw to .cdisc_value_equal which does its own
+  # rtrim + datetime / numeric fuzzy equality.
+  row_vals <- data[[name]]
 
   # Pre-compute per-row resolved template column name
   resolved <- rep(NA_character_, n)
@@ -1235,12 +1315,12 @@ op_not_equal_subject_templated_ref <- function(data, ctx, name,
 
   # Build subject + column -> ref value map once (sparse across columns actually
   # referenced on rows).
-  ref_keys_all <- rtrim(ref_ds[[ref_key]])
+  ref_keys_all <- key_rtrim(ref_ds[[ref_key]])
   unique_cols  <- unique(stats::na.omit(resolved))
   lookups <- new.env(hash = TRUE, parent = emptyenv())
   for (col in unique_cols) {
     if (!(col %in% names(ref_ds))) next
-    vals <- rtrim(ref_ds[[col]])
+    vals <- as.character(ref_ds[[col]])
     ok   <- !is.na(ref_keys_all)
     lut  <- stats::setNames(vals[ok], ref_keys_all[ok])
     lut  <- lut[!duplicated(names(lut))]
@@ -1254,11 +1334,12 @@ op_not_equal_subject_templated_ref <- function(data, ctx, name,
     lut <- lookups[[col]]
     if (is.null(lut)) next               # ref dataset lacks that column
     s <- row_keys[[i]]
-    v <- row_vals[[i]]
-    if (is.na(s) || is.na(v)) next
+    if (is.na(s)) next
+    if (!(s %in% names(lut))) next       # subject not in ref -> advisory
     their <- unname(lut[s])
-    if (is.na(their)) next
-    out[[i]] <- v != their
+    eq <- .cdisc_value_equal(row_vals[[i]], their)
+    if (is.na(eq)) next
+    out[[i]] <- !eq
   }
   out
 }
@@ -1304,27 +1385,37 @@ op_shared_values_mismatch_by_key <- function(data, ctx,
   if (!is.null(exclude)) shared <- setdiff(shared, as.character(exclude))
   if (length(shared) == 0L) return(rep(FALSE, n))
 
-  rtrim <- function(v) {
+  # Keys are always rtrimmed + upper-cased (CDISC USUBJID identifiers are
+  # case-sensitive but trailing spaces are non-semantic per P21's rtrim).
+  key_rtrim <- function(v) {
     v <- as.character(v)
-    r <- sub("\\s+$", "", v)
+    r <- sub(" +$", "", v)
     r[is.na(v) | !nzchar(r)] <- NA_character_
     r
   }
-  ref_keys <- rtrim(ref_ds[[ref_key]])
-  row_keys <- rtrim(data[[key]])
+  ref_keys <- key_rtrim(ref_ds[[ref_key]])
+  row_keys <- key_rtrim(data[[key]])
+
+  # A row's subject must be present in the reference for any compare to
+  # matter. When the subject is absent, P21's Lookup short-circuits
+  # (LookupValidationRule: no-match -> rule-disable, not fire). Herald
+  # turns that into a row-NA -> advisory.
+  known_keys  <- unique(ref_keys[!is.na(ref_keys)])
+  subj_in_ref <- row_keys %in% known_keys
 
   fire     <- logical(n)
   compared <- logical(n)
 
   for (col in shared) {
-    ref_vals <- rtrim(ref_ds[[col]])
     ok <- !is.na(ref_keys)
-    lut <- stats::setNames(ref_vals[ok], ref_keys[ok])
+    lut <- stats::setNames(as.character(ref_ds[[col]])[ok], ref_keys[ok])
     lut <- lut[!duplicated(names(lut))]
-    row_vals <- rtrim(data[[col]])
-    their    <- unname(lut[row_keys])
-    ok_cmp   <- !is.na(row_vals) & !is.na(their)
-    fire     <- fire     | (ok_cmp & row_vals != their)
+    their <- unname(lut[row_keys])
+    eq    <- .cdisc_value_equal(data[[col]], their)
+    # A comparison counts only for rows whose subject is in the ref AND
+    # .cdisc_value_equal produced a non-NA verdict.
+    ok_cmp <- subj_in_ref & !is.na(eq)
+    fire     <- fire     | (ok_cmp & !eq)
     compared <- compared | ok_cmp
   }
 

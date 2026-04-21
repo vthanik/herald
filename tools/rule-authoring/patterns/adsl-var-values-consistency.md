@@ -34,13 +34,21 @@ compares.
 
 ## P21 edge-case audit
 
+Value-equality semantics track P21's `DataEntryFactory.compareToAny()`
+via the shared `.cdisc_value_equal()` helper in `ops-cross.R`.
+
 | P21 behaviour | File:line | herald decision |
 |---|---|---|
-| Case-sensitive compare default | `String.equals` | row compare uses `!=` on rtrimmed strings. Matches. |
-| rtrim trailing spaces both sides | `DataEntryFactory:313-328` | `sub("\\s+$","",...)` both sides. Matches. |
-| Missing USUBJID in ADSL -> rule-disable | `Lookup` miss | herald sets that row's comparison to NA; rows with no successful comparison return NA -> advisory. |
-| Duplicate ADSL USUBJID -> first-match | `lut[!duplicated(...)]` | herald keeps first row by USUBJID (ADSL is 1-per-subject by contract); the separate dup_subjects pre-scan surfaces duplicates as their own finding. |
-| Key columns excluded from compare | n/a (P21 uses ItemRef Role) | herald excludes `key` + `reference_key` automatically; authors may add further columns via the `exclude` slot. |
+| Case-sensitive `==` default | `Comparison.java:195` | string compare is case-sensitive. Matches. |
+| rtrim trailing SPACE on key | `DataEntryFactory.java:313-328` | key rtrim via `sub(" +$","",...)`. Matches. |
+| Both sides NULL -> equal (no fire) | `NullDataEntry.compareToAny:355-356` | `.cdisc_value_equal` returns TRUE for (NA, NA). Matches. |
+| One side NULL -> not equal (fire) | same | returns FALSE when one NA. Matches. |
+| Both sides numeric -> BigDecimal equality | `DataEntryFactory.java:159-160` | numeric fallback compares with `==`. Matches. |
+| Both sides datetime -> prefix equality | `DataEntryFactory.java:172-180` | regex match on CDISC ISO partial-date pattern + `startsWith` both ways. Matches. |
+| 4-digit integer treated as year | `DataEntryFactory.java:173,175` | 4-digit no-decimal numeric is flagged as date. Matches. |
+| Subject not in ADSL -> Lookup no-match -> rule-disable | `LookupValidationRule` | row NA from `subj_in_ref`; row contributes no comparison, returns NA -> advisory. Matches. |
+| Duplicate ADSL USUBJID -> first-match | `lut[!duplicated(...)]` | herald keeps first row by USUBJID (ADSL is 1-per-subject by contract); `ctx$dup_subjects` pre-scan surfaces duplicates as a separate finding. Matches. |
+| Key columns excluded from compare | n/a (P21 uses ItemRef Role) | herald excludes `key` + `reference_key` automatically; authors may add more via the `exclude` slot. More explicit. |
 
 ## herald check_tree template
 

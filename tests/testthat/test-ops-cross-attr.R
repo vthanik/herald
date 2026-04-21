@@ -271,6 +271,61 @@ test_that("not_equal_subject_templated_ref returns NA when resolved column absen
   expect_true(all(is.na(out)))
 })
 
+test_that("ASPRSDTM treats datetime prefix equality as match (P21 fuzzy)", {
+  adsl <- data.frame(
+    USUBJID = "S1",
+    P01S1SDM = "2024-01-01T00:00:00",
+    stringsAsFactors = FALSE
+  )
+  # BDS row carries only the date portion; P21 returns equal via prefix.
+  bds <- data.frame(
+    USUBJID  = "S1",
+    APERIOD  = 1L, ASPER = 1L,
+    ASPRSDTM = "2024-01-01",
+    stringsAsFactors = FALSE
+  )
+  out <- op_not_equal_subject_templated_ref(
+    bds, .ctx(ADSL = adsl, BDS = bds),
+    name = "ASPRSDTM", reference_dataset = "ADSL",
+    reference_template = "PxxSwSDM",
+    index_cols = list(xx = "APERIOD", w = "ASPER")
+  )
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("shared_values_mismatch_by_key normalises numeric representations", {
+  adsl <- data.frame(USUBJID = "S1", AGE = 65, stringsAsFactors = FALSE)
+  cur  <- data.frame(USUBJID = "S1", AGE = "65.0", stringsAsFactors = FALSE)
+  out  <- op_shared_values_mismatch_by_key(
+    cur, .ctx(ADSL = adsl, CUR = cur),
+    reference_dataset = "ADSL"
+  )
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("shared_values_mismatch_by_key treats both-null as equal (P21 NULL==NULL)", {
+  adsl <- data.frame(USUBJID = "S1", AGE = NA_integer_,
+                     stringsAsFactors = FALSE)
+  cur  <- data.frame(USUBJID = "S1", AGE = NA_integer_,
+                     stringsAsFactors = FALSE)
+  out  <- op_shared_values_mismatch_by_key(
+    cur, .ctx(ADSL = adsl, CUR = cur),
+    reference_dataset = "ADSL"
+  )
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("shared_values_mismatch_by_key fires when one side is null in ref", {
+  adsl <- data.frame(USUBJID = "S1", AGE = NA_integer_,
+                     stringsAsFactors = FALSE)
+  cur  <- data.frame(USUBJID = "S1", AGE = 65L, stringsAsFactors = FALSE)
+  out  <- op_shared_values_mismatch_by_key(
+    cur, .ctx(ADSL = adsl, CUR = cur),
+    reference_dataset = "ADSL"
+  )
+  expect_true(isTRUE(out[[1L]]))
+})
+
 test_that("not_equal_subject_templated_ref returns NA on NA index value", {
   adsl <- data.frame(USUBJID = "S1", P01S1SDM = "2024-01-01",
                      stringsAsFactors = FALSE)
