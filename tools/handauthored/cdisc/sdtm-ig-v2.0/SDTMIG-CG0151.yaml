@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: USUBJID
 check:
-  narrative: USUBJID unique within a submission
-  condition: ''
+  operator: is_not_unique_set
+  name:
+  - STUDYID
+  - USUBJID
 outcome:
   message: USUBJID unique within a submission
   severity: Medium
@@ -24,5 +26,4 @@ provenance:
   cited_guidance: Identifier used to uniquely identify a subject across all studies
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

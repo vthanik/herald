@@ -259,6 +259,16 @@ walk_tree <- function(node, data, ctx = NULL) {
     v <- args[[nm]]
     if (is.character(v) && length(v) == 1L && startsWith(v, "--")) {
       args[[nm]] <- .resolve_wildcard(v, data, candidates)
+    } else if (is.list(v)) {
+      # Recurse into structured args (e.g. value: { related_name: --PTCD }
+      # in is_not_unique_relationship). Element-wise expand any scalar
+      # --VAR string anywhere in the nested structure.
+      args[[nm]] <- .expand_wildcard_args(v, data, candidates)
+    } else if (is.character(v) && length(v) > 1L) {
+      # Vector of names (e.g. composite key `name: [--A, --B]`).
+      args[[nm]] <- vapply(v, function(x)
+        if (startsWith(x, "--")) .resolve_wildcard(x, data, candidates) else x,
+        character(1L), USE.NAMES = FALSE)
     }
   }
   args

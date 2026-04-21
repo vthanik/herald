@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: SUBJID
 check:
-  narrative: SUBJID unique within a study
-  condition: ''
+  operator: is_not_unique_set
+  name:
+  - STUDYID
+  - SUBJID
 outcome:
   message: SUBJID unique within a study
   severity: Medium
@@ -24,5 +26,4 @@ provenance:
   cited_guidance: Subject identifier, which must be unique within the study.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

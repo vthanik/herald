@@ -11,8 +11,15 @@ scope:
   exclude_domains: []
 variable: TSVAL
 check:
-  narrative: TSVAL in ('N','Y')
-  condition: TSPARMCD = 'RANDOM' and TSVAL ^= null
+  all:
+  - operator: is_contained_by
+    name: TSPARMCD
+    value: RANDOM
+  - operator: is_not_contained_by
+    name: TSVAL
+    value:
+    - 'Y'
+    - 'N'
 outcome:
   message: TSVAL in ('N','Y')
   severity: Medium
@@ -24,5 +31,4 @@ provenance:
     1. TSVAL may have controlled terminology depending on the value of TSPARMCD
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

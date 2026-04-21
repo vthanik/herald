@@ -310,13 +310,16 @@ if (run_all) {
     } else {
       ds_name <- names(default_fx$pos$datasets)[[1L]]; spec <- default_fx$pos$spec
     }
+    dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+    exp_var <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+    var_a_r <- exp_var(var_a); var_b_r <- exp_var(var_b)
     pos_cols <- stats::setNames(
       list(c("S1","S2"), c("K1","K1"), c("A","B")),
-      c("USUBJID", var_b, var_a)
+      c("USUBJID", var_b_r, var_a_r)
     )
     neg_cols <- stats::setNames(
       list(c("S1","S2"), c("K1","K1"), c("A","A")),
-      c("USUBJID", var_b, var_a)
+      c("USUBJID", var_b_r, var_a_r)
     )
     mk <- function(cols, fire) list(
       rule_id = as.character(rule$id),
@@ -373,6 +376,136 @@ if (run_all) {
         expected     = list(fires = fire,
                             rows = if (isTRUE(fire)) 1L else integer()),
         notes        = "synth value-conditional-literal-assert",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
+  # Special-case synth for value-in-set pattern:
+  # single-leaf is_not_contained_by(var, [allowed]). Fires when var
+  # populated with value outside allowed set; null passes (NA mask).
+  if (length(lv) == 1L && ops[[1L]] == "is_not_contained_by") {
+    var <- as.character(lv[[1L]]$name)
+    allowed <- as.character(unlist(lv[[1L]]$value))
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- "AE"; spec <- NULL
+    }
+    dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+    exp <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+    var_r <- exp(var)
+    mk <- function(fire) {
+      cols_list <- list(USUBJID = c("S1", "S2"))
+      if (isTRUE(fire)) {
+        cols_list[[var_r]] <- c("NOT_ALLOWED_VAL", "ANOTHER_BAD")
+      } else {
+        cols_list[[var_r]] <- c(allowed[[1L]], allowed[[1L]])
+      }
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+        notes        = "synth value-in-set",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
+  # Special-case synth for value-conditional-in-set pattern:
+  # {all: [is_contained_by(cond, [cond_vals]), is_not_contained_by(target, [allowed])]}
+  if (length(lv) == 2L &&
+      ops[[1L]] == "is_contained_by" &&
+      ops[[2L]] == "is_not_contained_by") {
+    cond_var    <- as.character(lv[[1L]]$name)
+    cond_values <- as.character(unlist(lv[[1L]]$value))
+    target_var  <- as.character(lv[[2L]]$name)
+    target_allowed <- as.character(unlist(lv[[2L]]$value))
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- "TS"; spec <- NULL
+    }
+    dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+    exp <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+    cond_r <- exp(cond_var); target_r <- exp(target_var)
+    set_val     <- cond_values[[1L]]
+    allowed_val <- target_allowed[[1L]]
+    mk <- function(fire) {
+      cols_list <- list(USUBJID = c("S1", "S2"))
+      cols_list[[cond_r]] <- c(set_val, set_val)
+      cols_list[[target_r]] <- if (isTRUE(fire))
+        c("BAD_VALUE_X", "BAD_VALUE_Y") else c(allowed_val, allowed_val)
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+        notes        = "synth value-conditional-in-set",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
+  # Special-case synth for uniqueness-composite-key pattern:
+  # single-leaf is_not_unique_set(name=[k1,k2,...]). Fires on every row in
+  # a duplicated composite-key group.
+  if (length(lv) == 1L && ops[[1L]] == "is_not_unique_set") {
+    keys <- as.character(unlist(lv[[1L]]$name))
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else {
+      ds_name <- "DM"; spec <- NULL
+    }
+    mk <- function(fire) {
+      # Positive: both rows share the same composite key (duplicate).
+      # Negative: each row has a distinct tuple.
+      cols_list <- list()
+      for (i in seq_along(keys)) {
+        k <- keys[[i]]
+        cols_list[[k]] <- if (isTRUE(fire)) c("SAME","SAME")
+                           else             c(paste0("V", i, "a"),
+                                              paste0("V", i, "b"))
+      }
+      if (!"USUBJID" %in% keys) cols_list[["USUBJID"]] <- c("S1","S2")
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+        notes        = "synth uniqueness-composite-key",
         authored     = "pattern-fixture-synth@1",
         spec         = spec, `_path` = NA_character_
       )

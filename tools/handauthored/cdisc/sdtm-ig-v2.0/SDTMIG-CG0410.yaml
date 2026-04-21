@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: VISITNUM
 check:
-  narrative: VISITNUM identifies unique record within subject
-  condition: Scheduled or Contingent visit (exists in TV)
+  operator: is_not_unique_set
+  name:
+  - STUDYID
+  - USUBJID
+  - VISITNUM
 outcome:
   message: VISITNUM identifies unique record within subject
   severity: Medium
@@ -24,5 +27,4 @@ provenance:
   cited_guidance: One record per subject per actual visit.
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

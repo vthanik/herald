@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: VISITNUM
 check:
-  narrative: VISIT and VISITNUM have a one-to-one relationship
-  condition: VISITNUM in TV.VISITNUM
+  expand: ''
+  all:
+  - name: VISIT
+    operator: is_not_unique_relationship
+    value:
+      related_name: VISITNUM
 outcome:
   message: VISIT and VISITNUM have a one-to-one relationship
   severity: Medium
@@ -25,5 +29,4 @@ provenance:
     and VISITNUM.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

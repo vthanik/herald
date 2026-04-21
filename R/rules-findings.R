@@ -61,11 +61,19 @@ emit_findings <- function(rule, ds_name, mask, data, variable = NA_character_) {
 
   out <- empty_findings()
   if (length(fired_rows) > 0L) {
-    val <- if (!is.na(var_txt) && var_txt %in% names(data)) {
-      as.character(data[[var_txt]][fired_rows])
+    # When the primary variable is a composite key (vector of column
+    # names, e.g. is_not_unique_set with name=[STUDYID, SUBJID]), use
+    # the first column's value as the reported `value` and join the
+    # column names for display.
+    var_first <- if (length(var_txt) > 1L) var_txt[[1L]] else var_txt
+    val <- if (!is.null(var_first) && !is.na(var_first) &&
+               nzchar(var_first) && var_first %in% names(data)) {
+      as.character(data[[var_first]][fired_rows])
     } else {
       rep(NA_character_, length(fired_rows))
     }
+    var_display <- if (length(var_txt) > 1L)
+      paste(var_txt, collapse = ",") else var_txt
     out <- tibble::tibble(
       rule_id           = rep(rule[["id"]] %||% NA_character_, length(fired_rows)),
       authority         = rep(rule[["authority"]] %||% NA_character_, length(fired_rows)),
@@ -73,7 +81,7 @@ emit_findings <- function(rule, ds_name, mask, data, variable = NA_character_) {
       severity          = rep(rule[["severity"]] %||% "Medium", length(fired_rows)),
       status            = rep("fired", length(fired_rows)),
       dataset           = rep(ds_name, length(fired_rows)),
-      variable          = rep(var_txt, length(fired_rows)),
+      variable          = rep(var_display, length(fired_rows)),
       row               = as.integer(fired_rows),
       value             = val,
       expected          = rep(NA_character_, length(fired_rows)),
@@ -92,7 +100,7 @@ emit_findings <- function(rule, ds_name, mask, data, variable = NA_character_) {
       severity          = rule[["severity"]] %||% "Medium",
       status            = "advisory",
       dataset           = ds_name,
-      variable          = var_txt,
+      variable          = if (length(var_txt) > 1L) paste(var_txt, collapse = ",") else var_txt,
       row               = NA_integer_,
       value             = NA_character_,
       expected          = NA_character_,

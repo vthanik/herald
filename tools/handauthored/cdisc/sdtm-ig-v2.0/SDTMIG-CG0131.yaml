@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: DTHFL
 check:
-  narrative: DTHFL in ('Y',null)
-  condition: ''
+  operator: is_not_contained_by
+  name: DTHFL
+  value: 'Y'
 outcome:
   message: DTHFL in ('Y',null)
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: Should be Y or null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

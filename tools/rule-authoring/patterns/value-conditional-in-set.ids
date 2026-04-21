@@ -1,0 +1,4 @@
+"rule_id","cond_var","cond_values","target_var","target_allowed"
+"CG0269","TSPARMCD","'ADDON'","TSVAL","'Y', 'N'"
+"CG0271","TSPARMCD","'RANDOM'","TSVAL","'Y', 'N'"
+"CG0282","TSPARMCD","'ADAPT'","TSVAL","'Y', 'N'"

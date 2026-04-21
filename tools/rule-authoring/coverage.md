@@ -4,8 +4,8 @@ Scanned 1814 handauthored rules.
 
 | status | count |
 |---|---:|
-| narrative (needs authoring) | 1249 |
-| predicate (converted) | 565 |
+| narrative (needs authoring) | 1236 |
+| predicate (converted) | 578 |
 | skipped / blocked | 0 |
 | **total** | 1814 |
 
@@ -15,15 +15,15 @@ Scanned 1814 handauthored rules.
 |---|---|---:|
 | ADaM-IG | narrative | 452 |
 | ADaM-IG | predicate | 338 |
-| SDTM-IG | narrative | 307 |
-| SDTM-IG | predicate | 227 |
+| SDTM-IG | narrative | 294 |
+| SDTM-IG | predicate | 240 |
 
 ## By pattern (converted)
 
 | pattern | count |
 |---|---:|
 | value-conditional-populated | 84 |
-| uniqueness-grouped | 72 |
+| uniqueness-grouped | 77 |
 | presence-pair | 70 |
 | presence-forbidden | 63 |
 | value-not-null | 58 |
@@ -41,8 +41,11 @@ Scanned 1814 handauthored rules.
 | value-compare-subject-ordinal | 4 |
 | value-cross-dataset-eq-lit | 4 |
 | value-not-equal-column | 4 |
+| uniqueness-composite-key | 3 |
+| value-conditional-in-set | 3 |
 | value-conditional-not-equal-column | 3 |
 | value-conditional-null-crossref | 2 |
+| value-in-set | 2 |
 | value-study-day | 2 |
 | value-conditional-empty-noteq-lit | 1 |
 | value-conditional-populated-required | 1 |

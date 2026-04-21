@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: TSPARMCD
 check:
-  narrative: TSPARM and TSPARMCD have a one-to-one relationship
-  condition: ''
+  expand: ''
+  all:
+  - name: TSPARM
+    operator: is_not_unique_relationship
+    value:
+      related_name: TSPARMCD
 outcome:
   message: TSPARM and TSPARMCD have a one-to-one relationship
   severity: Medium
@@ -24,5 +28,4 @@ provenance:
   cited_guidance: TSPARMCD (the companion to TSPARM)
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

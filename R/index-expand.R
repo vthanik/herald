@@ -302,7 +302,15 @@
 #' mirrors `.domain_prefix_candidates()` in R/rules-walk.R.
 #' @noRd
 .render_domain_prefix <- function(txt, ds_name) {
-  if (is.null(txt) || is.na(txt) || !nzchar(txt)) return(txt)
+  # txt may be a multi-element character vector (e.g. composite-key
+  # `name: [STUDYID, SUBJID]` in an `is_not_unique_set` tree). Handle
+  # vectors by recursing element-wise.
+  if (is.null(txt)) return(txt)
+  if (length(txt) > 1L) {
+    return(vapply(txt, .render_domain_prefix, character(1L),
+                  ds_name = ds_name))
+  }
+  if (is.na(txt) || !nzchar(txt)) return(txt)
   if (!grepl("--", txt, fixed = TRUE)) return(txt)
   u <- toupper(as.character(ds_name %||% ""))
   if (!nzchar(u) || nchar(u) < 2L) return(txt)

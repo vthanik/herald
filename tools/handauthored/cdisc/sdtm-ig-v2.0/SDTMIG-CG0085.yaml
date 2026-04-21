@@ -17,8 +17,9 @@ scope:
   exclude_domains: []
 variable: --PRESP
 check:
-  narrative: --PRESP in ('Y', null)
-  condition: ''
+  operator: is_not_contained_by
+  name: --PRESP
+  value: 'Y'
 outcome:
   message: --PRESP in ('Y', null)
   severity: Medium
@@ -31,5 +32,4 @@ provenance:
     or null.]|Model v1.4[2.2.2 (Events)][--PRESP: Values should be "Y" or null.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

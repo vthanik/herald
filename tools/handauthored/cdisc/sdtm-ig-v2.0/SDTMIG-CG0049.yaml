@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: --PTCD
 check:
-  narrative: --DECOD and --PTCD have a one-to-one relationship
-  condition: ''
+  expand: ''
+  all:
+  - name: --DECOD
+    operator: is_not_unique_relationship
+    value:
+      related_name: --PTCD
 outcome:
   message: --DECOD and --PTCD have a one-to-one relationship
   severity: Medium
@@ -27,5 +31,4 @@ provenance:
     v1.4[2.2.2][--PTCD][MedDRA Preferred Term code.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
