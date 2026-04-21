@@ -106,6 +106,7 @@ scoped_datasets <- function(rule, ctx) {
 
   # Domain match
   domain_accepted_via_supp <- FALSE
+  domain_accepted_by_name  <- FALSE
   domains <- scope[["domains"]]
   if (!is.null(domains) && length(domains) > 0L) {
     dom_up <- toupper(as.character(unlist(domains)))
@@ -127,14 +128,25 @@ scoped_datasets <- function(rule, ctx) {
       # infer_class()'s RELATIONSHIP inference with the catalogue's SPC
       # hint.
       if (supp_ok && !domain_ok && !class_ok) domain_accepted_via_supp <- TRUE
+      # When the dataset matched a specifically-named domain in the rule's
+      # scope (e.g. rule has `domains: RELREC`), the author has pinned
+      # the target by name. An accompanying `classes` entry is a
+      # catalogue hint (e.g. CDISC CG0201 declares `classes: SPC`
+      # alongside `domains: RELREC` even though RELREC classifies
+      # naturally as RELATIONSHIP). Skip the class filter for this
+      # dataset so the rule fires against the named target regardless of
+      # the taxonomy's class assignment.
+      if (domain_ok) domain_accepted_by_name <- TRUE
     }
   }
 
   # Class match (with ADaM long <-> short form normalisation)
   classes <- scope[["classes"]]
-  if (domain_accepted_via_supp) {
-    # SUPP-- match already accepted the dataset via the domain field;
-    # skip the class filter to avoid a false reject on RELATIONSHIP vs SPC.
+  if (domain_accepted_via_supp || domain_accepted_by_name) {
+    # Domain-level match already accepted the dataset; skip the class
+    # filter to avoid a false reject when the rule's declared class
+    # differs from infer_class()'s natural assignment (e.g. SPC vs
+    # RELATIONSHIP for RELREC).
     return(TRUE)
   }
   if (!is.null(classes) && length(classes) > 0L) {
