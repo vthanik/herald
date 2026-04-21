@@ -15,10 +15,21 @@
   list(col = as.character(col), value = as.character(value))
 }
 
+# Scalar-comparison ops must receive a scalar `value`. When a cross-ref
+# resolves to a multi-element vector (e.g. TV.VISITDY -> all TV VISITDY
+# values), the rule's intent is almost always a join-by-key that these
+# ops don't implement. Return NA mask -> advisory, rather than firing on
+# every row via R's recycling semantics.
+.scalar_compare_guard <- function(value, n) {
+  if (length(value) > 1L) rep(NA, n) else NULL
+}
+
 op_equal_to <- function(data, ctx, name, value, value_is_literal = TRUE) {
   col <- data[[name]]
   if (is.null(col)) return(rep(NA, nrow(data)))
   if (isTRUE(value_is_literal)) {
+    g <- .scalar_compare_guard(value, nrow(data))
+    if (!is.null(g)) return(g)
     p <- .coerce_compare(col, value)
     p$col == p$value
   } else {
@@ -67,6 +78,8 @@ op_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) {
   col <- data[[name]]
   if (is.null(col)) return(rep(NA, nrow(data)))
   if (isTRUE(value_is_literal)) {
+    g <- .scalar_compare_guard(value, nrow(data))
+    if (!is.null(g)) return(g)
     tolower(as.character(col)) == tolower(as.character(value))
   } else {
     other <- data[[as.character(value)]]
@@ -121,6 +134,7 @@ op_not_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) 
 op_greater_than <- function(data, ctx, name, value) {
   col <- data[[name]]
   if (is.null(col)) return(rep(NA, nrow(data)))
+  g <- .scalar_compare_guard(value, nrow(data)); if (!is.null(g)) return(g)
   .numeric_compare(col, value, `>`)
 }
 .register_op(
@@ -141,6 +155,7 @@ op_greater_than <- function(data, ctx, name, value) {
 op_greater_than_or_equal_to <- function(data, ctx, name, value) {
   col <- data[[name]]
   if (is.null(col)) return(rep(NA, nrow(data)))
+  g <- .scalar_compare_guard(value, nrow(data)); if (!is.null(g)) return(g)
   .numeric_compare(col, value, `>=`)
 }
 .register_op(
@@ -161,6 +176,7 @@ op_greater_than_or_equal_to <- function(data, ctx, name, value) {
 op_less_than <- function(data, ctx, name, value) {
   col <- data[[name]]
   if (is.null(col)) return(rep(NA, nrow(data)))
+  g <- .scalar_compare_guard(value, nrow(data)); if (!is.null(g)) return(g)
   .numeric_compare(col, value, `<`)
 }
 .register_op(
@@ -181,6 +197,7 @@ op_less_than <- function(data, ctx, name, value) {
 op_less_than_or_equal_to <- function(data, ctx, name, value) {
   col <- data[[name]]
   if (is.null(col)) return(rep(NA, nrow(data)))
+  g <- .scalar_compare_guard(value, nrow(data)); if (!is.null(g)) return(g)
   .numeric_compare(col, value, `<=`)
 }
 .register_op(

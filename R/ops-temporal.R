@@ -156,6 +156,9 @@ op_invalid_duration <- function(data, ctx, name) {
   if (length(v_char) == 1L && v_char %in% names(data)) {
     rhs <- .parse_sdtm_dt(data[[v_char]])
   } else {
+    # Multi-element `value` from a resolved cross-ref (e.g. `$max_*`,
+    # `DOM.COL`) implies a join-by-key the op can't express. Return NA.
+    if (length(v_char) > 1L) return(rep(NA, nrow(data)))
     rhs <- .parse_sdtm_dt(v_char)
     if (length(rhs) == 1L) rhs <- rep(rhs, length(lhs))
   }
