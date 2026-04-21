@@ -730,6 +730,358 @@ primitives scoped individually.
 
 ---
 
+# Cluster bundle B (Q21-Q32) -- closes the gap to 95%
+
+After Q4-Q14 (domain clusters) + Q15-Q20 (cross-cutting) land,
+the remaining narrative rules fall into twelve parametric
+families. Answering this bundle converts the bulk of the
+residual.
+
+---
+
+## Q21 -- indexed compound-variable family (~50 rules)
+
+**Cluster:** rules on indexed variables where the index is `zz`
+(2-digit 01-99), `y` (1-9), or similar, and the rule often pairs
+two variables sharing the same index:
+
+- **ANLzzFL / ANLzzFN family** (6): ADaM-178, 212, 413, 414, 493,
+  526. Indexed analysis-flag pairs; same shape as ADaM-19..25
+  (Y/N) but with a 2-digit index.
+- **CRITy / CRITyFL family** (12): ADaM-137, 151, 156, 157, 335,
+  336 + siblings. `y` index, paired FL companion.
+- **AVALCAyN / AVALCATy, BASECAyN / BASECATy, CHGCATy /
+  CHGCATyN, PCHGCATy / PCHGCAyN** (~12): ADaM-543-546,
+  584-589 + siblings. Category label / code pairing.
+- **TRxxAGy / TRxxPGy family** (~10): treatment-arm indexed
+  grouping variables (2 placeholders `xx` + `y`).
+
+**Existing engine hooks:**
+- `stem` wildcard + `expand: y` / `expand: xx,y` already resolve
+  placeholder-indexed column names.
+- `.substitute_index_deep` (landed in Q3) pushes substitution
+  into nested `value.*` slots.
+
+**(a)** Two parametric patterns, both driven by existing ops:
+- `indexed-flag-value-in-set` -- for ANLzzFL / ANLzzFN /
+  CRITyFL etc. Slots: `(var, index_ph, allowed_values)`. Uses
+  `expand:` + `is_contained_by`.
+- `indexed-pair-presence` -- for "FN present and FL not present"
+  style pairings. Slots: `(var_a_template, var_b_template,
+  index_ph)`. Uses `all: [non_empty, empty]` combinator under
+  `expand:`.
+Covers ~40 of the 50 rules. Remaining ~10 absorb into Q10
+(`uniqueness-grouped-nested`) or Q11 (suffix patterns).  *[recommended]*
+
+**(b)** One monolithic pattern with a `check_type: value | pair`
+switch. Harder to read.
+
+**User answer:** _(pending)_
+
+---
+
+## Q22 -- prefix+suffix compound variables (~8 rules)
+
+**Cluster:** ADaM-156, 157, 272, 66, 70, 895. Shape:
+*"A variable with a prefix of `<P>`, a suffix of `<S>`, and
+containing a one-digit number (`<P><y><S>`) is present and a
+variable with the same root <X> is not present"*.
+
+Compound-token templates with a prefix, an index placeholder, and
+a suffix.
+
+**(a)** Extend the `stem` wildcard semantics to support bounded
+prefix+suffix+index expansion (`P<y>S` template form). New
+pattern `compound-template-pair` with slots
+`(prefix, suffix, sibling_suffix, index_ph)`. Reuses existing
+`expand:` machinery; no new op.  *[recommended]*
+
+**(b)** Hand-translate each of the 8 inline.
+
+**User answer:** _(pending)_
+
+---
+
+## Q23 -- TS-domain parametric rules (~30 SDTM rules)
+
+**Cluster:** CG0260-0291 range. TS (Trial Summary) domain rules
+where the check depends on `TSPARMCD`. Typical shape:
+*"When TSPARMCD = '<PARAM>', TSVAL must be <TYPE> / in <CT> / in
+(LIT, ...)"*. The underlying engine work needed:
+- Filter rows where TSPARMCD matches a specific value.
+- Apply a per-parameter assertion: numeric, date, codelist,
+  literal set.
+
+**(a)** New pattern family `ts-param-*` driven by a small CSV
+mapping `(tsparmcd, assertion_type, assertion_args)` that
+`apply-pattern.R` expands into per-rule check_trees of shape:
+```
+all:
+  - operator: equal_to
+    name: TSPARMCD
+    value: "<PARAM>"
+  - operator: <assertion_op>
+    name: TSVAL
+    value: <args>
+```
+Covers all 30+ rules with a single pattern definition fed from
+a parametric table. Assertion ops are the existing leaves
+(`matches_regex`, `is_contained_by`, `value_in_codelist`,
+`less_than_literal`). *[recommended]*
+
+**(b)** 30 separate patterns, one per TSPARMCD -- needless
+duplication.
+
+**User answer:** _(pending)_
+
+---
+
+## Q24 -- date / time / duration format conformance (~10 rules)
+
+**Cluster:** CG0238 (`--ORRES` in ISO 8601 date), CG0270, CG0283,
+CG0285, CG0286 (`TSVAL conforms to ISO 8601 date`), CG0376
+(`TDSTOFF` ISO 8601 Duration).
+
+Shape: assert a column's values parse as an ISO 8601 partial
+date / time / duration.
+
+**(a)** New op `op_value_not_iso8601(name, kind = "date" |
+"datetime" | "time" | "duration")` applying the existing
+`.CDISC_DATE_RX` regex (landed in Q's P21 audit) for date
+kinds plus a minimal duration regex (ISO 8601 `P[0-9]+Y[0-9]+M...`
+form). Pattern `value-conforms-to-iso8601` with slots
+`(var, kind)`. Covers all 10 rules.  *[recommended]*
+
+**(b)** Reuse `op_matches_regex` with an inline regex in each
+rule. Works but duplicates the regex in every YAML.
+
+**User answer:** _(pending)_
+
+---
+
+## Q25 -- dataset naming + domain-code structural rules (~13 rules)
+
+**Cluster:**
+- ADaM-496 (dataset name does not start with "AD" when class is
+  not missing), ADaM-497 (inverse).
+- ADaM-746 (SRCDOM has a value that is not an SDTM domain name
+  or ADaM dataset name).
+- CG0001 (DOMAIN = valid Domain Code published by CDISC) --
+  codelist-dependent; delegates to Q2 op.
+- CG0017, CG0018 (Split dataset names length constraints).
+- Variable-name structural rules (ADaM-?: starts with letter,
+  no special chars, length <= 8).
+
+Metadata-level / submission-level checks.
+
+**(a)** Three micro-patterns:
+- `dataset-name-prefix-by-class` -- metadata-level op
+  `op_dataset_name_prefix_not(expected_prefix, when_class_not)`.
+- `domain-code-in-ct` -- uses Q2's `op_value_in_codelist` against
+  the `DOMAIN` codelist (already shipped in bundled SDTM CT).
+- `split-dataset-name-length` -- dataset-level op reading
+  `nchar(dataset_name)` with an allowed range.
+Covers all 13. 2 new tiny ops + reuse of Q2's op.  *[recommended]*
+
+**(b)** Hand-translate each.
+
+**User answer:** _(pending)_
+
+---
+
+## Q26 -- cross-dataset variable presence (~10 rules)
+
+**Cluster:** CG0014-0016 (variable present in dataset and not
+null), CG0022 (`--LNKGRP` present in another domain), CG0024
+(`--LNKID` present in another domain), CG0169 (COVALn not
+present), and siblings.
+
+Shape: a SDTM linking-variable must appear in at least one other
+domain in the submission (cross-dataset presence).
+
+**(a)** New op
+`op_var_present_in_any_other_dataset(name, exclude_current = TRUE,
+required_dataset_classes = NULL)` reading across all
+`ctx$datasets` other than the current one. Pattern
+`var-linked-across-submission`. 2 .ids rows per rule template
+(one per linking variable). Covers all 10.  *[recommended]*
+
+**(b)** Express via combinator chain using `op_exists` across
+multiple target datasets -- brittle when domains are optional.
+
+**User answer:** _(pending)_
+
+---
+
+## Q27 -- MedDRA / WhoDrug / external clinical dictionaries (~22 rules)
+
+**Cluster:** CG0020, CG0021 (value in associated codelist or
+MULTIPLE / OTHER), CG0037 (`--SOCCD = --BDSYCD`), CG0039
+(`--BODSYS = --SOC`), CG0160-0162 (relationships to associated
+persons), CG0174 (FAOBJ in `(--TERM, --TRT, --DECOD)`) +
+siblings.
+
+MedDRA terms, WHO-Drug dictionary terms, and SNOMED/LOINC lookups
+appear here. These are **paid / licensed** external dictionaries
+(MedDRA requires MSSO subscription; WHO-Drug requires UMC
+subscription). Not distributable inside herald.
+
+**(a)** Hybrid strategy:
+- Rules like CG0020/0021 that say "value in associated codelist"
+  are actually CDISC CT membership checks (not MedDRA) --
+  convert via Q2's `op_value_in_codelist` as soon as the
+  associated-codelist resolution (which CT codelist applies
+  per variable) lands. Add a `variable_to_codelist_map.rds` in
+  `inst/rules/ct/` mapping SDTM variables to default codelists.
+  ~8 rules.
+- CG0037 (`--SOCCD = --BDSYCD`), CG0039 (`--BODSYS = --SOC`)
+  are within-row column equality, not dictionary lookups.
+  Convert via existing `op_differs_by_key` with
+  `reference_dataset = current`. ~4 rules.
+- CG0160-0162 (relationship semantics) are genuinely
+  RELREC-driven; handle in Q28.
+- CG0174 in-set with wildcard literals: convert via Q4's
+  `value-conditional-in-literal-set` pattern with `--` wildcard
+  expansion. ~2 rules.
+- Genuinely MedDRA/WhoDrug-dependent rules (if any remain ~6)
+  stay `blocker:requires-licensed-dict` with a documented path
+  for user-supplied dictionary injection via
+  `register_ct(name = "meddra", path = ...)`.  *[recommended]*
+
+**(b)** Mark the entire cluster as `blocker:external-dict`.
+Loses the 12+ easy wins.
+
+**User answer:** _(pending)_
+
+---
+
+## Q28 -- RELREC / associated-person rules (~5 rules)
+
+**Cluster:** CG0160 (associated person to study subject / pool),
+CG0161 (to device in RDEVID), CG0162 (to study in STUDYID),
+CG0419 (RELTYPE = null), plus CG0156-0158 related-records
+structural rules (already touched in Q6).
+
+Shape: per-row assertion of relationship semantics between a
+subject and another entity (device, study, pool). Depends on
+RSUBJID, RDEVID, RDOMAIN, POOLID combinations.
+
+**(a)** Pattern `relrec-relationship-type` using combinator
+`all:` to check: (RSUBJID populated OR POOLID populated) AND
+the right reference dataset contains a matching record. Reuses
+existing `op_missing_in_ref` and `op_non_empty`. 5 rules.  *[recommended]*
+
+**(b)** New specialised op `op_relrec_valid_relationship` with
+hardcoded semantics. Overfit; CDISC RELREC semantics do change
+across IG versions.
+
+**User answer:** _(pending)_
+
+---
+
+## Q29 -- ELEMENT / EPOCH / TE-SE trial-design rules (~7 rules)
+
+**Cluster:** CG0207 (`SEENDTC = SESTDTC of next ELEMENT`),
+CG0218 (`EPOCH = SE.EPOCH`), CG0250 (`each value of EPOCH is not
+associated with more than one conceptual trial period`),
+CG0322-0323 (ELEMENT value references a specific ARM / EPOCH),
+CG0325 (uniqueness of ELEMENT + TESTRL + TEENRL + TEDUR per
+ETCD).
+
+Trial-design temporal integrity: per-subject element sequence,
+element-to-epoch mapping consistency.
+
+**(a)** Three patterns:
+- `se-element-next-equals-start` -- new op
+  `op_next_row_not_equal(name, prev_name, order_by, group_by)`
+  that joins row i to row i+1 within a group-by and asserts
+  value equality. Covers CG0207.
+- `epoch-unique-per-conceptual-period` -- reuses existing
+  `op_is_not_unique_relationship`. Covers CG0250, CG0325.
+- `element-value-in-ref` -- reuses `op_missing_in_ref` against
+  TE / TA. Covers CG0322, 0323.
+- CG0218 already in Q6.  *[recommended]*
+
+**(b)** Stub the SE-next-element case with r_expression. Works
+but isn't reusable.
+
+**User answer:** _(pending)_
+
+---
+
+## Q30 -- IG-defined treatment-variable membership (~3 rules)
+
+**Cluster:** ADaM-720 (TRTP value is not equal to at least one
+IG-defined character planned treatment variable in ADSL),
+ADaM-897 (same for TRTA actual treatment), plus siblings.
+
+Same as Q5 but instead of comparing to DM, compares to the
+ADSL-side variable set defined in ADaMIG (TRT01P-TRTnnP etc.).
+Already partially covered by Q12's stretch work.
+
+**(a)** Reuse Q2's `op_value_in_subject_indexed_set` already
+shipped. Pattern `trt-value-in-adsl-defined-set` with slots
+`(var, template)` where template = `TRT{xx}P` / `TRT{xx}A`. 3
+rules.  *[recommended]*
+
+**(b)** Defer; these are effectively duplicates of Q12's
+baseline-consistency shape with different vars.
+
+**User answer:** _(pending)_
+
+---
+
+## Q31 -- Define.xml / sponsor-defined-key rules (~2 rules)
+
+**Cluster:** CG0019 (each record is unique per sponsor-defined
+key variables as documented in define.xml), CG0400 (`--LOINC` =
+valid code in LOINC dictionary version from define.xml).
+
+Depends on Define.xml metadata ingestion which herald doesn't
+have yet (the plan's Q26 from the ADSL-consistency interview
+deferred Define.xml parsing).
+
+**(a)** Add a minimal Define.xml reader to herald (new file
+`R/define-read.R`, dep on `xml2` Suggests). Read only:
+- `ItemGroupDef.KeyVariables` -- for CG0019.
+- `ItemGroupDef.ItemRef` -> per-variable codelist reference -- for
+  variable_to_codelist_map (supports Q27).
+- Dictionary version from `Study.MetaDataVersion` -- for CG0400.
+Pattern `define-xml-key-uniqueness` consumes the parsed keys.  *[recommended]*
+
+**(b)** Block both rules until a proper Define.xml reader
+ships.
+
+**User answer:** _(pending)_
+
+---
+
+## Q32 -- compound combinator residual (~40 rules)
+
+**Cluster:** bespoke logical chains -- e.g. ADaM-10, 11, 12
+*"A variable with suffix FL = Y and a variable with same root
+with suffix FN != 1"*; ADaM-121, 122 (SDT > EDT / SDTM > EDTM);
+compound populated/not-populated patterns.
+
+Shape: these are all expressible as `all:` / `any:` combinators
+of existing leaves + suffix wildcards, but each has a unique
+combinator tree.
+
+**(a)** Run the triage script (committed in Q14 decisions) that
+walks each residual rule and attempts a best-effort
+check_tree synthesis from the narrative message. Converts the
+mechanically-parseable subset (~30 of 40); hand-translate the
+remainder (~10) inline, each producing its own .ids row under
+an appropriately-named existing pattern or a new micro-pattern
+of 1-2 rules.  *[recommended]*
+
+**(b)** Hand-translate all 40 up front. More work, easier to
+review.
+
+**User answer:** _(pending)_
+
+---
+
 # Cross-cutting bundle (Q15-Q20)
 
 Implementation-layer decisions that surface while executing the
