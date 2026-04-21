@@ -12,8 +12,8 @@ scope:
   exclude_domains: []
 variable: GEN
 check:
-  narrative: Variable name length <= 8
-  condition: ''
+  operator: any_var_name_exceeds_length
+  value: 8
 outcome:
   message: Variable name length <= 8
   severity: Medium
@@ -25,5 +25,4 @@ provenance:
     the SAS Transport format)
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

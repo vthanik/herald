@@ -232,7 +232,9 @@ validate <- function(path = NULL,
 # the rule is "metadata-level" and its mask is uniform across rows: we should
 # fire once per (rule x dataset), not once per row. Matches P21's concept of
 # Target="Metadata" rules authored from CDISC text.
-.METADATA_OPS <- c("exists", "not_exists", "label_by_suffix_missing")
+.METADATA_OPS <- c("exists", "not_exists", "label_by_suffix_missing",
+                   "any_var_name_exceeds_length",
+                   "any_var_label_exceeds_length")
 
 # Walk a check_tree and return TRUE when every leaf operator is in
 # .METADATA_OPS. Narrative / empty / r_expression trees are not metadata-

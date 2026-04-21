@@ -12,8 +12,8 @@ scope:
   exclude_domains: []
 variable: GEN
 check:
-  narrative: Variable label length <= 40
-  condition: ''
+  operator: any_var_label_exceeds_length
+  value: 40
 outcome:
   message: Variable label length <= 40
   severity: Medium
@@ -25,5 +25,4 @@ provenance:
     be unique for each variable in the dataset
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -392,6 +392,55 @@ if (run_all) {
     return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
   }
 
+  # Special-case synth for metadata-var-name-length, metadata-var-label-length,
+  # and value-all-vars-length-le patterns. Uses raw-datasets path so
+  # labels can be set via attr().
+  if (length(lv) == 1L && ops[[1L]] %in% c("any_var_name_exceeds_length",
+                                             "any_var_label_exceeds_length",
+                                             "any_value_exceeds_length")) {
+    lim <- suppressWarnings(as.integer(lv[[1L]]$value))
+    if (is.na(lim)) lim <- 8L
+    op_name <- ops[[1L]]
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      cls_val <- if (!is.na(pick$class) && nzchar(pick$class)) pick$class else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADLB"; cls_val <- "BASIC DATA STRUCTURE"
+    } else {
+      ds_name <- "AE"; cls_val <- NULL
+    }
+    spec_list <- if (!is.null(cls_val))
+      list(class_map = stats::setNames(list(cls_val), ds_name)) else NULL
+    build_df <- function(fire) {
+      df <- data.frame(USUBJID = c("S1","S2"), stringsAsFactors = FALSE,
+                       check.names = FALSE)
+      if (op_name == "any_var_name_exceeds_length") {
+        if (isTRUE(fire)) {
+          bad_name <- strrep("X", lim + 1L)
+          df[[bad_name]] <- c("v","v")
+        } else {
+          df[["OK"]] <- c("v","v")
+        }
+      } else if (op_name == "any_var_label_exceeds_length") {
+        df[["COL1"]] <- c("v","v")
+        lbl <- if (isTRUE(fire)) strrep("L", lim + 1L) else strrep("L", min(lim, 5L))
+        attr(df[["COL1"]], "label") <- lbl
+      } else {
+        df[["VAL"]] <- if (isTRUE(fire)) c(strrep("X", lim + 1L), "short")
+                       else              c("short", "short")
+      }
+      df
+    }
+    return(list(pos_ds = stats::setNames(list(build_df(TRUE)),  ds_name),
+                neg_ds = stats::setNames(list(build_df(FALSE)), ds_name),
+                spec   = spec_list,
+                raw    = TRUE,
+                synth  = TRUE))
+  }
+
   # Special-case synth for value-regex-format pattern:
   # single-leaf matches_regex or not_matches_regex.
   if (length(lv) == 1L && ops[[1L]] %in% c("matches_regex","not_matches_regex")) {

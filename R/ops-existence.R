@@ -233,3 +233,111 @@ op_label_by_suffix_missing <- function(data, ctx, suffix, value) {
     examples = list(list(suffix = "DT", value = "Date"))
   )
 )
+
+# --- any_var_name_exceeds_length -------------------------------------------
+# Metadata-level: fires once per dataset when at least one column name
+# exceeds `value` characters in length. Mirrors P21's val:Regex Target=
+# Metadata Variable=VARIABLE Test="[A-Z][A-Z0-9_]{0,N-1}" (AD0013) --
+# P21 projects the variable list as a virtual dataset and regex-fails
+# any name longer than N chars. herald iterates names(data) directly.
+#
+# SDTM/ADaM convention: variable names must be <= 8 characters (SAS XPT v5
+# limit). ADaMIG Section 3.1.6 / SDTMIG Section 2.2.2.
+
+op_any_var_name_exceeds_length <- function(data, ctx, value) {
+  n <- nrow(data)
+  cols <- names(data)
+  if (length(cols) == 0L) return(.dataset_level_mask(FALSE, n))
+  lim <- suppressWarnings(as.integer(value))
+  if (is.na(lim) || lim < 0L) return(.dataset_level_mask(FALSE, n))
+  violated <- any(nchar(cols, type = "bytes") > lim, na.rm = TRUE)
+  .dataset_level_mask(isTRUE(violated), n)
+}
+.register_op(
+  "any_var_name_exceeds_length", op_any_var_name_exceeds_length,
+  meta = list(
+    kind = "existence",
+    summary = "Fires when any variable name exceeds the byte-length cap",
+    arg_schema = list(value = list(type = "integer", required = TRUE)),
+    cost_hint = "O(1)",
+    column_arg = NA_character_,
+    returns_na_ok = FALSE
+  )
+)
+
+# --- any_var_label_exceeds_length ------------------------------------------
+# Metadata-level: fires once per dataset when at least one column's label
+# attribute exceeds `value` characters. Mirrors P21's AD0016:
+#   val:Regex Target=Metadata Variable=LABEL Test=".{0,40}"
+# which projects labels and regex-fails any longer than 40 chars.
+# Null / missing labels are skipped (matching P21's hasValue() skip at
+# RegularExpressionValidationRule.java:62).
+
+op_any_var_label_exceeds_length <- function(data, ctx, value) {
+  n <- nrow(data)
+  cols <- names(data)
+  if (length(cols) == 0L) return(.dataset_level_mask(FALSE, n))
+  lim <- suppressWarnings(as.integer(value))
+  if (is.na(lim) || lim < 0L) return(.dataset_level_mask(FALSE, n))
+  violated <- FALSE
+  for (col in cols) {
+    lbl <- attr(data[[col]], "label")
+    if (is.null(lbl)) next
+    lbl <- as.character(lbl)[[1L]]
+    # rtrim P21-parity: all-spaces label becomes null and skips.
+    lbl <- sub(" +$", "", lbl)
+    if (is.na(lbl) || !nzchar(lbl)) next
+    if (nchar(lbl, type = "bytes") > lim) {
+      violated <- TRUE; break
+    }
+  }
+  .dataset_level_mask(isTRUE(violated), n)
+}
+.register_op(
+  "any_var_label_exceeds_length", op_any_var_label_exceeds_length,
+  meta = list(
+    kind = "existence",
+    summary = "Fires when any variable label exceeds the byte-length cap",
+    arg_schema = list(value = list(type = "integer", required = TRUE)),
+    cost_hint = "O(1)",
+    column_arg = NA_character_,
+    returns_na_ok = FALSE
+  )
+)
+
+# --- any_value_exceeds_length ----------------------------------------------
+# Row-level: for each row, fires when at least one CHARACTER column has a
+# value whose byte-length exceeds `value`. SAS XPT v5 limits character
+# values to 200 bytes; values longer than that indicate a truncation risk
+# or require SUPPQUAL splitting (SDTMIG s.4.1.5.3.2).
+#
+# P21 SD1096 uses val:Lookup to detect 200-char values and check SUPPQUAL;
+# herald's simpler check fires on any row with a >200-char cell in any
+# char column. Reviewer handles SUPPQUAL pairing as a separate step.
+
+op_any_value_exceeds_length <- function(data, ctx, value) {
+  n <- nrow(data)
+  lim <- suppressWarnings(as.integer(value))
+  if (is.na(lim) || lim < 0L || n == 0L) return(rep(FALSE, n))
+  out <- rep(FALSE, n)
+  for (col in names(data)) {
+    v <- data[[col]]
+    if (!is.character(v)) next
+    # rtrim trailing spaces per P21 parity; count remaining bytes.
+    vv <- sub("\\s+$", "", v)
+    too_long <- !is.na(vv) & nchar(vv, type = "bytes") > lim
+    out <- out | too_long
+  }
+  out
+}
+.register_op(
+  "any_value_exceeds_length", op_any_value_exceeds_length,
+  meta = list(
+    kind = "existence",
+    summary = "Per row: at least one character column has a value longer than the byte-length cap",
+    arg_schema = list(value = list(type = "integer", required = TRUE)),
+    cost_hint = "O(n*m)",
+    column_arg = NA_character_,
+    returns_na_ok = FALSE
+  )
+)
