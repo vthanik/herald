@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: ARMCD
 check:
-  narrative: ARMCD value length <= 20
-  condition: ''
+  operator: longer_than
+  name: ARMCD
+  value: 20
 outcome:
   message: ARMCD value length <= 20
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     restrictions.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

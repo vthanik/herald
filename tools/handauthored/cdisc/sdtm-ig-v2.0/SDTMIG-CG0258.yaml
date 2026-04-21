@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: TSPARM
 check:
-  narrative: TSPARM value length <= 40
-  condition: ''
+  operator: longer_than
+  name: TSPARM
+  value: 40
 outcome:
   message: TSPARM value length <= 40
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: The value in TSPARM cannot be longer than 40 characters.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

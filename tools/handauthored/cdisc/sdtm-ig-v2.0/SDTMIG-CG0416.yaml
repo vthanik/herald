@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: QLABEL
 check:
-  narrative: QLABEL value length <= 40
-  condition: ''
+  operator: longer_than
+  name: QLABEL
+  value: 40
 outcome:
   message: QLABEL value length <= 40
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
     in the sponsor's original dataset.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: SETCD
 check:
-  narrative: SETCD value length <= 8
-  condition: ''
+  operator: longer_than
+  name: SETCD
+  value: 8
 outcome:
   message: SETCD value length <= 8
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: Maximum of 8 characters.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

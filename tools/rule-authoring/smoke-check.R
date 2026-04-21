@@ -320,6 +320,46 @@ if (run_all) {
                 synth = TRUE))
   }
 
+  # Special-case synth for longer_than (value-length-le pattern): build a
+  # minimal dataset with one record whose `name` cell exceeds `value` bytes
+  # (positive fires) and one where the cell is exactly `value` bytes long
+  # (negative doesn't fire).
+  if (length(lv) == 1L && ops[[1L]] == "longer_than") {
+    nm   <- as.character(lv[[1L]]$name)
+    lim  <- suppressWarnings(as.integer(lv[[1L]]$value))
+    if (is.na(lim) || lim <= 0L) lim <- 1L
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via == "class" && !is.na(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- "DM"; spec <- NULL
+    }
+    mk <- function(cell_len, fire) {
+      cell <- strrep("A", cell_len)
+      list(
+        rule_id = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets = stats::setNames(
+          list(stats::setNames(list(cell), nm)),
+          ds_name),
+        expected = list(fires = fire,
+                        rows = if (isTRUE(fire)) 1L else integer()),
+        notes = sprintf("synth length (limit=%d)", lim),
+        authored = "pattern-fixture-synth@1",
+        spec = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(lim + 1L, TRUE),
+                neg = mk(lim,       FALSE),
+                synth = TRUE))
+  }
+
   # Special-case synth for label_by_suffix_missing (metadata-label-contains
   # pattern): build a single ADaM BDS-like dataset with one column whose name
   # ends in `suffix`. Apply the label attribute directly via attr() so the op

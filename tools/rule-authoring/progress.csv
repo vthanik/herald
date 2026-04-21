@@ -550,7 +550,6 @@
 "CG0119","CDISC","SDTM-IG","3.2","Medium","ACTARM = ARM",NA,NA,"narrative",NA,NA,NA
 "CG0120","CDISC","SDTM-IG","3.2","Medium","ARM in ('Screen Failure', 'Not Assigned')",NA,NA,"narrative",NA,NA,NA
 "CG0122","CDISC","SDTM-IG","3.2","Medium","ARM = ACTARM",NA,NA,"narrative",NA,NA,NA
-"CG0123","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ACTARMCD value length <= 20",NA,NA,"narrative",NA,NA,NA
 "CG0124","CDISC","SDTM-IG","3.2","Medium","ACTARMCD in ('SCRNFAIL', 'NOTASSGN', 'NOTTRT', 'UNPLAN')",NA,NA,"narrative",NA,NA,NA
 "CG0127","CDISC","SDTM-IG","3.2","Medium","ACTARMCD = ARMCD",NA,NA,"narrative",NA,NA,NA
 "CG0128","CDISC","SDTM-IG","3.2","Medium","ARMCD in ('SCRNFAIL', 'NOTASSGN')",NA,NA,"narrative",NA,NA,NA
@@ -568,11 +567,9 @@
 "CG0145","CDISC","SDTM-IG","3.2","Medium","RFSTDTC = null",NA,NA,"narrative",NA,NA,NA
 "CG0147","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RFXENDTC = latest value of EX.EXSTDTC or EX.EXENDTC",NA,NA,"narrative",NA,NA,NA
 "CG0148","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RFXSTDTC = earliest EX.EXSTDTC",NA,NA,"narrative",NA,NA,NA
-"CG0149","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SETCD value length <= 8",NA,NA,"narrative",NA,NA,NA
 "CG0150","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SUBJID unique within a study",NA,NA,"narrative",NA,NA,NA
 "CG0151","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","USUBJID unique within a submission",NA,NA,"narrative",NA,NA,NA
 "CG0152","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ELEMENT = null",NA,NA,"narrative",NA,NA,NA
-"CG0153","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARMCD value length <= 20",NA,NA,"narrative",NA,NA,NA
 "CG0154","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ELEMENT and ETCD have a one-to-one relationship",NA,NA,"narrative",NA,NA,NA
 "CG0155","CDISC","SDTM-IG","3.2,3.3","Medium","Value length = 4 characters beginning with 'AP' and ending with 2 character SDTM domain",NA,NA,"narrative",NA,NA,NA
 "CG0156","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","APID in POOLDEF.POOLID",NA,NA,"narrative",NA,NA,"AP-scoped (Associated Persons, SDTMIG-AP); deferred"
@@ -638,7 +635,6 @@
 "CG0240","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TPT and --TPTNUM have a one-to-one relationship",NA,NA,"narrative",NA,NA,NA
 "CG0241","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--ELTM is the same value across records with the same values of DOMAIN, VISITNUM, --TPTREF, and --TPTNUM",NA,NA,"narrative",NA,NA,NA
 "CG0244","CDISC","SDTM-IG","3.2","Medium","ARM not in ('Screen Failure', 'Not Assigned', 'Unplanned Treatment', 'Not Treated')",NA,NA,"narrative",NA,NA,NA
-"CG0246","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ETCD value length <= 8",NA,NA,"narrative",NA,NA,NA
 "CG0247","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TAETORD is unique within an ARM",NA,NA,"narrative",NA,NA,NA
 "CG0248","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TAETORD is an integer",NA,NA,"narrative",NA,NA,NA
 "CG0249","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TATRANS = null",NA,NA,"narrative",NA,NA,NA
@@ -646,8 +642,6 @@
 "CG0254","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TIVERS present in dataset",NA,NA,"narrative",NA,NA,NA
 "CG0255","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETESTCD unique within TIVERS",NA,NA,"narrative",NA,NA,NA
 "CG0256","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETESTCD unique in dataset",NA,NA,"narrative",NA,NA,NA
-"CG0257","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSPARMCD value length <= 8",NA,NA,"narrative",NA,NA,NA
-"CG0258","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSPARM value length <= 40",NA,NA,"narrative",NA,NA,NA
 "CG0260","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVALNF = null",NA,NA,"narrative",NA,NA,NA
 "CG0262","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVALn ^= null",NA,NA,"narrative",NA,NA,NA
 "CG0265","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVALCD and TSVAL have a one-to-one relationship.",NA,NA,"narrative",NA,NA,NA
@@ -669,7 +663,6 @@
 "CG0291","CDISC","SDTM-IG","3.2,3.3,3.4","Low","TSVAL not populated with values or synonyms of values in the ISO 21090 null flavor codelist (or other terms that can be represented as null flavors)",NA,NA,"narrative",NA,NA,NA
 "CG0295","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARMCD = null",NA,NA,"narrative",NA,NA,NA
 "CG0296","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARM = null",NA,NA,"narrative",NA,NA,NA
-"CG0297","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARMCD value length <= 20",NA,NA,"narrative",NA,NA,NA
 "CG0298","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","VISIT is described in protocol",NA,NA,"narrative",NA,NA,NA
 "CG0303","CDISC","SDTM-IG","3.2","Medium","Variable Label = IG Label",NA,NA,"narrative",NA,NA,NA
 "CG0307","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSPARM and TSPARMCD have a one-to-one relationship",NA,NA,"narrative",NA,NA,NA
@@ -757,7 +750,6 @@
 "CG0413","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset name begins with DOMAIN value",NA,NA,"narrative",NA,NA,NA
 "CG0414","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ETCD = TE.ETCD",NA,NA,"narrative",NA,NA,NA
 "CG0415","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARMCD is a valid planned arm code",NA,NA,"narrative",NA,NA,NA
-"CG0416","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","QLABEL value length <= 40",NA,NA,"narrative",NA,NA,NA
 "CG0417","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","QNAM value length <=8 and cannot start with a number and cannot contain characters other than letters in upper case, numbers, or underscores",NA,NA,"narrative",NA,NA,NA
 "CG0418","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TAETORD order of elements match order in TA within ARM of the Subject",NA,NA,"narrative",NA,NA,NA
 "CG0419","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RELTYPE = null",NA,NA,"narrative",NA,NA,NA
@@ -1704,10 +1696,13 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0116","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--DIR not present in dataset","presence-forbidden","exists(--DIR)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA
 "CG0118","CDISC","SDTM-IG","3.2","Medium","ACTARM in TA.ARM","cross-lookup","is_not_contained_by(ACTARM,TA.ARM)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0121","CDISC","SDTM-IG","3.2","Medium","ARM in TA.ARM","cross-lookup","is_not_contained_by(ARM,TA.ARM)","predicate","2026-04-21T12:20:10Z","lookup",NA
+"CG0123","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ACTARMCD value length <= 20","value-length-le","longer_than(ACTARMCD,20)","predicate","2026-04-21T13:31:48Z",NA,NA
 "CG0125","CDISC","SDTM-IG","3.2","Medium","ACTARMCD in TA.ARMCD","cross-lookup","is_not_contained_by(ACTARMCD,TA.ARMCD)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0126","CDISC","SDTM-IG","3.2","Medium","ARMCD in TA.ARMCD","cross-lookup","is_not_contained_by(ARMCD,TA.ARMCD)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0142","CDISC","SDTM-IG","3.2","Medium","RFENDTC ^= null","value-not-null","empty(RFENDTC)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0146","CDISC","SDTM-IG","3.2","Medium","RFSTDTC ^= null","value-not-null","empty(RFSTDTC)","predicate","2026-04-21T11:05:30Z","required",NA
+"CG0149","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SETCD value length <= 8","value-length-le","longer_than(SETCD,8)","predicate","2026-04-21T13:31:48Z",NA,NA
+"CG0153","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARMCD value length <= 20","value-length-le","longer_than(ARMCD,20)","predicate","2026-04-21T13:31:48Z",NA,NA
 "CG0163","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IDVAR ^= null","value-not-null","empty(IDVAR)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0166","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RDOMAIN ^= null","value-not-null","empty(RDOMAIN)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0178","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETEST in TI.IETEST","cross-lookup","is_not_contained_by(IETEST,TI.IETEST)","predicate","2026-04-21T12:20:10Z","lookup",NA
@@ -1720,9 +1715,12 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0209","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SEENDTC ^= null","value-not-null","empty(SEENDTC)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0213","CDISC","SDTM-IG","3.2,3.3","Medium","VISITNUM in TV.VISITNUM","cross-lookup","is_not_contained_by(VISITNUM,TV.VISITNUM)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0215","CDISC","SDTM-IG","3.2,3.3","Medium","VISIT in TV.VISIT","cross-lookup","is_not_contained_by(VISIT,TV.VISIT)","predicate","2026-04-21T12:20:10Z","lookup",NA
+"CG0246","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ETCD value length <= 8","value-length-le","longer_than(ETCD,8)","predicate","2026-04-21T13:31:48Z",NA,NA
 "CG0251","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TABRANCH ^= null","value-not-null","empty(TABRANCH)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0252","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TATRANS ^= null","value-not-null","empty(TATRANS)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0253","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TIVERS ^= null","value-not-null","empty(TIVERS)","predicate","2026-04-21T11:05:30Z","required",NA
+"CG0257","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSPARMCD value length <= 8","value-length-le","longer_than(TSPARMCD,8)","predicate","2026-04-21T13:31:48Z",NA,NA
+"CG0258","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSPARM value length <= 40","value-length-le","longer_than(TSPARM,40)","predicate","2026-04-21T13:31:48Z",NA,NA
 "CG0259","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVALNF ^= null","value-not-null","empty(TSVALNF)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0261","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVAL ^= null","value-not-null","empty(TSVAL)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0266","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVCDREF ^= null","value-not-null","empty(TSVCDREF)","predicate","2026-04-21T11:05:30Z","required",NA
@@ -1735,6 +1733,7 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0279","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL ^= null","value-not-null","empty(TSVAL)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0293","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARMCD in TA.ARMCD","cross-lookup","is_not_contained_by(ARMCD,TA.ARMCD)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0294","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARM in TA.ARM","cross-lookup","is_not_contained_by(ARM,TA.ARM)","predicate","2026-04-21T12:20:10Z","lookup",NA
+"CG0297","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARMCD value length <= 20","value-length-le","longer_than(ARMCD,20)","predicate","2026-04-21T13:31:48Z",NA,NA
 "CG0299","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TRLOC not present in dataset","presence-forbidden","exists(TRLOC)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA
 "CG0300","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TRLAT not present in dataset","presence-forbidden","exists(TRLAT)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA
 "CG0301","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TRDIR not present in dataset","presence-forbidden","exists(TRDIR)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA
@@ -1751,6 +1750,7 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0357","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","STRAIN not present in dataset","presence-forbidden","exists(STRAIN)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA
 "CG0358","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SBSTRAIN not present in dataset","presence-forbidden","exists(SBSTRAIN)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA
 "CG0397","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STRESC ^= null","value-not-null","empty(--STRESC)","predicate","2026-04-21T11:05:30Z","required",NA
+"CG0416","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","QLABEL value length <= 40","value-length-le","longer_than(QLABEL,40)","predicate","2026-04-21T13:31:48Z",NA,NA
 "CG0423","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TRTV ^= null","value-not-null","empty(--TRTV)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0425","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STRESU ^= null","value-not-null","empty(--STRESU)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0427","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STRESC ^= null","value-not-null","empty(--STRESC)","predicate","2026-04-21T11:05:30Z","required",NA

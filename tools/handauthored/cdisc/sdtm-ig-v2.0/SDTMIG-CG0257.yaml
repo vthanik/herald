@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: TSPARMCD
 check:
-  narrative: TSPARMCD value length <= 8
-  condition: ''
+  operator: longer_than
+  name: TSPARMCD
+  value: 8
 outcome:
   message: TSPARMCD value length <= 8
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     does not have special character restrictions.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
