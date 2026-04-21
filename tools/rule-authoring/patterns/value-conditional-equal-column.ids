@@ -1,0 +1,6 @@
+"rule_id","cond_var","cond_values","var_a","var_b"
+"CG0066","DSCAT","'PROTOCOL MILESTONE'","DSTERM","DSDECOD"
+"CG0119","ACTARM","'Screen Failure', 'Not Assigned'","ACTARM","ARM"
+"CG0122","ARM","'Screen Failure', 'Not Assigned'","ARM","ACTARM"
+"CG0127","ACTARMCD","'SCRNFAIL', 'NOTASSGN'","ACTARMCD","ARMCD"
+"CG0129","ARMCD","'SCRNFAIL', 'NOTASSGN'","ARMCD","ACTARMCD"

@@ -320,6 +320,115 @@ if (run_all) {
                 synth = TRUE))
   }
 
+  # Special-case synth for value-equal-column pattern: single-leaf
+  # not_equal_to(var_a, var_b, value_is_literal=false). Positive has a !=
+  # b on every row, negative has a == b.
+  if (length(lv) == 1L && ops[[1L]] == "not_equal_to" &&
+      isFALSE(lv[[1L]]$value_is_literal)) {
+    var_a <- as.character(lv[[1L]]$name)
+    var_b <- as.character(lv[[1L]]$value)
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via == "class" && !is.na(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- "IE"; spec <- NULL
+    }
+    topic_col <- if (!is.na(pick$topic_col)) pick$topic_col else NA_character_
+    mk <- function(fire) {
+      a_vals <- c("VAL_A", "VAL_A2")
+      b_vals <- if (isTRUE(fire)) c("VAL_B", "VAL_B2") else a_vals
+      cols_list <- list(USUBJID = c("S1", "S2"))
+      cols_list[[var_a]] <- a_vals
+      if (var_b != var_a) cols_list[[var_b]] <- b_vals
+      if (!is.na(topic_col) && !topic_col %in% names(cols_list)) {
+        cols_list[[topic_col]] <- c("T", "T")
+      }
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) 1L else integer()),
+        notes        = "synth value-equal-column",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
+  # Special-case synth for value-conditional-equal-column pattern:
+  # {all: [is_contained_by(cond_var, set), not_equal_to(var_a, var_b, cols)]}.
+  # Build a 2-row dataset where row 1 has cond_var in the set AND var_a !=
+  # var_b (violation fires), row 2 has cond_var NOT in the set (guard blocks
+  # -> no fire). Negative dataset has both rows with cond_var in set but var_a
+  # == var_b (no violation).
+  if (length(lv) == 2L &&
+      ops[[1L]] == "is_contained_by" &&
+      ops[[2L]] == "not_equal_to") {
+    cond_var    <- as.character(lv[[1L]]$name)
+    cond_set    <- as.character(unlist(lv[[1L]]$value))
+    var_a       <- as.character(lv[[2L]]$name)
+    var_b       <- as.character(lv[[2L]]$value)
+    # When value_is_literal is false the second leaf compares two columns.
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via == "class" && !is.na(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- "DM"; spec <- NULL
+    }
+    set_val <- cond_set[[1L]]
+    mk <- function(fire) {
+      # Build column assignments. When cond_var aliases var_a (very common
+      # pattern: "ACTARM in (...) and ACTARM = ARM"), the same column has to
+      # satisfy both roles, so its value is sourced from cond rather than
+      # a_vals. Positive fires: row 1 has cond_var in set AND var_a != var_b;
+      # row 2 has cond_var NOT in set (guard blocks). Negative: both rows
+      # match cond but var_a == var_b.
+      cols_list <- list(USUBJID = c("S1", "S2"))
+      if (isTRUE(fire)) {
+        cond   <- c(set_val, "NOT_IN_SET_XYZ")
+        b_vals <- c("DIFFERS_FROM_A", "NEG_B")
+        if (cond_var == var_a) {
+          a_vals <- cond
+        } else {
+          a_vals <- c("A_VAL_1", "A_VAL_2")
+        }
+      } else {
+        cond   <- c(set_val, set_val)
+        a_vals <- if (cond_var == var_a) cond else c("SAME", "SAME")
+        # Negative means no violation: var_b must EQUAL var_a elementwise.
+        b_vals <- a_vals
+      }
+      cols_list[[cond_var]] <- cond
+      cols_list[[var_a]]    <- a_vals
+      if (var_b != var_a && var_b != cond_var) cols_list[[var_b]] <- b_vals
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) 1L else integer()),
+        notes        = "synth value-conditional-equal-column",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
   # Special-case synth for longer_than (value-length-le pattern): build a
   # minimal dataset with one record whose `name` cell exceeds `value` bytes
   # (positive fires) and one where the cell is exactly `value` bytes long

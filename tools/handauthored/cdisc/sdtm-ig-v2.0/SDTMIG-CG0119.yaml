@@ -9,8 +9,16 @@ scope:
   exclude_domains: []
 variable: ACTARM
 check:
-  narrative: ACTARM = ARM
-  condition: ACTARM in ('Screen Failure', 'Not Assigned')
+  all:
+  - operator: is_contained_by
+    name: ACTARM
+    value:
+    - Screen Failure
+    - Not Assigned
+  - operator: not_equal_to
+    name: ACTARM
+    value: ARM
+    value_is_literal: no
 outcome:
   message: ACTARM = ARM
   severity: Medium
@@ -22,5 +30,4 @@ provenance:
     for subjects not assigned to treatment.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

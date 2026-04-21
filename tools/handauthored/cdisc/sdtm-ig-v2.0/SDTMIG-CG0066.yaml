@@ -9,8 +9,14 @@ scope:
   exclude_domains: []
 variable: DSDECOD
 check:
-  narrative: DSTERM = DSDECOD
-  condition: DSCAT = 'PROTOCOL MILESTONE'
+  all:
+  - operator: is_contained_by
+    name: DSCAT
+    value: PROTOCOL MILESTONE
+  - operator: not_equal_to
+    name: DSTERM
+    value: DSDECOD
+    value_is_literal: no
 outcome:
   message: DSTERM = DSDECOD
   severity: Medium
@@ -22,5 +28,4 @@ provenance:
     the same value drawn from the sponsor's controlled terminology.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

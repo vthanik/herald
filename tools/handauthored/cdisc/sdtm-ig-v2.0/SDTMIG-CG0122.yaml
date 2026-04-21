@@ -9,8 +9,16 @@ scope:
   exclude_domains: []
 variable: ARM
 check:
-  narrative: ARM = ACTARM
-  condition: ARM in ('Screen Failure', 'Not Assigned')
+  all:
+  - operator: is_contained_by
+    name: ARM
+    value:
+    - Screen Failure
+    - Not Assigned
+  - operator: not_equal_to
+    name: ARM
+    value: ACTARM
+    value_is_literal: no
 outcome:
   message: ARM = ACTARM
   severity: Medium
@@ -24,5 +32,4 @@ provenance:
     failures, should have ARMCD ='NOTASSGN' and ARM = 'Not Assigned'.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

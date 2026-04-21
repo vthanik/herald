@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: IESTRESC
 check:
-  narrative: IESTRESC = IEORRES
-  condition: ''
+  operator: not_equal_to
+  name: IESTRESC
+  value: IEORRES
+  value_is_literal: no
 outcome:
   message: IESTRESC = IEORRES
   severity: Medium
@@ -24,5 +26,4 @@ provenance:
   cited_guidance: Response to Inclusion/Exclusion criterion result in standard format.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

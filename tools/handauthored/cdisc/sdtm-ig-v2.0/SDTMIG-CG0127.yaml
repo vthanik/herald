@@ -9,8 +9,16 @@ scope:
   exclude_domains: []
 variable: ACTARMCD
 check:
-  narrative: ACTARMCD = ARMCD
-  condition: ACTARMCD in ('SCRNFAIL', 'NOTASSGN')
+  all:
+  - operator: is_contained_by
+    name: ACTARMCD
+    value:
+    - SCRNFAIL
+    - NOTASSGN
+  - operator: not_equal_to
+    name: ACTARMCD
+    value: ARMCD
+    value_is_literal: no
 outcome:
   message: ACTARMCD = ARMCD
   severity: Medium
@@ -22,5 +30,4 @@ provenance:
     subjects not assigned to treatment.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
