@@ -147,6 +147,21 @@ validate <- function(path = NULL,
 
       # Non-indexed (or indexed with zero matches): single walk.
       mask <- walk_tree(xp$tree, d, ctx)
+      # Metadata-only rule against a 0-row dataset: P21 still evaluates
+      # dataset-level rules on empty sources (BlockValidator.java:321-343
+      # calls validateDataset() unconditionally). Re-evaluate the tree
+      # against a 1-row placeholder that preserves the column list, then
+      # trim to a single fire/non-fire answer.
+      if (is_meta_rule && length(mask) == 0L) {
+        ph <- as.data.frame(lapply(d, function(x) x[NA_integer_][1]),
+                            stringsAsFactors = FALSE, check.names = FALSE)
+        # lapply with NA_integer_ gives 1 row of NAs preserving column types.
+        if (nrow(ph) == 0L) ph <- as.data.frame(
+          setNames(rep(list(NA), length(names(d))), names(d)),
+          stringsAsFactors = FALSE, check.names = FALSE
+        )
+        mask <- walk_tree(xp$tree, ph, ctx)
+      }
       if (length(mask) == 0L) next
       if (is_meta_rule && length(mask) > 1L && any(!is.na(mask) & mask)) {
         mask <- c(TRUE, rep(FALSE, length(mask) - 1L))

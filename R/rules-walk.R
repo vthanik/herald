@@ -146,6 +146,22 @@ walk_tree <- function(node, data, ctx = NULL) {
   candidates <- .domain_prefix_candidates(ctx, data)
   args <- .expand_wildcard_args(args, data, candidates)
 
+  # Case-insensitive `name` resolution. CDISC rules reference
+  # variables by their canonical uppercase name (AESEV, STUDYID, ...);
+  # a submitted dataset may use lowercase or mixed case. Pinnacle 21
+  # uppercases both sides at setup (AbstractValidationRule.java:238 +
+  # DataRecord.definesVariable). Mirror that by resolving `name` (and
+  # `key` / `reference_key` for join ops) against `names(data)`
+  # case-insensitively before handing off to the operator.
+  for (arg_name in intersect(names(args), c("name", "key", "reference_key"))) {
+    v <- args[[arg_name]]
+    if (is.character(v) && length(v) == 1L && nzchar(v) &&
+        !v %in% names(data)) {
+      hit <- which(toupper(as.character(names(data))) == toupper(v))
+      if (length(hit) > 0L) args[[arg_name]] <- names(data)[[hit[[1L]]]]
+    }
+  }
+
   # $-prefixed cross-reference substitution (e.g. $dm_usubjid -> unique
   # USUBJID values in DM). Unresolved tokens -> NA mask so the reviewer
   # gets an advisory instead of a silent false-pass.
