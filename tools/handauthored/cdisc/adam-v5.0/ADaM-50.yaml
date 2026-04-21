@@ -14,9 +14,9 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: AGEU
+    operator: not_exists
 outcome:
   message: AGEU is not present within ADSL
   severity: Medium
@@ -27,4 +27,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.0, Section 3.1, Table 3.1.1: AGEU has Core=Req.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

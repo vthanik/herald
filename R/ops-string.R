@@ -93,18 +93,19 @@ op_iso8601 <- function(data, ctx, name, allow_missing = TRUE) {
 #' considered compliant unless allow_missing = FALSE.
 #'
 #' @noRd
-#' Anchor a user-supplied regex so the match is against the ENTIRE value,
-#' not a substring. Mirrors Pinnacle 21's
-#' `RegularExpressionValidationRule.java:71`, which uses `matcher.matches()`
-#' (full-string match) rather than `find()` (substring). A pattern that is
-#' already anchored (starts with `^`, ends with `$`) is left untouched so
-#' explicit intent is preserved.
+#' Anchor a user-supplied regex so an unanchored pattern is matched
+#' against the ENTIRE value (Pinnacle 21 parity:
+#' `RegularExpressionValidationRule.java:71` uses `matcher.matches()`).
+#'
+#' A pattern that EXPLICITLY carries either anchor (`^` at start OR `$`
+#' at end) is left untouched -- the rule author has signalled intent
+#' (`^AE` means "starts with AE", `AE$` means "ends with AE"). Only
+#' fully-unanchored patterns get wrapped with `^(?:...)$`.
 .anchor_regex <- function(pat) {
   pat <- as.character(pat)
   if (!nzchar(pat)) return(pat)
-  if (!startsWith(pat, "^"))   pat <- paste0("^(?:", pat, ")")
-  if (!endsWith(pat,   "$"))   pat <- paste0(pat, "$")
-  pat
+  if (startsWith(pat, "^") || endsWith(pat, "$")) return(pat)
+  paste0("^(?:", pat, ")$")
 }
 
 op_matches_regex <- function(data, ctx, name, value, allow_missing = TRUE) {

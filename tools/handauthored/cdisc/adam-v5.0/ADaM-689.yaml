@@ -12,9 +12,9 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: SPDEVID
+    operator: not_exists
 outcome:
   message: SPDEVID is not present within dataset
   severity: Medium
@@ -28,5 +28,4 @@ provenance:
     ADaMIG-MD v1.0, Section 3.2.4: SPDEVID has Core=Req.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
