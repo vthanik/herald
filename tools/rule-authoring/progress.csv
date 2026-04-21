@@ -500,11 +500,7 @@
 "CG0124","CDISC","SDTM-IG","3.2","Medium","ACTARMCD in ('SCRNFAIL', 'NOTASSGN', 'NOTTRT', 'UNPLAN')",NA,NA,"narrative",NA,NA,NA
 "CG0128","CDISC","SDTM-IG","3.2","Medium","ARMCD in ('SCRNFAIL', 'NOTASSGN')",NA,NA,"narrative",NA,NA,NA
 "CG0131","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL in ('Y',null)",NA,NA,"narrative",NA,NA,NA
-"CG0132","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL = 'Y'",NA,NA,"narrative",NA,NA,NA
 "CG0133","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL = 'Y'",NA,NA,"narrative",NA,NA,NA
-"CG0134","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL = 'Y'",NA,NA,"narrative",NA,NA,NA
-"CG0135","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL = 'Y'",NA,NA,"narrative",NA,NA,NA
-"CG0136","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL = 'Y'",NA,NA,"narrative",NA,NA,NA
 "CG0138","CDISC","SDTM-IG","3.2","Medium","Population flags in SUPPDM",NA,NA,"narrative",NA,NA,NA
 "CG0140","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RACE = 'MULTIPLE'",NA,NA,"narrative",NA,NA,NA
 "CG0141","CDISC","SDTM-IG","3.2","Medium","RFENDTC = null",NA,NA,"narrative",NA,NA,NA
@@ -1654,6 +1650,10 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0126","CDISC","SDTM-IG","3.2","Medium","ARMCD in TA.ARMCD","cross-lookup","is_not_contained_by(ARMCD,TA.ARMCD)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0127","CDISC","SDTM-IG","3.2","Medium","ACTARMCD = ARMCD","value-conditional-equal-column","is_contained_by(ACTARMCD,SCRNFAIL,NOTASSGN) & not_equal_to(ACTARMCD,ARMCD,FALSE)","predicate","2026-04-21T13:42:52Z",NA,NA
 "CG0129","CDISC","SDTM-IG","3.2","Medium","ARMCD = ACTARMCD","value-conditional-equal-column","is_contained_by(ARMCD,SCRNFAIL,NOTASSGN) & not_equal_to(ARMCD,ACTARMCD,FALSE)","predicate","2026-04-21T13:42:52Z",NA,NA
+"CG0132","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL = 'Y'","value-cross-dataset-eq-lit","subject_has_matching_row(USUBJID,SS,SSSTRESC,DEAD) & not_equal_to(DTHFL,Y)","predicate","2026-04-21T16:17:38Z",NA,NA
+"CG0134","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL = 'Y'","value-cross-dataset-eq-lit","subject_has_matching_row(USUBJID,AE,AEOUT,FATAL) & not_equal_to(DTHFL,Y)","predicate","2026-04-21T16:17:38Z",NA,NA
+"CG0135","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL = 'Y'","value-cross-dataset-eq-lit","subject_has_matching_row(USUBJID,AE,AESDTH,Y) & not_equal_to(DTHFL,Y)","predicate","2026-04-21T16:17:38Z",NA,NA
+"CG0136","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL = 'Y'","value-cross-dataset-eq-lit","subject_has_matching_row(USUBJID,DS,DSDECOD,DEATH) & not_equal_to(DTHFL,Y)","predicate","2026-04-21T16:17:38Z",NA,NA
 "CG0142","CDISC","SDTM-IG","3.2","Medium","RFENDTC ^= null","value-not-null","empty(RFENDTC)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0146","CDISC","SDTM-IG","3.2","Medium","RFSTDTC ^= null","value-not-null","empty(RFSTDTC)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0149","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SETCD value length <= 8","value-length-le","longer_than(SETCD,8)","predicate","2026-04-21T13:31:48Z",NA,NA

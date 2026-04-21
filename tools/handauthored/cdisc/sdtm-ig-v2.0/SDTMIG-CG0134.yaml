@@ -12,8 +12,15 @@ scope:
   exclude_domains: []
 variable: DTHFL
 check:
-  narrative: DTHFL = 'Y'
-  condition: AE.AEOUT = 'FATAL'
+  all:
+  - operator: subject_has_matching_row
+    name: USUBJID
+    reference_dataset: AE
+    reference_column: AEOUT
+    expected_value: FATAL
+  - operator: not_equal_to
+    name: DTHFL
+    value: 'Y'
 outcome:
   message: DTHFL = 'Y'
   severity: Medium
@@ -25,5 +32,4 @@ provenance:
     even when the death date is unknown.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

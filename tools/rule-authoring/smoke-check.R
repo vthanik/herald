@@ -380,6 +380,51 @@ if (run_all) {
     return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
   }
 
+  # Special-case synth for value-cross-dataset-eq-lit pattern:
+  # {all: [subject_has_matching_row(key, ref_ds, ref_col, expected_value),
+  #        not_equal_to(target, 'target_lit')]}
+  if (length(lv) == 2L &&
+      ops[[1L]] == "subject_has_matching_row" &&
+      ops[[2L]] == "not_equal_to" &&
+      !isFALSE(lv[[2L]]$value_is_literal)) {
+    ref_ds     <- toupper(as.character(lv[[1L]]$reference_dataset %||% ""))
+    ref_col    <- as.character(lv[[1L]]$reference_column %||% "")
+    ref_value  <- as.character(lv[[1L]]$expected_value %||% "")
+    target     <- as.character(lv[[2L]]$name)
+    target_lit <- as.character(lv[[2L]]$value)
+    if (nzchar(ref_ds) && nzchar(ref_col) && nzchar(ref_value)) {
+      scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+      pick  <- pick_dataset_for_scope(scope)
+      if (!is.na(pick$dataset) && pick$dataset != ref_ds) {
+        ds_name <- pick$dataset
+        spec    <- if (pick$via %in% c("class","domain") &&
+                       !is.na(pick$class) && nzchar(pick$class))
+          list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+      } else {
+        ds_name <- "DM"; spec <- NULL
+      }
+      mk <- function(fire) {
+        main_cols <- list(USUBJID = c("S1","S2"))
+        main_cols[[target]] <- if (isTRUE(fire)) c("OTHER","OTHER") else c(target_lit, target_lit)
+        ref_cols <- list(USUBJID = c("S1","S2"))
+        ref_cols[[ref_col]] <- c(ref_value, "SOMETHING_ELSE")
+        datasets <- list(main = main_cols, ref = ref_cols)
+        names(datasets) <- c(ds_name, ref_ds)
+        list(
+          rule_id      = as.character(rule$id),
+          fixture_type = if (isTRUE(fire)) "positive" else "negative",
+          datasets     = datasets,
+          expected     = list(fires = fire,
+                              rows = if (isTRUE(fire)) 1L else integer()),
+          notes        = "synth value-cross-dataset-eq-lit",
+          authored     = "pattern-fixture-synth@1",
+          spec         = spec, `_path` = NA_character_
+        )
+      }
+      return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+    }
+  }
+
   # Special-case synth for value-compare-subject-ordinal pattern:
   # {all: [non_empty(row_var), <ordinal_op>_by_key(row_var, ref_ds, ref_col, key=USUBJID)]}
   # Positive: row date violates the ordinal relation. Negative: compliant.

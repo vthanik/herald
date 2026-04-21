@@ -658,6 +658,68 @@ op_missing_in_ref <- function(data, ctx, name,
   ref_keys <- unique(as.character(ref_ds[[ref_join_key]]))
   !(as.character(data[[join_key]]) %in% ref_keys)
 }
+
+# --- subject_has_matching_row ----------------------------------------------
+# For each row in the current dataset, returns TRUE when the reference
+# dataset contains AT LEAST ONE row with the same key AND whose
+# `reference_column` equals `expected_value`. Mirrors P21's val:Lookup
+# `Variable="USUBJID == USUBJID" Where="<col> == 'VAL'"` -- existence of a
+# satisfying row is the pass condition.
+#
+# Used as a guard leaf in compound trees (e.g. CG0132: "DM.DTHFL='Y' when
+# SS.SSSTRESC='DEAD'" becomes
+#   all: [subject_has_matching_row(SS.SSSTRESC='DEAD'), not_equal_to(DTHFL,'Y')]
+# where the first leaf activates only for subjects with a DEAD SS record).
+#
+# rtrim-null applied to the reference column before comparison.
+
+op_subject_has_matching_row <- function(data, ctx, name,
+                                        reference_dataset,
+                                        reference_column,
+                                        expected_value,
+                                        key = NULL, reference_key = NULL) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+  join_key     <- key %||% name
+  ref_join_key <- reference_key %||% join_key
+  if (is.null(data[[join_key]]) ||
+      is.null(ref_ds[[ref_join_key]]) ||
+      is.null(ref_ds[[reference_column]])) {
+    return(rep(NA, n))
+  }
+  rtrim_null <- function(v) {
+    v <- as.character(v)
+    r <- sub("\\s+$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+  ref_keys <- rtrim_null(ref_ds[[ref_join_key]])
+  ref_vals <- rtrim_null(ref_ds[[reference_column]])
+  target   <- as.character(expected_value)
+  # Keys where ANY row has reference_column == expected_value
+  matching <- ref_keys[!is.na(ref_keys) & !is.na(ref_vals) & ref_vals == target]
+  matching_keys <- unique(matching)
+  row_keys <- as.character(data[[join_key]])
+  row_keys %in% matching_keys
+}
+.register_op(
+  "subject_has_matching_row", op_subject_has_matching_row,
+  meta = list(
+    kind = "cross",
+    summary = "Reference dataset has at least one row with matching key AND reference_column equal to expected_value",
+    arg_schema = list(
+      name               = list(type = "string", required = TRUE),
+      reference_dataset  = list(type = "string", required = TRUE),
+      reference_column   = list(type = "string", required = TRUE),
+      expected_value     = list(type = "any",    required = TRUE),
+      key                = list(type = "string", required = FALSE),
+      reference_key      = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
 .register_op(
   "missing_in_ref", op_missing_in_ref,
   meta = list(
