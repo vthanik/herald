@@ -113,15 +113,41 @@ validate <- function(path = NULL,
       # Make dataset name available to the walker for --VAR wildcard expansion
       ctx$current_dataset <- ds_name
       ctx$current_domain  <- toupper(substr(ds_name, 1, 2))
-      # Expand xx / y / zz placeholders (if declared via `expand:` in the
-      # check_tree) against this dataset's columns -- produces a per-index
-      # `{any}` combinator over concrete substitutions.
-      ct <- .expand_indexed(rule$check_tree, d)
-      mask <- walk_tree(ct, d, ctx)
+      # Expand xx / y / zz placeholders against this dataset's columns.
+      xp <- .expand_indexed(rule$check_tree, d)
+
+      if (isTRUE(xp$indexed) && length(xp$instances) > 0L) {
+        # Indexed rule: walk each concrete-index instance separately so
+        # finding messages carry the resolved variable names (e.g.
+        # "TRT01AN is present and TRT01A is not present") instead of the
+        # template ("TRTxxAN is present and TRTxxA is not present").
+        ph <- xp$placeholder
+        any_fired_this_ds <- FALSE
+        for (idx_val in names(xp$instances)) {
+          inst_ct <- xp$instances[[idx_val]]
+          m <- walk_tree(inst_ct, d, ctx)
+          if (length(m) == 0L) next
+          if (is_meta_rule && length(m) > 1L && any(!is.na(m) & m)) {
+            m <- c(TRUE, rep(FALSE, length(m) - 1L))
+          }
+          if (!any(!is.na(m) & m)) next
+          any_fired_this_ds <- TRUE
+          inst_rule <- rule
+          inst_rule$message <- .render_indexed_text(rule$message, ph, idx_val)
+          var_inst <- .render_indexed_text(primary_variable(rule$check_tree),
+                                           ph, idx_val)
+          f <- emit_findings(inst_rule, ds_name, m, d, variable = var_inst)
+          if (nrow(f) > 0L) {
+            all_findings[[length(all_findings) + 1L]] <- f
+          }
+        }
+        if (any_fired_this_ds) rule_fired <- TRUE
+        next
+      }
+
+      # Non-indexed (or indexed with zero matches): single walk.
+      mask <- walk_tree(xp$tree, d, ctx)
       if (length(mask) == 0L) next
-      # Metadata-level rules (only existence-kind leaves) query names(data),
-      # not row content. Their mask is uniform; collapse to a single fire per
-      # (rule x dataset) rather than per-row.
       if (is_meta_rule && length(mask) > 1L && any(!is.na(mask) & mask)) {
         mask <- c(TRUE, rep(FALSE, length(mask) - 1L))
       }

@@ -95,31 +95,58 @@
 }
 
 #' Expand a check_tree that declares an `expand:` placeholder against a
-#' dataset's column list. Returns the expanded tree (or the original when
-#' no `expand:` key is set or the placeholder resolves to zero values --
-#' in which case the walker will emit NA, surfaced as an advisory).
+#' dataset's column list.
+#'
+#' Return shape is a list describing the expansion:
+#'   $indexed      -- logical, TRUE if an `expand:` key was present and
+#'                     resolved to at least one concrete value.
+#'   $placeholder  -- character(1), the placeholder (`xx`, `y`, `zz`)
+#'                     or NA.
+#'   $instances    -- named list of per-instance trees (names are the
+#'                     concrete index values, e.g. "01", "02"). Empty
+#'                     when `$indexed` is FALSE or when no columns matched.
+#'   $tree         -- the un-expanded tree for callers that want a single
+#'                     walk (legacy path): `{any: [...]}` of all
+#'                     instances, or a narrative stub when nothing matched,
+#'                     or the original tree when not indexed.
 #' @noRd
 .expand_indexed <- function(check_tree, data) {
-  if (!is.list(check_tree) || is.null(check_tree$expand)) return(check_tree)
+  no_expansion <- function(t) list(indexed = FALSE,
+                                    placeholder = NA_character_,
+                                    instances = list(), tree = t)
+  if (!is.list(check_tree) || is.null(check_tree$expand)) {
+    return(no_expansion(check_tree))
+  }
   ph <- as.character(check_tree$expand)[[1L]]
-  if (!ph %in% names(.INDEX_PATTERNS)) return(check_tree)
+  if (!ph %in% names(.INDEX_PATTERNS)) return(no_expansion(check_tree))
 
-  # Drop the `expand` key from the working tree -- it's metadata, not a
-  # combinator.
   body <- check_tree
   body$expand <- NULL
 
   templates <- .collect_indexed_names(body, ph)
-  if (length(templates) == 0L) return(body)
+  if (length(templates) == 0L) return(no_expansion(body))
 
   cols <- names(data)
   values <- unique(unlist(lapply(templates, .index_values_in_cols,
                                  cols = cols, ph = ph)))
   if (length(values) == 0L) {
-    # No matching columns in this dataset. The rule is inapplicable here;
-    # return a node that the walker evaluates to NA (empty narrative).
-    return(list(narrative = sprintf("no %s-indexed columns present", ph)))
+    stub <- list(narrative = sprintf("no %s-indexed columns present", ph))
+    return(list(indexed = TRUE, placeholder = ph,
+                instances = list(), tree = stub))
   }
-  # Build {any: [subtree_for_v for v in values]}
-  list(any = lapply(values, function(v) .substitute_index(body, ph, v)))
+  instances <- stats::setNames(
+    lapply(values, function(v) .substitute_index(body, ph, v)),
+    values
+  )
+  list(indexed = TRUE, placeholder = ph,
+       instances = instances,
+       tree = list(any = unname(instances)))
+}
+
+#' Substitute a concrete index value for every occurrence of the
+#' placeholder in a template string (rule message, variable field, etc.).
+#' @noRd
+.render_indexed_text <- function(txt, ph, value) {
+  if (is.null(txt) || is.na(txt) || !nzchar(txt)) return(txt)
+  gsub(ph, value, as.character(txt), fixed = TRUE)
 }

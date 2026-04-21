@@ -181,6 +181,23 @@ refers to the SAME concrete value at evaluation time. See
 `R/index-expand.R` for herald's expansion support and the
 `expand: xx|y|zz` YAML key.
 
+**Resolved messages on fire.** When an indexed rule fires on a
+concrete instance, herald renders the rule's `outcome.message`
+with the placeholder substituted by the instance's value. A rule
+whose message template is
+
+    TRTxxAN is present and TRTxxA is not present
+
+emits findings like
+
+    TRT01AN is present and TRT01A is not present
+
+so reviewers see the exact variable names that tripped the rule.
+One finding is emitted per violating instance (TRT01 and TRT04
+violating independently produce two findings). Advisories from
+an indexed rule with no matching columns in the dataset retain the
+template, because there's no concrete value to substitute.
+
 ### 2.4 `*FL` / `*FN` variable families (Section 3.2 + rules AD0005+)
 
 - `*FL` (flag): values **Y / N / null**
