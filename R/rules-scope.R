@@ -105,6 +105,7 @@ scoped_datasets <- function(rule, ctx) {
   }
 
   # Domain match
+  domain_accepted_via_supp <- FALSE
   domains <- scope[["domains"]]
   if (!is.null(domains) && length(domains) > 0L) {
     dom_up <- toupper(as.character(unlist(domains)))
@@ -114,12 +115,28 @@ scoped_datasets <- function(rule, ctx) {
       domain_ok <- ds_up %in% dom_up
       class_ok  <- !is.null(ds_class) && !is.na(ds_class) &&
         toupper(ds_class) %in% dom_up
-      if (!domain_ok && !class_ok) return(FALSE)
+      # "SUPP--" is CDISC's wildcard for "any Supplemental Qualifier
+      # dataset"; expand it at match time against any SUPP-prefixed
+      # dataset name (SUPPAE, SUPPDM, SUPPLB, ...).
+      supp_ok <- ("SUPP--" %in% dom_up) && startsWith(ds_up, "SUPP")
+      if (!domain_ok && !class_ok && !supp_ok) return(FALSE)
+      # When the domain matched via the SUPP-- wildcard, the author has
+      # explicitly scoped the rule to SUPP datasets, and an accompanying
+      # `classes` entry (often "SPC") is a CDISC-catalogue secondary hint
+      # rather than a filter. Skip the class check to avoid conflating
+      # infer_class()'s RELATIONSHIP inference with the catalogue's SPC
+      # hint.
+      if (supp_ok && !domain_ok && !class_ok) domain_accepted_via_supp <- TRUE
     }
   }
 
   # Class match (with ADaM long <-> short form normalisation)
   classes <- scope[["classes"]]
+  if (domain_accepted_via_supp) {
+    # SUPP-- match already accepted the dataset via the domain field;
+    # skip the class filter to avoid a false reject on RELATIONSHIP vs SPC.
+    return(TRUE)
+  }
   if (!is.null(classes) && length(classes) > 0L) {
     # If the rule requires specific classes but we don't know this dataset's
     # class (no spec supplied), fail-safe: do NOT apply the rule. Prevents

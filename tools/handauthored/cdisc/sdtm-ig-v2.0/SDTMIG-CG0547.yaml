@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: SMSTDTC
 check:
-  narrative: SMSTDTC ^= null
-  condition: ''
+  all:
+  - name: SMSTDTC
+    operator: empty
 outcome:
   message: SMSTDTC ^= null
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     of 'start date' for the event may need to be defined
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

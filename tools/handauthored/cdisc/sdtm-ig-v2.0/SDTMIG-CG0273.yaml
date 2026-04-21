@@ -11,9 +11,9 @@ scope:
   exclude_domains: []
 variable: TSVAL
 check:
-  narrative: TSVAL ^= null
-  condition: TSPARMCD = 'TDIGRP' and record exists where TSPARMCD = 'HLTSUBJI' and
-    TSVAL = 'N'
+  all:
+  - name: TSVAL
+    operator: empty
 outcome:
   message: TSVAL ^= null
   severity: Medium
@@ -30,5 +30,4 @@ provenance:
     TDIGRP must be present and not null]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

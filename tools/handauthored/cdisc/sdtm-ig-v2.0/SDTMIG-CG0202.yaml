@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: QEVAL
 check:
-  narrative: QEVAL ^= null
-  condition: QORIG = 'Assigned'
+  all:
+  - name: QEVAL
+    operator: empty
 outcome:
   message: QEVAL ^= null
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     person or institution assigning the value (e.g., SPONSOR or ADJUDICATION COMMITTEE).
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

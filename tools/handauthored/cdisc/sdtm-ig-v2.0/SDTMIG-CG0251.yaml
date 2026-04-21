@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: TABRANCH
 check:
-  narrative: TABRANCH ^= null
-  condition: Trial design branches
+  all:
+  - name: TABRANCH
+    operator: empty
 outcome:
   message: TABRANCH ^= null
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     trial design for subjects in the Arm
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

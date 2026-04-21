@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: RFSTDTC
 check:
-  narrative: RFSTDTC ^= null
-  condition: Milestone associated with RFSTDTC is start of treatment and ARMNRS =null
+  all:
+  - name: RFSTDTC
+    operator: empty
 outcome:
   message: RFSTDTC ^= null
   severity: Medium
@@ -39,5 +40,4 @@ provenance:
     or studies where there is a delay between randomization and treatment.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

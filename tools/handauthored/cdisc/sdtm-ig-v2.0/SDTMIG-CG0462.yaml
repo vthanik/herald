@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: ECDOSTXT
 check:
-  narrative: ECDOSTXT ^= null
-  condition: ECDOSE = null and ECOCCUR ^= 'N' and ECSTAT = null
+  all:
+  - name: ECDOSTXT
+    operator: empty
 outcome:
   message: ECDOSTXT ^= null
   severity: Medium
@@ -31,5 +32,4 @@ provenance:
     to represent specific dose amounts not taken, not given, or missed.]
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

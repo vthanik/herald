@@ -14,8 +14,9 @@ scope:
   exclude_domains: []
 variable: --MODIFY
 check:
-  narrative: --MODIFY ^= null
-  condition: --TRT modified
+  all:
+  - name: --MODIFY
+    operator: empty
 outcome:
   message: --MODIFY ^= null
   severity: Medium
@@ -27,5 +28,4 @@ provenance:
     modified text is placed here.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

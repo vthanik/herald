@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --STRTPT
 check:
-  narrative: --STRTPT ^= null
-  condition: --STTPT ^= null
+  all:
+  - name: --STRTPT
+    operator: empty
 outcome:
   message: --STRTPT ^= null
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     or after the sponsor-defined reference time point defined by variable --STTPT.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

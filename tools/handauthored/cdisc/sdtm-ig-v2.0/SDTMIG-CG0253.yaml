@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: TIVERS
 check:
-  narrative: TIVERS ^= null
-  condition: Greater than one version of the IE criteria in study documentation
+  all:
+  - name: TIVERS
+    operator: empty
 outcome:
   message: TIVERS ^= null
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
     to distinguish between the versions.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

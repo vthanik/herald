@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --DOSU
 check:
-  narrative: --DOSU ^= null
-  condition: --DOSE ^= null or --DOSTOT ^= null or --DOSTXT ^= null
+  all:
+  - name: --DOSU
+    operator: empty
 outcome:
   message: --DOSU ^= null
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: 'Units for --DOSE, --DOSTOT, or --DOSTXT (Examples: ng, mg, mg/kg).'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

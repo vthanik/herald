@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: RDOMAIN
 check:
-  narrative: RDOMAIN ^= null
-  condition: IDVARVAL ^= null
+  all:
+  - name: RDOMAIN
+    operator: empty
 outcome:
   message: RDOMAIN ^= null
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
     on separate CRFs.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

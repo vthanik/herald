@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: --STREFC
 check:
-  narrative: --STREFC ^= null
-  condition: --ORREF ^= null or --DRVFL='Y'
+  all:
+  - name: --STREFC
+    operator: empty
 outcome:
   message: --STREFC ^= null
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
     --ORREF in a standard format.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

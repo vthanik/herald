@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --CAT
 check:
-  narrative: --CAT ^= null
-  condition: --SCAT ^= null
+  all:
+  - name: --CAT
+    operator: empty
 outcome:
   message: --CAT ^= null
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: Used to define a further categorization of --CAT values.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

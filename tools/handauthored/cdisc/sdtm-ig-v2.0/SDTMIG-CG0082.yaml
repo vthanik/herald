@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --BDSYCD
 check:
-  narrative: --BDSYCD ^= null
-  condition: --BODSYS ^= null
+  all:
+  - name: --BDSYCD
+    operator: empty
 outcome:
   message: --BDSYCD ^= null
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: Variable Qualifier of --BODSYS
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

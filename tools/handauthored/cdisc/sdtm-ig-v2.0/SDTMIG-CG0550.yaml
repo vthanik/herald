@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: --STREFN
 check:
-  narrative: --STREFN ^= null
-  condition: --STREFC ^= null
+  all:
+  - name: --STREFN
+    operator: empty
 outcome:
   message: --STREFN ^= null
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     if applicable
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

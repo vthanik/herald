@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: IDVAR
 check:
-  narrative: IDVAR ^= null
-  condition: RDOMAIN ^= 'DM'
+  all:
+  - name: IDVAR
+    operator: empty
 outcome:
   message: IDVAR ^= null
   severity: Medium
@@ -30,5 +31,4 @@ provenance:
     (DM has one record per USUBJID).
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: IDVAR
 check:
-  narrative: IDVAR ^= null
-  condition: Comment related to Domain Records and RDOMAIN not in (null, 'DM')
+  all:
+  - name: IDVAR
+    operator: empty
 outcome:
   message: IDVAR ^= null
   severity: Medium
@@ -27,5 +28,4 @@ provenance:
     CRFs.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

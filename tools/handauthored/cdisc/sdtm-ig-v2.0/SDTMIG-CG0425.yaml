@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --STRESU
 check:
-  narrative: --STRESU ^= null
-  condition: --STRESC ^= null and units are applicable for the result
+  all:
+  - name: --STRESU
+    operator: empty
 outcome:
   message: --STRESU ^= null
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: '--STRESU: Standardized units used for --STRESC and --STRESN.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

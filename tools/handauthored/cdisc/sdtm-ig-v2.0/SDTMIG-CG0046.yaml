@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --ENTPT
 check:
-  narrative: --ENTPT ^= null
-  condition: --ENRTPT ^= null
+  all:
+  - name: --ENTPT
+    operator: empty
 outcome:
   message: --ENTPT ^= null
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     or after the sponsor-defined reference time point defined by variable --ENTPT.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

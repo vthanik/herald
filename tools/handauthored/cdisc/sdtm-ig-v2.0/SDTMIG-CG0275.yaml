@@ -11,9 +11,9 @@ scope:
   exclude_domains: []
 variable: TSVAL
 check:
-  narrative: TSVAL ^= null
-  condition: TSPARMCD = 'CURTRT' and record exists where TSPARMCD = 'ADDON' and TSVAL
-    = 'Y'
+  all:
+  - name: TSVAL
+    operator: empty
 outcome:
   message: TSVAL ^= null
   severity: Medium
@@ -26,5 +26,4 @@ provenance:
     on the value of TSPARMCD.]|IG v3.2[Appendix C1][Required when ADDON equals "Y"]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

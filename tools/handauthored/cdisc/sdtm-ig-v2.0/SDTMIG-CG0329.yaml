@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: TEDUR
 check:
-  narrative: TEDUR ^= null
-  condition: TEENRL = null
+  all:
+  - name: TEDUR
+    operator: empty
 outcome:
   message: TEDUR ^= null
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     12[At least one of TEENRL or TEDUR must be populated. Both may be populated.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

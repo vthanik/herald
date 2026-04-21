@@ -74,3 +74,27 @@ test_that("column-level exists still works when name matches a column", {
   expect_equal(op_exists(ae, ctx, "EX"), rep(TRUE, 3L))
   expect_equal(op_not_exists(ae, ctx, "EX"), rep(FALSE, 3L))
 })
+
+test_that("empty/non_empty treat trailing-whitespace-only strings as null (P21 rtrim convention)", {
+  d <- data.frame(
+    x = c("", "   ", "text", "text   ", "   leading", "0", "NA", "null", "n/a"),
+    stringsAsFactors = FALSE
+  )
+  # Empty string and whitespace-only are null; text with leading or trailing
+  # whitespace is populated (rtrim strips trailing, leading preserved);
+  # "0", "NA", "null" are literal strings = populated.
+  expect_equal(
+    op_empty(d, NULL, "x"),
+    c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
+  )
+  expect_equal(
+    op_non_empty(d, NULL, "x"),
+    c(FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
+})
+
+test_that("numeric zero is not null", {
+  d <- data.frame(x = c(0, NA, 1, -1), stringsAsFactors = FALSE)
+  expect_equal(op_empty(d, NULL, "x"), c(FALSE, TRUE, FALSE, FALSE))
+  expect_equal(op_non_empty(d, NULL, "x"), c(TRUE, FALSE, TRUE, TRUE))
+})

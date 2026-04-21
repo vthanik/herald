@@ -44,9 +44,15 @@ pick_dataset_for_scope <- function(scope) {
   exclude <- toupper(as.character(unlist(scope$exclude_domains %||% character())))
   exclude <- exclude[nzchar(exclude)]
 
-  doms <- toupper(as.character(unlist(scope$domains %||% character())))
-  doms <- doms[nzchar(doms) & doms != "ALL" & nchar(doms) >= 2L &
-               nchar(doms) <= 8L & !grepl("^SUPP", doms)]
+  doms_raw <- toupper(as.character(unlist(scope$domains %||% character())))
+  # "SUPP--" is a scope template meaning "any SUPP dataset"; synth with a
+  # concrete SUPPAE and tag class = RELATIONSHIP so the rule matches.
+  if (any(doms_raw == "SUPP--")) {
+    return(list(dataset = "SUPPAE", class = "RELATIONSHIP", via = "domain",
+                topic_col = "QNAM"))
+  }
+  doms <- doms_raw[nzchar(doms_raw) & doms_raw != "ALL" & nchar(doms_raw) >= 2L &
+                   nchar(doms_raw) <= 8L & !grepl("^SUPP", doms_raw)]
   doms <- setdiff(doms, exclude)
   if (length(doms) > 0L) {
     ds  <- doms[[1L]]
@@ -187,11 +193,23 @@ if (run_all) {
   }
   lv <- .extract_leaves_flat(ct)
   ops <- vapply(lv, function(l) l$operator %||% "", character(1L))
-  if (length(lv) == 0L || !all(ops %in% c("exists","not_exists"))) {
+  synth_ops <- c("exists", "not_exists", "empty", "non_empty",
+                 "is_missing", "is_present")
+  if (length(lv) == 0L || !all(ops %in% synth_ops)) {
     return(list(pos = default_fx$pos, neg = default_fx$neg, synth = FALSE))
   }
   names_req <- vapply(lv, function(l) as.character(l$name %||% ""), character(1L))
-  wants_pres <- ops == "exists"
+  # Classify each leaf: exists / not_exists operate on the column list
+  # (metadata); empty / non_empty / is_missing / is_present operate on
+  # row values and require the column to be PRESENT regardless of the
+  # operator's truth sense.
+  is_metadata_op <- ops %in% c("exists", "not_exists")
+  # "column wanted present" (i.e. include in pos_cols)
+  wants_pres <- ops %in% c("exists", "empty", "non_empty",
+                            "is_missing", "is_present")
+  # "value wanted empty" (for the positive-fire row content)
+  want_null_pos <- ops %in% c("empty", "is_missing")
+  want_val_pos  <- ops %in% c("non_empty", "is_present")
 
   # Pre-expand --VAR names against the dataset prefix we're about to pick, so
   # the synthetic dataset has columns named like the engine will look them up
@@ -235,21 +253,46 @@ if (run_all) {
     stats::setNames(list(""), topic_col)
   } else list()
 
-  # Positive: include cols that `exists` leaves want present, exclude cols
-  # that `not_exists` leaves want absent.
+  # Cell values for the positive (fire) case:
+  #   - columns wanted present AND value must be empty (empty op): ""
+  #   - columns wanted present AND value must be populated (non_empty): "X"
+  #   - columns wanted present, metadata-only (exists): ""
+  pos_val_for <- function(i) {
+    if (want_null_pos[[i]]) ""
+    else if (want_val_pos[[i]]) "X"
+    else ""
+  }
+  # Cell values for the negative (no-fire) case: invert the content.
+  neg_val_for <- function(i) {
+    if (want_null_pos[[i]]) "X"
+    else if (want_val_pos[[i]]) ""
+    else ""
+  }
+  pres_idx <- which(wants_pres)
+
+  # Positive: columns wanted present (with the right content), columns
+  # wanted absent (not_exists) left out.
+  pos_cell <- vapply(pres_idx, pos_val_for, character(1L))
   pos_cols <- c(
     list(USUBJID = "S1"),
     topic_extra,
-    stats::setNames(rep(list(""), sum(wants_pres)), names_req[wants_pres])
+    stats::setNames(as.list(pos_cell), names_req[pres_idx])
   )
-  # Negative: the DUAL -- exclude cols wanted by `exists`, include cols
-  # wanted absent by `not_exists`. Guarantees the check_tree is FALSE
-  # under {all} even for single-leaf trees (e.g. presence-forbidden's
-  # sole `exists(X)`).
+  # Negative: metadata ops get their dual (exists -> absent, not_exists ->
+  # present); row ops keep their column present but with inverted cell
+  # content (so non_empty fires FALSE because value is empty, etc.).
+  neg_meta_absent_idx <- which(is_metadata_op & wants_pres)       # exists: omit
+  neg_meta_present_idx <- which(is_metadata_op & !wants_pres)     # not_exists: include
+  neg_row_idx          <- which(!is_metadata_op)                   # empty/non_empty: include w/ inverted content
+  neg_cell <- c(
+    rep("", length(neg_meta_present_idx)),
+    vapply(neg_row_idx, neg_val_for, character(1L))
+  )
+  neg_names <- c(names_req[neg_meta_present_idx], names_req[neg_row_idx])
   neg_cols <- c(
     list(USUBJID = "S1"),
     topic_extra,
-    stats::setNames(rep(list(""), sum(!wants_pres)), names_req[!wants_pres])
+    stats::setNames(as.list(neg_cell), neg_names)
   )
 
   mk_fx <- function(cols, fire) {

@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --ORRES
 check:
-  narrative: --ORRES ^= null
-  condition: --STAT = null or --DRVFL ^= 'Y'
+  all:
+  - name: --ORRES
+    operator: empty
 outcome:
   message: --ORRES ^= null
   severity: Medium
@@ -27,5 +28,4 @@ provenance:
     should generally not be populated for derived records.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --STTPT
 check:
-  narrative: --STTPT ^= null
-  condition: --STRTPT ^= null
+  all:
+  - name: --STTPT
+    operator: empty
 outcome:
   message: --STTPT ^= null
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
     "2003-12-15" or "VISIT 1".'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

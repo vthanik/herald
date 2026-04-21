@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: CMDECOD
 check:
-  narrative: CMDECOD ^= null
-  condition: CMTRT has a decode value in the dictionary
+  all:
+  - name: CMDECOD
+    operator: empty
 outcome:
   message: CMDECOD ^= null
   severity: Medium
@@ -32,5 +33,4 @@ provenance:
     will be left blank.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

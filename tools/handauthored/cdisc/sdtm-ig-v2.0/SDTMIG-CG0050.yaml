@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --PTCD
 check:
-  narrative: --DECOD ^= null
-  condition: --PTCD ^= null
+  all:
+  - name: --DECOD
+    operator: empty
 outcome:
   message: --DECOD ^= null
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: MedDRA Preferred Term code.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

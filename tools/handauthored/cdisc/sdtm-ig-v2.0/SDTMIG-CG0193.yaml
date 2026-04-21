@@ -9,9 +9,9 @@ scope:
   exclude_domains: []
 variable: MBRESCAT
 check:
-  narrative: MBRESCAT ^= null
-  condition: MBTESTCD = 'ORGANISM' and MBSTRESC ^= 'NO GROWTH' and MBMETHOD ^= 'GRAM
-    STAIN'
+  all:
+  - name: MBRESCAT
+    operator: empty
 outcome:
   message: MBRESCAT ^= null
   severity: Medium
@@ -25,5 +25,4 @@ provenance:
     results are from a gram stain.
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

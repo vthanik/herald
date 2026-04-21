@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --TRTV
 check:
-  narrative: --TRTV ^= null
-  condition: --VAMT ^= null
+  all:
+  - name: --TRTV
+    operator: empty
 outcome:
   message: --TRTV ^= null
   severity: Medium
@@ -28,5 +29,4 @@ provenance:
     vehicle). Examples: mL; mg.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

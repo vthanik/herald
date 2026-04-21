@@ -12,9 +12,9 @@ scope:
   exclude_domains: []
 variable: TATRANS
 check:
-  narrative: TATRANS ^= null
-  condition: Trial Design allows for a Subject to transition to an Element other than
-    the next Element in sequence
+  all:
+  - name: TATRANS
+    operator: empty
 outcome:
   message: TATRANS ^= null
   severity: Medium
@@ -28,5 +28,4 @@ provenance:
     in this rule (e.g., Responders go to washout).
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

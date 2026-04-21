@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: SEENDTC
 check:
-  narrative: SEENDTC ^= null
-  condition: Not last record
+  all:
+  - name: SEENDTC
+    operator: empty
 outcome:
   message: SEENDTC ^= null
   severity: Medium
@@ -32,5 +33,4 @@ provenance:
     (e.g., year, month, day, hour, minute) of the date/time value collected.]
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

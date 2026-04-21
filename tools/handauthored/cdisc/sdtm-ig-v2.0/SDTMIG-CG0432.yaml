@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: AGEU
 check:
-  narrative: AGEU ^= null
-  condition: AGE ^= null or AGETXT ^= null
+  all:
+  - name: AGEU
+    operator: empty
 outcome:
   message: AGEU ^= null
   severity: Medium
@@ -23,5 +24,4 @@ provenance:
   cited_guidance: Units associated with AGE or AGETXT.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: TSVAL
 check:
-  narrative: TSVAL ^= null
-  condition: TSVAL1 ^= null
+  all:
+  - name: TSVAL
+    operator: empty
 outcome:
   message: TSVAL ^= null
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: Text over 200 characters can be added to additional columns TSVAL1-TSVALn.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

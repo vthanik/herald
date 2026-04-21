@@ -9,8 +9,9 @@ scope:
   exclude_domains: []
 variable: EPOCH
 check:
-  narrative: EPOCH ^= null
-  condition: Multiple events per subject where DSCAT = 'DISPOSITION EVENT'
+  all:
+  - name: EPOCH
+    operator: empty
 outcome:
   message: EPOCH ^= null
   severity: Medium
@@ -30,5 +31,4 @@ provenance:
     Arms (TA)'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

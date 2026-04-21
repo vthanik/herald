@@ -11,9 +11,9 @@ scope:
   exclude_domains: []
 variable: TSVAL
 check:
-  narrative: TSVAL ^= null
-  condition: TSPARMCD = 'PCLAS' and record exists where TSPARMCD = 'STYPE' and TSVAL
-    = 'INTERVENTIONAL' and Pharmacological Class of Interventional Therapy is applicable
+  all:
+  - name: TSVAL
+    operator: empty
 outcome:
   message: TSVAL ^= null
   severity: Medium
@@ -28,5 +28,4 @@ provenance:
     this parameter is required.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

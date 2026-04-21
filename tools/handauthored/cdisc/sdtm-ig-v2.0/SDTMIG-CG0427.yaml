@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --STRESC
 check:
-  narrative: --STRESC ^= null
-  condition: --RESCAT ^= null
+  all:
+  - name: --STRESC
+    operator: empty
 outcome:
   message: --STRESC ^= null
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
     to categorize the result of a finding.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

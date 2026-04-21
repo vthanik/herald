@@ -11,8 +11,9 @@ scope:
   exclude_domains: []
 variable: RFENDTC
 check:
-  narrative: RFENDTC ^= null
-  condition: ARM ^= null
+  all:
+  - name: RFENDTC
+    operator: empty
 outcome:
   message: RFENDTC ^= null
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
     unassigned subjects.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

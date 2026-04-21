@@ -21,8 +21,9 @@ scope:
   exclude_domains: []
 variable: --TOXGR
 check:
-  narrative: --TOXGR ^= null
-  condition: --TOX ^= null
+  all:
+  - name: --TOXGR
+    operator: empty
 outcome:
   message: --TOXGR ^= null
   severity: Medium
@@ -35,5 +36,4 @@ provenance:
     scale and version is used in the Sponsor Comments column of the Define-XML document.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

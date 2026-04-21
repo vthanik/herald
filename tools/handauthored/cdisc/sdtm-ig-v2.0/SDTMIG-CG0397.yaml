@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --STRESC
 check:
-  narrative: --STRESC ^= null
-  condition: --ORRES ^= null or --DRVFL = 'Y'
+  all:
+  - name: --STRESC
+    operator: empty
 outcome:
   message: --STRESC ^= null
   severity: Medium
@@ -32,5 +33,4 @@ provenance:
     format or in standard units.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

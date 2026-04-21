@@ -83,9 +83,14 @@ op_not_exists <- function(data, ctx, name) {
 op_non_empty <- function(data, ctx, name) {
   values <- data[[name]]
   if (is.null(values)) return(rep(NA, nrow(data)))
-  # "non_empty" means: not NA AND (for character) not ""
+  # "non_empty" means: not NA AND (for character) the right-trimmed value
+  # is not "". Mirrors Pinnacle 21's rtrim-then-null-check convention
+  # (DataEntryFactory.java:70-71): trailing whitespace collapses a string
+  # to null ("   " is null, "   text" is populated, "text   " -> "text").
+  # Leading whitespace is preserved. "0", "NA", "null" are literal strings
+  # and count as populated.
   if (is.character(values)) {
-    !is.na(values) & nzchar(values)
+    !is.na(values) & nzchar(sub("\\s+$", "", values))
   } else {
     !is.na(values)
   }
@@ -107,7 +112,11 @@ op_empty <- function(data, ctx, name) {
   values <- data[[name]]
   if (is.null(values)) return(rep(NA, nrow(data)))
   if (is.character(values)) {
-    is.na(values) | !nzchar(values)
+    # Mirror P21's right-trim-then-null-check: "   " counts as empty,
+    # "   text" is populated, "text   " is populated (the trimmed value
+    # "text" is non-empty). "0", "NA", "null" are literal strings and
+    # count as populated (not empty).
+    is.na(values) | !nzchar(sub("\\s+$", "", values))
   } else {
     is.na(values)
   }

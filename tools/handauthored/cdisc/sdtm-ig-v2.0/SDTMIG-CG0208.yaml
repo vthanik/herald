@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: SESTDTC
 check:
-  narrative: SESTDTC ^= null
-  condition: ''
+  all:
+  - name: SESTDTC
+    operator: empty
 outcome:
   message: SESTDTC ^= null
   severity: Medium
@@ -30,5 +31,4 @@ provenance:
     day, hour, minute) of the date/time value collected.
   source_version: '3'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

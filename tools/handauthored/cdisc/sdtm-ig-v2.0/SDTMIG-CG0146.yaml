@@ -9,9 +9,9 @@ scope:
   exclude_domains: []
 variable: RFSTDTC
 check:
-  narrative: RFSTDTC ^= null
-  condition: Milestone associated with RFSTDTC is start of treatment and ACTARM not
-    in ('Screen Failure' 'Not Assigned' 'Not Treated')
+  all:
+  - name: RFSTDTC
+    operator: empty
 outcome:
   message: RFSTDTC ^= null
   severity: Medium
@@ -22,5 +22,4 @@ provenance:
   cited_guidance: Required for all randomized subjects.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

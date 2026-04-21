@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: TSVCDREF
 check:
-  narrative: TSVCDREF ^= null
-  condition: TSVCDVER ^= null
+  all:
+  - name: TSVCDREF
+    operator: empty
 outcome:
   message: TSVCDREF ^= null
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: The version number of the Reference Terminology, if applicable.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
