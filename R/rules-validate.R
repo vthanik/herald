@@ -107,6 +107,7 @@ validate <- function(path = NULL,
     if (length(target_ds) == 0L) next
 
     rule_fired <- FALSE
+    is_meta_rule <- .is_metadata_rule(rule$check_tree)
     for (ds_name in target_ds) {
       d <- datasets[[ds_name]]
       # Make dataset name available to the walker for --VAR wildcard expansion
@@ -114,6 +115,12 @@ validate <- function(path = NULL,
       ctx$current_domain  <- toupper(substr(ds_name, 1, 2))
       mask <- walk_tree(rule$check_tree, d, ctx)
       if (length(mask) == 0L) next
+      # Metadata-level rules (only existence-kind leaves) query names(data),
+      # not row content. Their mask is uniform; collapse to a single fire per
+      # (rule x dataset) rather than per-row.
+      if (is_meta_rule && length(mask) > 1L && any(!is.na(mask) & mask)) {
+        mask <- c(TRUE, rep(FALSE, length(mask) - 1L))
+      }
       var <- primary_variable(rule$check_tree)
       f <- emit_findings(rule, ds_name, mask, d, variable = var)
       if (nrow(f) > 0L) {
@@ -166,6 +173,29 @@ validate <- function(path = NULL,
 }
 
 # --- internals --------------------------------------------------------------
+
+# Names of ops whose result is a function of the dataset's *column list*
+# rather than row values. When every leaf in a check_tree is one of these,
+# the rule is "metadata-level" and its mask is uniform across rows: we should
+# fire once per (rule x dataset), not once per row. Matches P21's concept of
+# Target="Metadata" rules authored from CDISC text.
+.METADATA_OPS <- c("exists", "not_exists")
+
+# Walk a check_tree and return TRUE when every leaf operator is in
+# .METADATA_OPS. Narrative / empty / r_expression trees are not metadata-
+# level (different handling elsewhere).
+.is_metadata_rule <- function(node) {
+  if (!is.list(node) || length(node) == 0L) return(FALSE)
+  if (!is.null(node[["narrative"]])) return(FALSE)
+  if (!is.null(node[["r_expression"]])) return(FALSE)
+  if (!is.null(node[["operator"]])) {
+    return(isTRUE(node[["operator"]] %in% .METADATA_OPS))
+  }
+  if (!is.null(node[["not"]])) return(.is_metadata_rule(node[["not"]]))
+  children <- c(node[["all"]], node[["any"]])
+  if (length(children) == 0L) return(FALSE)
+  all(vapply(children, .is_metadata_rule, logical(1L)))
+}
 
 #' De-duplicate advisory findings: emit at most one advisory per rule_id.
 #'

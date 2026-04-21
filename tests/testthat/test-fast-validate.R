@@ -138,3 +138,53 @@ test_that("advisory findings collapse to one per rule_id", {
   expect_equal(nrow(out), 1L)
   expect_equal(out$rule_id, "X")
 })
+
+test_that("metadata-level existence rules collapse to one fire per dataset", {
+  # ADaM-111 pattern: exists(ARELTM) AND not_exists(ARELTMU), BDS-scoped.
+  # A naive per-row evaluation would fire `nrow(data)` times; the walker
+  # must recognise this as a metadata-only rule and collapse to row 1.
+  advs_bad <- data.frame(USUBJID = c("S1","S2","S3"),
+                         ARELTM  = c(0, 30, 60),
+                         stringsAsFactors = FALSE)
+  spec <- structure(list(
+    ds_spec = data.frame(dataset = "ADVS", class = "BASIC DATA STRUCTURE",
+                         stringsAsFactors = FALSE)
+  ), class = c("herald_spec","list"))
+
+  r <- validate(files = list(ADVS = advs_bad), spec = spec, rules = "111",
+                quiet = TRUE)
+  fired <- r$findings[r$findings$status == "fired", , drop = FALSE]
+  expect_equal(nrow(fired), 1L)
+  expect_equal(fired$row, 1L)
+  expect_equal(fired$dataset, "ADVS")
+  expect_match(fired$message, "ARELTMU")
+})
+
+test_that("metadata-level rule does not fire when condition is satisfied", {
+  advs_ok <- data.frame(USUBJID = c("S1","S2"), ARELTM = c(0, 30),
+                        ARELTMU = c("HOUR","HOUR"), stringsAsFactors = FALSE)
+  spec <- structure(list(
+    ds_spec = data.frame(dataset = "ADVS", class = "BASIC DATA STRUCTURE",
+                         stringsAsFactors = FALSE)
+  ), class = c("herald_spec","list"))
+  r <- validate(files = list(ADVS = advs_ok), spec = spec, rules = "111",
+                quiet = TRUE)
+  expect_equal(nrow(r$findings[r$findings$status == "fired", ]), 0L)
+})
+
+test_that(".is_metadata_rule detects existence-only check trees", {
+  meta <- list(all = list(
+    list(name = "X", operator = "exists"),
+    list(name = "Y", operator = "not_exists")
+  ))
+  expect_true(herald:::.is_metadata_rule(meta))
+
+  mixed <- list(all = list(
+    list(name = "X", operator = "exists"),
+    list(name = "X", operator = "non_empty")  # not metadata
+  ))
+  expect_false(herald:::.is_metadata_rule(mixed))
+
+  narr <- list(narrative = "rule text")
+  expect_false(herald:::.is_metadata_rule(narr))
+})

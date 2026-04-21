@@ -14,9 +14,11 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ARELTM is present
+  all:
+  - name: ARELTM
+    operator: exists
+  - name: ARELTMU
+    operator: not_exists
 outcome:
   message: ARELTM is present and ARELTMU is not present
   severity: Medium
@@ -29,5 +31,5 @@ provenance:
     the anchor time variable must be identified in the metadata for ARELTM.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
 
