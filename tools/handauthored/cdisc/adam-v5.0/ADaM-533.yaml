@@ -13,9 +13,11 @@ scope:
 variable: ARELN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ARELN is present
+  all:
+  - name: ARELN
+    operator: exists
+  - name: AREL
+    operator: not_exists
 outcome:
   message: ARELN is present and AREL is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

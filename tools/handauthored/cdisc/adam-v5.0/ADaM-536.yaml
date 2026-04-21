@@ -13,9 +13,11 @@ scope:
 variable: ATOXGRN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ATOXGRN is present
+  all:
+  - name: ATOXGRN
+    operator: exists
+  - name: ATOXGR
+    operator: not_exists
 outcome:
   message: ATOXGRN is present and ATOXGR is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

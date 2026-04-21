@@ -13,9 +13,11 @@ scope:
 variable: TRTSEQAN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTSEQAN is present
+  all:
+  - name: TRTSEQAN
+    operator: exists
+  - name: TRTSEQA
+    operator: not_exists
 outcome:
   message: TRTSEQAN is present and TRTSEQA is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

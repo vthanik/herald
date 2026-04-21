@@ -13,9 +13,11 @@ scope:
 variable: DTHCAUSN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: DTHCAUSN is present
+  all:
+  - name: DTHCAUSN
+    operator: exists
+  - name: DTHCAUS
+    operator: not_exists
 outcome:
   message: DTHCAUSN is present and DTHCAUS is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

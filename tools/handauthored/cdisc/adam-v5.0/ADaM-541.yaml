@@ -14,9 +14,11 @@ scope:
 variable: ASPERC
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ASPERC is present
+  all:
+  - name: ASPERC
+    operator: exists
+  - name: ASPER
+    operator: not_exists
 outcome:
   message: ASPERC is present and ASPER is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     included in the dataset, then the primary variable must also be included.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

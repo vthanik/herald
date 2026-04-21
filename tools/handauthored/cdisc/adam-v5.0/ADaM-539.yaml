@@ -14,9 +14,11 @@ scope:
 variable: APERIODC
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: APERIODC is present
+  all:
+  - name: APERIODC
+    operator: exists
+  - name: APERIOD
+    operator: not_exists
 outcome:
   message: APERIODC is present and APERIOD is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     included in the dataset, then the primary variable must also be included.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

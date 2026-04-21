@@ -15,9 +15,11 @@ scope:
 variable: APHASEN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: APHASEN is present
+  all:
+  - name: APHASEN
+    operator: exists
+  - name: APHASE
+    operator: not_exists
 outcome:
   message: APHASEN is present and APHASE is not present
   severity: Medium
@@ -30,5 +32,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

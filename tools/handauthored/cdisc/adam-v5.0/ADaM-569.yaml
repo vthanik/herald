@@ -15,9 +15,11 @@ scope:
 variable: LVOTFN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: LVOTFN is present
+  all:
+  - name: LVOTFN
+    operator: exists
+  - name: LVOTFL
+    operator: not_exists
 outcome:
   message: LVOTFN is present and LVOTFL is not present
   severity: Medium
@@ -30,5 +32,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

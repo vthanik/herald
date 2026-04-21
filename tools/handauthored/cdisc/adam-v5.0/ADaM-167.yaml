@@ -14,9 +14,11 @@ scope:
 variable: BNRIND
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BNRIND is present
+  all:
+  - name: BNRIND
+    operator: exists
+  - name: ABLFL
+    operator: not_exists
 outcome:
   message: BNRIND is present and ABLFL is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     record identified by ABLFL.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,9 +12,11 @@ scope:
 variable: SUBJTYPC
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SUBJTYPC is present
+  all:
+  - name: SUBJTYPC
+    operator: exists
+  - name: SUBJTYP
+    operator: not_exists
 outcome:
   message: SUBJTYPC is present and SUBJTYP is not present
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     included in the dataset, then the primary variable must also be included.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

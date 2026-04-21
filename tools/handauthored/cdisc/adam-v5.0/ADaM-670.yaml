@@ -16,9 +16,11 @@ scope:
 variable: ACYCLEC
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ACYCLEC is present
+  all:
+  - name: ACYCLEC
+    operator: exists
+  - name: ACYCLE
+    operator: not_exists
 outcome:
   message: ACYCLEC is present and ACYCLE is not present
   severity: Medium
@@ -30,5 +32,4 @@ provenance:
     "Character representation of the ACYCLE variable."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

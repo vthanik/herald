@@ -12,9 +12,11 @@ scope:
 variable: BTOXGRHN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BTOXGRHN is present
+  all:
+  - name: BTOXGRHN
+    operator: exists
+  - name: BTOXGRH
+    operator: not_exists
 outcome:
   message: BTOXGRHN is present and BTOXGRH is not present
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     included in the dataset, then the primary variable must also be included.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

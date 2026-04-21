@@ -14,9 +14,11 @@ scope:
 variable: ASPER
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ASPER is present
+  all:
+  - name: ASPER
+    operator: exists
+  - name: APERIOD
+    operator: not_exists
 outcome:
   message: ASPER is present and APERIOD is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     in ADSL, then subperiod timing variables must be excluded from ADSL.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

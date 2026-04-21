@@ -12,9 +12,11 @@ scope:
 variable: FORMN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: FORMN is present
+  all:
+  - name: FORMN
+    operator: exists
+  - name: FORM
+    operator: not_exists
 outcome:
   message: FORMN is present and FORM is not present
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     included in the dataset, then the primary variable must also be included.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

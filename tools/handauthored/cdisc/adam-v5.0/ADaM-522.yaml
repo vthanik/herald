@@ -13,9 +13,11 @@ scope:
 variable: BTOXGRN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BTOXGRN is present
+  all:
+  - name: BTOXGRN
+    operator: exists
+  - name: BTOXGR
+    operator: not_exists
 outcome:
   message: BTOXGRN is present and BTOXGR is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

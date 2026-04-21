@@ -16,9 +16,11 @@ scope:
 variable: COHORTN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: COHORTN is present
+  all:
+  - name: COHORTN
+    operator: exists
+  - name: COHORT
+    operator: not_exists
 outcome:
   message: COHORTN is present and COHORT is not present
   severity: Medium
@@ -30,5 +32,4 @@ provenance:
     "Numeric representation of the COHORT variable."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

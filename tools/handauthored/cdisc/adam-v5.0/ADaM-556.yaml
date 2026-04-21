@@ -15,9 +15,11 @@ scope:
 variable: TRTPN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTPN is present
+  all:
+  - name: TRTPN
+    operator: exists
+  - name: TRTP
+    operator: not_exists
 outcome:
   message: TRTPN is present and TRTP is not present
   severity: Medium
@@ -30,5 +32,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

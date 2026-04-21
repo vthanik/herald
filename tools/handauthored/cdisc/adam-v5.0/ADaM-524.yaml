@@ -13,9 +13,11 @@ scope:
 variable: ATOXGRHN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ATOXGRHN is present
+  all:
+  - name: ATOXGRHN
+    operator: exists
+  - name: ATOXGRH
+    operator: not_exists
 outcome:
   message: ATOXGRHN is present and ATOXGRH is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

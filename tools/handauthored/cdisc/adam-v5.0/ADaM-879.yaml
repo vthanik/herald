@@ -12,9 +12,11 @@ scope:
 variable: COUNTRYN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: COUNTRYN is present
+  all:
+  - name: COUNTRYN
+    operator: exists
+  - name: COUNTRY
+    operator: not_exists
 outcome:
   message: COUNTRYN is present and COUNTRY is not present
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     included in the dataset, then the primary variable must also be included.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

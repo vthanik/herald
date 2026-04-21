@@ -15,9 +15,11 @@ scope:
 variable: TRTAN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTAN is present
+  all:
+  - name: TRTAN
+    operator: exists
+  - name: TRTA
+    operator: not_exists
 outcome:
   message: TRTAN is present and TRTA is not present
   severity: Medium
@@ -30,5 +32,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

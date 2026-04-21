@@ -13,9 +13,11 @@ scope:
 variable: AERELN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: AERELN is present
+  all:
+  - name: AERELN
+    operator: exists
+  - name: AEREL
+    operator: not_exists
 outcome:
   message: AERELN is present and AEREL is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

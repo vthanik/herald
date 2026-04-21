@@ -13,9 +13,11 @@ scope:
 variable: ABLFN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ABLFN is present
+  all:
+  - name: ABLFN
+    operator: exists
+  - name: ABLFL
+    operator: not_exists
 outcome:
   message: ABLFN is present and ABLFL is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

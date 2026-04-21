@@ -12,9 +12,11 @@ scope:
 variable: PROJIDN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: PROJIDN is present
+  all:
+  - name: PROJIDN
+    operator: exists
+  - name: PROJID
+    operator: not_exists
 outcome:
   message: PROJIDN is present and PROJID is not present
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     included in the dataset, then the primary variable must also be included.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

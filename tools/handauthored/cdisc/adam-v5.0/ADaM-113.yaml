@@ -14,9 +14,11 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ARELTMU is present
+  all:
+  - name: ARELTMU
+    operator: exists
+  - name: ARELTM
+    operator: not_exists
 outcome:
   message: ARELTMU is present and ARELTM is not present
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     For example, "HOURS" or "MINUTES" ARELTMU is required if ARELTM is present.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

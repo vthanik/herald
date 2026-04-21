@@ -240,12 +240,16 @@ cols$check_tree <- lapply(rows, function(r) r$check_tree %||% list())
 # tibble handles list-columns cleanly
 rules <- tibble::tibble(!!!cols)
 
-# Dedupe by content_hash
+# Dedupe only within the same rule id. Two rules with different ids but
+# identical check_trees (common when a pattern template is applied to many
+# rules, or when CDISC restates the same predicate across IG versions) are
+# distinct rules and must both survive.
 n_before <- nrow(rules)
-rules <- rules[!duplicated(rules$content_hash), , drop = FALSE]
+rules <- rules[!duplicated(paste(rules$id, rules$content_hash, sep = "::")), ,
+               drop = FALSE]
 n_after <- nrow(rules)
 if (n_before != n_after) {
-  cat("Deduplicated ", n_before - n_after, " rules by content_hash\n",
+  cat("Deduplicated ", n_before - n_after, " rules by (id, content_hash)\n",
       sep = "")
 }
 

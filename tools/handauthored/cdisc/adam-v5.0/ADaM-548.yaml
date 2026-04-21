@@ -15,9 +15,11 @@ scope:
 variable: AVISITN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: AVISITN is present
+  all:
+  - name: AVISITN
+    operator: exists
+  - name: AVISIT
+    operator: not_exists
 outcome:
   message: AVISITN is present and AVISIT is not present
   severity: Medium
@@ -30,5 +32,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
