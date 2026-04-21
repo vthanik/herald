@@ -329,6 +329,54 @@ if (run_all) {
                 synth = TRUE))
   }
 
+  # Special-case synth for value-conditional-literal-assert pattern:
+  # {all: [is_contained_by(cond_var, [set]), not_equal_to(target, 'LIT')]}
+  # Positive row 1: cond in set, target != LIT (fires). Row 2: cond not in
+  # set (blocks). Negative: both rows compliant (cond in set, target == LIT).
+  if (length(lv) == 2L &&
+      ops[[1L]] == "is_contained_by" &&
+      ops[[2L]] == "not_equal_to" &&
+      !isFALSE(lv[[2L]]$value_is_literal)) {
+    cond_var <- as.character(lv[[1L]]$name)
+    cond_set <- as.character(unlist(lv[[1L]]$value))
+    target   <- as.character(lv[[2L]]$name)
+    lit      <- as.character(lv[[2L]]$value)
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else {
+      ds_name <- "DS"; spec <- NULL
+    }
+    set_val <- cond_set[[1L]]
+    out_of_set <- "ZZZ_NOT_IN_SET"
+    mk <- function(fire) {
+      cols_list <- list(USUBJID = c("S1", "S2"))
+      if (isTRUE(fire)) {
+        cols_list[[cond_var]] <- c(set_val, out_of_set)
+        cols_list[[target]]   <- c("OTHER_VALUE_NOT_LIT", lit)
+      } else {
+        cols_list[[cond_var]] <- c(set_val, set_val)
+        cols_list[[target]]   <- c(lit, lit)
+      }
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) 1L else integer()),
+        notes        = "synth value-conditional-literal-assert",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
   # Special-case synth for value-conditional-null-eq pattern:
   # {all: [equal_to(cond_var, LIT), non_empty(target_var)]} where
   # value_is_literal is TRUE (or not set, defaulting to literal).

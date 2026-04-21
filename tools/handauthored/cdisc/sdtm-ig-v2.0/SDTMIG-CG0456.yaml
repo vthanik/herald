@@ -11,8 +11,13 @@ scope:
   exclude_domains: []
 variable: TSVCDREF
 check:
-  narrative: TSVCDREF = 'ISO 3166-1 alpha-3'
-  condition: TSPARMCD = 'FCNTRY'
+  all:
+  - operator: is_contained_by
+    name: TSPARMCD
+    value: FCNTRY
+  - operator: not_equal_to
+    name: TSVCDREF
+    value: ISO 3166-1 alpha-3
 outcome:
   message: TSVCDREF = 'ISO 3166-1 alpha-3'
   severity: Medium
@@ -24,5 +29,4 @@ provenance:
     1. TSVAL may have controlled terminology depending on the value of TSPARMCD
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

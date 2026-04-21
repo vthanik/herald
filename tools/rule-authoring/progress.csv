@@ -498,7 +498,6 @@
 "CG0058","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--ENTPT present in dataset",NA,NA,"narrative",NA,NA,NA
 "CG0060","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STRTPT present in dataset",NA,NA,"narrative",NA,NA,NA
 "CG0062","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STTPT present in dataset",NA,NA,"narrative",NA,NA,NA
-"CG0065","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DSDECOD = 'COMPLETED'",NA,NA,"narrative",NA,NA,NA
 "CG0067","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DSDECOD = 'DEATH'",NA,NA,"narrative",NA,NA,NA
 "CG0068","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","For each subject, earliest DSSTDTC = DM.RFICDTC",NA,NA,"narrative",NA,NA,NA
 "CG0069","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DSSTDTC = DM.DTHDTC",NA,NA,"narrative",NA,NA,NA
@@ -560,8 +559,6 @@
 "CG0172","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SSDTC >= all DS.DSSTDTC",NA,NA,"narrative",NA,NA,NA
 "CG0173","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","The name of the variable is used as the value of FATESTCD.",NA,NA,"narrative",NA,NA,NA
 "CG0174","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","FAOBJ in (--TERM, --TRT, --DECOD)",NA,NA,"narrative",NA,NA,NA
-"CG0175","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IEORRES = 'Y'",NA,NA,"narrative",NA,NA,NA
-"CG0176","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IEORRES = 'N'",NA,NA,"narrative",NA,NA,NA
 "CG0180","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBORNRLO = null",NA,NA,"narrative",NA,NA,NA
 "CG0181","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBORNRHI = null",NA,NA,"narrative",NA,NA,NA
 "CG0182","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRLO = null",NA,NA,"narrative",NA,NA,NA
@@ -733,7 +730,6 @@
 "CG0440","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is integer and > 0",NA,NA,"narrative",NA,NA,NA
 "CG0442","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid preferred term from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
 "CG0443","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid unique ingredient identifier from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
-"CG0444","CDISC","SDTM-IG","3.2,3.3","Medium","TSVCDREF = 'UNII'",NA,NA,"narrative",NA,NA,NA
 "CG0445","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid preferred term from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
 "CG0446","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid unique ingredient identifier from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
 "CG0448","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid term from SNOMED CT",NA,NA,"narrative",NA,NA,NA
@@ -742,10 +738,7 @@
 "CG0451","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid unique ingredient identifier from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
 "CG0453","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid term from NDF-RT",NA,NA,"narrative",NA,NA,NA
 "CG0454","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid code from NDF-RT",NA,NA,"narrative",NA,NA,NA
-"CG0455","CDISC","SDTM-IG","3.2,3.3","Medium","TSVCDREF = 'NDF-RT'",NA,NA,"narrative",NA,NA,NA
-"CG0456","CDISC","SDTM-IG","3.2,3.3","Medium","TSVCDREF = 'ISO 3166-1 alpha-3'",NA,NA,"narrative",NA,NA,NA
 "CG0457","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is integer and > 0",NA,NA,"narrative",NA,NA,NA
-"CG0458","CDISC","SDTM-IG","3.2,3.3","Medium","TSVCDREF = 'SNOMED'",NA,NA,"narrative",NA,NA,NA
 "CG0459","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALNF = null",NA,NA,"narrative",NA,NA,NA
 "CG0460","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLT on path to MedDRA primary system organ class",NA,NA,"narrative",NA,NA,NA
 "CG0461","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLGT on path to MedDRA primary system organ class",NA,NA,"narrative",NA,NA,NA
@@ -1656,6 +1649,7 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0059","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STRTPT ^= null","value-not-null","empty(--STRTPT)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0061","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STTPT ^= null","value-not-null","empty(--STTPT)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0063","CDISC","SDTM-IG","3.2","Medium","EPOCH ^= null","value-not-null","empty(EPOCH)","predicate","2026-04-21T11:05:30Z","required",NA
+"CG0065","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DSDECOD = 'COMPLETED'","value-conditional-literal-assert","is_contained_by(DSTERM,COMPLETED) & not_equal_to(DSDECOD,COMPLETED)","predicate","2026-04-21T14:32:01Z",NA,NA
 "CG0066","CDISC","SDTM-IG","3.2","Medium","DSTERM = DSDECOD","value-conditional-equal-column","is_contained_by(DSCAT,PROTOCOL MILESTONE) & not_equal_to(DSTERM,DSDECOD,FALSE)","predicate","2026-04-21T13:42:52Z",NA,NA
 "CG0073","CDISC","SDTM-IG","3.2","Medium","EPOCH = null","value-conditional-null-eq","equal_to(DSCAT,PROTOCOL MILESTONE) & non_empty(EPOCH)","predicate","2026-04-21T13:51:48Z",NA,NA
 "CG0082","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--BDSYCD ^= null","value-not-null","empty(--BDSYCD)","predicate","2026-04-21T11:05:30Z","required",NA
@@ -1693,6 +1687,8 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0164","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IDVAR = null","value-conditional-null-empty","empty(RDOMAIN) & non_empty(IDVAR)","predicate","2026-04-21T13:51:48Z",NA,NA
 "CG0166","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RDOMAIN ^= null","value-not-null","empty(RDOMAIN)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0168","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","CODTC = null","value-conditional-null-populated","non_empty(IDVAR) & non_empty(CODTC)","predicate","2026-04-21T13:51:48Z",NA,NA
+"CG0175","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IEORRES = 'Y'","value-conditional-literal-assert","is_contained_by(IECAT,EXCLUSION) & not_equal_to(IEORRES,Y)","predicate","2026-04-21T14:32:01Z",NA,NA
+"CG0176","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IEORRES = 'N'","value-conditional-literal-assert","is_contained_by(IECAT,INCLUSION) & not_equal_to(IEORRES,N)","predicate","2026-04-21T14:32:01Z",NA,NA
 "CG0177","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IESTRESC = IEORRES","value-equal-column","not_equal_to(IESTRESC,IEORRES,FALSE)","predicate","2026-04-21T13:45:27Z",NA,NA
 "CG0178","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETEST in TI.IETEST","cross-lookup","is_not_contained_by(IETEST,TI.IETEST)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0179","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETESTCD in TI.IETESTCD","cross-lookup","is_not_contained_by(IETESTCD,TI.IETESTCD)","predicate","2026-04-21T12:20:10Z","lookup",NA
@@ -1755,6 +1751,10 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0433","CDISC","SDTM-IG","3.2,3.3","Medium","AGE ^= null","value-not-null","empty(AGE)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0434","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","AGETXT ^= null","value-not-null","empty(AGETXT)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0441","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL ^= null","value-not-null","empty(TSVAL)","predicate","2026-04-21T11:05:30Z","required",NA
+"CG0444","CDISC","SDTM-IG","3.2,3.3","Medium","TSVCDREF = 'UNII'","value-conditional-literal-assert","is_contained_by(TSPARMCD,COMPTRT,CURTRT,TRT) & not_equal_to(TSVCDREF,UNII)","predicate","2026-04-21T14:32:01Z",NA,NA
+"CG0455","CDISC","SDTM-IG","3.2,3.3","Medium","TSVCDREF = 'NDF-RT'","value-conditional-literal-assert","is_contained_by(TSPARMCD,PCLAS) & not_equal_to(TSVCDREF,NDF-RT)","predicate","2026-04-21T14:32:01Z",NA,NA
+"CG0456","CDISC","SDTM-IG","3.2,3.3","Medium","TSVCDREF = 'ISO 3166-1 alpha-3'","value-conditional-literal-assert","is_contained_by(TSPARMCD,FCNTRY) & not_equal_to(TSVCDREF,ISO 3166-1 alpha-3)","predicate","2026-04-21T14:32:01Z",NA,NA
+"CG0458","CDISC","SDTM-IG","3.2,3.3","Medium","TSVCDREF = 'SNOMED'","value-conditional-literal-assert","is_contained_by(TSPARMCD,INDIC,TDIGRP) & not_equal_to(TSVCDREF,SNOMED)","predicate","2026-04-21T14:32:01Z",NA,NA
 "CG0462","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ECDOSTXT ^= null","value-not-null","empty(ECDOSTXT)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0465","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IDVARVAL = null","value-conditional-null-empty","empty(IDVAR) & non_empty(IDVARVAL)","predicate","2026-04-21T13:51:48Z",NA,NA
 "CG0507","CDISC","SDTM-IG","3.3,3.4","Medium","--USCHFL not present in dataset","presence-forbidden","exists(--USCHFL)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA

@@ -11,8 +11,13 @@ scope:
   exclude_domains: []
 variable: TSVCDREF
 check:
-  narrative: TSVCDREF = 'NDF-RT'
-  condition: TSPARMCD = 'PCLAS'
+  all:
+  - operator: is_contained_by
+    name: TSPARMCD
+    value: PCLAS
+  - operator: not_equal_to
+    name: TSVCDREF
+    value: NDF-RT
 outcome:
   message: TSVCDREF = 'NDF-RT'
   severity: Medium
@@ -24,5 +29,4 @@ provenance:
     1. TSVAL may have controlled terminology depending on the value of TSPARMCD
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

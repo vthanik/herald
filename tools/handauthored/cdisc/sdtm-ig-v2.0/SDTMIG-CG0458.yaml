@@ -11,8 +11,15 @@ scope:
   exclude_domains: []
 variable: TSVCDREF
 check:
-  narrative: TSVCDREF = 'SNOMED'
-  condition: TSPARMCD in ('INDIC', 'TDIGRP')
+  all:
+  - operator: is_contained_by
+    name: TSPARMCD
+    value:
+    - INDIC
+    - TDIGRP
+  - operator: not_equal_to
+    name: TSVCDREF
+    value: SNOMED
 outcome:
   message: TSVCDREF = 'SNOMED'
   severity: Medium
@@ -24,5 +31,4 @@ provenance:
     1. TSVAL may have controlled terminology depending on the value of TSPARMCD
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

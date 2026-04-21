@@ -12,8 +12,13 @@ scope:
   exclude_domains: []
 variable: DSDECOD
 check:
-  narrative: DSDECOD = 'COMPLETED'
-  condition: DSTERM = 'COMPLETED'
+  all:
+  - operator: is_contained_by
+    name: DSTERM
+    value: COMPLETED
+  - operator: not_equal_to
+    name: DSDECOD
+    value: COMPLETED
 outcome:
   message: DSDECOD = 'COMPLETED'
   severity: Medium
@@ -24,5 +29,4 @@ provenance:
   cited_guidance: b. When DSTERM = 'COMPLETED', DSDECOD = 'COMPLETED'.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

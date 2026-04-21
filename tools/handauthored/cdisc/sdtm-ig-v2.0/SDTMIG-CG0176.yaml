@@ -12,8 +12,13 @@ scope:
   exclude_domains: []
 variable: IEORRES
 check:
-  narrative: IEORRES = 'N'
-  condition: IECAT = 'INCLUSION'
+  all:
+  - operator: is_contained_by
+    name: IECAT
+    value: INCLUSION
+  - operator: not_equal_to
+    name: IEORRES
+    value: 'N'
 outcome:
   message: IEORRES = 'N'
   severity: Medium
@@ -25,5 +30,4 @@ provenance:
     criteria that the subject did not meet, and not the responses to all criteria.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

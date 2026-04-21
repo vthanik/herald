@@ -11,8 +11,16 @@ scope:
   exclude_domains: []
 variable: TSVCDREF
 check:
-  narrative: TSVCDREF = 'UNII'
-  condition: TSPARMCD in ('COMPTRT', 'CURTRT', 'TRT')
+  all:
+  - operator: is_contained_by
+    name: TSPARMCD
+    value:
+    - COMPTRT
+    - CURTRT
+    - TRT
+  - operator: not_equal_to
+    name: TSVCDREF
+    value: UNII
 outcome:
   message: TSVCDREF = 'UNII'
   severity: Medium
@@ -24,5 +32,4 @@ provenance:
     1. TSVAL may have controlled terminology depending on the value of TSPARMCD
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
