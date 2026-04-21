@@ -568,7 +568,6 @@
 "CG0197","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","PESTRESC = PEORRES OR a dictionary coded preferred term",NA,NA,"narrative",NA,NA,NA
 "CG0198","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Relationships represented in RELREC are collected relationships",NA,NA,"narrative",NA,NA,NA
 "CG0200","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Within a subject each unique RELID is present on multiple RELREC records",NA,NA,"narrative",NA,NA,NA
-"CG0201","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IDVAR ^= --SEQ",NA,NA,"narrative",NA,NA,NA
 "CG0205","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Suppqual dataset names <= 8 characters",NA,NA,"narrative",NA,NA,NA
 "CG0207","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SEENDTC = SESTDTC of next ELEMENT",NA,NA,"narrative",NA,NA,NA
 "CG0210","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ETCD ^= 'UNPLAN'",NA,NA,"narrative",NA,NA,NA
@@ -1683,6 +1682,7 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "CG0178","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETEST in TI.IETEST","cross-lookup","is_not_contained_by(IETEST,TI.IETEST)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0179","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETESTCD in TI.IETESTCD","cross-lookup","is_not_contained_by(IETESTCD,TI.IETESTCD)","predicate","2026-04-21T12:20:10Z","lookup",NA
 "CG0193","CDISC","SDTM-IG","3.2","Medium","MBRESCAT ^= null","value-not-null","empty(MBRESCAT)","predicate","2026-04-21T11:05:30Z","required",NA
+"CG0201","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IDVAR ^= --SEQ","value-conditional-regex-match","empty(IDVARVAL) & empty(USUBJID) & matches_regex(IDVAR,.*SEQ)","predicate","2026-04-21T15:10:12Z",NA,""
 "CG0202","CDISC","SDTM-IG","3.2,3.3","Medium","QEVAL ^= null","value-not-null","empty(QEVAL)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0203","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IDVAR ^= null","value-not-null","empty(IDVAR)","predicate","2026-04-21T11:05:30Z","required",NA
 "CG0204","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IDVARVAL ^= null","value-not-null","empty(IDVARVAL)","predicate","2026-04-21T11:05:30Z","required",NA

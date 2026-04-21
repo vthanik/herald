@@ -67,15 +67,18 @@ pick_dataset_for_scope <- function(scope) {
   doms <- setdiff(doms, exclude)
   if (length(doms) > 0L) {
     ds  <- doms[[1L]]
-    cls <- herald:::infer_class(ds)
-    # Fall back to the rule's declared scope.classes when the picked
-    # domain isn't in herald's taxonomy (e.g. RELSUB, novel SDTM 3.3+
-    # domains). Using the author's declared class ensures the scope
-    # filter accepts the synthetic dataset.
-    if (is.na(cls) || !nzchar(cls)) {
-      declared <- as.character(unlist(scope$classes %||% character()))
-      declared <- declared[nzchar(declared) & toupper(declared) != "ALL"]
-      if (length(declared) > 0L) cls <- .normalise_cls(declared[[1L]])
+    # Prefer the rule's declared scope.classes over infer_class's guess.
+    # The rule author pinned both the domain and its class; honour that
+    # pairing even when herald's taxonomy would classify the domain
+    # differently (e.g. CG0201 targets RELREC with classes=SPC, even
+    # though RELREC normally classifies as RELATIONSHIP). Only fall back
+    # to infer_class when the rule didn't declare a class.
+    declared <- as.character(unlist(scope$classes %||% character()))
+    declared <- declared[nzchar(declared) & toupper(declared) != "ALL"]
+    if (length(declared) > 0L) {
+      cls <- .normalise_cls(declared[[1L]])
+    } else {
+      cls <- herald:::infer_class(ds)
     }
     return(list(dataset = ds, class = cls, via = "domain",
                 topic_col = .topic_col_for(cls, ds)))
@@ -415,6 +418,63 @@ if (run_all) {
         expected     = list(fires = fire,
                             rows = if (isTRUE(fire)) 1L else integer()),
         notes        = "synth value-conditional-null-eq",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
+  # Special-case synth for value-conditional-regex-match pattern:
+  # {all: [empty(cond1), empty(cond2), matches_regex(target, pattern)]}.
+  # Positive: 2-row fixture; row 1 has both conds null + target matches
+  # pattern (fires); row 2 has cond1 populated (guard blocks). Negative:
+  # both conds null but target does NOT match pattern.
+  if (length(lv) == 3L &&
+      ops[[1L]] == "empty" &&
+      ops[[2L]] == "empty" &&
+      ops[[3L]] == "matches_regex") {
+    cond1    <- as.character(lv[[1L]]$name)
+    cond2    <- as.character(lv[[2L]]$name)
+    target   <- as.character(lv[[3L]]$name)
+    pattern  <- as.character(lv[[3L]]$value)
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- "RELREC"; spec <- NULL
+    }
+    # Pick a value that matches the regex (positive) and one that doesn't
+    # (negative). `.*SEQ` -> "AESEQ" matches, "AETERM" does not.
+    matching_val <- if (grepl("SEQ", pattern)) "AESEQ" else "MATCH"
+    nonmatching_val <- if (grepl("SEQ", pattern)) "AETERM" else "NOMATCH"
+    mk <- function(fire) {
+      cols_list <- list(USUBJID = c("", ""))
+      if (cond1 != "USUBJID") cols_list[[cond1]] <- c("", "")
+      if (cond2 != "USUBJID" && cond2 != cond1) cols_list[[cond2]] <- c("", "")
+      if (isTRUE(fire)) {
+        # Row 1: both null + target matches pattern
+        cols_list[[target]] <- c(matching_val, matching_val)
+        # Row 2: populate cond1 to block the guard
+        cols_list[[cond1]][2L] <- "X_POPULATED"
+      } else {
+        # Both rows have both conds null but target does NOT match pattern
+        cols_list[[target]] <- c(nonmatching_val, nonmatching_val)
+      }
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) 1L else integer()),
+        notes        = "synth value-conditional-regex-match",
         authored     = "pattern-fixture-synth@1",
         spec         = spec, `_path` = NA_character_
       )

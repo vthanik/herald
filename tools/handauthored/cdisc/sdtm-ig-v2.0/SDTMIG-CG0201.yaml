@@ -12,8 +12,14 @@ scope:
   exclude_domains: []
 variable: IDVAR
 check:
-  narrative: IDVAR ^= --SEQ
-  condition: IDVARVAL = null and USUBJID = null
+  all:
+  - operator: empty
+    name: IDVARVAL
+  - operator: empty
+    name: USUBJID
+  - operator: matches_regex
+    name: IDVAR
+    value: '.*SEQ'
 outcome:
   message: IDVAR ^= --SEQ
   severity: Medium
@@ -27,5 +33,5 @@ provenance:
     the records in the other, so both USUBJID and IDVARVAL are null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
 

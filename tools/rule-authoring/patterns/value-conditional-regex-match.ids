@@ -1,0 +1,2 @@
+"rule_id","cond_var_1","cond_var_2","target_var","pattern"
+"CG0201","IDVARVAL","USUBJID","IDVAR",".*SEQ"
