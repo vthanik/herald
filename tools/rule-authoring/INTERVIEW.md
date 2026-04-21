@@ -165,7 +165,18 @@ condition grammar story).
   maintain; template logic grows.
 - (c) Hand-translate each of the 21 inline -- no reuse.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Two patterns: `value-conditional-equal-literal`,
+  `value-conditional-in-literal-set`.
+- Both reuse existing ops (`equal_to`, `is_contained_by`) under
+  an `all: [when: ..., assert: ...]` combinator.
+- Condition leaves share the Q1 primitive library (to be built
+  alongside the Q1 CT/conditional-null work).
+- Slots: `(var, literal | literal_list, when_clause)`.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -189,7 +200,18 @@ exact join-by-USUBJID-and-compare shape. No new op needed.
   fires if ANY mismatches. Coarser -- P21 emits one finding per
   mismatching variable; (b) would merge them.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Pattern `adsl-dm-consistency`; no new op (reuses
+  `op_differs_by_key`).
+- Slots: `(var, ref_dataset=DM, ref_column=var, key=USUBJID)`.
+- 8 .ids rows: AGE, AGEU, SEX, RACE, SUBJID, SITEID, ARM, ACTARM.
+- Scope = ADSL (each rule YAML already declares this).
+- CDISC rule-ID granularity preserved -- one finding per
+  mismatching variable (matches P21).
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -214,7 +236,22 @@ Neither needs a new op.
   Both handle the "VAR.VAR" outcome shape.  *[recommended]*
 - (b) Single composite pattern with a `mode: equal|in` slot.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Two patterns sharing existing cross-ops:
+  - `value-equals-cross-dataset-col` -- uses `op_differs_by_key`
+    (fires on inequality). Slots `(var, ref_dataset, ref_column,
+    key)`; `key` accepts a list for multi-key joins.
+  - `value-in-cross-dataset-col` -- uses `op_missing_in_ref`
+    (fires when the ref column's value set doesn't contain this
+    row's value).
+- Multi-key joins (CG0032 STUDYID+VISITNUM, CG0218 USUBJID+ETCD)
+  handled via list-valued `key` slot.
+- Null-on-ref-side path (CG0069 DSSTDTC vs DM.DTHDTC) returns
+  NA -> advisory in `op_differs_by_key`; matches P21.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -237,7 +274,17 @@ already handles dataset-qualified names via the crossrefs table
 - (b) Introduce new op `op_ref_col_populated_but_current_missing`
   for a single-leaf version.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Pattern `cross-dataset-presence-pair` via combinator
+  `all: [exists(<ref_ds>.<var>), not_exists(<var>)]`.
+- Slots: `(ref_ds, var)`.
+- Metadata-level (dataset-wide, not per-row).
+- 5 .ids rows: ADaM-641..645 against AE source.
+- No new op.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -262,7 +309,39 @@ interprets this narrowly: VAR present => UNIT_VAR present.
   VAR's declared unit matches UNIT_VAR's value. Requires
   curation; out of scope.
 
-**User answer:** _(pending)_
+**P21 audit (revised):** P21 doesn't encode CG0186-0190 / CG0399 /
+CG0466 directly ("expressed using" -> 0 hits), but it encodes the
+same intent on the RESULT columns via SD0026 (`--ORRESU` required
+when `--ORRES` populated) and SD0029 (`--STRESU` / `--STRESC`).
+Both add a `value looks numeric` regex guard and a test-type
+exemption list (Ratio, Antibody, Count, PH, SPGRAV, R2, R2ADJ,
+STAT='NOT DONE'). Adjacent: SD0007 (--STRESU unique per test
+group), SD1353 (ORRES == STRESC when units match).
+
+**User answer:** (a-refined).
+
+**Decisions locked:**
+- Pattern `unit-variable-required-when-var-populated`.
+- check_tree combines three leaves:
+  ```
+  all:
+    - operator: non_empty      name: <var>
+    - operator: matches_regex  name: <var>
+      value: "^[-+]?[0-9]*\\.?[0-9]+$"
+    - operator: empty          name: <unit_var>
+  ```
+- Numeric-only guard mirrors P21's SD0026/SD0029 `@re` filter so
+  character-result cases (LBSTNRC value "0.8 - 1.2 mg/dL") are
+  handled without false positives.
+- 7 .ids rows: CG0186..CG0190 (LB range pairs), CG0399 (--ULOQ /
+  --STRESU), CG0466 (--LLOQ / --STRESU). `--VAR` wildcards already
+  resolve via `.resolve_wildcard`.
+- Test-type exemption list (Ratio / Antibody / Count / PH / ...)
+  NOT applied for this batch -- the LB range + LOQ fields are
+  always numeric by definition. When we later author CG0425
+  (`--ORRESU` / `--ORRES`), extend to the full P21 guard list.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -289,7 +368,29 @@ landed (ADaM-1 pattern). Same mechanism works here.
 - (b) Convert everything, stubbing unresolvable conditions as
   narrative leaves so the rule runs advisory-only.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Split the 10 rules by sub-shape:
+  - **Unconditional** (CG0368 DM required, CG0501 / CG0502 TM
+    required, CG0646 SJ must not be present) -- two patterns:
+    `submission-dataset-required` (`op_not_exists` +
+    `scope.submission: true`) and `submission-dataset-absent`
+    (`op_exists` + `scope.submission: true`). Reuses the
+    ADaM-1 routing already landed.
+  - **Meta-existence** (CG0373 `SUPP--`.RDOMAIN, CG0374
+    RELREC.RDOMAIN) -- new op `op_ref_column_domains_exist(
+    reference_dataset, reference_column)` that iterates distinct
+    values of `<ref>.<col>` and fires if any named domain is
+    absent from the submission. Pattern
+    `submission-domains-from-ref-column`.
+  - **Conditional required** (CG0191 MB "if microbiology
+    collected", CG0318 PC "if PK collected") -- remain narrative;
+    tag `blocker: requires-study-metadata` in progress.csv.
+    Revisit once a study-metadata schema lands.
+- Converts 5 or 6 of 10 this pass; remaining 4-5 tagged.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -313,7 +414,31 @@ accepts `group_by: [c1, c2, ...]`. No new op needed.
 - (b) Hand-author one pattern per outer-key shape (PARAMCD only,
   PARAMCD+BASETYPE, PARAMCD+USUBJID, ...).
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Split the 39 rules across three tracks:
+  - **`uniqueness-grouped-nested` pattern** (~15 rules) -- extends
+    Q3's `paired-var-consistency-param` with a configurable
+    `outer_keys` slot. Default `[PARAMCD]`; supports
+    `[PARAMCD, BASETYPE]` and `[PARAMCD, USUBJID]` as alternate
+    composite keys. Uses existing
+    `op_is_not_unique_relationship` with list-valued `group_by`.
+    Covers: ADaM-221..226 + siblings for AVALCATy/AVAL,
+    BASECATy/BASE, CHGCATy/CHG, PCHGCATy/PCHG within PARAMCD.
+  - **`value-constant-per-group` pattern** (~13 rules) -- new
+    small op `op_is_not_constant_per_group(name, group_by)` that
+    fires rows whose outer group has >1 distinct value of
+    `name`. Covers the single-var cardinality cases
+    (ADaM-151 CRITy per PARAMCD, and siblings).
+  - **Baseline-consistency rules** (~8 rules, e.g. ADaM-127, 128,
+    131) deferred to Q12 -- they need the ABLFL selector-row
+    semantic, which is a distinct engine concept.
+- Findings carry the concrete outer_keys values in the message
+  (e.g. "within PARAMCD=HR, AVALCAT1 has multiple values for
+  AVAL=70") for reviewer clarity.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -344,7 +469,40 @@ needs a tiny op.
   20 rules.  *[recommended]*
 - (b) One monolithic pattern with a `check_type` switch.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Three patterns + one new op + reuse of the Q2 CT op:
+  - **`suffix-var-value-in-set`** -- expands `<stem><suffix>` via
+    the existing `stem` placeholder; per-row
+    `is_contained_by(col, <allowed>)`. Covers ADaM-5 (`*FL` in
+    {Y,N,null}), ADaM-33 (`*RFL` in {Y,null}), ADaM-34 (`*PFL`
+    in {Y,null}), ADaM-35 (`*RFN` in {1,null}), ADaM-36 (`*PFN`
+    in {1,null}). 5 rules.
+  - **`suffix-var-value-in-codelist`** -- same expansion feeding
+    the Q2 `op_value_in_codelist` for ADaM-39 (`*DTF` vs DATEFL
+    codelist) and ADaM-40 (`*TMF` vs TIMEFL codelist). 2 rules.
+    Deferred until the Q2 codelist work lands AND the DATEFL /
+    TIMEFL codelists are confirmed present in the bundled CT.
+  - **`suffix-var-is-numeric`** -- new op
+    `op_var_by_suffix_not_numeric(suffix, exclude_prefix)` reading
+    `!is.numeric(col)`. Handles ADaM-716's "excluding SDTM
+    variables with a suffix of ELTM" via `exclude_prefix`.
+    Covers ADaM-58 (`*DT`), 59 (`*TM`), 60 (`*DTM`), 716 (`*TM`
+    excluding ELTM). 4 rules.
+  - **`suffix-pair-value-in-set`** -- new helper + pattern for
+    ADaM-6's "both suffixes on same stem" shape (FL present ->
+    FN in {0,1,null}). 1 rule.
+- **Individual FN rules** (ADaM-26..32) -- NOT part of this
+  cluster's conversion. They name concrete variables (COMPLFN,
+  FASFN, ...) and map to the existing `value-flag-yn` pattern
+  from Q2 with allowed set `[1, 0]` rather than the stem wildcard.
+  7 rules via the existing pattern.
+- Total coverage for Q11: 19 rules in this pass (12 via new
+  suffix patterns + 7 via existing `value-flag-yn`); plus 2
+  deferred on the CT-availability check.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -371,7 +529,36 @@ sibling pair). Composite-key lookup with a selector row.
   `op_is_not_unique_relationship` plus a custom r_expression per
   rule -- messier, rule-specific.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- New op `op_base_not_equal_abl_row(b_var, a_var, group_keys,
+  abl_col = 'ABLFL', abl_value = 'Y', basetype_gate)`:
+  - For each row's group (defined by `group_keys`), find the
+    anchor row where `<abl_col> == <abl_value>`.
+  - Fire when the row's `b_var` is populated AND
+    `b_var != anchor[a_var]` using the P21-aligned
+    `.cdisc_value_equal` (numeric + datetime fuzzy, POSIXct
+    canonicalisation, NULL==NULL).
+  - `basetype_gate` encodes the BASETYPE presence condition:
+    `"absent"` -> rule runs only when BASETYPE is not a column in
+    the dataset (metadata gate);
+    `"populated"` -> rule runs row-by-row only when BASETYPE is
+    populated on that row;
+    `"any"` -> no gate.
+- Pattern `baseline-equals-abl-row` with slots `(b_var, a_var,
+  group_keys, basetype_gate)`.
+- 11 .ids rows split by gate:
+  - `basetype_gate=absent` (7 rules): ADaM-181, 182, 183, 354,
+    698, 699, 703.
+  - `basetype_gate=populated` (4 rules): ADaM-744, 745, 789, 790
+    (with `BASETYPE` added to `group_keys`).
+- Index-expanded variants (ADaM-354, 703, 790 with `ByIND`/`AyIND`
+  + `y` placeholder) use the existing `expand: y` machinery.
+- Findings include the anchor row's (PARAMCD, USUBJID[, BASETYPE])
+  in the message for reviewer clarity.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -397,7 +584,31 @@ https://www.fda.gov/industry/fda-resources-data-standards/).
   wire a new op `op_value_in_srs_table`. Delivers the 6 rules
   but balloons scope.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Not bundled. Do NOT ship UNII inside the package (would blow
+  the 5 MB CRAN cap; UNII is ~15-20 MB RDS).
+- 6 rules (CG0442, CG0443, CG0445, CG0446, CG0450, CG0451) stay
+  narrative with a `blocker: ext-registry-srs` tag in
+  progress.csv.
+- Follow-on work (separate pass, not in the Q4-Q14 cycle):
+  - New file `R/srs-fetch.R` reusing Q2's downloader
+    architecture: `download_srs(version, dest = user_cache)`
+    fetches from the FDA public bulk download, parses into a
+    tidy (unii, preferred_name, synonyms) table, writes RDS to
+    `tools::R_user_dir("herald","cache")`.
+  - New op `op_value_in_srs_table(name, field = "preferred_name"
+    | "unii")` lazy-loads from cache via `ctx$srs`, returns NA
+    when the cache is empty (so the rule advises rather than
+    fires in offline / un-downloaded environments).
+  - After op + downloader land, convert the 6 rules via a new
+    pattern `value-in-srs-registry` with slots `(var, field)`.
+- Source of truth (record now to save lookup later):
+  - https://fis.fda.gov/extensions/FDA_SRS_UNII/FDA_SRS_UNII.html
+  - https://precision.fda.gov/uniisearch/ (search UI)
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -433,7 +644,54 @@ https://www.fda.gov/industry/fda-resources-data-standards/).
 - (b) Skip the tail entirely -- coverage caps at ~1050/1814
   (58%). The tail rules are low-frequency in practice.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Triage, don't pre-author. Three tracks:
+
+  1. **Absorb 13+ rules into already-decided patterns** (no new
+     work beyond adding .ids rows when the prior-Q conversions
+     run):
+     - 6 rules (ADaM-176, 269-271, 363, 619 "VAR is not equal to
+       Y or null") -> Q4 `value-conditional-in-literal-set` with
+       allowed `[Y, null]`.
+     - 4 rules (ADaM-891-894 "on a given record, more than one
+       value of VAR for VAR") -> Q3 `uniqueness-grouped` with
+       `[USUBJID]` as the group key.
+     - 3 rules (CG0284, CG0440, CG0457 "TSVAL is integer and
+       > 0") -> Q4 `value-conditional-equal-literal` with
+       assertion leaf using the existing `is_greater_than` /
+       `is_integer` comparison ops.
+
+  2. **Two new tiny ops + one new pattern** (covers 5 rules):
+     - 3 rules (CG0398, CG0536, CG0537 "at most one record per
+       subject per epoch") -> existing `is_not_unique_set` with
+       composite key `[USUBJID, EPOCH]` (or adding DSSCAT for
+       CG0536). No new op; just `.ids` rows.
+     - 2 rules (CG0538, CG0539 "no more than 1 record per subject
+       has DSSCAT = LIT") -> new op
+       `op_max_n_records_per_group_matching(name, value,
+       group_keys, max_n)` + pattern
+       `max-n-records-per-group`.
+     - 2 rules (ADaM-664, 669 "VAR is populated and VAR is present
+       and not populated") -> existing combinator
+       `all: [non_empty(v1), exists(v2), empty(v2)]`. Just
+       pattern + `.ids`; no new op.
+
+  3. **Residual ~30 singletons** (1-2 rules each, bespoke prose):
+     - Do NOT pre-author. Stand up a triage script
+       `tools/rule-authoring/triage-residual.R` that groups them
+       by candidate primitive and writes a CSV for ad-hoc
+       conversion.
+     - Convert them only as they surface in real submissions --
+       don't speculatively add engine code for rules that may
+       never fire in practice.
+
+- Net target after Q4-Q14 executions: predicate coverage ~80%
+  (~1450/1814). Remaining ~20% is the true long tail + the
+  FDA-SRS six (Q13) + conditional dataset-required rules (Q9).
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
