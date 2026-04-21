@@ -227,7 +227,7 @@ op_label_by_suffix_missing <- function(data, ctx, suffix, value) {
       suffix = list(type = "string", required = TRUE),
       value  = list(type = "string", required = TRUE)
     ),
-    cost_hint = "O(c)",
+    cost_hint = "O(1)",
     column_arg = NA_character_,
     returns_na_ok = FALSE,
     examples = list(list(suffix = "DT", value = "Date"))
