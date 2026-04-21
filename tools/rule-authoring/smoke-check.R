@@ -392,6 +392,49 @@ if (run_all) {
     return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
   }
 
+  # Special-case synth for value-var-name-in-ref-dataset pattern:
+  # single-leaf value_not_var_in_ref_dataset. Positive: value is NOT in
+  # the reference dataset's columns. Negative: value IS a column name in
+  # the ref dataset matching the suffix.
+  if (length(lv) == 1L && ops[[1L]] == "value_not_var_in_ref_dataset") {
+    var    <- as.character(lv[[1L]]$name)
+    ref_ds <- toupper(as.character(lv[[1L]]$reference_dataset %||% ""))
+    suffix <- as.character(lv[[1L]]$name_suffix %||% "")
+    scope  <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick   <- pick_dataset_for_scope(scope)
+    if (!is.na(pick$dataset) && pick$dataset != ref_ds) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else {
+      ds_name <- "TD"; spec <- NULL
+    }
+    # Pick a sample good value that matches the suffix (e.g. "ADT"
+    # matches `(DT|DTC|DTM)`); fallback simple names otherwise.
+    good_var <- if (grepl("DT|DTC|DTM", suffix)) "ADT" else "REFVAR"
+    mk <- function(fire) {
+      main_cols <- list(USUBJID = c("S1","S2"))
+      main_cols[[var]] <- if (isTRUE(fire)) c("NOT_A_VAR", "NOT_A_VAR")
+                          else              c(good_var, good_var)
+      ref_cols  <- list(USUBJID = c("S1","S2"))
+      ref_cols[[good_var]] <- c("val","val")
+      datasets <- list(main = main_cols, ref = ref_cols)
+      names(datasets) <- c(ds_name, ref_ds)
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = datasets,
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+        notes        = "synth value-var-name-in-ref-dataset",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
   # Special-case synth for metadata-var-name-length, metadata-var-label-length,
   # and value-all-vars-length-le patterns. Uses raw-datasets path so
   # labels can be set via attr().

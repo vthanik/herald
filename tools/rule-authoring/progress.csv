@@ -604,7 +604,7 @@
 "CG0372","CDISC","SDTM-IG","3.2,3.3,3.4","Low","--TESTCD <= 8 chars and contains only letters, numbers, and underscores and can not start with a number",NA,NA,"narrative",NA,NA,NA
 "CG0373","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset present in study with DOMAIN = SUPP--.RDOMAIN",NA,NA,"narrative",NA,NA,NA
 "CG0374","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset present in study with DOMAIN = RELREC.RDOMAIN",NA,NA,"narrative",NA,NA,NA
-"CG0375","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TDANCVAR = date variable name in ADSL",NA,NA,"narrative",NA,NA,NA
+"CG0375","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TDANCVAR = date variable name in ADSL","value-var-name-in-ref-dataset","value_not_var_in_ref_dataset(TDANCVAR, ADSL, (DT|DTC|DTM))","predicate","2026-04-21T17:50:20Z",NA,NA
 "CG0376","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TDSTOFF = 0 or positive value in ISO 8601 Duration format",NA,NA,"narrative",NA,NA,NA
 "CG0377","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLT = MedDRA lowest level TERM",NA,NA,"narrative",NA,NA,NA
 "CG0378","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLTCD = MedDRA lowest level code",NA,NA,"narrative",NA,NA,NA

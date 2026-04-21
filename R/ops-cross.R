@@ -668,6 +668,58 @@ op_study_day_mismatch <- function(data, ctx, name,
 # etc.). Where `op_ref_col_empty` tests the ref column's nullity,
 # `op_exists_in_ref` just tests row-existence.
 
+# --- value_not_var_in_ref_dataset ------------------------------------------
+# For each row, treat the cell value in `name` column as a variable name
+# and verify that it IS a column in `reference_dataset`. Optionally
+# require the variable name to match a suffix regex (e.g. "(DT|DTC|DTM)"
+# for date variables). Fires TRUE when:
+#   * value is not a column in reference_dataset, OR
+#   * value IS a column but doesn't match the required suffix.
+# Null / empty cell -> NA (advisory).
+#
+# Mirrors a P21 val:Lookup with Variable="%VALUE%" projected against the
+# reference dataset's column list. P21's SDTM-IG 3.3 does NOT encode
+# CG0375 (TDANCVAR must be a date variable in ADSL) as an explicit rule
+# -- only the ItemDef metadata exists. herald authors this pattern
+# directly from the CDISC narrative.
+
+op_value_not_var_in_ref_dataset <- function(data, ctx, name,
+                                             reference_dataset,
+                                             name_suffix = NULL) {
+  n <- nrow(data)
+  if (is.null(data[[name]])) return(rep(NA, n))
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+  ref_cols_upper <- toupper(names(ref_ds))
+  values <- toupper(as.character(data[[name]]))
+  values <- sub("\\s+$", "", values)
+
+  is_empty <- is.na(values) | !nzchar(values)
+  in_ref   <- values %in% ref_cols_upper
+  fires    <- !in_ref
+
+  if (!is.null(name_suffix) && nzchar(as.character(name_suffix))) {
+    suffix_rx <- paste0(toupper(as.character(name_suffix)), "$")
+    matches_suffix <- grepl(suffix_rx, values, perl = TRUE)
+    fires <- fires | (in_ref & !matches_suffix)
+  }
+  fires[is_empty] <- NA
+  fires
+}
+.register_op(
+  "value_not_var_in_ref_dataset", op_value_not_var_in_ref_dataset,
+  meta = list(
+    kind = "cross",
+    summary = "Value in `name` column is not a variable in `reference_dataset` (optionally with required suffix)",
+    arg_schema = list(
+      name              = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE),
+      name_suffix       = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
 op_missing_in_ref <- function(data, ctx, name,
                               reference_dataset,
                               key = NULL, reference_key = NULL) {

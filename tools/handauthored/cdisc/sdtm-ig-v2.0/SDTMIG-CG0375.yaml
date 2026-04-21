@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: TDANCVAR
 check:
-  narrative: TDANCVAR = date variable name in ADSL
-  condition: ''
+  operator: value_not_var_in_ref_dataset
+  name: TDANCVAR
+  reference_dataset: ADSL
+  name_suffix: (DT|DTC|DTM)
 outcome:
   message: TDANCVAR = date variable name in ADSL
   severity: Medium
@@ -31,5 +33,5 @@ provenance:
     reference date variable name.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
 

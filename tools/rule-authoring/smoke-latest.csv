@@ -17,6 +17,7 @@
 "value-all-vars-length-le","17",1,0,"synth","pass"
 "value-populated-required","196",2,0,"synth","pass"
 "value-populated-required","197",2,0,"synth","pass"
+"value-var-name-in-ref-dataset","CG0375",2,0,"synth","pass"
 "uniqueness-grouped","105",2,0,"synth","pass"
 "uniqueness-grouped","106",2,0,"synth","pass"
 "uniqueness-grouped","123",2,0,"synth","pass"
