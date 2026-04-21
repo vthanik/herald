@@ -4,8 +4,8 @@ Scanned 1814 handauthored rules.
 
 | status | count |
 |---|---:|
-| narrative (needs authoring) | 1264 |
-| predicate (converted) | 550 |
+| narrative (needs authoring) | 1259 |
+| predicate (converted) | 555 |
 | skipped / blocked | 0 |
 | **total** | 1814 |
 
@@ -15,8 +15,8 @@ Scanned 1814 handauthored rules.
 |---|---|---:|
 | ADaM-IG | narrative | 452 |
 | ADaM-IG | predicate | 338 |
-| SDTM-IG | narrative | 322 |
-| SDTM-IG | predicate | 212 |
+| SDTM-IG | narrative | 317 |
+| SDTM-IG | predicate | 217 |
 
 ## By pattern (converted)
 
@@ -31,16 +31,18 @@ Scanned 1814 handauthored rules.
 | presence-required | 51 |
 | cross-lookup | 21 |
 | metadata-label-contains | 18 |
-| value-conditional-null-empty | 10 |
+| value-conditional-null-empty | 11 |
 | value-conditional-null-populated | 9 |
+| value-conditional-literal-assert | 8 |
 | value-length-le | 8 |
-| value-conditional-literal-assert | 7 |
 | value-conditional-equal-column | 5 |
 | value-conditional-null-eq | 5 |
-| value-conditional-populated-eq-lit | 4 |
+| value-conditional-populated-eq-lit | 5 |
 | value-not-equal-column | 4 |
 | value-conditional-not-equal-column | 3 |
 | value-conditional-null-crossref | 2 |
+| value-conditional-empty-noteq-lit | 1 |
+| value-conditional-populated-required | 1 |
 | value-conditional-regex-match | 1 |
 | value-equal-column | 1 |
 

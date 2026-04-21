@@ -12,8 +12,13 @@ scope:
   exclude_domains: []
 variable: EXDOSE
 check:
-  narrative: EXDOSE = 0
-  condition: EXTRT = 'PLACEBO'
+  all:
+  - operator: is_contained_by
+    name: EXTRT
+    value: PLACEBO
+  - operator: not_equal_to
+    name: EXDOSE
+    value: '0'
 outcome:
   message: EXDOSE = 0
   severity: Medium
@@ -25,5 +30,4 @@ provenance:
     EXDOSE = 0 (indicating 0 mg of active ingredient was taken or administered).
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

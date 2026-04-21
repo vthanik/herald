@@ -455,6 +455,93 @@ if (run_all) {
     }
   }
 
+  # Special-case synth for value-conditional-populated-required pattern:
+  # {all: [non_empty(cond), empty(target)]} -- fires when cond populated
+  # AND target empty (target was required because cond was populated).
+  if (length(lv) == 2L &&
+      ops[[1L]] == "non_empty" &&
+      ops[[2L]] == "empty") {
+    cond_var <- as.character(lv[[1L]]$name)
+    target   <- as.character(lv[[2L]]$name)
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- "AE"; spec <- NULL
+    }
+    dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+    exp <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+    cond_var_r <- exp(cond_var); target_r <- exp(target)
+    mk <- function(fire) {
+      cols_list <- list(USUBJID = c("S1", "S2"))
+      cols_list[[cond_var_r]] <- c("X", "X")
+      cols_list[[target_r]]   <- if (isTRUE(fire)) c("", "") else c("VAL", "VAL")
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+        notes        = "synth value-conditional-populated-required",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
+  # Special-case synth for value-conditional-empty-noteq-lit pattern:
+  # {all: [empty(cond_var), equal_to(target, 'LIT')]} -- fires when cond
+  # is empty AND target IS the forbidden literal. Positive row 1: cond
+  # empty + target == LIT (fires). Negative: cond empty + target != LIT.
+  if (length(lv) == 2L &&
+      ops[[1L]] == "empty" &&
+      ops[[2L]] == "equal_to" &&
+      !isFALSE(lv[[2L]]$value_is_literal)) {
+    cond_var <- as.character(lv[[1L]]$name)
+    target   <- as.character(lv[[2L]]$name)
+    lit      <- as.character(lv[[2L]]$value)
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- "TA"; spec <- NULL
+    }
+    dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+    exp <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+    cond_var_r <- exp(cond_var); target_r <- exp(target)
+    mk <- function(fire) {
+      cols_list <- list(USUBJID = c("S1", "S2"))
+      cols_list[[cond_var_r]] <- c("", "")
+      cols_list[[target_r]]   <- if (isTRUE(fire)) c(lit, lit) else c("OTHER", "OTHER")
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+        notes        = "synth value-conditional-empty-noteq-lit",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
   # Special-case synth for value-conditional-populated-eq-lit pattern:
   # {all: [non_empty(cond_var), not_equal_to(target, 'LIT')]}.
   # Positive row 1: cond populated + target != LIT (violation). Row 2:

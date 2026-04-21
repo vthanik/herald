@@ -18,8 +18,11 @@ scope:
   exclude_domains: []
 variable: --OCCUR
 check:
-  narrative: --OCCUR = null
-  condition: (--PRESP ^= 'Y' and --OCCUR is present in dataset) or (--STAT=NOT DONE)
+  all:
+  - operator: empty
+    name: --PRESP
+  - operator: non_empty
+    name: --OCCUR
 outcome:
   message: --OCCUR = null
   severity: Medium
@@ -42,5 +45,4 @@ provenance:
     be null or have a value of NOT DONE]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

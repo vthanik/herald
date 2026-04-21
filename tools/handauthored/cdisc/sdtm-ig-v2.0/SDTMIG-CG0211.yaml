@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: ETCD
 check:
-  narrative: ETCD = 'UNPLAN'
-  condition: SEUPDES ^= null
+  all:
+  - operator: non_empty
+    name: SEUPDES
+  - operator: not_equal_to
+    name: ETCD
+    value: UNPLAN
 outcome:
   message: ETCD = 'UNPLAN'
   severity: Medium
@@ -28,5 +32,4 @@ provenance:
     of the unplanned Element only if ETCD has the value of "UNPLAN".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
