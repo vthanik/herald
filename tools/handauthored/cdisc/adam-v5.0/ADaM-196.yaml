@@ -14,9 +14,8 @@ scope:
 variable: PARAM
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: empty
+  name: PARAM
 outcome:
   message: PARAM is not populated
   severity: Medium
@@ -31,4 +30,4 @@ provenance:
     timepoint, the structure is one or more records per subject per analysis parameter.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

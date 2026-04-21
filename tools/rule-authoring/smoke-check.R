@@ -392,6 +392,96 @@ if (run_all) {
     return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
   }
 
+  # Special-case synth for value-regex-format pattern:
+  # single-leaf matches_regex or not_matches_regex.
+  if (length(lv) == 1L && ops[[1L]] %in% c("matches_regex","not_matches_regex")) {
+    var <- as.character(lv[[1L]]$name)
+    pat <- as.character(lv[[1L]]$value)
+    op_name <- ops[[1L]]
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADLB"; spec <- list(class_map = list(ADLB = "BASIC DATA STRUCTURE"))
+    } else {
+      ds_name <- "AE"; spec <- NULL
+    }
+    # Pick values that match / don't match the pattern.
+    # Known patterns in use: ^[A-Za-z] (start with letter),
+    # [^A-Za-z0-9_] (contains non-word char).
+    mk <- function(fire) {
+      value_matches    <- "MATCH01"       # starts with letter, has underscores
+      value_nomatch_start <- "1STARTS_NUM" # starts with digit -> fails ^[A-Za-z]
+      value_bad_char   <- "HAS-DASH"      # dash is non-word char
+      if (op_name == "matches_regex") {
+        # violation when value matches pattern
+        pos_val <- if (grepl("\\[\\^A-Za-z0-9_\\]", pat)) value_bad_char else value_matches
+        neg_val <- "OKAYVAL1"
+      } else {
+        # not_matches_regex: violation when value does NOT match
+        pos_val <- if (grepl("\\^\\[A-Za-z\\]", pat)) value_nomatch_start else value_bad_char
+        neg_val <- value_matches
+      }
+      cols_list <- list(USUBJID = c("S1","S2"))
+      cols_list[["PARAMCD"]] <- c("P1","P1")
+      cols_list[[var]] <- if (isTRUE(fire)) c(pos_val, pos_val) else c(neg_val, neg_val)
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+        notes        = "synth value-regex-format",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
+  # Special-case synth for value-populated-required pattern:
+  # single-leaf empty(var) -- fires per row when var is null.
+  if (length(lv) == 1L && ops[[1L]] == "empty") {
+    var <- as.character(lv[[1L]]$name)
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADLB"; spec <- list(class_map = list(ADLB = "BASIC DATA STRUCTURE"))
+    } else {
+      ds_name <- "AE"; spec <- NULL
+    }
+    dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+    exp <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+    var_r <- exp(var)
+    mk <- function(fire) {
+      cols_list <- list(USUBJID = c("S1","S2"))
+      cols_list[["PARAMCD"]] <- c("P1","P1")
+      cols_list[[var_r]] <- if (isTRUE(fire)) c("","") else c("VAL","VAL")
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+        notes        = "synth value-populated-required",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
   # Special-case synth for value-arith-check pattern:
   # single-leaf is_not_diff or is_not_pct_diff.
   if (length(lv) == 1L && ops[[1L]] %in% c("is_not_diff", "is_not_pct_diff")) {

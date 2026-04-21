@@ -14,9 +14,9 @@ scope:
 variable: PARAMCD
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: not_matches_regex
+  name: PARAMCD
+  value: ^[A-Za-z0-9_]+$
 outcome:
   message: PARAMCD has characters that are not letters, digits, and underscores
   severity: Medium
@@ -29,4 +29,4 @@ provenance:
     letter; contains only letters and digits).'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

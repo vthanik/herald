@@ -1,0 +1,3 @@
+"rule_id","op","var","pattern"
+"144","not_matches_regex","PARAMCD","^[A-Za-z]"
+"145","not_matches_regex","PARAMCD","^[A-Za-z0-9_]+$"

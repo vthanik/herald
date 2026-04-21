@@ -14,9 +14,9 @@ scope:
 variable: PARAMCD
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: longer_than
+  name: PARAMCD
+  value: 8
 outcome:
   message: PARAMCD has more than 8 characters in length
   severity: Medium
@@ -29,4 +29,4 @@ provenance:
     letter; contains only letters and digits).'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
