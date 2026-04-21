@@ -12,9 +12,11 @@ scope:
 variable: 'RACEN '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: RACE is populated
+  all:
+  - name: RACE
+    operator: non_empty
+  - name: RACEN
+    operator: empty
 outcome:
   message: RACE is populated and RACEN is not populated
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     If races need to be categorized differently, then use variables ARACE and ARACEN.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

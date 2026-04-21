@@ -14,9 +14,11 @@ scope:
 variable: LVOTFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: LVOTFN is populated
+  all:
+  - name: LVOTFN
+    operator: non_empty
+  - name: LVOTFL
+    operator: empty
 outcome:
   message: On a given record, LVOTFN is populated and LVOTFL is not populated
   severity: Medium
@@ -29,5 +31,4 @@ provenance:
     LVOTFN cannot be present unless LVOTFL is also present. When LVOTFL and LVOTFN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

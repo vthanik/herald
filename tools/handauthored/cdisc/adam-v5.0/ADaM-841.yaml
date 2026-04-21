@@ -12,9 +12,11 @@ scope:
 variable: 'ALQFL '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ALQFN is populated
+  all:
+  - name: ALQFN
+    operator: non_empty
+  - name: ALQFL
+    operator: empty
 outcome:
   message: ALQFN is populated and ALQFL is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

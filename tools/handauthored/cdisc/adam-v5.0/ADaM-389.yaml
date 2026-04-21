@@ -12,9 +12,11 @@ scope:
 variable: BTOXGRHN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BTOXGRH is populated
+  all:
+  - name: BTOXGRH
+    operator: non_empty
+  - name: BTOXGRHN
+    operator: empty
 outcome:
   message: On a given record, BTOXGRH is populated and BTOXGRHN is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     ATOXGRHN cannot be present unless ATOXGRH is also present. When ATOXGRH and ATOXGRHN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

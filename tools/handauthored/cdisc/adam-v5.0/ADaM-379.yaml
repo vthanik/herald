@@ -12,9 +12,11 @@ scope:
 variable: BTOXGR
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BTOXGRN is populated
+  all:
+  - name: BTOXGRN
+    operator: non_empty
+  - name: BTOXGR
+    operator: empty
 outcome:
   message: On a given record, BTOXGRN is populated and BTOXGR is not populated
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     on a given record, either both must be populated or both must be null.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

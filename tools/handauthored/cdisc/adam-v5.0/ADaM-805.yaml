@@ -12,9 +12,11 @@ scope:
 variable: 'SUBJTYPC '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SUBJTYP is populated
+  all:
+  - name: SUBJTYP
+    operator: non_empty
+  - name: SUBJTYPC
+    operator: empty
 outcome:
   message: SUBJTYP is populated and SUBJTYPC is not populated
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     of SUBJTYP. For first-in-human studies, the value can be “Healthy volunteers”.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

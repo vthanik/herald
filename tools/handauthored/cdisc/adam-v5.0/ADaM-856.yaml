@@ -12,9 +12,11 @@ scope:
 variable: 'ACYCLE '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ACYCLEC is populated
+  all:
+  - name: ACYCLEC
+    operator: non_empty
+  - name: ACYCLE
+    operator: empty
 outcome:
   message: ACYCLEC is populated and ACYCLE is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     assigned from its corresponding numeric pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

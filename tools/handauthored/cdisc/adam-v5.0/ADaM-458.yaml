@@ -14,9 +14,11 @@ scope:
 variable: TRTPN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTP is populated
+  all:
+  - name: TRTP
+    operator: non_empty
+  - name: TRTPN
+    operator: empty
 outcome:
   message: On a given record, TRTP is populated and TRTPN is not populated
   severity: Medium
@@ -29,5 +31,4 @@ provenance:
     TRTPN cannot be present unless TRTP is also present. When TRTP and TRTPN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

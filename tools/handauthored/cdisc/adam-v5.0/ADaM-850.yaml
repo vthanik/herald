@@ -12,9 +12,11 @@ scope:
 variable: 'ROUTEN '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ROUTE is populated
+  all:
+  - name: ROUTE
+    operator: non_empty
+  - name: ROUTEN
+    operator: empty
 outcome:
   message: ROUTE is populated and ROUTEN is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     from its corresponding character pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

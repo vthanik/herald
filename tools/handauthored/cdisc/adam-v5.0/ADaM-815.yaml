@@ -12,9 +12,11 @@ scope:
 variable: 'SUBJIDN '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SUBJID is populated
+  all:
+  - name: SUBJID
+    operator: non_empty
+  - name: SUBJIDN
+    operator: empty
 outcome:
   message: SUBJID is populated and SUBJIDN is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     from its corresponding character pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,9 +12,11 @@ scope:
 variable: TRTSEQAN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTSEQA is populated
+  all:
+  - name: TRTSEQA
+    operator: non_empty
+  - name: TRTSEQAN
+    operator: empty
 outcome:
   message: On a given record, TRTSEQA is populated and TRTSEQAN is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     TRTSEQAN cannot be present unless TRTSEQA is also present. When TRTSEQA and TRTSEQAN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

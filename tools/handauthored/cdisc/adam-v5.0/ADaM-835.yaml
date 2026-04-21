@@ -12,9 +12,11 @@ scope:
 variable: 'BLQFN '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BLQFL is populated
+  all:
+  - name: BLQFL
+    operator: non_empty
+  - name: BLQFN
+    operator: empty
 outcome:
   message: BLQFL is populated and BLQFN is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

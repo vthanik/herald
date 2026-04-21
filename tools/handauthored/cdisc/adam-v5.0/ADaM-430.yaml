@@ -14,9 +14,11 @@ scope:
 variable: APERIOD
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: APERIODC is populated
+  all:
+  - name: APERIODC
+    operator: non_empty
+  - name: APERIOD
+    operator: empty
 outcome:
   message: On a given record, APERIODC is populated and APERIOD is not populated
   severity: Medium
@@ -29,5 +31,4 @@ provenance:
     APERIODC cannot be present unless APERIOD is also present. When APERIOD and APERIODC are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

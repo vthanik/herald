@@ -12,9 +12,11 @@ scope:
 variable: 'COHORT '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: COHORTC is populated
+  all:
+  - name: COHORTC
+    operator: non_empty
+  - name: COHORT
+    operator: empty
 outcome:
   message: COHORTC is populated and COHORT is not populated
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     numeric pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

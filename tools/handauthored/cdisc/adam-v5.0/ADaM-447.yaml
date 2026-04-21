@@ -14,9 +14,11 @@ scope:
 variable: AVISIT
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: AVISITN is populated
+  all:
+  - name: AVISITN
+    operator: non_empty
+  - name: AVISIT
+    operator: empty
 outcome:
   message: On a given record, AVISITN is populated and AVISIT is not populated
   severity: Medium
@@ -29,5 +31,4 @@ provenance:
     AVISITN cannot be present unless AVISIT is also present. On a given record, AVISITN cannot be populated if AVISIT is null. AVISITN can be null when AVISIT is populated, as long as the one-to-one relationship is maintained within a parameter on all rows on which both variables are populated.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

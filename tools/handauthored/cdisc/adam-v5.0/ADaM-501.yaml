@@ -14,9 +14,11 @@ scope:
 variable: APERIOD
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ASPER is populated
+  all:
+  - name: ASPER
+    operator: non_empty
+  - name: APERIOD
+    operator: empty
 outcome:
   message: On a given record, ASPER is populated and APERIOD is not populated
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     if ASPER is present. APERIOD must be populated on all records where ASPER is populated.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

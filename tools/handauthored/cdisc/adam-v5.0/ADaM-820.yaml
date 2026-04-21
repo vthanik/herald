@@ -12,9 +12,11 @@ scope:
 variable: 'SITEIDN '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SITEID is populated
+  all:
+  - name: SITEID
+    operator: non_empty
+  - name: SITEIDN
+    operator: empty
 outcome:
   message: SITEID is populated and SITEIDN is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     from its corresponding character pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

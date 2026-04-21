@@ -12,9 +12,11 @@ scope:
 variable: 'SEX '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SEXN is populated
+  all:
+  - name: SEXN
+    operator: non_empty
+  - name: SEX
+    operator: empty
 outcome:
   message: SEXN is populated and SEX is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     1=Male, 2=Female '
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

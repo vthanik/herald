@@ -12,9 +12,11 @@ scope:
 variable: TRTSEQPN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTSEQP is populated
+  all:
+  - name: TRTSEQP
+    operator: non_empty
+  - name: TRTSEQPN
+    operator: empty
 outcome:
   message: On a given record, TRTSEQP is populated and TRTSEQPN is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     TRTSEQPN cannot be present unless TRTSEQP is also present. When TRTSEQP and TRTSEQPN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

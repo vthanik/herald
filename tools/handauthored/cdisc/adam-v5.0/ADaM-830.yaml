@@ -12,9 +12,11 @@ scope:
 variable: 'DVIDN '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: DVID is populated
+  all:
+  - name: DVID
+    operator: non_empty
+  - name: DVIDN
+    operator: empty
 outcome:
   message: DVID is populated and DVIDN is not populated
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     its corresponding character pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

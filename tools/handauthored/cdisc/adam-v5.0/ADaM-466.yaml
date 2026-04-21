@@ -12,9 +12,11 @@ scope:
 variable: STRATARN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: STRATAR is populated
+  all:
+  - name: STRATAR
+    operator: non_empty
+  - name: STRATARN
+    operator: empty
 outcome:
   message: On a given record, STRATAR is populated and STRATARN is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     STRATARN cannot be present unless STRATAR is also present. When STRATAR and STRATARN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

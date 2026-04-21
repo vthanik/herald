@@ -12,9 +12,11 @@ scope:
 variable: ATOXGRL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ATOXGRLN is populated
+  all:
+  - name: ATOXGRLN
+    operator: non_empty
+  - name: ATOXGRL
+    operator: empty
 outcome:
   message: On a given record, ATOXGRLN is populated and ATOXGRL is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     ATOXGRLN cannot be present unless ATOXGRL is also present. When ATOXGRL and ATOXGRLN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,9 +12,11 @@ scope:
 variable: 'FLGREASC '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: FLGREAS is populated
+  all:
+  - name: FLGREAS
+    operator: non_empty
+  - name: FLGREASC
+    operator: empty
 outcome:
   message: FLGREAS is populated and FLGREASC is not populated
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     of reasons for identification of Data Issue can be found in Section 3.4.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

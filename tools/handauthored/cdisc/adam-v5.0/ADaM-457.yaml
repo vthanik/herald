@@ -14,9 +14,11 @@ scope:
 variable: TRTA
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTAN is populated
+  all:
+  - name: TRTAN
+    operator: non_empty
+  - name: TRTA
+    operator: empty
 outcome:
   message: On a given record, TRTAN is populated and TRTA is not populated
   severity: Medium
@@ -29,5 +31,4 @@ provenance:
     TRTAN cannot be present unless TRTA is also present. When TRTA and TRTAN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,9 +12,11 @@ scope:
 variable: ABLFN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ABLFL is populated
+  all:
+  - name: ABLFL
+    operator: non_empty
+  - name: ABLFN
+    operator: empty
 outcome:
   message: On a given record, ABLFL is populated and ABLFN is not populated
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     ABLFN cannot be present unless ABLFL is also present. When ABLFL and ABLFN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

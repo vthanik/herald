@@ -14,9 +14,11 @@ scope:
 variable: AWTARGET
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: AWTDIFF is populated
+  all:
+  - name: AWTDIFF
+    operator: non_empty
+  - name: AWTARGET
+    operator: empty
 outcome:
   message: AWTDIFF is populated and AWTARGET is not populated
   severity: Medium
@@ -28,4 +30,4 @@ provenance:
     between ADY or ARELTM and AWTARGET.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

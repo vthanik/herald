@@ -12,9 +12,11 @@ scope:
 variable: 'USUBJIDN '
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: USUBJID is populated
+  all:
+  - name: USUBJID
+    operator: non_empty
+  - name: USUBJIDN
+    operator: empty
 outcome:
   message: USUBJID is populated and USUBJIDN is not populated
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     ADPPKIG v1.0, Section 3.2, Table 3.2: Unique numerical representation of USUBJID.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

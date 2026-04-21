@@ -14,9 +14,11 @@ scope:
 variable: ADURU
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ADURN is populated
+  all:
+  - name: ADURN
+    operator: non_empty
+  - name: ADURU
+    operator: empty
 outcome:
   message: ADURN is populated and ADURU is not populated
   severity: Medium
@@ -30,4 +32,4 @@ provenance:
     OCCDS v1.1, Section 3.2.4, Table 3.2.4.1: CDISC Notes for ADURU state: "Conditional on whether ADURN is included".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
