@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: VISIT
 check:
-  narrative: VISIT in TV.VISIT
-  condition: VISIT ^= null and is planned
+  all:
+  - name: VISIT
+    operator: is_not_contained_by
+    value: TV.VISIT
 outcome:
   message: VISIT in TV.VISIT
   severity: Medium
@@ -25,5 +27,4 @@ provenance:
     be those defined in the Trial Visits dataset,
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

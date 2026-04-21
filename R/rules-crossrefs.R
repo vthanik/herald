@@ -160,8 +160,15 @@ resolve_ref <- function(token, ctx) {
       .log_unresolved(ctx, token)
       return(NULL)
     }
-    values <- unique(as.character(ds[[col]]))
-    values <- values[!is.na(values) & nzchar(values)]
+    # Right-trim values before uniquing so that "S1-001 " and "S1-001"
+    # collapse to the same entry in the lookup set (P21 parity:
+    # DataEntryFactory.java:313-328). Whitespace-only cells become NA
+    # and are excluded.
+    raw <- as.character(ds[[col]])
+    trimmed <- sub("\\s+$", "", raw)
+    trimmed[is.na(raw) | !nzchar(trimmed)] <- NA_character_
+    values <- unique(trimmed)
+    values <- values[!is.na(values)]
     return(values)
   }
 

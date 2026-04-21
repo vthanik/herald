@@ -9,9 +9,10 @@ scope:
   exclude_domains: []
 variable: ACTARM
 check:
-  narrative: ACTARM in TA.ARM
-  condition: ACTARM not in ('Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned
-    Treatment')
+  all:
+  - name: ACTARM
+    operator: is_not_contained_by
+    value: TA.ARM
 outcome:
   message: ACTARM in TA.ARM
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
     Restricted to values in Trial Arms in all other cases.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -13,7 +13,7 @@ scope:
 variable: APID
 check:
   narrative: APID in POOLDEF.POOLID
-  condition: APID identifies group of associated persons defined in POOLDEF
+  condition: ''
 outcome:
   message: APID in POOLDEF.POOLID
   severity: Medium
@@ -27,4 +27,3 @@ provenance:
   source_version: '1'
   license: CC-BY-4.0
   executability: narrative
-

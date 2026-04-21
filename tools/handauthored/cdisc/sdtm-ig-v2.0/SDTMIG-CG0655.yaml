@@ -9,8 +9,10 @@ scope:
   exclude_domains: []
 variable: VISITNUM
 check:
-  narrative: VISITNUM in TV.VISITNUM
-  condition: SVPRESP = 'Y'
+  all:
+  - name: VISITNUM
+    operator: is_not_contained_by
+    value: TV.VISITNUM
 outcome:
   message: VISITNUM in TV.VISITNUM
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     Domains, for additional information about handling unplanned Visits.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

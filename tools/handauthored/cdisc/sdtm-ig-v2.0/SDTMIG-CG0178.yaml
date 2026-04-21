@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: IETEST
 check:
-  narrative: IETEST in TI.IETEST
-  condition: ''
+  all:
+  - name: IETEST
+    operator: is_not_contained_by
+    value: TI.IETEST
 outcome:
   message: IETEST in TI.IETEST
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     - Trial Summary and Eligibility: Trial Inclusion/Exclusion Criteria (TI).'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

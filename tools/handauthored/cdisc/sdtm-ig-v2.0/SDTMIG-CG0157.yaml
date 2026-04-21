@@ -13,7 +13,7 @@ scope:
 variable: RSUBJID
 check:
   narrative: RSUBJID in DM.USUBJID
-  condition: Relationship described is to a study subject
+  condition: ''
 outcome:
   message: RSUBJID in DM.USUBJID
   severity: Medium
@@ -26,4 +26,3 @@ provenance:
   source_version: '1'
   license: CC-BY-4.0
   executability: narrative
-

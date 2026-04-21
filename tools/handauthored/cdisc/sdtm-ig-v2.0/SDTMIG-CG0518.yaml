@@ -11,8 +11,10 @@ scope:
   exclude_domains: []
 variable: ARM
 check:
-  narrative: ARM in TA.ARM
-  condition: Study does not use multi-stage arm assignments and ACTARM ^= null
+  all:
+  - name: ARM
+    operator: is_not_contained_by
+    value: TA.ARM
 outcome:
   message: ARM in TA.ARM
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     and ARMNRS is populated.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

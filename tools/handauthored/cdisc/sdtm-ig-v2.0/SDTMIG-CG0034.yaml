@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: VISITNUM
 check:
-  narrative: VISITNUM in SV.VISITNUM
-  condition: VISITNUM ^= null
+  all:
+  - name: VISITNUM
+    operator: is_not_contained_by
+    value: SV.VISITNUM
 outcome:
   message: VISITNUM in SV.VISITNUM
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     variables (VISITNUM and possibly VISIT and/or VISITDY).
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

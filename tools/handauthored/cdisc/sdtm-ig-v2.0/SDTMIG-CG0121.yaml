@@ -9,8 +9,10 @@ scope:
   exclude_domains: []
 variable: ARM
 check:
-  narrative: ARM in TA.ARM
-  condition: ARM not in ('Screen Failure', 'Not Assigned')
+  all:
+  - name: ARM
+    operator: is_not_contained_by
+    value: TA.ARM
 outcome:
   message: ARM in TA.ARM
   severity: Medium
@@ -21,5 +23,4 @@ provenance:
   cited_guidance: Name of the Arm to which the subject was assigned.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

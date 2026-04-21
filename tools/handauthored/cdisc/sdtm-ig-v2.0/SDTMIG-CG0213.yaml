@@ -11,8 +11,10 @@ scope:
   exclude_domains: []
 variable: VISITNUM
 check:
-  narrative: VISITNUM in TV.VISITNUM
-  condition: SVUPDES = null
+  all:
+  - name: VISITNUM
+    operator: is_not_contained_by
+    value: TV.VISITNUM
 outcome:
   message: VISITNUM in TV.VISITNUM
   severity: Medium
@@ -25,5 +27,4 @@ provenance:
     for Assessments: Trial Visits (TV)].'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

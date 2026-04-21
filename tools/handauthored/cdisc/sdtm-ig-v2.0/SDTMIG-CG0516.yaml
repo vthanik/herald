@@ -11,8 +11,10 @@ scope:
   exclude_domains: []
 variable: ARMCD
 check:
-  narrative: ARMCD in TA.ARMCD
-  condition: Study does not use multi-stage arm assignments and ARMCD ^= null
+  all:
+  - name: ARMCD
+    operator: is_not_contained_by
+    value: TA.ARMCD
 outcome:
   message: ARMCD in TA.ARMCD
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     and ARMNRS is populated.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

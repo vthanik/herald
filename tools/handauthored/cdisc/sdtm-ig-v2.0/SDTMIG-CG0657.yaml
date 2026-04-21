@@ -9,8 +9,10 @@ scope:
   exclude_domains: []
 variable: VISIT
 check:
-  narrative: VISIT in TV.VISIT
-  condition: SVPRESP = 'Y'
+  all:
+  - name: VISIT
+    operator: is_not_contained_by
+    value: TV.VISIT
 outcome:
   message: VISIT in TV.VISIT
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
     dataset should also include the corresponding values of VISIT from the TV dataset.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

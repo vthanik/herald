@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: EPOCH
 check:
-  narrative: EPOCH in TA.EPOCH
-  condition: ''
+  all:
+  - name: EPOCH
+    operator: is_not_contained_by
+    value: TA.EPOCH
 outcome:
   message: EPOCH in TA.EPOCH
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     domain, Section 7.2 - Experimental Design: Trial Arms (TA)'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

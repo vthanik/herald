@@ -13,7 +13,7 @@ scope:
 variable: RSUBJID
 check:
   narrative: RSUBJID in POOLDEF.POOLID
-  condition: Relationship described is to a pool
+  condition: ''
 outcome:
   message: RSUBJID in POOLDEF.POOLID
   severity: Medium
@@ -26,4 +26,3 @@ provenance:
   source_version: '1'
   license: CC-BY-4.0
   executability: narrative
-

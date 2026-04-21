@@ -194,6 +194,52 @@ if (run_all) {
   lv <- .extract_leaves_flat(ct)
   ops <- vapply(lv, function(l) l$operator %||% "", character(1L))
 
+  # Special-case synth for is_not_contained_by with a dotted reference
+  # (cross-lookup pattern): build a 2-dataset fixture with a main
+  # dataset containing the row-level column and a reference dataset
+  # containing the lookup column.
+  if (length(lv) == 1L && ops[[1L]] == "is_not_contained_by") {
+    var_a <- as.character(lv[[1L]]$name)
+    ref   <- as.character(lv[[1L]]$value %||% "")
+    if (grepl("^[A-Z][A-Z0-9]{1,7}\\.[A-Z][A-Z0-9_]*$", ref)) {
+      parts   <- strsplit(ref, ".", fixed = TRUE)[[1L]]
+      ref_dom <- parts[[1L]]
+      ref_col <- parts[[2L]]
+      scope   <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+      pick    <- pick_dataset_for_scope(scope)
+      rule_std <- toupper(as.character(rule$standard %||% ""))
+      if (!is.na(pick$dataset)) {
+        ds_name <- pick$dataset
+        spec <- if (pick$via == "class" && !is.na(pick$class))
+          list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+      } else if (grepl("ADAM", rule_std)) {
+        ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+      } else {
+        ds_name <- "AE"; spec <- NULL
+      }
+      if (identical(ds_name, ref_dom)) ds_name <- if (ds_name == "AE") "MH" else "AE"
+      mk_pair <- function(main_val, ref_val, fire) list(
+        rule_id = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets = stats::setNames(
+          list(stats::setNames(list(main_val), var_a),
+               stats::setNames(list(ref_val),  ref_col)),
+          c(ds_name, ref_dom)
+        ),
+        expected = list(fires = fire,
+                        rows = if (isTRUE(fire)) 1L else integer()),
+        notes = sprintf("synth cross-lookup: %s <- %s", var_a, ref),
+        authored = "pattern-fixture-synth@1",
+        spec = spec, `_path` = NA_character_
+      )
+      return(list(
+        pos = mk_pair("TARGET_X", "OTHER_Y", TRUE),
+        neg = mk_pair("SAME_VAL", "SAME_VAL", FALSE),
+        synth = TRUE
+      ))
+    }
+  }
+
   # Special-case synth for is_(not_)unique_relationship: build a 2-row
   # dataset where var_b is the same on both rows but var_a differs
   # (positive: fires) / matches (negative: doesn't fire).

@@ -11,8 +11,10 @@ scope:
   exclude_domains: []
 variable: VISIT
 check:
-  narrative: VISIT in TV.VISIT
-  condition: SVUPDES = null
+  all:
+  - name: VISIT
+    operator: is_not_contained_by
+    value: TV.VISIT
 outcome:
   message: VISIT in TV.VISIT
   severity: Medium
@@ -23,5 +25,4 @@ provenance:
   cited_guidance: Protocol-defined description of clinical encounter.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

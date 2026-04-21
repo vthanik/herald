@@ -11,7 +11,16 @@
 op_is_contained_by <- function(data, ctx, name, value) {
   col <- data[[name]]
   if (is.null(col)) return(rep(NA, nrow(data)))
-  as.character(col) %in% .as_set(value)
+  # Apply the P21 rtrim-null convention to the lookup value so
+  # "S1-001 " matches "S1-001" in the set. Whitespace-only or NA
+  # values become NA in the mask (caller cannot verify containment
+  # when the value itself is missing).
+  raw <- as.character(col)
+  v   <- sub("\\s+$", "", raw)
+  is_missing <- is.na(raw) | !nzchar(v)
+  out <- v %in% .as_set(value)
+  out[is_missing] <- NA
+  out
 }
 .register_op(
   "is_contained_by", op_is_contained_by,
@@ -29,7 +38,8 @@ op_is_contained_by <- function(data, ctx, name, value) {
 )
 
 op_is_not_contained_by <- function(data, ctx, name, value) {
-  !op_is_contained_by(data, ctx, name, value)
+  m <- op_is_contained_by(data, ctx, name, value)
+  ifelse(is.na(m), NA, !m)
 }
 .register_op(
   "is_not_contained_by", op_is_not_contained_by,

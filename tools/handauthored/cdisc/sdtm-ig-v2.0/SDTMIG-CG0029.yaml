@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: USUBJID
 check:
-  narrative: USUBJID in DM.USUBJID
-  condition: Domain Not in ('AP--')
+  all:
+  - name: USUBJID
+    operator: is_not_contained_by
+    value: DM.USUBJID
 outcome:
   message: USUBJID in DM.USUBJID
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     containing subject-level data.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
