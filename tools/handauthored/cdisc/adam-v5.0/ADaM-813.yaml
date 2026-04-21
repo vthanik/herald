@@ -12,9 +12,12 @@ scope:
 variable: USUBJID
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both USUBJID and USUBJIDN are both populated
+  expand: ''
+  all:
+  - name: USUBJIDN
+    operator: is_not_unique_relationship
+    value:
+      related_name: USUBJID
 outcome:
   message: Within a dataset, there is more than one value of USUBJID for a given value
     of USUBJIDN, considering only those rows on which both variables are populated
@@ -27,5 +30,4 @@ provenance:
     ADPPKIG v1.0, Section 3.2, Table 3.2: Unique numerical representation of USUBJID.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

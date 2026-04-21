@@ -13,9 +13,13 @@ scope:
 variable: AyLOC where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: 'y'
+  all:
+  - name: AyLO
+    operator: is_not_unique_relationship
+    value:
+      related_name: AyLOC
+      group_by: PARAMCD
 outcome:
   message: Within a parameter, there is more than one value of AyLOC for a given value
     of AyLO
@@ -30,5 +34,4 @@ provenance:
     AyLO on all rows on which both variables are populated."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

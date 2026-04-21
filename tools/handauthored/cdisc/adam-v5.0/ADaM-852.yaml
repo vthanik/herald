@@ -12,9 +12,12 @@ scope:
 variable: ROUTEN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both ROUTEN and ROUTE are both populated
+  expand: ''
+  all:
+  - name: ROUTE
+    operator: is_not_unique_relationship
+    value:
+      related_name: ROUTEN
 outcome:
   message: 'Within a dataset, there is more than one value of ROUTEN for a given value
     of ROUTE, considering only those rows on which both variables are populated.  '
@@ -28,5 +31,4 @@ provenance:
     from its corresponding character pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -91,13 +91,18 @@
 }
 
 #' Deep-substitute a concrete `value` for every occurrence of placeholder
-#' `ph` in every leaf's `name` under `node`. Non-`name` fields are not
-#' touched. Returns the modified tree.
+#' `ph` in every leaf's `name` under `node`. Also rewrites nested string
+#' fields inside `value` (e.g. `value.related_name`, `value.group_by`)
+#' so operators that accept wildcard names via structured args pick up
+#' the substitution. Returns the modified tree.
 #' @noRd
 .substitute_index <- function(node, ph, value) {
   if (!is.list(node) || length(node) == 0L) return(node)
   if (!is.null(node$name)) {
     node$name <- gsub(ph, value, as.character(node$name), fixed = TRUE)
+  }
+  if (!is.null(node$value)) {
+    node$value <- .substitute_index_deep(node$value, ph, value)
   }
   for (k in c("all", "any")) {
     ch <- node[[k]]
@@ -108,6 +113,21 @@
     node$not <- .substitute_index(node$not, ph, value)
   }
   node
+}
+
+#' Recursively rewrite every character element in a nested list,
+#' substituting `ph` -> `value` anywhere it appears. Used for op args
+#' like `value.related_name` and `value.group_by` where the index
+#' placeholder must be resolved alongside the primary `name` leaf.
+#' @noRd
+.substitute_index_deep <- function(x, ph, value) {
+  if (is.character(x)) {
+    return(gsub(ph, value, x, fixed = TRUE))
+  }
+  if (is.list(x)) {
+    return(lapply(x, .substitute_index_deep, ph = ph, value = value))
+  }
+  x
 }
 
 #' Parse the `expand:` slot into a character vector of placeholder names.

@@ -13,9 +13,12 @@ scope:
 variable: PARAM
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where PARAM and PARAMN are both populated
+  expand: ''
+  all:
+  - name: PARAMN
+    operator: is_not_unique_relationship
+    value:
+      related_name: PARAM
 outcome:
   message: Within a dataset, there is more than one value of PARAM for a given value
     of PARAMN, considering only those rows on which both variables are populated
@@ -28,5 +31,4 @@ provenance:
     mapping to PARAM within a dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

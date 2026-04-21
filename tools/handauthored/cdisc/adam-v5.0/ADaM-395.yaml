@@ -12,9 +12,13 @@ scope:
 variable: ATOXGRL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both ATOXGRL and ATOXGRLN are both populated
+  expand: ''
+  all:
+  - name: ATOXGRLN
+    operator: is_not_unique_relationship
+    value:
+      related_name: ATOXGRL
+      group_by: PARAMCD
 outcome:
   message: Within a parameter, there is more than one value of ATOXGRL for a given
     value of ATOXGRLN, considering only those rows on which both variables are populated
@@ -28,5 +32,4 @@ provenance:
     ATOXGRLN cannot be present unless ATOXGRL is also present. When ATOXGRL and ATOXGRLN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

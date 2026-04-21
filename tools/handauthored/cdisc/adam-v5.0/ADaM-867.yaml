@@ -12,9 +12,12 @@ scope:
 variable: RACEN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both RACEN and RACE are both populated
+  expand: ''
+  all:
+  - name: RACE
+    operator: is_not_unique_relationship
+    value:
+      related_name: RACEN
 outcome:
   message: 'Within a dataset, there is more than one value of RACEN for a given value
     of RACE, considering only those rows on which both variables are populated.  '
@@ -29,5 +32,4 @@ provenance:
     If races need to be categorized differently, then use variables ARACE and ARACEN.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,9 +12,12 @@ scope:
 variable: FORM
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both FORM and FORMN are both populated
+  expand: ''
+  all:
+  - name: FORMN
+    operator: is_not_unique_relationship
+    value:
+      related_name: FORM
 outcome:
   message: Within a dataset, there is more than one value of FORM for a given value
     of FORMN, considering only those rows on which both variables are populated
@@ -28,5 +31,4 @@ provenance:
     from its corresponding character pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

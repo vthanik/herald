@@ -12,9 +12,12 @@ scope:
 variable: SUBJTYP
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both SUBJTYP and SUBJTYPC are both populated
+  expand: ''
+  all:
+  - name: SUBJTYPC
+    operator: is_not_unique_relationship
+    value:
+      related_name: SUBJTYP
 outcome:
   message: Within a dataset, there is more than one value of SUBJTYP for a given value
     of SUBJTYPC, considering only those rows on which both variables are populated
@@ -27,5 +30,4 @@ provenance:
     of SUBJTYP. For first-in-human studies, the value can be “Healthy volunteers”.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

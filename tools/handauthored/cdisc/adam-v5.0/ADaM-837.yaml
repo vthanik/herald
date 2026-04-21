@@ -12,9 +12,12 @@ scope:
 variable: BLQFN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both BLQFN and BLQFL are both populated
+  expand: ''
+  all:
+  - name: BLQFL
+    operator: is_not_unique_relationship
+    value:
+      related_name: BLQFN
 outcome:
   message: 'Within a dataset, there is more than one value of BLQFN for a given value
     of BLQFL, considering only those rows on which both variables are populated.  '
@@ -28,5 +31,4 @@ provenance:
     pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

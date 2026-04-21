@@ -12,9 +12,12 @@ scope:
 variable: FLGREASC
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both FLGREASC and FLGREAS are both populated
+  expand: ''
+  all:
+  - name: FLGREAS
+    operator: is_not_unique_relationship
+    value:
+      related_name: FLGREASC
 outcome:
   message: 'Within a dataset, there is more than one value of FLGREASC for a given
     value of FLGREAS, considering only those rows on which both variables are populated.  '
@@ -29,5 +32,4 @@ provenance:
     of reasons for identification of Data Issue can be found in Section 3.4.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

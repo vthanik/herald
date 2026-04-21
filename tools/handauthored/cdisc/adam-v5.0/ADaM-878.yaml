@@ -12,9 +12,12 @@ scope:
 variable: COUNTRY
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both COUNTRY and COUNTRYN are both populated
+  expand: ''
+  all:
+  - name: COUNTRYN
+    operator: is_not_unique_relationship
+    value:
+      related_name: COUNTRY
 outcome:
   message: Within a dataset, there is more than one value of COUNTRY for a given value
     of COUNTRYN, considering only those rows on which both variables are populated
@@ -26,5 +29,4 @@ provenance:
   cited_guidance: 'ADPPKIG v1.0, Section 3.3, Table 3.3: Numeric version of COUNTRY.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

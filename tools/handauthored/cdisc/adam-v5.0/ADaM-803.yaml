@@ -12,9 +12,12 @@ scope:
 variable: STUDYID
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both STUDYID and STUDYIDN are both populated
+  expand: ''
+  all:
+  - name: STUDYIDN
+    operator: is_not_unique_relationship
+    value:
+      related_name: STUDYID
 outcome:
   message: Within a dataset, there is more than one value of STUDYID for a given value
     of STUDYIDN, considering only those rows on which both variables are populated
@@ -28,5 +31,4 @@ provenance:
     from its corresponding character pair variable.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

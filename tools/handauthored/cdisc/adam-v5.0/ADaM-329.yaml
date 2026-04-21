@@ -13,9 +13,13 @@ scope:
 variable: BASECATy where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both BASECATy and BASECAyN are both populated
+  expand: 'y'
+  all:
+  - name: BASECAyN
+    operator: is_not_unique_relationship
+    value:
+      related_name: BASECATy
+      group_by: PARAMCD
 outcome:
   message: Within a parameter, there is more than one value of BASECATy for a given
     value of BASECAyN, considering only those rows on which both variables are populated
@@ -29,5 +33,4 @@ provenance:
     and BASECAyN."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
