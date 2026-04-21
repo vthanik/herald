@@ -10,9 +10,12 @@ scope:
 variable: MODELGyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: MODELGy is populated
+  expand: 'y'
+  all:
+  - name: MODELGy
+    operator: non_empty
+  - name: MODELGyN
+    operator: empty
 outcome:
   message: 'On a given record, MODELGy is populated and MODELGyN is not populated '
   severity: Medium
@@ -25,5 +28,4 @@ provenance:
     either both must be populated or both must be null.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

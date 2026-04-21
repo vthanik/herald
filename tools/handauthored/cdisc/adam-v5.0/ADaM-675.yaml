@@ -10,9 +10,12 @@ scope:
 variable: DEVGRyN where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: DEVGRy is populated
+  expand: 'y'
+  all:
+  - name: DEVGRy
+    operator: non_empty
+  - name: DEVGRyN
+    operator: empty
 outcome:
   message: 'On a given record, DEVGRy is populated and DEVGRyN is not populated '
   severity: Medium
@@ -25,5 +28,4 @@ provenance:
     either both must be populated or both must be null.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

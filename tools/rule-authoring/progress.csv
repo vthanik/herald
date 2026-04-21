@@ -183,8 +183,6 @@
 "370","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","*TMF is populated and neither *TM nor *DTM is populated",NA,NA,"narrative",NA,NA,NA
 "375","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, a variable which has a suffix of GRyN is populated and a variable with the same root name and suffix of GRy is not populated",NA,NA,"narrative",NA,NA,NA
 "376","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, a variable which has a suffix of GRy is populated and a variable with the same root name and suffix of GRyN is not populated",NA,NA,"narrative",NA,NA,NA
-"377","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxP is populated and TRTxxPN is not populated",NA,NA,"narrative",NA,NA,NA
-"378","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxPN is populated and TRTxxP is not populated",NA,NA,"narrative",NA,NA,NA
 "38","CDISC","ADaM-IG","1.0","Medium","There is more than one value of a variable which has a suffix of GRy for a given value of a variable with the same root name and suffix of GRyN",NA,NA,"narrative",NA,NA,NA
 "381","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGR for a given value of BTOXGRN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "382","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRN for a given value of BTOXGR, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -203,8 +201,6 @@
 "403","CDISC","ADaM-IG","1.2,1.3","Medium","Within a subject, there is more than one value of ATOXDSCL for a given value of PARAM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "405","CDISC","ADaM-IG","1.2,1.3","Medium","Within a subject, there is more than one value of ATOXDSCH for a given value of PARAM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "41","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A numeric variable with a suffix of DT does not have a date format",NA,NA,"narrative",NA,NA,NA
-"411","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ANLzzFN is populated and ANLzzFL is not populated",NA,NA,"narrative",NA,NA,NA
-"412","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ANLzzFL is populated and ANLzzFN is not populated",NA,NA,"narrative",NA,NA,NA
 "413","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ANLzzFN for a given value of ANLzzFL, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "414","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ANLzzFL for a given value of ANLzzFN , considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "419","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRxxPGyN is populated and TRxxPGy is not populated",NA,NA,"narrative",NA,NA,NA
@@ -212,54 +208,16 @@
 "420","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRxxPGy is populated and TRxxPGyN is not populated",NA,NA,"narrative",NA,NA,NA
 "421","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRxxAGyN is populated and TRxxAGy is not populated",NA,NA,"narrative",NA,NA,NA
 "422","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRxxAGy is populated and TRxxAGyN is not populated",NA,NA,"narrative",NA,NA,NA
-"423","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTPGyN is populated and TRTPGy is not populated",NA,NA,"narrative",NA,NA,NA
-"424","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTPGy is populated and TRTPGyN is not populated",NA,NA,"narrative",NA,NA,NA
-"425","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTAGy is populated and TRTAGyN is not populated",NA,NA,"narrative",NA,NA,NA
-"426","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTAGyN is populated and TRTAGy is not populated",NA,NA,"narrative",NA,NA,NA
-"427","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxA is populated and TRTxxAN is not populated",NA,NA,"narrative",NA,NA,NA
-"428","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxAN is populated and TRTxxA is not populated",NA,NA,"narrative",NA,NA,NA
 "43","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A numeric variable with a suffix of DTM does not have a datetime format",NA,NA,"narrative",NA,NA,NA
-"437","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, AVALCATy is populated and AVALCAyN is not populated",NA,NA,"narrative",NA,NA,NA
-"438","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, AVALCAyN is populated and AVALCATy is not populated",NA,NA,"narrative",NA,NA,NA
-"439","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BASECATy is populated and BASECAyN is not populated",NA,NA,"narrative",NA,NA,NA
 "44","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of TM and a variable with a suffix of DTM with the same root name have different time values",NA,NA,"narrative",NA,NA,NA
-"440","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BASECAyN is populated and BASECATy is not populated",NA,NA,"narrative",NA,NA,NA
-"441","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CHGCATy is populated and CHGCATyN is not populated",NA,NA,"narrative",NA,NA,NA
-"442","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CHGCATyN is populated and CHGCATy is not populated",NA,NA,"narrative",NA,NA,NA
-"443","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PCHGCATy is populated and PCHGCAyN is not populated",NA,NA,"narrative",NA,NA,NA
-"444","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PCHGCAyN is populated and PCHGCATy is not populated",NA,NA,"narrative",NA,NA,NA
-"445","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PARCATy is populated and PARCATyN is not populated",NA,NA,"narrative",NA,NA,NA
-"446","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PARCATyN is populated and PARCATy is not populated",NA,NA,"narrative",NA,NA,NA
 "45","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DT and a variable with a suffix of DTM with the same root name have different date values",NA,NA,"narrative",NA,NA,NA
-"450","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, MCRITyML is populated and MCRITyMN is not populated",NA,NA,"narrative",NA,NA,NA
-"451","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, MCRITyMN is populated and MCRITyML is not populated",NA,NA,"narrative",NA,NA,NA
-"452","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, REGIONy is populated and REGIONyN is not populated",NA,NA,"narrative",NA,NA,NA
-"453","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, REGIONyN is populated and REGIONy is not populated",NA,NA,"narrative",NA,NA,NA
-"454","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, SHIFTy is populated and SHIFTyN is not populated",NA,NA,"narrative",NA,NA,NA
-"455","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, SHIFTyN is populated and SHIFTy is not populated",NA,NA,"narrative",NA,NA,NA
 "46","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DY has a value of zero",NA,NA,"narrative",NA,NA,NA
-"460","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQPGy is populated and TSEQPGyN is not populated",NA,NA,"narrative",NA,NA,NA
-"461","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQPGyN is populated and TSEQPGy is not populated",NA,NA,"narrative",NA,NA,NA
-"462","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQAGy is populated and TSEQAGyN is not populated",NA,NA,"narrative",NA,NA,NA
-"463","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQAGyN is populated and TSEQAGy is not populated",NA,NA,"narrative",NA,NA,NA
-"464","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRCMPGy is populated and TRCMPGyN is not populated",NA,NA,"narrative",NA,NA,NA
-"465","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRCMPGyN is populated and TRCMPGy is not populated",NA,NA,"narrative",NA,NA,NA
 "47","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SITEID is not present within ADSL",NA,NA,"narrative",NA,NA,NA
-"470","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwR is populated and STRATwRN is not populated",NA,NA,"narrative",NA,NA,NA
-"471","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwRN is populated and STRATwR is not populated",NA,NA,"narrative",NA,NA,NA
 "472","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwR for a given value of STRATwRN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "473","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwRN for a given value of STRATwR, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"478","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwV is populated and STRATwVN is not populated",NA,NA,"narrative",NA,NA,NA
-"479","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwVN is populated and STRATwV is not populated",NA,NA,"narrative",NA,NA,NA
 "48","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is not present in ADSL",NA,NA,"narrative",NA,NA,NA
 "480","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwV for a given value of STRATwVN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "481","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwVN for a given value of STRATwV, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"482","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BCHGCATy is populated and BCHGCAyN is not populated",NA,NA,"narrative",NA,NA,NA
-"483","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BCHGCAyN is populated and BCHGCATy is not populated",NA,NA,"narrative",NA,NA,NA
-"484","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PBCHGCAy is populated and PBCHGCyN is not populated",NA,NA,"narrative",NA,NA,NA
-"485","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PBCHGCyN is populated and PBCHGCAy is not populated",NA,NA,"narrative",NA,NA,NA
-"486","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CRITyFL is populated and CRITyFN is not populated",NA,NA,"narrative",NA,NA,NA
-"487","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CRITyFN is populated and CRITyFL is not populated",NA,NA,"narrative",NA,NA,NA
 "49","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AGE is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "492","CDISC","ADaM-IG","1.2,1.3","Medium","SHIFTy is present and all of the following variable pairs (BASECATy, AVALCATy), (BNRIND, ANRIND), (ByIND, AyIND), (BTOXGR, ATOXGR), (BTOXGRL, ATOXGRL), (BTOXGRH, ATOXGRH), (BASE, AVAL) and (BASEC, AVALC) are not present",NA,NA,"narrative",NA,NA,NA
 "493","CDISC","ADaM-IG","1.2,1.3","Medium","ANLzzFL is equal to ""N"" where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
@@ -378,16 +336,10 @@
 "672","CDISC","ADaM-IG","1.3","Medium","SPDEVID is not present within ADDL",NA,NA,"narrative",NA,NA,NA
 "673","CDISC","ADaM-IG","1.3","Medium","There is more than one value of DEVGRy for a given value of DEVGRyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "674","CDISC","ADaM-IG","1.3","Medium","There is more than one value of DEVGRyN for a given value of DEVGRy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"675","CDISC","ADaM-IG","1.3","Medium","On a given record, DEVGRy is populated and DEVGRyN is not populated ",NA,NA,"narrative",NA,NA,NA
-"676","CDISC","ADaM-IG","1.3","Medium","On a given record, DEVGRyN is populated and DEVGRy is not populated ",NA,NA,"narrative",NA,NA,NA
 "677","CDISC","ADaM-IG","1.3","Medium","There is more than one value of DEVTYGy for a given value of DEVTYGyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "678","CDISC","ADaM-IG","1.3","Medium","There is more than one value of DEVTYGyN for a given value of DEVTYGy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"679","CDISC","ADaM-IG","1.3","Medium","On a given record, DEVTYGy is populated and DEVTYGyN is not populated ",NA,NA,"narrative",NA,NA,NA
-"680","CDISC","ADaM-IG","1.3","Medium","On a given record, DEVTYGyN is populated and DEVTYGy is not populated ",NA,NA,"narrative",NA,NA,NA
 "681","CDISC","ADaM-IG","1.3","Medium","There is more than one value of MODELGy for a given value of MODELGyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "682","CDISC","ADaM-IG","1.3","Medium","There is more than one value of MODELGyN for a given value of MODELGy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"683","CDISC","ADaM-IG","1.3","Medium","On a given record, MODELGy is populated and MODELGyN is not populated ",NA,NA,"narrative",NA,NA,NA
-"684","CDISC","ADaM-IG","1.3","Medium","On a given record, MODELGyN is populated and MODELGy is not populated ",NA,NA,"narrative",NA,NA,NA
 "685","CDISC","ADaM-IG","1.3","Medium","DEVSDT is not present within ADDL",NA,NA,"narrative",NA,NA,NA
 "686","CDISC","ADaM-IG","1.3","Medium","DEVEDT is not present within ADDL",NA,NA,"narrative",NA,NA,NA
 "687","CDISC","ADaM-IG","1.3","Medium","The value of DEVIPDT is greater than the value of DEVXPDT, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -1456,6 +1408,8 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "360","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUSN for a given value of DTHCAUS, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(DTHCAUS,DTHCAUSN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "373","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CNSR is not present","presence-required","not_exists(CNSR)","predicate","2026-04-21T11:26:53Z","required",NA
 "374","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is not present","presence-required","not_exists(AVAL)","predicate","2026-04-21T11:26:53Z","required",NA
+"377","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxP is populated and TRTxxPN is not populated","value-pair-coupled","non_empty(TRTxxP) & empty(TRTxxPN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"378","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxPN is populated and TRTxxP is not populated","value-pair-coupled","non_empty(TRTxxPN) & empty(TRTxxP)","predicate","2026-04-21T13:12:28Z",NA,NA
 "379","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRN is populated and BTOXGR is not populated","value-conditional-populated","non_empty(BTOXGRN) & empty(BTOXGR)","predicate","2026-04-21T11:35:41Z","condition",NA
 "380","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGR is populated and BTOXGRN is not populated","value-conditional-populated","non_empty(BTOXGR) & empty(BTOXGRN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "385","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRL is populated and BTOXGRLN is not populated","value-conditional-populated","non_empty(BTOXGRL) & empty(BTOXGRLN)","predicate","2026-04-21T11:35:41Z","condition",NA
@@ -1472,10 +1426,18 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "408","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ABLFL is populated and ABLFN is not populated","value-conditional-populated","non_empty(ABLFL) & empty(ABLFN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "409","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ABLFN for a given value of ABLFL, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ABLFL,ABLFN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "410","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ABLFL for a given value of ABLFN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ABLFN,ABLFL)","predicate","2026-04-21T11:50:50Z","unique",NA
+"411","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ANLzzFN is populated and ANLzzFL is not populated","value-pair-coupled","non_empty(ANLzzFN) & empty(ANLzzFL)","predicate","2026-04-21T13:12:28Z",NA,NA
+"412","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ANLzzFL is populated and ANLzzFN is not populated","value-pair-coupled","non_empty(ANLzzFL) & empty(ANLzzFN)","predicate","2026-04-21T13:12:28Z",NA,NA
 "415","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTSEQPN is populated and TRTSEQP is not populated","value-conditional-populated","non_empty(TRTSEQPN) & empty(TRTSEQP)","predicate","2026-04-21T11:35:41Z","condition",NA
 "416","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTSEQP is populated and TRTSEQPN is not populated","value-conditional-populated","non_empty(TRTSEQP) & empty(TRTSEQPN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "417","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTSEQAN is populated and TRTSEQA is not populated","value-conditional-populated","non_empty(TRTSEQAN) & empty(TRTSEQA)","predicate","2026-04-21T11:35:41Z","condition",NA
 "418","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTSEQA is populated and TRTSEQAN is not populated","value-conditional-populated","non_empty(TRTSEQA) & empty(TRTSEQAN)","predicate","2026-04-21T11:35:41Z","condition",NA
+"423","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTPGyN is populated and TRTPGy is not populated","value-pair-coupled","non_empty(TRTPGyN) & empty(TRTPGy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"424","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTPGy is populated and TRTPGyN is not populated","value-pair-coupled","non_empty(TRTPGy) & empty(TRTPGyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"425","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTAGy is populated and TRTAGyN is not populated","value-pair-coupled","non_empty(TRTAGy) & empty(TRTAGyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"426","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTAGyN is populated and TRTAGy is not populated","value-pair-coupled","non_empty(TRTAGyN) & empty(TRTAGy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"427","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxA is populated and TRTxxAN is not populated","value-pair-coupled","non_empty(TRTxxA) & empty(TRTxxAN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"428","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxAN is populated and TRTxxA is not populated","value-pair-coupled","non_empty(TRTxxAN) & empty(TRTxxA)","predicate","2026-04-21T13:12:28Z",NA,NA
 "429","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APERIOD is populated and APERIODC is not populated","value-conditional-populated","non_empty(APERIOD) & empty(APERIODC)","predicate","2026-04-21T11:35:41Z","condition",NA
 "430","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APERIODC is populated and APERIOD is not populated","value-conditional-populated","non_empty(APERIODC) & empty(APERIOD)","predicate","2026-04-21T11:35:41Z","condition",NA
 "431","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASE is populated and APHASEN is not populated","value-conditional-populated","non_empty(APHASE) & empty(APHASEN)","predicate","2026-04-21T11:35:41Z","condition",NA
@@ -1484,21 +1446,53 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "434","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ASPERC is populated and ASPER is not populated","value-conditional-populated","non_empty(ASPERC) & empty(ASPER)","predicate","2026-04-21T11:35:41Z","condition",NA
 "435","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATPT is populated and ATPTN is not populated","value-conditional-populated","non_empty(ATPT) & empty(ATPTN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "436","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATPTN is populated and ATPT is not populated","value-conditional-populated","non_empty(ATPTN) & empty(ATPT)","predicate","2026-04-21T11:35:41Z","condition",NA
+"437","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, AVALCATy is populated and AVALCAyN is not populated","value-pair-coupled","non_empty(AVALCATy) & empty(AVALCAyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"438","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, AVALCAyN is populated and AVALCATy is not populated","value-pair-coupled","non_empty(AVALCAyN) & empty(AVALCATy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"439","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BASECATy is populated and BASECAyN is not populated","value-pair-coupled","non_empty(BASECATy) & empty(BASECAyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"440","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BASECAyN is populated and BASECATy is not populated","value-pair-coupled","non_empty(BASECAyN) & empty(BASECATy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"441","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CHGCATy is populated and CHGCATyN is not populated","value-pair-coupled","non_empty(CHGCATy) & empty(CHGCATyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"442","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CHGCATyN is populated and CHGCATy is not populated","value-pair-coupled","non_empty(CHGCATyN) & empty(CHGCATy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"443","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PCHGCATy is populated and PCHGCAyN is not populated","value-pair-coupled","non_empty(PCHGCATy) & empty(PCHGCAyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"444","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PCHGCAyN is populated and PCHGCATy is not populated","value-pair-coupled","non_empty(PCHGCAyN) & empty(PCHGCATy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"445","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PARCATy is populated and PARCATyN is not populated","value-pair-coupled","non_empty(PARCATy) & empty(PARCATyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"446","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PARCATyN is populated and PARCATy is not populated","value-pair-coupled","non_empty(PARCATyN) & empty(PARCATy)","predicate","2026-04-21T13:12:28Z",NA,NA
 "447","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, AVISITN is populated and AVISIT is not populated","value-conditional-populated","non_empty(AVISITN) & empty(AVISIT)","predicate","2026-04-21T11:35:41Z","condition",NA
 "448","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, DTHCAUS is populated and DTHCAUSN is not populated","value-conditional-populated","non_empty(DTHCAUS) & empty(DTHCAUSN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "449","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, DTHCAUSN is populated and DTHCAUS is not populated","value-conditional-populated","non_empty(DTHCAUSN) & empty(DTHCAUS)","predicate","2026-04-21T11:35:41Z","condition",NA
+"450","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, MCRITyML is populated and MCRITyMN is not populated","value-pair-coupled","non_empty(MCRITyML) & empty(MCRITyMN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"451","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, MCRITyMN is populated and MCRITyML is not populated","value-pair-coupled","non_empty(MCRITyMN) & empty(MCRITyML)","predicate","2026-04-21T13:12:28Z",NA,NA
+"452","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, REGIONy is populated and REGIONyN is not populated","value-pair-coupled","non_empty(REGIONy) & empty(REGIONyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"453","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, REGIONyN is populated and REGIONy is not populated","value-pair-coupled","non_empty(REGIONyN) & empty(REGIONy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"454","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, SHIFTy is populated and SHIFTyN is not populated","value-pair-coupled","non_empty(SHIFTy) & empty(SHIFTyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"455","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, SHIFTyN is populated and SHIFTy is not populated","value-pair-coupled","non_empty(SHIFTyN) & empty(SHIFTy)","predicate","2026-04-21T13:12:28Z",NA,NA
 "456","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTA is populated and TRTAN is not populated","value-conditional-populated","non_empty(TRTA) & empty(TRTAN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "457","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTAN is populated and TRTA is not populated","value-conditional-populated","non_empty(TRTAN) & empty(TRTA)","predicate","2026-04-21T11:35:41Z","condition",NA
 "458","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTP is populated and TRTPN is not populated","value-conditional-populated","non_empty(TRTP) & empty(TRTPN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "459","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTPN is populated and TRTP is not populated","value-conditional-populated","non_empty(TRTPN) & empty(TRTP)","predicate","2026-04-21T11:35:41Z","condition",NA
+"460","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQPGy is populated and TSEQPGyN is not populated","value-pair-coupled","non_empty(TSEQPGy) & empty(TSEQPGyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"461","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQPGyN is populated and TSEQPGy is not populated","value-pair-coupled","non_empty(TSEQPGyN) & empty(TSEQPGy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"462","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQAGy is populated and TSEQAGyN is not populated","value-pair-coupled","non_empty(TSEQAGy) & empty(TSEQAGyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"463","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQAGyN is populated and TSEQAGy is not populated","value-pair-coupled","non_empty(TSEQAGyN) & empty(TSEQAGy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"464","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRCMPGy is populated and TRCMPGyN is not populated","value-pair-coupled","non_empty(TRCMPGy) & empty(TRCMPGyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"465","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRCMPGyN is populated and TRCMPGy is not populated","value-pair-coupled","non_empty(TRCMPGyN) & empty(TRCMPGy)","predicate","2026-04-21T13:12:28Z",NA,NA
 "466","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATAR is populated and STRATARN is not populated","value-conditional-populated","non_empty(STRATAR) & empty(STRATARN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "467","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATARN is populated and STRATAR is not populated","value-conditional-populated","non_empty(STRATARN) & empty(STRATAR)","predicate","2026-04-21T11:35:41Z","condition",NA
 "468","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAR for a given value of STRATARN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(STRATARN,STRATAR)","predicate","2026-04-21T11:50:50Z","unique",NA
 "469","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATARN for a given value of STRATAR, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(STRATAR,STRATARN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"470","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwR is populated and STRATwRN is not populated","value-pair-coupled","non_empty(STRATwR) & empty(STRATwRN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"471","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwRN is populated and STRATwR is not populated","value-pair-coupled","non_empty(STRATwRN) & empty(STRATwR)","predicate","2026-04-21T13:12:28Z",NA,NA
 "474","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATAV is populated and STRATAVN is not populated","value-conditional-populated","non_empty(STRATAV) & empty(STRATAVN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "475","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATAVN is populated and STRATAV is not populated","value-conditional-populated","non_empty(STRATAVN) & empty(STRATAV)","predicate","2026-04-21T11:35:41Z","condition",NA
 "476","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAV for a given value of STRATAVN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(STRATAVN,STRATAV)","predicate","2026-04-21T11:50:50Z","unique",NA
 "477","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAVN for a given value of STRATAV, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(STRATAV,STRATAVN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"478","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwV is populated and STRATwVN is not populated","value-pair-coupled","non_empty(STRATwV) & empty(STRATwVN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"479","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwVN is populated and STRATwV is not populated","value-pair-coupled","non_empty(STRATwVN) & empty(STRATwV)","predicate","2026-04-21T13:12:28Z",NA,NA
+"482","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BCHGCATy is populated and BCHGCAyN is not populated","value-pair-coupled","non_empty(BCHGCATy) & empty(BCHGCAyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"483","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BCHGCAyN is populated and BCHGCATy is not populated","value-pair-coupled","non_empty(BCHGCAyN) & empty(BCHGCATy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"484","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PBCHGCAy is populated and PBCHGCyN is not populated","value-pair-coupled","non_empty(PBCHGCAy) & empty(PBCHGCyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"485","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, PBCHGCyN is populated and PBCHGCAy is not populated","value-pair-coupled","non_empty(PBCHGCyN) & empty(PBCHGCAy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"486","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CRITyFL is populated and CRITyFN is not populated","value-pair-coupled","non_empty(CRITyFL) & empty(CRITyFN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"487","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, CRITyFN is populated and CRITyFL is not populated","value-pair-coupled","non_empty(CRITyFN) & empty(CRITyFL)","predicate","2026-04-21T13:12:28Z",NA,NA
 "488","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ONTRTFL is populated and ONTRTFN is not populated","value-conditional-populated","non_empty(ONTRTFL) & empty(ONTRTFN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "489","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ONTRTFN is populated and ONTRTFL is not populated","value-conditional-populated","non_empty(ONTRTFN) & empty(ONTRTFL)","predicate","2026-04-21T11:35:41Z","condition",NA
 "490","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, LVOTFL is populated and LVOTFN is not populated","value-conditional-populated","non_empty(LVOTFL) & empty(LVOTFN)","predicate","2026-04-21T11:35:41Z","condition",NA
@@ -1579,6 +1573,12 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "668","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, ACYCLE is populated and ACYCLEC is not populated","value-conditional-populated","non_empty(ACYCLE) & empty(ACYCLEC)","predicate","2026-04-21T11:35:41Z","condition",NA
 "670","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ACYCLEC is present and ACYCLE is not present","presence-pair","exists(ACYCLEC) & not_exists(ACYCLE)","predicate","2026-04-21T09:19:57Z","find",NA
 "671","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVALU is not present","presence-required","not_exists(AVALU)","predicate","2026-04-21T11:26:53Z","required",NA
+"675","CDISC","ADaM-IG","1.3","Medium","On a given record, DEVGRy is populated and DEVGRyN is not populated ","value-pair-coupled","non_empty(DEVGRy) & empty(DEVGRyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"676","CDISC","ADaM-IG","1.3","Medium","On a given record, DEVGRyN is populated and DEVGRy is not populated ","value-pair-coupled","non_empty(DEVGRyN) & empty(DEVGRy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"679","CDISC","ADaM-IG","1.3","Medium","On a given record, DEVTYGy is populated and DEVTYGyN is not populated ","value-pair-coupled","non_empty(DEVTYGy) & empty(DEVTYGyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"680","CDISC","ADaM-IG","1.3","Medium","On a given record, DEVTYGyN is populated and DEVTYGy is not populated ","value-pair-coupled","non_empty(DEVTYGyN) & empty(DEVTYGy)","predicate","2026-04-21T13:12:28Z",NA,NA
+"683","CDISC","ADaM-IG","1.3","Medium","On a given record, MODELGy is populated and MODELGyN is not populated ","value-pair-coupled","non_empty(MODELGy) & empty(MODELGyN)","predicate","2026-04-21T13:12:28Z",NA,NA
+"684","CDISC","ADaM-IG","1.3","Medium","On a given record, MODELGyN is populated and MODELGy is not populated ","value-pair-coupled","non_empty(MODELGyN) & empty(MODELGy)","predicate","2026-04-21T13:12:28Z",NA,NA
 "721","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTPN for a given value of TRTP, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTP,TRTPN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "722","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTP for a given value of TRTPN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTPN,TRTP)","predicate","2026-04-21T11:50:50Z","unique",NA
 "723","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTAN for a given value of TRTA, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTA,TRTAN)","predicate","2026-04-21T11:50:50Z","unique",NA

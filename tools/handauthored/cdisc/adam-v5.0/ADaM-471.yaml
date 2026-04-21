@@ -12,9 +12,12 @@ scope:
 variable: STRATwR where w is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: STRATwRN is populated
+  expand: w
+  all:
+  - name: STRATwRN
+    operator: non_empty
+  - name: STRATwR
+    operator: empty
 outcome:
   message: On a given record, STRATwRN is populated and STRATwR is not populated
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     STRATwRN cannot be present unless STRATwR is also present. When STRATwR and STRATwRN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

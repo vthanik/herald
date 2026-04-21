@@ -7,6 +7,7 @@
 #   y  -- integer 1-9, NOT zero-padded, single digit (TRTPGy, RANDy)
 #   zz -- integer 01-99, zero-padded (same shape as xx; used when the name
 #         already contains xx for another slot, e.g. TRxxPGzz)
+#   w  -- integer 1-9, NOT zero-padded (ADaMIG stratum index, STRATwR)
 #
 # A rule that references an indexed name (e.g. "TRTxxPN is present and TRTxxP
 # is not present") applies PER concrete index value. If a dataset carries
@@ -37,7 +38,8 @@
 .INDEX_PATTERNS <- list(
   xx = "[0-9]{2}",
   y  = "[1-9]",
-  zz = "[0-9]{2}"
+  zz = "[0-9]{2}",
+  w  = "[1-9]"
 )
 
 #' Find every concrete value for placeholder `ph` in `cols` that matches the

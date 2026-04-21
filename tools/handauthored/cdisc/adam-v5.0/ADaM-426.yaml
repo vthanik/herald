@@ -14,9 +14,12 @@ scope:
 variable: TRTAGy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTAGyN is populated
+  expand: 'y'
+  all:
+  - name: TRTAGyN
+    operator: non_empty
+  - name: TRTAGy
+    operator: empty
 outcome:
   message: On a given record, TRTAGyN is populated and TRTAGy is not populated
   severity: Medium
@@ -29,5 +32,4 @@ provenance:
     TRTAGyN cannot be present unless TRTAGy is also present. When TRTAGy and TRTAGyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

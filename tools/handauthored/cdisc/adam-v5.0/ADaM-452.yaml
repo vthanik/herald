@@ -12,9 +12,12 @@ scope:
 variable: REGIONyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: REGIONy is populated
+  expand: 'y'
+  all:
+  - name: REGIONy
+    operator: non_empty
+  - name: REGIONyN
+    operator: empty
 outcome:
   message: On a given record, REGIONy is populated and REGIONyN is not populated
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     REGIONyN cannot be present unless REGIONy is also present. When REGIONy and REGIONyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

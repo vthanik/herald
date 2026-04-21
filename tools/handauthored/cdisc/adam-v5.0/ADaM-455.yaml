@@ -12,9 +12,12 @@ scope:
 variable: SHIFTy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SHIFTyN is populated
+  expand: 'y'
+  all:
+  - name: SHIFTyN
+    operator: non_empty
+  - name: SHIFTy
+    operator: empty
 outcome:
   message: On a given record, SHIFTyN is populated and SHIFTy is not populated
   severity: Medium
@@ -28,5 +31,4 @@ provenance:
     then on a given record, either both must be populated or both must be null.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

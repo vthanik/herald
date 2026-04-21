@@ -12,9 +12,12 @@ scope:
 variable: TRTxxAN where xx is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTxxA is populated
+  expand: xx
+  all:
+  - name: TRTxxA
+    operator: non_empty
+  - name: TRTxxAN
+    operator: empty
 outcome:
   message: On a given record, TRTxxA is populated and TRTxxAN is not populated
   severity: Medium
@@ -29,5 +32,4 @@ provenance:
     or both must be null.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

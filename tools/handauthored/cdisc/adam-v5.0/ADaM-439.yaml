@@ -12,9 +12,12 @@ scope:
 variable: BASECAyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BASECATy is populated
+  expand: 'y'
+  all:
+  - name: BASECATy
+    operator: non_empty
+  - name: BASECAyN
+    operator: empty
 outcome:
   message: On a given record, BASECATy is populated and BASECAyN is not populated
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     BASECAyN cannot be present unless BASECATy is also present. When BASECATy and BASECAyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

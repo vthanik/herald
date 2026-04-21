@@ -12,9 +12,12 @@ scope:
 variable: BCHGCATy where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BCHGCAyN is populated
+  expand: 'y'
+  all:
+  - name: BCHGCAyN
+    operator: non_empty
+  - name: BCHGCATy
+    operator: empty
 outcome:
   message: On a given record, BCHGCAyN is populated and BCHGCATy is not populated
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     BCHGCAyN cannot be present unless BCHGCATy is also present. When BCHGCATy and BCHGCAyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

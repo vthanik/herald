@@ -30,6 +30,9 @@
   OCCDS     = "OCCURRENCE DATA STRUCTURE",
   ADAMOTHER = "ADAM OTHER",
 
+  # ADaMIG-MD (Medical Devices) -- v1.0 Section 2.2 structures
+  ADDL      = "DEVICE LEVEL ANALYSIS DATASET",
+
   # SDTM EVENTS
   AE = "EVENTS", APAE = "EVENTS", APMH = "EVENTS", CE = "EVENTS",
   DE = "EVENTS", DS   = "EVENTS", DT   = "EVENTS", DV = "EVENTS",

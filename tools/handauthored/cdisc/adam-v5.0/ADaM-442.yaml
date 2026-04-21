@@ -12,9 +12,12 @@ scope:
 variable: CHGCATy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: CHGCATyN is populated
+  expand: 'y'
+  all:
+  - name: CHGCATyN
+    operator: non_empty
+  - name: CHGCATy
+    operator: empty
 outcome:
   message: On a given record, CHGCATyN is populated and CHGCATy is not populated
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     CHGCATyN cannot be present unless CHGCATy is also present. When CHGCATy and CHGCATyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

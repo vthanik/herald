@@ -12,9 +12,12 @@ scope:
 variable: PARCATyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: PARCATy is populated
+  expand: 'y'
+  all:
+  - name: PARCATy
+    operator: non_empty
+  - name: PARCATyN
+    operator: empty
 outcome:
   message: On a given record, PARCATy is populated and PARCATyN is not populated
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     PARCATyN cannot be present unless PARCATy is also present. When PARCATy and PARCATyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

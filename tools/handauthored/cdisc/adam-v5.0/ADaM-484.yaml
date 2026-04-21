@@ -12,9 +12,12 @@ scope:
 variable: PBCHGCyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: PBCHGCAy is populated
+  expand: 'y'
+  all:
+  - name: PBCHGCAy
+    operator: non_empty
+  - name: PBCHGCyN
+    operator: empty
 outcome:
   message: On a given record, PBCHGCAy is populated and PBCHGCyN is not populated
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     PBCHGCyN cannot be present unless PBCHGCAy is also present. When PBCHGCAy and PBCHGCyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

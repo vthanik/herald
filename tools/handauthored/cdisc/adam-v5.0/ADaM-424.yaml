@@ -14,9 +14,12 @@ scope:
 variable: TRTPGyN where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTPGy is populated
+  expand: 'y'
+  all:
+  - name: TRTPGy
+    operator: non_empty
+  - name: TRTPGyN
+    operator: empty
 outcome:
   message: On a given record, TRTPGy is populated and TRTPGyN is not populated
   severity: Medium
@@ -29,5 +32,4 @@ provenance:
     TRTPGyN cannot be present unless TRTPGy is also present. When TRTPGy and TRTPGyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

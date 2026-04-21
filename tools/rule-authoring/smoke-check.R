@@ -206,7 +206,7 @@ if (run_all) {
   probe_value <- NULL
   if (is.list(ct) && !is.null(ct$expand)) {
     probe_value <- switch(as.character(ct$expand)[[1L]],
-                          xx = "01", y = "1", zz = "01", NULL)
+                          xx = "01", y = "1", zz = "01", w = "1", NULL)
     if (!is.null(probe_value)) {
       ct <- ct; ct$expand <- NULL
       # Replace the placeholder in every leaf's name with the probe.

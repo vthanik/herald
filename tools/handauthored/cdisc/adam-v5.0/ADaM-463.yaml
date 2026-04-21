@@ -14,9 +14,12 @@ scope:
 variable: TSEQAGy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TSEQAGyN is populated
+  expand: 'y'
+  all:
+  - name: TSEQAGyN
+    operator: non_empty
+  - name: TSEQAGy
+    operator: empty
 outcome:
   message: On a given record, TSEQAGyN is populated and TSEQAGy is not populated
   severity: Medium
@@ -29,5 +32,4 @@ provenance:
     TRTAGyN cannot be present unless TRTAGy is also present. When TRTAGy and TRTAGyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

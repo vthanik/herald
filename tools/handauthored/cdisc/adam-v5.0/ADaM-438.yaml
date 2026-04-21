@@ -12,9 +12,12 @@ scope:
 variable: AVALCATy where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: AVALCAyN is populated
+  expand: 'y'
+  all:
+  - name: AVALCAyN
+    operator: non_empty
+  - name: AVALCATy
+    operator: empty
 outcome:
   message: On a given record, AVALCAyN is populated and AVALCATy is not populated
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     AVALCAyN cannot be present unless AVALCATy is also present. When AVALCATy and AVALCAyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
