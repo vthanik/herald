@@ -31,7 +31,17 @@ op_equal_to <- function(data, ctx, name, value, value_is_literal = TRUE) {
     g <- .scalar_compare_guard(value, nrow(data))
     if (!is.null(g)) return(g)
     p <- .coerce_compare(col, value)
-    p$col == p$value
+    result <- p$col == p$value
+    # P21 NullComparison parity (Comparison.java:92-108 +
+    # NullDataEntry.compareTo at DataEntryFactory.java:349): a null
+    # cell compared to a non-null literal is definitively NOT equal --
+    # P21 returns false for the == path, true for the != path.
+    # Treat NA cells as FALSE here so op_not_equal_to fires on a
+    # missing target when the rule asserts `VAR = 'LIT'`.
+    if (!all(is.na(p$value))) {
+      result[is.na(p$col)] <- FALSE
+    }
+    result
   } else {
     other <- data[[as.character(value)]]
     if (is.null(other)) return(rep(NA, nrow(data)))
@@ -80,7 +90,14 @@ op_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) {
   if (isTRUE(value_is_literal)) {
     g <- .scalar_compare_guard(value, nrow(data))
     if (!is.null(g)) return(g)
-    tolower(as.character(col)) == tolower(as.character(value))
+    lc_col <- tolower(as.character(col))
+    lc_val <- tolower(as.character(value))
+    result <- lc_col == lc_val
+    # Same NullComparison parity as op_equal_to.
+    if (!all(is.na(value))) {
+      result[is.na(col)] <- FALSE
+    }
+    result
   } else {
     other <- data[[as.character(value)]]
     if (is.null(other)) return(rep(NA, nrow(data)))

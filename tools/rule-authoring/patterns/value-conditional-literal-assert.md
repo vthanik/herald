@@ -41,7 +41,7 @@ target differs from the required literal. No XML/DSL copy.
 | `in` / `not_in` DSL operator iterates list members with `equalsIgnoreCase` where appropriate | `Expression.java` + `Comparison.java:177-205` | `op_is_contained_by` does case-sensitive `%in%` on rtrimmed values. Matches CDISC text conventions (literals are stored verbatim). |
 | `NULL_ENTRY` vs populated on the guard variable | `DataEntry.java:25` + `NullDataEntry` | `op_is_contained_by` returns NA on NA / empty / all-spaces rows; under `{all}`, NA -> advisory per-row (does not fire). P21's When-false skip has the same no-fire effect. |
 | `== '<LIT>'` dispatch with rtrim of both sides | `DataEntryFactory.java:69-79,313-328` | `op_not_equal_to` -> `op_equal_to` -> `.coerce_compare` (character path for strings); rtrim applied at XPT ingest, so `'LIT '` and `'LIT'` compare equal. |
-| Target null -> Test `==` returns false -> fires (rule violated because target has no value) | `Comparison.java:194-205` | `op_not_equal_to` on an NA target returns NA (R's `NA == 'LIT'` is NA). Under `{all}`, NA -> advisory (not fire). herald is MORE CONSERVATIVE than P21 here: where P21 would fire on a null target, herald emits an advisory so the reviewer can confirm the null is intentional. Document-worthy deviation. |
+| Target null -> Test `==` returns false -> fires (rule violated because target has no value) | `Comparison.java:194-205` + `DataEntryFactory.java:349` (NullDataEntry.compareTo returns -1 vs non-null rhs) | `op_equal_to` now treats NA cells as FALSE when compared to a non-null literal (ops-compare.R `result[is.na(col)] <- FALSE`). Under `{all}` with `not_equal_to`, NA target evaluates to TRUE -> fires. **Matches P21.** (Column-to-column compare path still propagates NA.) |
 | Target on a missing column -> P21 throws `CorruptRuleException` (rule disabled) | `AbstractValidationRule.java:148-161` | `op_not_equal_to` on missing column returns NA -> advisory. |
 | Case sensitivity on literal match | no `(?i)` flag on default Comparison path | R's `==` is case-sensitive. Matches. |
 
@@ -55,31 +55,21 @@ target differs from the required literal. No XML/DSL copy.
 | P21 may permit additional values not in CDISC narrative (e.g. `'MED-RT' @or 'NDF-RT'` for PCLAS, where CDISC says only `'NDF-RT'`) | SD2243 | herald follows CDISC narrative (only `'NDF-RT'` for CG0455). P21 has loosened its rule in config updates; CDISC conformance-rules doc has not caught up. **Known deviation.** |
 | P21 checks standardized forms where CDISC narrative says original (e.g. CG0175 `Test="IESTRESC == 'Y'"` vs CDISC `IEORRES = 'Y'`) | SD1045/1046 | herald checks the CDISC-named column (IEORRES). Follows authoritative CDISC text, not P21's interpretation. **Known deviation** -- both behaviours are defensible; CDISC narrative wins per herald's authoring rule. |
 
-### Note on the target-null deviation
+### Null-target semantics (resolved)
 
-CDISC's intent for these rules: when the condition is met, the target
-MUST be populated with the exact literal. A null target is a
-violation. But herald's `not_equal_to` returns NA on NA input, which
-under `{all}` yields an advisory instead of a fire.
+Earlier drafts of this pattern documented a deviation where herald's
+`not_equal_to` returned NA on a null target (P21 would fire). This
+was fixed in `op_equal_to` / `op_equal_to_ci`: when the rhs is a
+non-null literal, NA cells in the lhs column are now treated as
+FALSE for the equality check. `not_equal_to` consequently returns
+TRUE on null targets, matching P21's NullComparison path
+(`DataEntryFactory.java:349` -- NullDataEntry.compareTo returns -1
+vs non-null rhs -> `!=` evaluates true).
 
-For rules where a null target should fire (e.g. IEORRES must be 'Y'
-when IECAT='EXCLUSION'), authors can compose an extra leaf:
-
-```yaml
-all:
-- operator: is_contained_by
-  name: IECAT
-  value: ['EXCLUSION']
-- any:
-  - operator: is_missing
-    name: IEORRES
-  - operator: not_equal_to
-    name: IEORRES
-    value: 'Y'
-```
-
-This pattern ships the simple compound form; the 7 rules in-scope do
-not require the null-fires-too variant per their cited guidance.
+The fix applies only to the literal-compare branch
+(`value_is_literal = TRUE`). Column-to-column compares still
+propagate NA so paired-variable rules continue to emit advisories
+when either side is missing (safer default for that shape).
 
 ## herald check_tree template
 
