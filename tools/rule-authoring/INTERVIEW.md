@@ -482,8 +482,10 @@ needs a tiny op.
   - **`suffix-var-value-in-codelist`** -- same expansion feeding
     the Q2 `op_value_in_codelist` for ADaM-39 (`*DTF` vs DATEFL
     codelist) and ADaM-40 (`*TMF` vs TIMEFL codelist). 2 rules.
-    Deferred until the Q2 codelist work lands AND the DATEFL /
-    TIMEFL codelists are confirmed present in the bundled CT.
+    **Confirmed unblocked:** DATEFL (Date Imputation Flag) and
+    TIMEFL (Time Imputation Flag) both ship in the bundled ADaM
+    CT (adam-ct.rds). Convert in the same pass as the other
+    Q11 suffix patterns.
   - **`suffix-var-is-numeric`** -- new op
     `op_var_by_suffix_not_numeric(suffix, exclude_prefix)` reading
     `!is.numeric(col)`. Handles ADaM-716's "excluding SDTM
@@ -498,9 +500,10 @@ needs a tiny op.
   FASFN, ...) and map to the existing `value-flag-yn` pattern
   from Q2 with allowed set `[1, 0]` rather than the stem wildcard.
   7 rules via the existing pattern.
-- Total coverage for Q11: 19 rules in this pass (12 via new
-  suffix patterns + 7 via existing `value-flag-yn`); plus 2
-  deferred on the CT-availability check.
+- Total coverage for Q11: 21 rules in this pass (14 via new
+  suffix patterns, incl. ADaM-39 / ADaM-40 now that DATEFL and
+  TIMEFL are confirmed in the bundled CT, + 7 via existing
+  `value-flag-yn`).
 
 **Delivered:** _(pending -- deferred to user implementation)_
 
@@ -679,13 +682,19 @@ https://www.fda.gov/industry/fda-resources-data-standards/).
        pattern + `.ids`; no new op.
 
   3. **Residual ~30 singletons** (1-2 rules each, bespoke prose):
-     - Do NOT pre-author. Stand up a triage script
-       `tools/rule-authoring/triage-residual.R` that groups them
-       by candidate primitive and writes a CSV for ad-hoc
-       conversion.
-     - Convert them only as they surface in real submissions --
-       don't speculatively add engine code for rules that may
-       never fire in practice.
+     - **Revised: triage NOW, not later.** Run
+       `tools/rule-authoring/triage-residual.R` during the
+       Q4-Q14 authoring cycle (not after) -- the same context
+       that's converting Q4-Q14 will spot singletons that share
+       shape with patterns already being authored. Every
+       singleton lands in one of three buckets:
+         (1) absorbs into a Q4-Q14 pattern's .ids -- no new work.
+         (2) cheap enough to author its own pattern now
+             (1-2 rules, existing ops) -- convert inline.
+         (3) genuinely needs new engine work -- tag
+             `blocker: needs-op-<short_name>` and move on.
+     - Expect most singletons to fall in buckets (1) or (2);
+       only (3) stays narrative.
 
 - Net target after Q4-Q14 executions: predicate coverage ~80%
   (~1450/1814). Remaining ~20% is the true long tail + the
@@ -703,4 +712,196 @@ or CDISC-guidance clarification. Target: predicate coverage
 80%+ (~1450/1814) after this interview cycle. Anything beyond
 needs either external CT / registry bundles or new engine
 primitives scoped individually.
+
+---
+
+# Cross-cutting bundle (Q15-Q20)
+
+Implementation-layer decisions that surface while executing the
+Q4-Q14 backlog. Each is a decoupled design choice that should be
+settled before authoring kicks off.
+
+---
+
+## Q15 -- condition-primitive grammar
+
+**Context:** Q1 / Q4 / Q9 all lean on a "reusable condition
+library" for per-rule English `when:` clauses (e.g. `ACTARM in
+('Screen Failure', ...)`, `ARMNRS ^= null`, `IDVAR populated with
+a --SEQ value`, `Milestone = end of treatment`). The library
+doesn't exist yet. We need to fix its surface area so patterns
+across Q1/Q4/Q9 consume a stable vocabulary.
+
+**Proposed grammar (leaves for `when:` combinator slots):**
+
+- `equal_to(name, value)` / `not_equal_to(name, value)` -- exist.
+- `is_contained_by(name, value_list)` /
+  `is_not_contained_by(name, value_list)` -- exist.
+- `non_empty(name)` / `empty(name)` -- exist.
+- `matches_regex(name, pattern)` -- exist.
+- `ends_with(name, suffix)` -- new tiny op (sugar for regex).
+- `less_than(name, value)` / `greater_than(name, value)` -- exist
+  via `op_less_than_by_key` / `op_greater_than_by_key`; add
+  literal-value variants that accept a scalar `value` instead of
+  a cross-dataset column.
+- `is_populated_with_suffix_value(name, suffix)` -- new op for
+  the "IDVAR populated with a --SEQ value" (CG0419) shape.
+- `milestone_is(name)` -- drop. "Milestone associated with X is
+  end of treatment" is a tautology in CDISC authoring; the rule
+  scope already anchors to the variable whose milestone that is.
+  The clause stays documentary only.
+
+**Options:**
+- (a) Ship the grammar above as-is: 6 reusable leaves (all but
+  one already exist), 1 new small op
+  (`is_populated_with_suffix_value`), milestone-tautology
+  dropped. Patterns Q1/Q4/Q9 pick leaves off the list by name;
+  no new combinator needed -- existing `all:` / `any:` / `not:`
+  suffice.  *[recommended]*
+- (b) Build a dedicated `when:` combinator with a domain-
+  specific micro-language (`when: "ARMNRS != null and ACTARM in
+  [...]"`) parsed at compile time. Cleaner YAML, but adds a
+  parser, a spec, and a test surface we can skip.
+- (c) Defer the grammar; hand-translate each `when:` per rule
+  using existing `all: [leaf1, leaf2]` in raw YAML. No library.
+
+**User answer:** _(pending)_
+
+---
+
+## Q16 -- pattern fixture + test strategy
+
+**Context:** Every new pattern added by Q4-Q14 needs a fixture
+that proves positive-fires and negative-passes. `smoke-check.R`
+already runs but the fixture format is inconsistent -- some
+patterns ship `fixtures/<pattern>/{pos,neg}.json`, others
+inline synthetic data in the smoke script, others have no
+fixtures at all. Unblocks a consistent test surface.
+
+**Options:**
+- (a) Standard two-file fixture per pattern at
+  `tools/rule-authoring/fixtures/<pattern>/{pos.json, neg.json}`
+  using the Dataset-JSON v1.1 format (already supported by
+  `read_json()`). Smoke-check runs `validate()` against each;
+  positive must fire all target rule_ids, negative must produce
+  zero fired findings for them. Every Q4-Q14 pattern ships with
+  both files. `smoke-check.R` hard-fails missing fixtures.  *[recommended]*
+- (b) Fixtures only for patterns with >3 rules; smaller patterns
+  rely on unit tests of their op. Less overhead, weaker
+  whole-pipeline confidence.
+- (c) Inline synthetic fixtures in `smoke-check.R` (status quo).
+  Fast to author, hard to reproduce.
+
+**User answer:** _(pending)_
+
+---
+
+## Q17 -- `variable:` prose field normalisation
+
+**Context:** Most narrative rule YAMLs carry a `variable:` field
+that's free-form prose, e.g.
+`variable: "AVALCATy where y is an integer [1-9, not zero-padded]"`.
+After conversion, the `check:` block names the concrete / expanded
+variable; the prose `variable:` field becomes redundant or
+misleading (engine ignores it entirely today).
+
+**Options:**
+- (a) On conversion, rewrite `variable:` to the bare template
+  symbol (e.g. `AVALCATy`) -- the clean name that appears in the
+  check_tree. Drop the prose. Report rendering uses the
+  check_tree's leaf `name` at runtime for finding attribution, so
+  `variable:` becomes a human-readable index-card field only.  *[recommended]*
+- (b) Delete `variable:` entirely from every converted YAML.
+  Minus-1 column but future tooling (discover-patterns,
+  pattern-audit) relies on it for skeleton keying.
+- (c) Keep the prose untouched. Rule maintainers carry the
+  ambiguity forward.
+
+**User answer:** _(pending)_
+
+---
+
+## Q18 -- severity override mechanism
+
+**Context:** CDISC tags each rule with a severity (Medium /
+High / ...). P21 sometimes publishes a stricter severity for the
+same rule. Sponsors frequently want a project-local elevation
+("treat all Medium as Reject for our Q3 submission"). Today
+severity is hardcoded in the rule YAML's `outcome.severity`.
+
+**Options:**
+- (a) Runtime override via a `severity_map` argument on
+  `validate(severity_map = c("Medium" = "High", "CG0085" =
+  "Reject"))`. Map is `<rule_id or severity_category> ->
+  <new_severity>`. Applied in `emit_findings` before writing the
+  row. Rule YAML stays authoritative default; no edits needed
+  to escalate.  *[recommended]*
+- (b) Sponsor-side config file `herald.yaml` with a
+  `severity_overrides:` block auto-loaded from the submission
+  root. More ergonomic for repeated runs, but adds a file-
+  discovery surface to explain.
+- (c) Hard-code severity; force users to fork the rule YAMLs for
+  their project. Not recommended.
+
+**User answer:** _(pending)_
+
+---
+
+## Q19 -- report rendering wiring
+
+**Context:** `inst/report/template.html` is shipped (archival
+format, P21-style, 900px print width, tab switcher) but there's
+no renderer that takes a `herald_result` and fills the six
+`{{...}}` placeholders. Reviewers today can only see the
+findings tibble.
+
+**Options:**
+- (a) Ship a single thin renderer `render_html_report(result,
+  file)` in `R/report-html.R` that:
+  1. Reads `inst/report/template.html`.
+  2. Renders the four tab tables from `result$findings` /
+     `result$rule_catalog` / `result$dataset_meta`.
+  3. Writes the output file. No new deps (pure `sprintf` /
+     `gsub` substitution -- no `glue`, no `rmarkdown`).
+  Do this now so every Q4-Q14 conversion landing gets a usable
+  reviewer output.  *[recommended]*
+- (b) Defer rendering; focus the cycle on rule conversions,
+  let the report land in a follow-on. Shippable tool but ugly
+  reviewer UX in the interim.
+- (c) Rewrite the template with rmarkdown. Heavier dep surface,
+  worse archive reproducibility. Not recommended.
+
+**User answer:** _(pending)_
+
+---
+
+## Q20 -- residual-singletons triage criteria
+
+**Context:** Q14 option (a) said "stand up a triage script for
+the ~30 residual singletons; convert only when they surface in
+real submissions." We need a concrete criterion for what "drop
+from the target corpus" looks like vs "keep narrative indefinitely".
+
+**Options:**
+- (a) Three-state tagging in `progress.csv`:
+  - `narrative` -- default, unconverted.
+  - `blocker: <reason>` -- deliberately parked pending external
+    work (study metadata, UNII, CT availability).
+  - `drop: <reason>` -- the rule's prose is ambiguous,
+    obsolete, or outside CDISC's intent; will never be
+    converted. Requires the reason cited.
+  - `deprecated: <reason>` -- the rule was superseded by a
+    newer CDISC rule.
+  Triage script fills the column after human review; findings
+  report never shows `drop` / `deprecated` entries.  *[recommended]*
+- (b) Binary narrative / predicate only; singletons stay
+  narrative indefinitely. Simpler schema but loses the
+  distinction between "can't convert yet" and "will never
+  convert".
+- (c) Auto-drop anything narrative after 12 months without
+  conversion. Too aggressive; risks discarding genuine rules.
+
+**User answer:** _(pending)_
+
+---
 
