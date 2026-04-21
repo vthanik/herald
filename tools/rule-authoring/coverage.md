@@ -4,8 +4,8 @@ Scanned 1814 handauthored rules.
 
 | status | count |
 |---|---:|
-| narrative (needs authoring) | 1433 |
-| predicate (converted) | 381 |
+| narrative (needs authoring) | 1415 |
+| predicate (converted) | 399 |
 | skipped / blocked | 0 |
 | **total** | 1814 |
 
@@ -13,8 +13,8 @@ Scanned 1814 handauthored rules.
 
 | standard | status | count |
 |---|---|---:|
-| ADaM-IG | narrative | 551 |
-| ADaM-IG | predicate | 239 |
+| ADaM-IG | narrative | 533 |
+| ADaM-IG | predicate | 257 |
 | SDTM-IG | narrative | 392 |
 | SDTM-IG | predicate | 142 |
 
@@ -29,4 +29,5 @@ Scanned 1814 handauthored rules.
 | uniqueness-grouped | 57 |
 | presence-required | 39 |
 | cross-lookup | 21 |
+| metadata-label-contains | 18 |
 

@@ -13,9 +13,9 @@ scope:
 variable: '*EDT'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: label_by_suffix_missing
+  suffix: EDT
+  value: End Date
 outcome:
   message: A variable ending in EDT must contain "End Date" in the label
   severity: High
@@ -31,5 +31,4 @@ provenance:
     incorporated in it.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

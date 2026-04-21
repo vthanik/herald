@@ -150,6 +150,35 @@ if (run_all) {
   )
 }
 
+# Run a rule against pre-built data.frames (with column-level attr()s, e.g.
+# labels) and an optional spec list. Bypasses the JSON fixture loader path,
+# which promotes columns-of-vectors and discards attributes.
+.run_rule_raw <- function(rule_id, datasets, spec_list) {
+  spec <- if (is.null(spec_list) || length(spec_list) == 0L) NULL else {
+    cm <- spec_list$class_map
+    structure(
+      list(ds_spec = data.frame(
+        dataset = toupper(names(cm)),
+        class   = vapply(cm, function(x) as.character(x)[[1L]], character(1L)),
+        stringsAsFactors = FALSE
+      )),
+      class = c("herald_spec", "list")
+    )
+  }
+  res <- tryCatch(
+    herald::validate(files = datasets, spec = spec, rules = rule_id,
+                     quiet = TRUE),
+    error = function(e) { message("  error for ", rule_id, ": ",
+                                   conditionMessage(e)); NULL }
+  )
+  if (is.null(res)) return(list(fired = NA, advisory = NA, error = TRUE))
+  list(
+    fired    = nrow(res$findings[res$findings$status == "fired", ]),
+    advisory = nrow(res$findings[res$findings$status == "advisory", ]),
+    error    = FALSE
+  )
+}
+
 # Synthesize a per-rule fixture from the rule's own check_tree for patterns
 # whose shared fixture collides (e.g. presence-pair where VAR_A of one rule
 # is VAR_B of another). Falls back to the shared fixture when synth isn't
@@ -281,6 +310,34 @@ if (run_all) {
     )
     return(list(pos = mk(pos_cols, TRUE), neg = mk(neg_cols, FALSE),
                 synth = TRUE))
+  }
+
+  # Special-case synth for label_by_suffix_missing (metadata-label-contains
+  # pattern): build a single ADaM BDS-like dataset with one column whose name
+  # ends in `suffix`. Apply the label attribute directly via attr() so the op
+  # can read it. Positive: label lacks `value`; negative: label includes it.
+  if (length(lv) == 1L && ops[[1L]] == "label_by_suffix_missing") {
+    suf <- as.character(lv[[1L]]$suffix %||% "")
+    val <- as.character(lv[[1L]]$value  %||% "")
+    ds_name <- "ADLB"
+    spec    <- list(class_map = list(ADLB = "BASIC DATA STRUCTURE"))
+    col_nm  <- paste0("A", toupper(suf))
+    mk_df <- function(label_text) {
+      df <- data.frame(
+        USUBJID = c("S1", "S2"),
+        PARAMCD = c("X",  "X"),
+        AVAL    = c(1,    2),
+        stringsAsFactors = FALSE,
+        check.names = FALSE
+      )
+      df[[col_nm]] <- c("", "")
+      attr(df[[col_nm]], "label") <- label_text
+      df
+    }
+    pos_ds <- stats::setNames(list(mk_df("Analysis")), ds_name)
+    neg_ds <- stats::setNames(list(mk_df(paste("Analysis", val))), ds_name)
+    return(list(pos_ds = pos_ds, neg_ds = neg_ds, spec = spec,
+                raw = TRUE, synth = TRUE))
   }
 
   synth_ops <- c("exists", "not_exists", "empty", "non_empty",
@@ -469,8 +526,15 @@ for (pat in patterns) {
       if (nrow(rule_row) > 0L) {
         synth <- .synth_rule_fixture(rule_row, fx)
         if (isTRUE(synth$synth)) {
-          r_pos <- .run_rule(rid, synth$pos)
-          r_neg <- .run_rule(rid, synth$neg)
+          if (isTRUE(synth$raw)) {
+            # Synth produced pre-built data.frames (e.g. with
+            # attr()-applied column labels) — bypass JSON fixture path.
+            r_pos <- .run_rule_raw(rid, synth$pos_ds, synth$spec)
+            r_neg <- .run_rule_raw(rid, synth$neg_ds, synth$spec)
+          } else {
+            r_pos <- .run_rule(rid, synth$pos)
+            r_neg <- .run_rule(rid, synth$neg)
+          }
           ok <- !isTRUE(r_pos$error) && !isTRUE(r_neg$error) &&
                 r_pos$fired >= 1L && r_neg$fired == 0L
           used_synth <- TRUE

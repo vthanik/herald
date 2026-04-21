@@ -13,9 +13,9 @@ scope:
 variable: '*STMF'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: label_by_suffix_missing
+  suffix: STMF
+  value: Start Time Imputation Flag
 outcome:
   message: A variable ending in STMF must contain "Start Time Imputation Flag" in
     the label
@@ -32,5 +32,4 @@ provenance:
     incorporated in it.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

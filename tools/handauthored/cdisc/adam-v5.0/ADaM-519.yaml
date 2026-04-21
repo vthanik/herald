@@ -13,9 +13,9 @@ scope:
 variable: '*EDTF'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: label_by_suffix_missing
+  suffix: EDTF
+  value: End Date Imputation Flag
 outcome:
   message: A variable ending in EDTF must contain "End Date Imputation Flag" in the
     label
@@ -32,5 +32,4 @@ provenance:
     incorporated in it.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

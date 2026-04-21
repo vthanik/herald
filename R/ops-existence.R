@@ -164,3 +164,72 @@ op_is_present <- function(data, ctx, name) op_non_empty(data, ctx, name)
     returns_na_ok = TRUE
   )
 )
+
+# --- label-content metadata check (ADaMIG section 3 label conventions) ------
+# CDISC ADaMIG specifies that variables following certain naming conventions
+# must carry a label containing a canonical phrase -- e.g. a variable ending
+# in *DT must have "Date" somewhere in its label, *TM must have "Time", etc.
+# (ADaMIG v1.1 Section 3.1.6, Item 2: "{Time}" bracket convention.)
+#
+# P21 models metadata-level checks via val:Regex Target="Metadata"
+# Variable="LABEL". The concept is: project variable metadata as a derived
+# dataset with columns {DOMAIN, VARIABLE, TYPE, LENGTH, LABEL, ...} (see
+# Metadata.java:30-39), then regex the LABEL column. We take the concept
+# and re-express it here by self-iterating suffix-matching columns and
+# reading each column's `label` attribute -- no XML or Java copy.
+#
+# P21 parity (cross-checked against DataEntryFactory.java:69-79,313-328 and
+# RegularExpressionValidationRule.java:55-77):
+#   * Column names are compared UPPERCASE (Metadata.java:138,163,185 uppercase
+#     every variable name on load and lookup).
+#   * Labels are right-trimmed; a label that is all-spaces becomes null
+#     (rtrim() at line 313-328 returns null when every char is a space).
+#   * When the label is null / empty after rtrim, the rule SKIPS (returns
+#     pass), mirroring `entry.hasValue()` at RegularExpressionValidationRule
+#     line 62. Missing-label quality is a separate concern for a dedicated
+#     rule (e.g. AD0016-style length check).
+#   * The phrase match is case-sensitive: CDISC text quotes the phrase in
+#     title case ("Date", "Start Date", ...) and P21's Pattern.compile(...)
+#     has no (?i) flag.
+op_label_by_suffix_missing <- function(data, ctx, suffix, value) {
+  n <- nrow(data)
+  cols <- names(data)
+  if (length(cols) == 0L || !nzchar(as.character(suffix %||% ""))) {
+    return(.dataset_level_mask(FALSE, n))
+  }
+  tail_rx <- paste0(toupper(as.character(suffix)), "$")
+  match_cols <- cols[grepl(tail_rx, toupper(cols), perl = TRUE)]
+  if (length(match_cols) == 0L) {
+    return(.dataset_level_mask(FALSE, n))
+  }
+  phrase <- as.character(value %||% "")
+  violated <- FALSE
+  for (col in match_cols) {
+    lbl <- attr(data[[col]], "label")
+    lbl <- if (is.null(lbl)) "" else as.character(lbl)[[1L]]
+    # P21 rtrim: trailing spaces (ASCII 0x20) only; an all-spaces label
+    # becomes null and the rule skips rather than fires.
+    lbl <- sub(" +$", "", lbl)
+    if (is.na(lbl) || !nzchar(lbl)) next
+    if (!grepl(phrase, lbl, fixed = TRUE)) {
+      violated <- TRUE
+      break
+    }
+  }
+  .dataset_level_mask(violated, n)
+}
+.register_op(
+  "label_by_suffix_missing", op_label_by_suffix_missing,
+  meta = list(
+    kind = "existence",
+    summary = "Fires when any variable whose name ends in `suffix` has a label that does not contain `value`",
+    arg_schema = list(
+      suffix = list(type = "string", required = TRUE),
+      value  = list(type = "string", required = TRUE)
+    ),
+    cost_hint = "O(c)",
+    column_arg = NA_character_,
+    returns_na_ok = FALSE,
+    examples = list(list(suffix = "DT", value = "Date"))
+  )
+)

@@ -13,9 +13,9 @@ scope:
 variable: '*SDY'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: label_by_suffix_missing
+  suffix: SDY
+  value: Relative Start Day
 outcome:
   message: A variable ending in SDY must contain "Relative Start Day" in the label
   severity: High
@@ -31,5 +31,4 @@ provenance:
     incorporated in it.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
