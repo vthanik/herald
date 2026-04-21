@@ -186,3 +186,93 @@ op_has_next_corresponding_record <- function(data, ctx, name, value) {
     cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
   )
 )
+
+# --- differs_by_key / matches_by_key (explicit join ops) --------------------
+# Thin wrappers over is_inconsistent_across_dataset that take the reference
+# dataset, reference column, and join key as explicit named args rather than
+# embedding them inside a structured `value`. Rule authors should prefer
+# these for new join-by-key rules; they read cleanly in YAML:
+#
+#   name: VISITDY
+#   operator: differs_by_key
+#   reference_dataset: TV
+#   reference_column: VISITDY
+#   key: VISITNUM
+#
+# CDISC CORE semantic: differs_by_key fires TRUE when the row's value under
+# `name` differs from the reference's value for the same key; matches_by_key
+# fires TRUE when they are equal. NA is returned when the row's key has no
+# match in the reference or when required columns / dataset are absent.
+
+op_differs_by_key <- function(data, ctx, name,
+                              reference_dataset,
+                              reference_column,
+                              key            = NULL,
+                              reference_key  = NULL) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  if (is.null(data[[name]])) return(rep(NA, n))
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+
+  join_key     <- key           %||% name
+  ref_join_key <- reference_key %||% join_key
+  if (is.null(data[[join_key]]) ||
+      is.null(ref_ds[[ref_join_key]]) ||
+      is.null(ref_ds[[reference_column]])) {
+    return(rep(NA, n))
+  }
+
+  lut <- stats::setNames(.as_char(ref_ds[[reference_column]]),
+                         .as_char(ref_ds[[ref_join_key]]))
+  lut <- lut[!duplicated(names(lut))]
+
+  mine  <- .as_char(data[[name]])
+  their <- unname(lut[.as_char(data[[join_key]])])
+  out <- mine != their
+  out[is.na(mine) | is.na(their)] <- NA
+  out
+}
+.register_op(
+  "differs_by_key", op_differs_by_key,
+  meta = list(
+    kind = "cross",
+    summary = "Value differs from joined reference-dataset value (join by key)",
+    arg_schema = list(
+      name              = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE),
+      reference_column  = list(type = "string", required = TRUE),
+      key               = list(type = "string", required = FALSE),
+      reference_key     = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_matches_by_key <- function(data, ctx, name,
+                              reference_dataset,
+                              reference_column,
+                              key           = NULL,
+                              reference_key = NULL) {
+  m <- op_differs_by_key(data, ctx, name,
+                         reference_dataset = reference_dataset,
+                         reference_column  = reference_column,
+                         key               = key,
+                         reference_key     = reference_key)
+  ifelse(is.na(m), NA, !m)
+}
+.register_op(
+  "matches_by_key", op_matches_by_key,
+  meta = list(
+    kind = "cross",
+    summary = "Value matches joined reference-dataset value (join by key)",
+    arg_schema = list(
+      name              = list(type = "string", required = TRUE),
+      reference_dataset = list(type = "string", required = TRUE),
+      reference_column  = list(type = "string", required = TRUE),
+      key               = list(type = "string", required = FALSE),
+      reference_key     = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
