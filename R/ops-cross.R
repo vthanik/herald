@@ -1178,6 +1178,175 @@ op_value_not_in_subject_indexed_set <- function(data, ctx, name,
   )
 )
 
+# --- per-row ref compare with subject-scoped + row-indexed template ---------
+# ADaM-600 / ADaM-603 (ASPRSDTM / ASPREDTM): the reference column name is
+# composed from placeholder values on the CURRENT row. E.g. for APERIOD=1,
+# ASPER=2 the row's ASPRSDTM is compared against ADSL.P01S2SDM joined by
+# USUBJID. Placeholder formatting follows ADaMIG conventions: xx/zz ->
+# %02d, y/w -> %d.
+
+op_not_equal_subject_templated_ref <- function(data, ctx, name,
+                                               reference_dataset,
+                                               reference_template,
+                                               index_cols,
+                                               key = "USUBJID",
+                                               reference_key = NULL) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  if (is.null(data[[name]])) return(rep(NA, n))
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+  ref_key <- reference_key %||% key
+  if (is.null(data[[key]]) || is.null(ref_ds[[ref_key]])) return(rep(NA, n))
+
+  # index_cols may arrive from YAML as a named list (list(xx = "APERIOD",
+  # w = "ASPER")) or a character vector whose names are placeholders.
+  idx <- if (is.list(index_cols)) index_cols else as.list(index_cols)
+  phs <- names(idx)
+  if (is.null(phs) || !all(nzchar(phs))) return(rep(NA, n))
+  missing_cols <- !vapply(idx, function(c) c %in% names(data), logical(1L))
+  if (any(missing_cols)) return(rep(NA, n))
+
+  rtrim <- function(v) {
+    v <- as.character(v)
+    r <- sub("\\s+$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+  row_keys <- rtrim(data[[key]])
+  row_vals <- rtrim(data[[name]])
+
+  # Pre-compute per-row resolved template column name
+  resolved <- rep(NA_character_, n)
+  for (i in seq_len(n)) {
+    tmpl <- reference_template
+    ok <- TRUE
+    for (ph in phs) {
+      raw <- suppressWarnings(as.integer(data[[idx[[ph]]]][[i]]))
+      if (is.na(raw)) { ok <- FALSE; break }
+      fmt <- switch(tolower(ph),
+                    "xx" = "%02d", "zz" = "%02d",
+                    "y"  = "%d",   "w"  = "%d",
+                    "%02d")
+      tmpl <- gsub(ph, sprintf(fmt, raw), tmpl, fixed = TRUE)
+    }
+    if (ok) resolved[[i]] <- tmpl
+  }
+
+  # Build subject + column -> ref value map once (sparse across columns actually
+  # referenced on rows).
+  ref_keys_all <- rtrim(ref_ds[[ref_key]])
+  unique_cols  <- unique(stats::na.omit(resolved))
+  lookups <- new.env(hash = TRUE, parent = emptyenv())
+  for (col in unique_cols) {
+    if (!(col %in% names(ref_ds))) next
+    vals <- rtrim(ref_ds[[col]])
+    ok   <- !is.na(ref_keys_all)
+    lut  <- stats::setNames(vals[ok], ref_keys_all[ok])
+    lut  <- lut[!duplicated(names(lut))]
+    lookups[[col]] <- lut
+  }
+
+  out <- rep(NA, n)
+  for (i in seq_len(n)) {
+    col <- resolved[[i]]
+    if (is.na(col)) next                 # index_cols had NA on this row
+    lut <- lookups[[col]]
+    if (is.null(lut)) next               # ref dataset lacks that column
+    s <- row_keys[[i]]
+    v <- row_vals[[i]]
+    if (is.na(s) || is.na(v)) next
+    their <- unname(lut[s])
+    if (is.na(their)) next
+    out[[i]] <- v != their
+  }
+  out
+}
+.register_op(
+  "not_equal_subject_templated_ref", op_not_equal_subject_templated_ref,
+  meta = list(
+    kind = "cross",
+    summary = "Row value differs from the reference-dataset value in a template-resolved column, joined by subject key",
+    arg_schema = list(
+      name               = list(type = "string", required = TRUE),
+      reference_dataset  = list(type = "string", required = TRUE),
+      reference_template = list(type = "string", required = TRUE),
+      index_cols         = list(type = "object", required = TRUE),
+      key                = list(type = "string", required = FALSE),
+      reference_key      = list(type = "string", required = FALSE)
+    ),
+    cost_hint = "O(n*m)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+# --- shared values per key (plan Q12 / ADaM-591) -----------------------------
+# For each column shared between the current dataset and the reference
+# dataset, join by subject key and fire any row whose value differs from
+# the subject's reference value. Per-row semantics: a row fires if ANY
+# shared column mismatches; NA when no comparison was possible for any
+# shared column (subject missing from reference, etc.).
+
+op_shared_values_mismatch_by_key <- function(data, ctx,
+                                             reference_dataset,
+                                             key = "USUBJID",
+                                             reference_key = NULL,
+                                             exclude = NULL) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  ref_ds <- .ref_ds(ctx, reference_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+
+  ref_key <- reference_key %||% key
+  if (is.null(data[[key]]) || is.null(ref_ds[[ref_key]])) return(rep(NA, n))
+
+  shared <- intersect(names(data), names(ref_ds))
+  shared <- setdiff(shared, c(key, ref_key))
+  if (!is.null(exclude)) shared <- setdiff(shared, as.character(exclude))
+  if (length(shared) == 0L) return(rep(FALSE, n))
+
+  rtrim <- function(v) {
+    v <- as.character(v)
+    r <- sub("\\s+$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+  ref_keys <- rtrim(ref_ds[[ref_key]])
+  row_keys <- rtrim(data[[key]])
+
+  fire     <- logical(n)
+  compared <- logical(n)
+
+  for (col in shared) {
+    ref_vals <- rtrim(ref_ds[[col]])
+    ok <- !is.na(ref_keys)
+    lut <- stats::setNames(ref_vals[ok], ref_keys[ok])
+    lut <- lut[!duplicated(names(lut))]
+    row_vals <- rtrim(data[[col]])
+    their    <- unname(lut[row_keys])
+    ok_cmp   <- !is.na(row_vals) & !is.na(their)
+    fire     <- fire     | (ok_cmp & row_vals != their)
+    compared <- compared | ok_cmp
+  }
+
+  out <- fire
+  out[!compared] <- NA
+  out
+}
+.register_op(
+  "shared_values_mismatch_by_key", op_shared_values_mismatch_by_key,
+  meta = list(
+    kind = "cross",
+    summary = "Any shared column value differs from the reference dataset value joined by subject key",
+    arg_schema = list(
+      reference_dataset = list(type = "string", required = TRUE),
+      key               = list(type = "string", required = FALSE),
+      reference_key     = list(type = "string", required = FALSE),
+      exclude           = list(type = "array",  required = FALSE)
+    ),
+    cost_hint = "O(n*m)", column_arg = NA_character_, returns_na_ok = TRUE
+  )
+)
+
 #' Resolve a templated column name (e.g. "TRTxxP" or "PxxSw") against a
 #' dataset's column list. Returns the concrete column names that match.
 #' @noRd

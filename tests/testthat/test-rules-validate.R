@@ -34,6 +34,33 @@ test_that(".dup_subjects_scan() handles non-data-frame entries", {
   expect_true(is.na(cache$X))
 })
 
+test_that(".is_submission_scope() detects the submission flag", {
+  expect_false(.is_submission_scope(list(scope = list(classes = "ALL"))))
+  expect_true(.is_submission_scope(list(scope = list(submission = TRUE))))
+  expect_true(.is_submission_scope(list(scope = list(submission = "true"))))
+  expect_false(.is_submission_scope(list(scope = list(submission = FALSE))))
+  expect_false(.is_submission_scope(list(scope = NULL)))
+})
+
+test_that("validate() routes submission-level rules to a single finding", {
+  # ADaM-1 declares scope.submission: true and check not_exists(ADSL).
+  # When ADSL is absent, exactly one finding at dataset='<submission>'.
+  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  result <- validate(files = list(DM = dm), rules = "1", quiet = TRUE)
+  expect_equal(nrow(result$findings), 1L)
+  expect_equal(result$findings$dataset, "<submission>")
+  expect_equal(result$findings$status,  "fired")
+  expect_true(is.na(result$findings$row))
+})
+
+test_that("submission-level rule is silent when the target dataset exists", {
+  adsl <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  dm   <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  result <- validate(files = list(ADSL = adsl, DM = dm),
+                     rules = "1", quiet = TRUE)
+  expect_equal(nrow(result$findings), 0L)
+})
+
 test_that("validate() populates ctx$dup_subjects via pre-scan (end-to-end)", {
   # Minimal smoke: validate a dataset with a duplicate USUBJID. We cannot
   # read ctx directly from validate()'s return, but we can verify the

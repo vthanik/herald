@@ -14,6 +14,22 @@
 #
 # Rules with an entirely empty scope run against every loaded dataset.
 
+#' Is this rule scoped to the submission level (not any one dataset)?
+#'
+#' A submission-level rule declares `scope.submission: true` in its YAML.
+#' It is evaluated exactly once per `validate()` run against a one-row
+#' placeholder, and its findings emit with `dataset = "<submission>"`.
+#' Used for "ADSL dataset does not exist" (ADaM-1) and similar checks
+#' that live above any single dataset.
+#' @noRd
+.is_submission_scope <- function(rule) {
+  scope <- rule[["scope"]]
+  if (is.null(scope) || length(scope) == 0L) return(FALSE)
+  flag <- scope[["submission"]]
+  if (is.null(flag) || length(flag) != 1L) return(FALSE)
+  isTRUE(as.logical(flag))
+}
+
 #' Return dataset names this rule applies to
 #'
 #' @param rule a herald rule row (list or 1-row tibble slice)

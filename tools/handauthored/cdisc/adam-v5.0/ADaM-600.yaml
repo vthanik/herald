@@ -12,9 +12,13 @@ scope:
 variable: ASPRSDTM
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: not_equal_subject_templated_ref
+  name: ASPRSDTM
+  reference_dataset: ADSL
+  reference_template: PxxSwSDM
+  index_cols:
+    xx: APERIOD
+    w: ASPER
 outcome:
   message: On a given record, the value of ASPRSDTM is not equal to the value of variable
     PxxSwSDM where xx equals the value of APERIOD and w equals the value of ASPER
@@ -29,5 +33,5 @@ provenance:
     ASPER, and APHASE, respectively.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
 

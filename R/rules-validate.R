@@ -107,6 +107,24 @@ validate <- function(path = NULL,
     rule$check_tree <- rule$check_tree[[1]]
     ctx$current_rule_id <- rule$id
 
+    # Submission-level rules (scope.submission: true) bypass per-dataset
+    # iteration. One evaluation per validate() against a stub, firing a
+    # single submission-level finding on violation.
+    if (.is_submission_scope(rule)) {
+      stub <- .submission_stub_df()
+      ctx$current_dataset <- .SUBMISSION_DATASET
+      ctx$current_domain  <- ""
+      mask <- walk_tree(rule$check_tree, stub, ctx)
+      if (length(mask) > 0L && any(!is.na(mask) & mask)) {
+        f <- emit_submission_finding(rule)
+        if (nrow(f) > 0L) {
+          all_findings[[length(all_findings) + 1L]] <- f
+          rules_applied <- rules_applied + 1L
+        }
+      }
+      next
+    }
+
     target_ds <- scoped_datasets(rule, ctx)
     if (length(target_ds) == 0L) next
 
@@ -258,6 +276,14 @@ validate <- function(path = NULL,
   children <- c(node[["all"]], node[["any"]])
   if (length(children) == 0L) return(FALSE)
   all(vapply(children, .is_metadata_rule, logical(1L)))
+}
+
+#' One-row placeholder for submission-level rule evaluation. Dataset-
+#' level ops (not_exists, exists, dataset_label_not, ...) return a
+#' single-element mask which the walker consumes cleanly.
+#' @noRd
+.submission_stub_df <- function() {
+  data.frame(.herald_submission = NA, stringsAsFactors = FALSE)
 }
 
 #' Scan every dataset once for duplicated USUBJID values and cache the

@@ -11,12 +11,12 @@ scope:
   classes: SUBJECT LEVEL ANALYSIS DATASET
   domains: []
   exclude_domains: []
+  submission: true
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: not_exists
+  name: ADSL
 outcome:
   message: ADSL dataset does not exist
   severity: Medium
@@ -30,4 +30,4 @@ provenance:
     ADaMIG v1.0, Section 2.3.1: ADSL and its related metadata are required in a CDISC-based submission of data from a clinical trial even if no other analysis datasets are submitted.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

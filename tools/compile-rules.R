@@ -163,11 +163,18 @@ row_from_core_yaml <- function(yml, path) {
   }
   exclude <- exclude[nzchar(exclude) & !is.na(exclude)]
 
-  list(
+  out <- list(
     classes         = classes,
     domains         = dom_pos,
     exclude_domains = exclude
   )
+  # Preserve optional submission-level flag (passes through to the
+  # engine's .is_submission_scope() detector).
+  sub_flag <- sc$submission
+  if (!is.null(sub_flag) && length(sub_flag) == 1L) {
+    out$submission <- isTRUE(as.logical(sub_flag))
+  }
+  out
 }
 
 row_from_herald_yaml <- function(yml, path) {
