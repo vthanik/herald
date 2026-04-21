@@ -45,14 +45,14 @@ scoped_datasets <- function(rule, ctx) {
 # --- internals ---------------------------------------------------------------
 
 .ds_class <- function(ds_name, ctx) {
-  spec <- ctx$spec
-  if (is.null(spec) || is.null(spec$ds_spec)) return(NA_character_)
-  ds_col  <- spec$ds_spec[["dataset"]] %||% spec$ds_spec[["Dataset"]]
-  cls_col <- spec$ds_spec[["class"]]   %||% spec$ds_spec[["Class"]]
-  if (is.null(ds_col) || is.null(cls_col)) return(NA_character_)
-  hit <- which(toupper(as.character(ds_col)) == toupper(ds_name))
-  if (length(hit) == 0L) return(NA_character_)
-  as.character(cls_col[hit[1L]])
+  # Cascade: caller-supplied spec -> static dataset->class lookup ->
+  # topic-variable prototype inference. Mirrors Pinnacle 21's runtime
+  # class determination (ConfigurationManager.prepare / Template.matches
+  # in their Java source): user config wins, then named-config match,
+  # then prototype matching against column names.
+  d <- ctx$datasets[[ds_name]]
+  cols <- if (is.data.frame(d)) names(d) else character()
+  infer_class(ds_name, cols, spec = ctx$spec)
 }
 
 .rule_scope_matches_ctx <- function(rule, ds_name, ds_class = NULL) {
