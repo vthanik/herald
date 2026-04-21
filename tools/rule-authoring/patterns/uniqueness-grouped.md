@@ -56,6 +56,7 @@ Deviations we make from P21 (`UniqueValueValidationRule.java`):
 ## herald check_tree template
 
 ```yaml check_tree
+expand: "%expand%"
 all:
 - name: %var_b%
   operator: is_not_unique_relationship
@@ -66,6 +67,10 @@ all:
 - `name` is the GROUP key (the "for a given value of B" variable).
 - `value.related_name` is the DEPENDENT ("more than one value of A"
   variable).
+- `expand` is empty for concrete-name rules; for indexed rules it
+  holds `xx` / `y` / `zz` / `w` (or a comma-separated list for
+  multi-placeholder). When empty the engine's `.parse_expand_spec`
+  returns `character()` -> no expansion, rule runs once.
 
 Fires per row for rows whose group-key value is in a violating
 group.

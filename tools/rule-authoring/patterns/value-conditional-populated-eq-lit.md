@@ -36,6 +36,10 @@ must be true. herald re-expresses as
 | Case-sensitive literal comparison default | `Comparison.java:194-205` | R's `==` is case-sensitive. Matches. |
 | Missing target column -> `CorruptRuleException` | `AbstractValidationRule.java:148-161` | `op_not_equal_to` on missing column returns NA -> advisory. More transparent. |
 | `When=` false (guard null) -> skip record | `ConditionalValidationRule.java:47` | `non_empty(cond_var) = FALSE` on null guard -> `{all}` = FALSE -> no fire. Matches. |
+| **P21 writes the rule as CONTRAPOSITIVE of CDISC narrative** -- e.g. SD0034 (CG0008) targets `Variable=%Domain%TPTREF When=%Domain%ELTM != ''` (populated-ELTM -> required-TPTREF); CDISC narrative says `TPTREF = null -> ELTM = null`. Logically equivalent biconditional. | XML: SD0034; Java: `RequiredValidationRule.java` `performValidation` | Herald follows CDISC narrative direction. When P21 uses contrapositive, the firing record set is the same. No functional deviation. |
+| **P21 combines several CDISC rules into one XML `val:Condition`** via `@or` / `@and` chains (e.g. SD0041 combines CG0086/087/089/654). Message lists the combined scope. | `AbstractScriptableValidationRule` + XML rule | Herald maps 1:1 per CDISC rule id. Each YAML becomes its own check_tree, each fire is its own finding. **More granular** than P21 by design (one finding per CDISC rule per dataset per row). |
+| **P21 combines `--STRF` and `--ENRF` checks into one Test** (`SD1042: Test="%Domain%STRF == '' @and %Domain%ENRF == ''"`) with `Optional="%Domain%STRF, %Domain%ENRF"` | XML: SD1042 | Herald splits into CG0420 (STRF) and CG0421 (ENRF), each with its own `non_empty` leaf. A record with STRF populated but ENRF null fires only CG0420 -- reviewer sees the exact violating variable. P21 fires both messages for the same record. |
+| `Optional=VAR` attribute -- when the listed column is missing, P21 skips the rule | P21 `RuleDefinition.Optional` parser | Herald returns NA mask on a missing column for every op; under `{all}` this collapses to NA -> one advisory per (rule x dataset). Functional equivalent. |
 
 ## herald check_tree template
 

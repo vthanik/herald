@@ -40,6 +40,9 @@ target-populated = violation. No XML or DSL copy.
 | Numeric null vs character "" distinction | numeric `NULL_ENTRY` vs character `""` after rtrim | R: numeric NA is `NA_real_`, character NA is `NA_character_`; `op_empty` treats both uniformly (`is.na(...)` covers both). Matches. |
 | Both sides null -> rule passes (no finding) | When true + Test true -> return 1 | `{all: [empty(cond)=TRUE, non_empty(target)=FALSE]}` = FALSE -> no fire. Correct. |
 | cond_var null, target_var non-null -> Test fails -> finding emitted | return 0 | `{all: [empty=TRUE, non_empty=TRUE]}` = TRUE -> fires. Matches P21 fail path. |
+| **P21 writes the rule as `val:Required` on the contrapositive direction** -- e.g. SD1361 (CG0521) `Test="ARMCD == '' @and ARM == ''" When="ARMCD == '' @or ARM == ''"` covers BOTH directions (ARMCD->ARM and ARM->ARMCD) in a single rule | XML: SD1361/1362 | Herald splits CG0521 (ARMCD null -> ARM null) and CG0522 (ACTARMCD null -> ACTARM null) as separate rules, each directional. Combined firing coverage matches P21's biconditional. |
+| **P21 combines several CDISC rule ids** in one `val:Condition` via `PublisherID="CG0164, CG0166"` (SD1065) sharing the same When/Test | same | Herald maps 1:1 per CDISC id. Each YAML is a distinct rule. More granular findings. |
+| **`val:Required` vs `val:Condition`** -- P21 emits `val:Required` for "when X, Y required" (SD0034, SD0036). Functionally equivalent to `val:Condition Test="Y != ''"`. | `RequiredValidationRule.java` vs `ConditionalValidationRule.java` | Herald uses the same `{all: [empty(guard), non_empty(target)]}` shape for both encodings; the two P21 encodings are semantic sugar over the same logic. |
 
 ## herald check_tree template
 

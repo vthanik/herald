@@ -10,9 +10,12 @@ scope:
 variable: SEVGRyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: 'y'
+  all:
+  - name: SEVGRy
+    operator: is_not_unique_relationship
+    value:
+      related_name: SEVGRyN
 outcome:
   message: There is more than one value of SEVGRyN for a given value of SEVGRy
   severity: Medium
@@ -28,4 +31,4 @@ provenance:
     OCCDS v1.1, Section 3.2.8, Table 3.2.8.1: CDISC Notes for SEVGRyN state: "Code SEVGRy to numeric".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

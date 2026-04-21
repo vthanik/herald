@@ -34,6 +34,9 @@ Test must be true for the record to pass. herald re-expresses as
 | Case-sensitive equality by default | `Comparison.java:194-205` (no ignore-case flag) | `op_equal_to` uses R's case-sensitive `==`. Matches P21. |
 | Missing target column -> `CorruptRuleException` (rule disabled) | `AbstractValidationRule.java:148-161` | `op_non_empty` on a missing column returns NA mask -> advisory. More transparent. |
 | Value of literal with trailing space inside quotes (e.g. `'PROTOCOL MILESTONE '`) | parsing literal strip only the quotes | herald stores the literal verbatim; authors should avoid trailing spaces. |
+| **P21 combines `--STRF`/`--ENRF` under a single Test with AND** (SD1042: `Test="%Domain%STRF == '' @and %Domain%ENRF == ''"`) | XML: SD1042 (CG0420/421) | Herald splits CG0420 and CG0421 into separate rules; each fires independently per violating column. Reviewer gets granular findings. |
+| **`Optional=VAR` on declared columns** -- P21 skips the rule when listed columns are missing from the dataset | P21 `RuleDefinition.Optional` parser | Herald returns NA mask on missing columns; under `{all}` collapses to NA -> advisory. Functional equivalent. |
+| **P21 uses `Optional=--OCCUR, --PRESP`** on SD0041/0042/1042 to skip when either column is missing | same | Same -- advisory-on-NA. |
 
 ## herald check_tree template
 

@@ -10,9 +10,12 @@ scope:
 variable: PARCATyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: 'y'
+  all:
+  - name: PARCATy
+    operator: is_not_unique_relationship
+    value:
+      related_name: PARCATyN
 outcome:
   message: There is more than one value of PARCATyN for a given value of PARCATy
   severity: Medium
@@ -24,4 +27,4 @@ provenance:
     to one relationship between PARCATy and PARCATyN.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

@@ -10,9 +10,12 @@ scope:
 variable: RELGRyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: 'y'
+  all:
+  - name: RELGRy
+    operator: is_not_unique_relationship
+    value:
+      related_name: RELGRyN
 outcome:
   message: There is more than one value of RELGRyN for a given value of RELGRy
   severity: Medium
@@ -28,4 +31,4 @@ provenance:
     OCCDS v1.1, Section 3.2.8, Table 3.2.8.1: CDISC Notes for RELGRyN state: "Code RELGRy to numeric".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

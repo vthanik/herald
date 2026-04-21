@@ -17,8 +17,12 @@ scope:
   exclude_domains: []
 variable: --STAT
 check:
-  narrative: --STAT = 'NOT DONE'
-  condition: --REASND ^= null
+  all:
+  - operator: non_empty
+    name: --REASND
+  - operator: not_equal_to
+    name: --STAT
+    value: NOT DONE
 outcome:
   message: --STAT = 'NOT DONE'
   severity: Medium
@@ -30,5 +34,4 @@ provenance:
     DONE.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
