@@ -6,6 +6,21 @@ approach**, alternatives rank-ordered after.
 
 Use Ctrl-F on rule_id to find the decision that covers a rule.
 
+## Coverage commitment (set at Q20)
+
+| state | max share | current (696 / 1814) | post-cycle target |
+|---|---:|---:|---:|
+| `predicate` | -- | 38.4% | **>= 95%** |
+| `narrative` | 0 | 61.6% | 0 |
+| `blocker:<reason>` | < 5% | 0 | <= 90 rules |
+| `drop:` / `deprecated:` | -- | 0 | only when CDISC retires a rule |
+
+Every Q4-Q20 decision is executed with this target in mind.
+Prior deferrals (Q9 study metadata, Q13 FDA SRS, Q11 CT
+confirmation, Q2 LB continuous-measurement, Q14 singletons) are
+all wired to concrete implementation paths -- no "park
+indefinitely" allowed. See Q20 for the stretch plan.
+
 ---
 
 ## Q1 -- conditional-null cluster (24 SDTM rules)
@@ -765,7 +780,28 @@ across Q1/Q4/Q9 consume a stable vocabulary.
 - (c) Defer the grammar; hand-translate each `when:` per rule
   using existing `all: [leaf1, leaf2]` in raw YAML. No library.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Grammar freezes on the 9-leaf vocabulary above. Existing
+  combinators (`all:` / `any:` / `not:`) already handle
+  composition; no new `when:` macro.
+- New ops to author (small):
+  - `op_ends_with(name, suffix)` -- sugar over
+    `matches_regex(name, paste0(suffix, "$"))` for readability.
+  - `op_less_than_literal(name, value)` /
+    `op_greater_than_literal(name, value)` -- literal-value
+    variants of the existing `_by_key` comparators.
+- Prose tautologies dropped on conversion (milestone
+  associations, scope-implied clauses).
+- Prose semantic classifiers ("LBORRES is continuous
+  measurement") fall back to the `r_expression` escape hatch on
+  a per-rule basis; they don't grow the standard vocabulary.
+- Document the grammar in `tools/rule-authoring/CONVENTIONS.md`
+  as the authoritative leaf list so future patterns can't
+  invent ad-hoc leaf names.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -792,7 +828,31 @@ fixtures at all. Unblocks a consistent test surface.
 - (c) Inline synthetic fixtures in `smoke-check.R` (status quo).
   Fast to author, hard to reproduce.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Every pattern ships two Dataset-JSON v1.1 fixtures at
+  `tools/rule-authoring/fixtures/<pattern>/{pos.json, neg.json}`.
+- Reuse of `read_json()` -- no new ingester; fixtures are
+  valid CDISC Dataset-JSON and can be viewed in any compliant
+  tool.
+- `smoke-check.R` contract per pattern:
+  1. Load pos fixture -> `validate(files = ..., rules = <.ids>)`.
+     Assert each rule_id in the pattern's `.ids` fires at least
+     once.
+  2. Load neg fixture -> same call. Assert zero fired findings
+     for those rule_ids.
+  3. Missing fixtures are a hard-fail, not a warn.
+  4. Print a per-pattern pass/fail matrix at the end.
+- New patterns from Q4-Q14 must include both fixtures in the
+  same PR. Reviewers gate on `smoke-check.R` green.
+- Existing patterns that lack fixtures get backfilled
+  opportunistically -- not a blocker for new conversions.
+- Fixtures serve double duty as documentation: the pos fixture
+  shows "data that triggers the rule"; neg shows "data that
+  passes". Reviewers open them directly.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -817,7 +877,31 @@ misleading (engine ignores it entirely today).
 - (c) Keep the prose untouched. Rule maintainers carry the
   ambiguity forward.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- On conversion (`apply-pattern.R`), rewrite `variable:` to the
+  bare template symbol extracted from the check_tree's primary
+  leaf name. Examples:
+  - `"AVALCATy where y is an integer [1-9, not zero-padded]"`
+    -> `AVALCATy`
+  - `"A variable with a suffix of FL"` -> `VAR` (placeholder
+    token meaning "template / wildcard", when no single leaf
+    name exists).
+  - Concrete names (`PARAM`, `ARMCD`) pass through unchanged.
+- Extraction rule: take the first leaf with a `name:` slot,
+  uppercase-only the template symbol (strip surrounding prose,
+  drop "where ..." clauses).
+- `apply-pattern.R` grows a small `.normalise_variable()`
+  helper. Runs idempotently -- re-running on a YAML already at
+  `predicate` is a no-op.
+- `discover-patterns.R` and report-rendering read the
+  normalised field; no code change needed downstream.
+- Backfill sweep for pre-converted YAMLs happens once, as a
+  one-off `data-raw/normalise-variables.R` script. Not part of
+  routine authoring.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -843,7 +927,30 @@ severity is hardcoded in the rule YAML's `outcome.severity`.
 - (c) Hard-code severity; force users to fork the rule YAMLs for
   their project. Not recommended.
 
-**User answer:** _(pending)_
+**User answer:** (a).
+
+**Decisions locked:**
+- Add `severity_map` argument to `validate()`. Default `NULL`
+  (no override). When supplied, a named character vector where:
+  - Names are matched as literal rule_id first (exact match).
+  - If no rule_id match, matched as a regex against rule_id
+    (`"AD01.*"`).
+  - If still no match, matched as a severity category (`Medium`,
+    `High`, ...).
+  - First successful match wins; no cascading.
+  - Values are the new severity string (free-form -- common
+    values: `Low`, `Medium`, `High`, `Reject`, but not a closed
+    set).
+- Applied in `emit_findings()` (and `emit_submission_finding()`)
+  BEFORE the row is built. Never mutates the rule catalog in
+  memory; map application is per-run.
+- Findings report notes when an override was applied -- add a
+  small `severity_override` column to the findings tibble
+  carrying the original severity so reviewers see both.
+- Documented in the `validate()` manpage with a worked example
+  covering all three match modes.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -871,7 +978,73 @@ findings tibble.
 - (c) Rewrite the template with rmarkdown. Heavier dep surface,
   worse archive reproducibility. Not recommended.
 
-**User answer:** _(pending)_
+**User answer:** (a) with expanded HEADER_META scope.
+
+**Decisions locked:**
+
+- Ship `render_html_report(result, file)` in `R/report-html.R`
+  using plain `sub()` / `gsub()` substitution. No new deps.
+
+- **HEADER_META covers full provenance** (not just the initial
+  5 cells). Four logical groups, 10-12 cells total:
+
+  1. **Identity** (3 cells)
+     - Herald version (package semver + commit if available)
+     - Generated (ISO 8601 timestamp, UTC)
+     - Datasets checked (integer count)
+
+  2. **Findings summary** (2 cells)
+     - Fired (integer)
+     - Advisory (integer)
+
+  3. **Controlled Terminology provenance** (2 cells)
+     - SDTM CT version (e.g. `2026-03-27`) -- pulled from
+       `attr(load_ct("sdtm"), "version")` at validate() time.
+     - ADaM CT version -- same for `"adam"`.
+     - Source attribution: `NCI EVS` if bundled, `cache` if
+       user-downloaded override active.
+
+  4. **Conformance standards** (3-5 cells, one per standard that
+     contributed firing rules)
+     - SDTM-IG versions used (e.g. `3.2, 3.3, 3.4` joined, drawn
+       from `standard_versions` across the filtered rule
+       catalog).
+     - ADaM-IG versions used.
+     - SEND-IG versions if any SEND rules fired.
+     - FDA / PMDA profile flags if a severity_map from those
+       profiles is active.
+
+- **Engine wiring:** extend `validate()` so the returned
+  `herald_result` carries a `result$environment` slot:
+  ```
+  result$environment <- list(
+    herald_version    = as.character(utils::packageVersion("herald")),
+    generated_at      = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz="UTC"),
+    ct_sdtm_version   = attr(ctx$ct$sdtm, "version") %||% NA,
+    ct_adam_version   = attr(ctx$ct$adam, "version") %||% NA,
+    ct_sdtm_source    = attr(ctx$ct$sdtm, "source_url") %||% "bundled",
+    ct_adam_source    = attr(ctx$ct$adam, "source_url") %||% "bundled",
+    standards         = .collect_standards(catalog_used),
+    severity_profile  = .describe_severity_map(severity_map)
+  )
+  ```
+  `.collect_standards()` returns a tibble
+  `(standard, versions, rules_fired, rules_total)` drawn from
+  the rules actually applied in the run.
+
+- `render_html_report()` reads from `result$environment`; does
+  not call `load_ct()` or touch the CT cache directly.
+
+- Template CSS: the existing `.meta-grid` already uses
+  `grid-template-columns: repeat(5, 1fr)` and wraps naturally
+  for >5 cells, giving a 5x2 layout. No template edit needed
+  beyond the placeholder expansion; if the standards group has
+  a variable-size tail, emit each as its own `.meta-cell`.
+
+- Default title for the report when not supplied: format of
+  `"Conformance Report -- <N> datasets -- <timestamp>"`.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
@@ -901,7 +1074,47 @@ from the target corpus" looks like vs "keep narrative indefinitely".
 - (c) Auto-drop anything narrative after 12 months without
   conversion. Too aggressive; risks discarding genuine rules.
 
-**User answer:** _(pending)_
+**User answer:** (a) with a **>95% predicate target**.
+
+**Decisions locked:**
+
+- Keep the four-state taxonomy (`narrative` / `predicate` /
+  `blocker:<reason>` / `drop:<reason>` / `deprecated:<reason>`)
+  but raise the predicate coverage bar to **>95%**
+  (1724+ / 1814). Blocker allowance capped at <5%.
+
+- **No "park indefinitely".** Every prior deferral in the
+  Q4-Q14 cycle is re-opened with a concrete delivery path:
+
+  | prior block | rules | stretch plan |
+  |---|---|---|
+  | Q9 conditional dataset-required (requires-study-metadata) | ~5 | Add a `study_metadata` arg to `validate()` that accepts a small YAML or list (study type, data domains collected, PK program flag). Rule condition leaves consume it via a new `op_study_metadata_is(key, value)`. Converts CG0191 (MB), CG0318 (PC), and siblings. |
+  | Q13 FDA SRS / UNII (ext-registry-srs) | 6 | Ship `download_srs()` + `op_value_in_srs_table()` in the same cycle, not a follow-on. Cache-only (no bundle); rule runs advisory when cache empty with a hint. |
+  | Q11 DATEFL / TIMEFL CT | 2 | Already unblocked (codelists present in adam-ct.rds); convert now. |
+  | Q2 LBORRES "continuous measurement" | 5 | New op `op_test_category_is_continuous(name, ref_dataset)` reading LB domain CT categorisation (LBTESTCD -> classification). If NCI EVS doesn't ship the classification, curate a small deterministic mapping (~50 LB test codes) inline and ship in `inst/extdata/lb-category.rds`. |
+  | Q14 residual singletons | ~30 | Triaged inline during Q4-Q14. Target: convert >25 of 30 via existing or 3-5 new small ops. Only genuinely unparseable prose (< 5 rules) allowed to stay `blocker:prose-ambiguous`. |
+
+- **`drop:` and `deprecated:` are reserved for CDISC-side
+  decisions only:**
+  - `deprecated:` -- CDISC replaced this rule with a newer one
+    in a later IG version. Engine skips it when that version is
+    selected.
+  - `drop:` -- CDISC explicitly retired the rule; no replacement.
+    Requires citation to the retirement note in the YAML.
+
+- **Hard coverage commitment:**
+  - narrative   : 0 rules after the full Q4-Q14 + stretch cycle.
+  - predicate   : >= 1724 (>=95%).
+  - blocker:*   : <= 90 (< 5%), each with a scheduled
+    delivery milestone, not indefinite.
+  - drop/deprecated : only where CDISC guidance supports it.
+
+- **Delivery cadence:** Q4-Q14 patterns land first (target 1450
+  predicate). Stretch work (SRS downloader, study_metadata arg,
+  LB category map, singleton sweep) lands in the next cycle to
+  close the last 15%.
+
+**Delivered:** _(pending -- deferred to user implementation)_
 
 ---
 
