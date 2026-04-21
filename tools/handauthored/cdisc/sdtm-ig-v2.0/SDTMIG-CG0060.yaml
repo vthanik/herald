@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: --STRTPT
 check:
-  narrative: --STRTPT present in dataset
-  condition: --STTPT present in dataset
+  all:
+  - name: --STTPT
+    operator: exists
+  - name: --STRTPT
+    operator: not_exists
 outcome:
   message: --STRTPT present in dataset
   severity: Medium
@@ -25,5 +28,4 @@ provenance:
     or after the sponsor-defined reference time point defined by variable --STTPT.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -11,8 +11,11 @@ scope:
   exclude_domains: []
 variable: MIDSDTC
 check:
-  narrative: MIDS present in dataset
-  condition: MIDSDTC present in dataset
+  all:
+  - name: MIDSDTC
+    operator: exists
+  - name: MIDS
+    operator: not_exists
 outcome:
   message: MIDS present in dataset
   severity: Medium
@@ -23,5 +26,4 @@ provenance:
   cited_guidance: The start date/time of the Disease Milestone Instance Name in MIDS.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

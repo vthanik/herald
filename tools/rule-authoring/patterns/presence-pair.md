@@ -27,6 +27,28 @@ variable matches `If="VARIABLE == '<VAR_A>'"` it asserts
 `Terms="<VAR_B>"` is also in the list. We re-express this in herald's
 operator vocabulary independently; no XML expression is copied.
 
+## P21 edge-case audit (FindValidationRule.java)
+
+| P21 behaviour | File:line | herald |
+|---|---|---|
+| Variable name `.toUpperCase()` at rule init | `FindValidationRule.java:57` | Walker uppercases `name` on `names(data)` lookup (rules-walk.R:156-163). ✓ |
+| `CaseSensitive="Yes"` default on `Terms` match | `FindValidationRule.java:91-96` (default `isCaseSensitive = true`) | herald's `%in% names(data)` is case-sensitive; case-insensitive fallback at walker layer matches P21's case-sensitive default when uppercased. ✓ |
+| `MatchExact="No"` allows `counter - matchCount < terms.size()` (partial counting) | `FindValidationRule.java:235-243` | herald's `exists` / `not_exists` is binary `%in%` -- effectively "at least one" matches P21's `MatchExact="No"` with `matchCount=0`. Equivalent for our use. |
+| `When=` / `If=` optional activation | `FindValidationRule.java:174-176, 198-204` | Our `{all}` combinator with an `exists(var_a)` guard leaf achieves the same conditional activation (rule fires per-dataset when var_a is in the column list). |
+| Per-dataset `Outcome` (one finding per violated dataset) | `FindValidationRule.java:227-259` | `.is_metadata_rule` collapse in R/rules-validate.R fires once per (rule x dataset). ✓ |
+| `entry.hasValue()` check before processing | `FindValidationRule.java:208` | Metadata iteration in herald inspects `names(data)` which contains only named columns -- no equivalent "null column name" case. ✓ |
+
+## Scope extension: SDTM-IG column-presence rules
+
+Originally authored for ADaM-IG paired-variable rules, the template
+also fits the SDTM-IG "when `<cond_var>` is present in dataset,
+`<target_var>` must be present" shape -- same check tree
+(`exists(cond_var) AND not_exists(target_var)` = violation). Added
+11 SDTMIG rules (CG0057, 058, 060, 062, 090, 091, 092, 430, 468,
+503, 661) that follow this metadata-conditional-presence pattern.
+`--VAR` in slot values is expanded by the walker at runtime per
+the dataset's domain prefix (`rules-walk.R:143-147`).
+
 ## herald check_tree template
 
 The template below uses two slots -- `VAR_A` (secondary; must be

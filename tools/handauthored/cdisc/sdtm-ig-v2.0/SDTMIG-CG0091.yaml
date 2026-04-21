@@ -9,8 +9,11 @@ scope:
   exclude_domains: []
 variable: --TPT
 check:
-  narrative: --TPT present in dataset
-  condition: --TPTNUM present in dataset
+  all:
+  - name: --TPTNUM
+    operator: exists
+  - name: --TPT
+    operator: not_exists
 outcome:
   message: --TPT present in dataset
   severity: Medium
@@ -22,5 +25,4 @@ provenance:
     planned to occur, used for study data tabulation.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

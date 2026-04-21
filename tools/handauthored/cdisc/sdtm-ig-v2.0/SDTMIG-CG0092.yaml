@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: --TPTREF
 check:
-  narrative: --TPTREF present in dataset
-  condition: --ELTM present in dataset
+  all:
+  - name: --ELTM
+    operator: exists
+  - name: --TPTREF
+    operator: not_exists
 outcome:
   message: --TPTREF present in dataset
   severity: Medium
@@ -32,5 +35,4 @@ provenance:
     the data collected at the time point.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

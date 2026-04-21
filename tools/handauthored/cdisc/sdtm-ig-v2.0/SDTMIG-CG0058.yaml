@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: --ENTPT
 check:
-  narrative: --ENTPT present in dataset
-  condition: --ENRTPT present in dataset
+  all:
+  - name: --ENRTPT
+    operator: exists
+  - name: --ENTPT
+    operator: not_exists
 outcome:
   message: --ENTPT present in dataset
   severity: Medium
@@ -26,5 +29,4 @@ provenance:
     "2003-12-25" or "VISIT 2".'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

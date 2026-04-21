@@ -638,11 +638,19 @@ if (run_all) {
   } else {
     # Scope didn't yield a dataset (e.g. scope.classes="ALL" with no
     # domains). Default to a standard-appropriate dataset so herald's
-    # ADaM/SDTM symmetry filter doesn't false-reject.
+    # ADaM/SDTM symmetry filter doesn't false-reject. For SDTM-IG rules
+    # with unconstrained scope, the shared pattern fixture may be an
+    # ADaM-class dataset (ADVS), which would block `--VAR` wildcard
+    # expansion (ADaM datasets skip -- expansion in
+    # rules-walk.R:.domain_prefix_candidates). Fall back to a plain
+    # SDTM domain (AE) so -- resolves cleanly.
     rule_std <- toupper(as.character(rule$standard %||% ""))
     if (grepl("ADAM", rule_std)) {
       ds_name <- "ADSL"
       spec    <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else if (grepl("SDTM|SEND", rule_std)) {
+      ds_name <- "AE"
+      spec    <- NULL
     } else {
       ds_name <- names(default_fx$pos$datasets)[[1L]]
       spec    <- default_fx$pos$spec
