@@ -12,9 +12,11 @@ scope:
 variable: STRATAV
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both STRATAV and STRATAVN are both populated.
+  all:
+  - name: STRATAVN
+    operator: is_not_unique_relationship
+    value:
+      related_name: STRATAV
 outcome:
   message: There is more than one value of STRATAV for a given value of STRATAVN,
     considering only those rows on which both variables are populated
@@ -28,5 +30,4 @@ provenance:
     STRATAVN cannot be present unless STRATAV is also present. When STRATAV and STRATAVN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

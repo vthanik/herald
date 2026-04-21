@@ -193,6 +193,50 @@ if (run_all) {
   }
   lv <- .extract_leaves_flat(ct)
   ops <- vapply(lv, function(l) l$operator %||% "", character(1L))
+
+  # Special-case synth for is_(not_)unique_relationship: build a 2-row
+  # dataset where var_b is the same on both rows but var_a differs
+  # (positive: fires) / matches (negative: doesn't fire).
+  if (length(lv) == 1L && ops[[1L]] == "is_not_unique_relationship") {
+    var_b <- as.character(lv[[1L]]$name)
+    val   <- lv[[1L]]$value
+    var_a <- if (is.list(val)) as.character(val$related_name)
+             else              as.character(val)
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via == "class" && !is.na(pick$class)) {
+        list(class_map = stats::setNames(list(pick$class), ds_name))
+      } else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- names(default_fx$pos$datasets)[[1L]]; spec <- default_fx$pos$spec
+    }
+    pos_cols <- stats::setNames(
+      list(c("S1","S2"), c("K1","K1"), c("A","B")),
+      c("USUBJID", var_b, var_a)
+    )
+    neg_cols <- stats::setNames(
+      list(c("S1","S2"), c("K1","K1"), c("A","A")),
+      c("USUBJID", var_b, var_a)
+    )
+    mk <- function(cols, fire) list(
+      rule_id = as.character(rule$id),
+      fixture_type = if (isTRUE(fire)) "positive" else "negative",
+      datasets = stats::setNames(list(cols), ds_name),
+      expected = list(fires = fire,
+                      rows = if (isTRUE(fire)) c(1L, 2L) else integer()),
+      notes = "synth for is_not_unique_relationship",
+      authored = "pattern-fixture-synth@1",
+      spec = spec, `_path` = NA_character_
+    )
+    return(list(pos = mk(pos_cols, TRUE), neg = mk(neg_cols, FALSE),
+                synth = TRUE))
+  }
+
   synth_ops <- c("exists", "not_exists", "empty", "non_empty",
                  "is_missing", "is_present")
   if (length(lv) == 0L || !all(ops %in% synth_ops)) {

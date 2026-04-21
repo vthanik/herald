@@ -10,9 +10,11 @@ scope:
 variable: APERIODC
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: APERIOD
+    operator: is_not_unique_relationship
+    value:
+      related_name: APERIODC
 outcome:
   message: There is more than one value of APERIODC for a given value of APERIOD
   severity: Medium
@@ -24,4 +26,4 @@ provenance:
     to which period the record belongs. One-to-one map to APERIOD.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

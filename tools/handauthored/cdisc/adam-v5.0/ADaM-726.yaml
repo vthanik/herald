@@ -13,9 +13,11 @@ scope:
 variable: APERIOD
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where APERIOD and APERIODC are both populated
+  all:
+  - name: APERIODC
+    operator: is_not_unique_relationship
+    value:
+      related_name: APERIOD
 outcome:
   message: There is more than one value of APERIOD for a given value of APERIODC,
     considering only those rows on which both variables are populated
@@ -29,5 +31,4 @@ provenance:
     to APERIOD.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

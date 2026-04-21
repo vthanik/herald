@@ -12,9 +12,11 @@ scope:
 variable: STRATARN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both STRATARN and STRATAR are both populated.
+  all:
+  - name: STRATAR
+    operator: is_not_unique_relationship
+    value:
+      related_name: STRATARN
 outcome:
   message: There is more than one value of STRATARN for a given value of STRATAR,
     considering only those rows on which both variables are populated
@@ -28,5 +30,4 @@ provenance:
     STRATARN cannot be present unless STRATAR is also present. When STRATAR and STRATARN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

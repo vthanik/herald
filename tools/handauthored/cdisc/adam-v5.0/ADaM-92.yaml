@@ -10,9 +10,11 @@ scope:
 variable: TRTPN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: TRTP
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTPN
 outcome:
   message: There is more than one value of TRTPN for a given value of TRTP
   severity: Medium
@@ -24,4 +26,4 @@ provenance:
     TRTP. One-to-one map to TRTP.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

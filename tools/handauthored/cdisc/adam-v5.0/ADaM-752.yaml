@@ -13,9 +13,11 @@ scope:
 variable: TRTSEQP
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where TRTSEQP and TRTSEQPN are both populated
+  all:
+  - name: TRTSEQPN
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTSEQP
 outcome:
   message: There is more than one value of TRTSEQP for a given value of TRTSEQPN,
     considering only those rows on which both variables are populated
@@ -28,5 +30,4 @@ provenance:
     within a study.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -13,9 +13,11 @@ scope:
 variable: DTHCAUSN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both DTHCAUSN and DTHCAUS are both populated.
+  all:
+  - name: DTHCAUS
+    operator: is_not_unique_relationship
+    value:
+      related_name: DTHCAUSN
 outcome:
   message: There is more than one value of DTHCAUSN for a given value of DTHCAUS,
     considering only those rows on which both variables are populated
@@ -28,5 +30,4 @@ provenance:
     state: "Must have a one-to-one mapping to DTHCAUS."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

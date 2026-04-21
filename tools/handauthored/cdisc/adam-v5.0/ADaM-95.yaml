@@ -10,9 +10,11 @@ scope:
 variable: TRTAN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: TRTA
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTAN
 outcome:
   message: There is more than one value of TRTAN for a given value of TRTA
   severity: Medium
@@ -24,4 +26,4 @@ provenance:
     TRTA. One-to-one map to TRTA.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

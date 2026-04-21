@@ -10,9 +10,11 @@ scope:
 variable: AEREL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: AERELN
+    operator: is_not_unique_relationship
+    value:
+      related_name: AEREL
 outcome:
   message: There is more than one value of AEREL for a given value of AERELN
   severity: Medium
@@ -28,4 +30,4 @@ provenance:
     OCCDS v1.1, Section 3.2.8, Table 3.2.8.1: CDISC Notes for AERELN state: "Code AE.AEREL to numeric".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

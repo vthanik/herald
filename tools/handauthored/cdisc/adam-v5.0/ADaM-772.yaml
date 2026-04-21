@@ -13,9 +13,11 @@ scope:
 variable: ASEVN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both ASEVN and ASEV are both populated.
+  all:
+  - name: ASEV
+    operator: is_not_unique_relationship
+    value:
+      related_name: ASEVN
 outcome:
   message: There is more than one value of ASEVN for a given value of ASEV, considering
     only those rows on which both variables are populated
@@ -32,5 +34,4 @@ provenance:
     OCCDS v1.1, Section 3.2.8, Table 3.2.8.1: CDISC Notes for ASEVN state: "Code AE.ASEV to numeric". Code List / Terms have allowable values of: "1, 2, 3".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -4,8 +4,6 @@
 "102","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRTxxP",NA,NA,"narrative",NA,NA,NA
 "103","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxSDT",NA,NA,"narrative",NA,NA,NA
 "104","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxEDT",NA,NA,"narrative",NA,NA,NA
-"105","CDISC","ADaM-IG","1.0","Medium","There is more than one value of APERIODC for a given value of APERIOD",NA,NA,"narrative",NA,NA,NA
-"106","CDISC","ADaM-IG","1.0","Medium","There is more than one value of APERIOD for a given value of APERIODC",NA,NA,"narrative",NA,NA,NA
 "109","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVISITN for a given value of AVISIT",NA,NA,"narrative",NA,NA,NA
 "11","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to N and a variable with the same root and a suffix of FN is not equal to 0",NA,NA,"narrative",NA,NA,NA
 "110","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVISIT for a given value of AVISITN",NA,NA,"narrative",NA,NA,NA
@@ -14,7 +12,6 @@
 "12","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to null and a variable with the same root and a suffix of FN is not equal to null",NA,NA,"narrative",NA,NA,NA
 "121","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of a variable with a suffix of SDT is greater than the value of a variable with the same root and a suffix of EDT, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "122","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of a variable with a suffix of SDTM is greater than the value of a variable with the same root and a suffix of EDTM, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"123","CDISC","ADaM-IG","1.0,1.1","Medium","There is more than one value of PARAMTYP for a given value of PARAMCD",NA,NA,"narrative",NA,NA,NA
 "124","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","There is more than one value of PARCATy for a given value of PARAMCD",NA,NA,"narrative",NA,NA,NA
 "125","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARCATy for a given value of PARCATyN",NA,NA,"narrative",NA,NA,NA
 "126","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARCATyN for a given value of PARCATy",NA,NA,"narrative",NA,NA,NA
@@ -31,8 +28,6 @@
 "136","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTyN for a given value of SHIFTy",NA,NA,"narrative",NA,NA,NA
 "137","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CRITyFL is populated and CRITy is not populated",NA,NA,"narrative",NA,NA,NA
 "14","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable name does not start with a letter (A-Z)",NA,NA,"narrative",NA,NA,NA
-"141","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARAM for a given value of PARAMCD",NA,NA,"narrative",NA,NA,NA
-"142","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARAMCD for a given value of PARAM",NA,NA,"narrative",NA,NA,NA
 "143","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD has more than 8 characters in length",NA,NA,"narrative",NA,NA,NA
 "144","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD starts with a character other than a letter",NA,NA,"narrative",NA,NA,NA
 "145","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD has characters that are not letters, digits, and underscores",NA,NA,"narrative",NA,NA,NA
@@ -86,11 +81,7 @@
 "224","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of CHGCATy for a given value of CHG and y",NA,NA,"narrative",NA,NA,NA
 "225","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PCHG is populated and is not equal to ((AVAL - BASE)/BASE)*100",NA,NA,"narrative",NA,NA,NA
 "226","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of PCHGCATy for a given value of PCHG and y",NA,NA,"narrative",NA,NA,NA
-"227","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQP for a given value of TRTSEQPN",NA,NA,"narrative",NA,NA,NA
-"228","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQPN for a given value of TRTSEQP",NA,NA,"narrative",NA,NA,NA
-"229","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQA for a given value of TRTSEQAN",NA,NA,"narrative",NA,NA,NA
 "23","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SAFFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
-"230","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQAN for a given value of TRTSEQA",NA,NA,"narrative",NA,NA,NA
 "231","CDISC","ADaM-IG","1.0","Medium","Within a given value of TRTxxP, there is more than one value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "232","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRxxPGy for a given value of TRxxPGyN, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "233","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRxxPGyN for a given value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
@@ -117,24 +108,12 @@
 "272","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a prefix of AOCC and a suffix of FL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
 "279","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESEVN is not equal to 1, 2, 3, or null",NA,NA,"narrative",NA,NA,NA
 "28","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ITTFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"280","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AESEV for a given value of AESEVN",NA,NA,"narrative",NA,NA,NA
-"281","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AESEVN for a given value of AESEV",NA,NA,"narrative",NA,NA,NA
 "282","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ASEVN is not equal to 1, 2, 3, or null",NA,NA,"narrative",NA,NA,NA
-"283","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ASEV for a given value of ASEVN",NA,NA,"narrative",NA,NA,NA
-"284","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ASEVN for a given value of ASEV",NA,NA,"narrative",NA,NA,NA
 "285","CDISC","ADaM-IG","1.0","Medium","There is more than one value of SEVGRy for a given value of SEVGRyN",NA,NA,"narrative",NA,NA,NA
 "286","CDISC","ADaM-IG","1.0","Medium","There is more than one value of SEVGRyN for a given value of SEVGRy",NA,NA,"narrative",NA,NA,NA
-"287","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AEREL for a given value of AERELN",NA,NA,"narrative",NA,NA,NA
-"288","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AERELN for a given value of AEREL",NA,NA,"narrative",NA,NA,NA
-"289","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AREL for a given value of ARELN",NA,NA,"narrative",NA,NA,NA
 "29","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PPROTFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"290","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ARELN for a given value of AREL",NA,NA,"narrative",NA,NA,NA
 "291","CDISC","ADaM-IG","1.0","Medium","There is more than one value of RELGRy for a given value of RELGRyN",NA,NA,"narrative",NA,NA,NA
 "292","CDISC","ADaM-IG","1.0","Medium","There is more than one value of RELGRyN for a given value of RELGRy",NA,NA,"narrative",NA,NA,NA
-"293","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AETOXGR for a given value of AETOXGRN",NA,NA,"narrative",NA,NA,NA
-"294","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AETOXGRN for a given value of AETOXGR",NA,NA,"narrative",NA,NA,NA
-"295","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ATOXGR for a given value of ATOXGRN",NA,NA,"narrative",NA,NA,NA
-"296","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ATOXGRN for a given value of ATOXGR",NA,NA,"narrative",NA,NA,NA
 "297","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TOXGGRy for a given value of TOXGGRyN",NA,NA,"narrative",NA,NA,NA
 "298","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TOXGGRyN for a given value of TOXGGRy",NA,NA,"narrative",NA,NA,NA
 "30","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SAFFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
@@ -190,9 +169,7 @@
 "354","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","BASETYPE is not present, ByIND is populated, and ByIND is not equal to AyIND where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
 "355","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of REGIONy for a given value of REGIONyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "356","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of REGIONyN for a given value of REGIONy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"359","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUS for a given value of DTHCAUSN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "36","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of PFN has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
-"360","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUSN for a given value of DTHCAUS, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "361","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ASTDT is greater than the value of AENDT, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "362","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ASTDTM is greater than the value of AENDTM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "363","CDISC","ADaM-IG","1.0,1.1","Medium","ONTRTFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
@@ -225,9 +202,7 @@
 "402","CDISC","ADaM-IG","1.2,1.3","Medium","AVAL is not populated or ATOXGRH is not populated, and ATOXDSCH is populated",NA,NA,"narrative",NA,NA,NA
 "403","CDISC","ADaM-IG","1.2,1.3","Medium","Within a subject, there is more than one value of ATOXDSCL for a given value of PARAM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "405","CDISC","ADaM-IG","1.2,1.3","Medium","Within a subject, there is more than one value of ATOXDSCH for a given value of PARAM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"409","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ABLFN for a given value of ABLFL, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "41","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A numeric variable with a suffix of DT does not have a date format",NA,NA,"narrative",NA,NA,NA
-"410","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ABLFL for a given value of ABLFN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "411","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ANLzzFN is populated and ANLzzFL is not populated",NA,NA,"narrative",NA,NA,NA
 "412","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ANLzzFL is populated and ANLzzFN is not populated",NA,NA,"narrative",NA,NA,NA
 "413","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ANLzzFN for a given value of ANLzzFL, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -269,15 +244,11 @@
 "463","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TSEQAGyN is populated and TSEQAGy is not populated",NA,NA,"narrative",NA,NA,NA
 "464","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRCMPGy is populated and TRCMPGyN is not populated",NA,NA,"narrative",NA,NA,NA
 "465","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRCMPGyN is populated and TRCMPGy is not populated",NA,NA,"narrative",NA,NA,NA
-"468","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAR for a given value of STRATARN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"469","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATARN for a given value of STRATAR, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "47","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SITEID is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "470","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwR is populated and STRATwRN is not populated",NA,NA,"narrative",NA,NA,NA
 "471","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwRN is populated and STRATwR is not populated",NA,NA,"narrative",NA,NA,NA
 "472","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwR for a given value of STRATwRN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "473","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATwRN for a given value of STRATwR, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"476","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAV for a given value of STRATAVN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"477","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAVN for a given value of STRATAV, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "478","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwV is populated and STRATwVN is not populated",NA,NA,"narrative",NA,NA,NA
 "479","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATwVN is populated and STRATwV is not populated",NA,NA,"narrative",NA,NA,NA
 "48","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is not present in ADSL",NA,NA,"narrative",NA,NA,NA
@@ -474,12 +445,6 @@
 "719","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","None of the subject-level or record-level treatment variables defined in the IG is present",NA,NA,"narrative",NA,NA,NA
 "72","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRT01P is not present within ADSL",NA,NA,"narrative",NA,NA,NA
 "720","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A non-missing value of TRTP is not equal to at least one value of the character planned treatment variables in ADSL defined in the IG",NA,NA,"narrative",NA,NA,NA
-"721","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTPN for a given value of TRTP, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"722","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTP for a given value of TRTPN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"723","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTAN for a given value of TRTA, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"724","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTA for a given value of TRTAN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"725","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of APERIODC for a given value of APERIOD, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"726","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of APERIOD for a given value of APERIODC, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "727","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of AVISITN for a given value of AVISIT, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "728","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of AVISIT for a given value of AVISITN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "729","CDISC","ADaM-IG","1.1","Medium","Within a given value of PARAMCD, there is more than one value of ATPTN for a given value of ATPT, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -491,8 +456,6 @@
 "735","CDISC","ADaM-IG","1.3","Medium","Within a given value of PARAMCD where either BASE or BASEC are populated, BASETYPE is populated for at least one record and is not populated for at least one record",NA,NA,"narrative",NA,NA,NA
 "736","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTy for a given value of SHIFTyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "737","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTyN for a given value of SHIFTy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"738","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of PARAM for a given value of PARAMCD, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"739","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of PARAMCD for a given value of PARAM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "740","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a dataset, there is more than one value of PARAM for a given value of PARAMN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "741","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a dataset, there is more than one value of PARAMN for a given value of PARAM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "742","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of AVALC for a given value of AVAL, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -505,10 +468,6 @@
 "749","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of BASECATy for a given value of BASE and y, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "750","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of CHGCATy for a given value of CHG and y, where y is an integer [1-99, not zero-padded]",NA,NA,"narrative",NA,NA,NA
 "751","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of PCHGCATy for a given value of PCHG and y, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"752","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQP for a given value of TRTSEQPN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"753","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQPN for a given value of TRTSEQP, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"754","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQA for a given value of TRTSEQAN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"755","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQAN for a given value of TRTSEQA, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "756","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of TRTxxP, there is more than one value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is an integer [1-99, not zero-padded]",NA,NA,"narrative",NA,NA,NA
 "757","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRxxPGy for a given value of TRxxPGyN, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "758","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRxxPGyN for a given value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -523,24 +482,12 @@
 "766","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTAGyN for a given value of TRTAGy, where y is an integer [1-99, not zero-padded], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "767","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTxxAN for a given value of TRTxxA, where xx is an integer [01-99, zero-padded], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "768","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTxxA for a given value of TRTxxAN, where xx is an integer [01-99, zero-padded], considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"769","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AESEV for a given value of AESEVN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "77","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTxxP for a given value of TRTxxPN",NA,NA,"narrative",NA,NA,NA
-"770","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AESEVN for a given value of AESEV, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"771","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ASEV for a given value of ASEVN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"772","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ASEVN for a given value of ASEV, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "773","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of SEVGRy for a given value of SEVGRyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "774","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of SEVGRyN for a given value of SEVGRy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"775","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AEREL for a given value of AERELN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"776","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AERELN for a given value of AEREL, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"777","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AREL for a given value of ARELN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"778","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ARELN for a given value of AREL, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "779","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of RELGRy for a given value of RELGRyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "78","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","At least one TRTxxP is present where xx is greater than 01 and TRxxSDT is not present",NA,NA,"narrative",NA,NA,NA
 "780","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of RELGRyN for a given value of RELGRy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"781","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AETOXGR for a given value of AETOXGRN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"782","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AETOXGRN for a given value of AETOXGR, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"783","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ATOXGR for a given value of ATOXGRN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"784","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ATOXGRN for a given value of ATOXGR, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "785","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TOXGGRy for a given value of TOXGGRyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "786","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TOXGGRyN for a given value of TOXGGRy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "787","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of SMQzzSC for a given value of SMQzzSCN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -601,10 +548,6 @@
 "897","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A non-missing value of TRTA is not equal to at least one value of the character actual treatment variables in ADSL defined in the IG",NA,NA,"narrative",NA,NA,NA
 "898","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For a value of AD*.USUBJID that is a value of --.USUBJID, a value of AD*.--SEQ is not a value of --.--SEQ",NA,NA,"narrative",NA,NA,NA
 "899","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AD*.USUBJID equals --.USUBJID, AD*.--SEQ equals --.--SEQ, and the values of a variable with prefix -- which is present in both datasets are not equal",NA,NA,"narrative",NA,NA,NA
-"92","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTPN for a given value of TRTP",NA,NA,"narrative",NA,NA,NA
-"93","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTP for a given value of TRTPN",NA,NA,"narrative",NA,NA,NA
-"95","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTAN for a given value of TRTA",NA,NA,"narrative",NA,NA,NA
-"96","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTA for a given value of TRTAN",NA,NA,"narrative",NA,NA,NA
 "98","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of SDY has a value greater than a value of a variable with the same root and a suffix of EDY, and both variables are populated",NA,NA,"narrative",NA,NA,NA
 "99","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of STDY has a value greater than a value of a variable with the same root and a suffix of ENDY, and both variables are populated",NA,NA,"narrative",NA,NA,NA
 "CG0001","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DOMAIN = valid Domain Code published by CDISC",NA,NA,"narrative",NA,NA,NA
@@ -1512,9 +1455,14 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+"105","CDISC","ADaM-IG","1.0","Medium","There is more than one value of APERIODC for a given value of APERIOD","uniqueness-grouped","is_not_unique_relationship(APERIOD,APERIODC)","predicate","2026-04-21T11:50:50Z","unique",NA
+"106","CDISC","ADaM-IG","1.0","Medium","There is more than one value of APERIOD for a given value of APERIODC","uniqueness-grouped","is_not_unique_relationship(APERIODC,APERIOD)","predicate","2026-04-21T11:50:50Z","unique",NA
 "111","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARELTM is present and ARELTMU is not present","presence-pair","exists(ARELTM) & not_exists(ARELTMU)","predicate","2026-04-20T00:00:00Z","find","demo conversion, predates the presence-pair batch"
 "112","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARELTM is populated and ARELTMU is not populated","value-conditional-populated","non_empty(ARELTM) & empty(ARELTMU)","predicate","2026-04-21T11:35:41Z","condition",NA
 "113","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARELTMU is present and ARELTM is not present","presence-pair","exists(ARELTMU) & not_exists(ARELTM)","predicate","2026-04-21T09:19:57Z","find",NA
+"123","CDISC","ADaM-IG","1.0,1.1","Medium","There is more than one value of PARAMTYP for a given value of PARAMCD","uniqueness-grouped","is_not_unique_relationship(PARAMCD,PARAMTYP)","predicate","2026-04-21T11:50:50Z","unique",NA
+"141","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARAM for a given value of PARAMCD","uniqueness-grouped","is_not_unique_relationship(PARAMCD,PARAM)","predicate","2026-04-21T11:50:50Z","unique",NA
+"142","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARAMCD for a given value of PARAM","uniqueness-grouped","is_not_unique_relationship(PARAM,PARAMCD)","predicate","2026-04-21T11:50:50Z","unique",NA
 "159","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AWTDIFF is populated and AWTARGET is not populated","value-conditional-populated","non_empty(AWTDIFF) & empty(AWTARGET)","predicate","2026-04-21T11:35:41Z","condition",NA
 "163","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BTOXGR is present and ATOXGR is not present","presence-pair","exists(BTOXGR) & not_exists(ATOXGR)","predicate","2026-04-21T09:19:57Z","find",NA
 "164","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BTOXGR is present and ABLFL is not present","presence-pair","exists(BTOXGR) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z","find",NA
@@ -1523,10 +1471,28 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "194","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not present","presence-required","not_exists(PARAM)","predicate","2026-04-21T11:26:53Z","required",NA
 "195","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not present","presence-required","not_exists(PARAMCD)","predicate","2026-04-21T11:26:53Z","required",NA
 "201","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTAGyN is present and TRTAGy is not present","presence-pair","exists(TRTAGyN) & not_exists(TRTAGy)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
+"227","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQP for a given value of TRTSEQPN","uniqueness-grouped","is_not_unique_relationship(TRTSEQPN,TRTSEQP)","predicate","2026-04-21T11:50:50Z","unique",NA
+"228","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQPN for a given value of TRTSEQP","uniqueness-grouped","is_not_unique_relationship(TRTSEQP,TRTSEQPN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"229","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQA for a given value of TRTSEQAN","uniqueness-grouped","is_not_unique_relationship(TRTSEQAN,TRTSEQA)","predicate","2026-04-21T11:50:50Z","unique",NA
+"230","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQAN for a given value of TRTSEQA","uniqueness-grouped","is_not_unique_relationship(TRTSEQA,TRTSEQAN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "261","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEDECOD is not present","presence-required","not_exists(AEDECOD)","predicate","2026-04-21T11:26:53Z","required",NA
 "262","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEBODSYS is not present","presence-required","not_exists(AEBODSYS)","predicate","2026-04-21T11:26:53Z","required",NA
 "268","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ADURN is populated and ADURU is not populated","value-conditional-populated","non_empty(ADURN) & empty(ADURU)","predicate","2026-04-21T11:35:41Z","condition",NA
 "278","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESER is not present","presence-required","not_exists(AESER)","predicate","2026-04-21T11:26:53Z","required",NA
+"280","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AESEV for a given value of AESEVN","uniqueness-grouped","is_not_unique_relationship(AESEVN,AESEV)","predicate","2026-04-21T11:50:50Z","unique",NA
+"281","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AESEVN for a given value of AESEV","uniqueness-grouped","is_not_unique_relationship(AESEV,AESEVN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"283","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ASEV for a given value of ASEVN","uniqueness-grouped","is_not_unique_relationship(ASEVN,ASEV)","predicate","2026-04-21T11:50:50Z","unique",NA
+"284","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ASEVN for a given value of ASEV","uniqueness-grouped","is_not_unique_relationship(ASEV,ASEVN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"287","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AEREL for a given value of AERELN","uniqueness-grouped","is_not_unique_relationship(AERELN,AEREL)","predicate","2026-04-21T11:50:50Z","unique",NA
+"288","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AERELN for a given value of AEREL","uniqueness-grouped","is_not_unique_relationship(AEREL,AERELN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"289","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AREL for a given value of ARELN","uniqueness-grouped","is_not_unique_relationship(ARELN,AREL)","predicate","2026-04-21T11:50:50Z","unique",NA
+"290","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ARELN for a given value of AREL","uniqueness-grouped","is_not_unique_relationship(AREL,ARELN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"293","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AETOXGR for a given value of AETOXGRN","uniqueness-grouped","is_not_unique_relationship(AETOXGRN,AETOXGR)","predicate","2026-04-21T11:50:50Z","unique",NA
+"294","CDISC","ADaM-IG","1.0","Medium","There is more than one value of AETOXGRN for a given value of AETOXGR","uniqueness-grouped","is_not_unique_relationship(AETOXGR,AETOXGRN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"295","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ATOXGR for a given value of ATOXGRN","uniqueness-grouped","is_not_unique_relationship(ATOXGRN,ATOXGR)","predicate","2026-04-21T11:50:50Z","unique",NA
+"296","CDISC","ADaM-IG","1.0","Medium","There is more than one value of ATOXGRN for a given value of ATOXGR","uniqueness-grouped","is_not_unique_relationship(ATOXGR,ATOXGRN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"359","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUS for a given value of DTHCAUSN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(DTHCAUSN,DTHCAUS)","predicate","2026-04-21T11:50:50Z","unique",NA
+"360","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUSN for a given value of DTHCAUS, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(DTHCAUS,DTHCAUSN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "373","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CNSR is not present","presence-required","not_exists(CNSR)","predicate","2026-04-21T11:26:53Z","required",NA
 "374","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is not present","presence-required","not_exists(AVAL)","predicate","2026-04-21T11:26:53Z","required",NA
 "379","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRN is populated and BTOXGR is not populated","value-conditional-populated","non_empty(BTOXGRN) & empty(BTOXGR)","predicate","2026-04-21T11:35:41Z","condition",NA
@@ -1543,6 +1509,8 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "398","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGRHN is populated and ATOXGRH is not populated","value-conditional-populated","non_empty(ATOXGRHN) & empty(ATOXGRH)","predicate","2026-04-21T11:35:41Z","condition",NA
 "407","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ABLFN is populated and ABLFL is not populated","value-conditional-populated","non_empty(ABLFN) & empty(ABLFL)","predicate","2026-04-21T11:35:41Z","condition",NA
 "408","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ABLFL is populated and ABLFN is not populated","value-conditional-populated","non_empty(ABLFL) & empty(ABLFN)","predicate","2026-04-21T11:35:41Z","condition",NA
+"409","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ABLFN for a given value of ABLFL, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ABLFL,ABLFN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"410","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ABLFL for a given value of ABLFN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ABLFN,ABLFL)","predicate","2026-04-21T11:50:50Z","unique",NA
 "415","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTSEQPN is populated and TRTSEQP is not populated","value-conditional-populated","non_empty(TRTSEQPN) & empty(TRTSEQP)","predicate","2026-04-21T11:35:41Z","condition",NA
 "416","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTSEQP is populated and TRTSEQPN is not populated","value-conditional-populated","non_empty(TRTSEQP) & empty(TRTSEQPN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "417","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTSEQAN is populated and TRTSEQA is not populated","value-conditional-populated","non_empty(TRTSEQAN) & empty(TRTSEQA)","predicate","2026-04-21T11:35:41Z","condition",NA
@@ -1564,8 +1532,12 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "459","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTPN is populated and TRTP is not populated","value-conditional-populated","non_empty(TRTPN) & empty(TRTP)","predicate","2026-04-21T11:35:41Z","condition",NA
 "466","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATAR is populated and STRATARN is not populated","value-conditional-populated","non_empty(STRATAR) & empty(STRATARN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "467","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATARN is populated and STRATAR is not populated","value-conditional-populated","non_empty(STRATARN) & empty(STRATAR)","predicate","2026-04-21T11:35:41Z","condition",NA
+"468","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAR for a given value of STRATARN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(STRATARN,STRATAR)","predicate","2026-04-21T11:50:50Z","unique",NA
+"469","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATARN for a given value of STRATAR, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(STRATAR,STRATARN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "474","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATAV is populated and STRATAVN is not populated","value-conditional-populated","non_empty(STRATAV) & empty(STRATAVN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "475","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, STRATAVN is populated and STRATAV is not populated","value-conditional-populated","non_empty(STRATAVN) & empty(STRATAV)","predicate","2026-04-21T11:35:41Z","condition",NA
+"476","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAV for a given value of STRATAVN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(STRATAVN,STRATAV)","predicate","2026-04-21T11:50:50Z","unique",NA
+"477","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of STRATAVN for a given value of STRATAV, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(STRATAV,STRATAVN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "488","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ONTRTFL is populated and ONTRTFN is not populated","value-conditional-populated","non_empty(ONTRTFL) & empty(ONTRTFN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "489","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ONTRTFN is populated and ONTRTFL is not populated","value-conditional-populated","non_empty(ONTRTFN) & empty(ONTRTFL)","predicate","2026-04-21T11:35:41Z","condition",NA
 "490","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, LVOTFL is populated and LVOTFN is not populated","value-conditional-populated","non_empty(LVOTFL) & empty(LVOTFN)","predicate","2026-04-21T11:35:41Z","condition",NA
@@ -1628,7 +1600,31 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "668","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, ACYCLE is populated and ACYCLEC is not populated","value-conditional-populated","non_empty(ACYCLE) & empty(ACYCLEC)","predicate","2026-04-21T11:35:41Z","condition",NA
 "670","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ACYCLEC is present and ACYCLE is not present","presence-pair","exists(ACYCLEC) & not_exists(ACYCLE)","predicate","2026-04-21T09:19:57Z","find",NA
 "671","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVALU is not present","presence-required","not_exists(AVALU)","predicate","2026-04-21T11:26:53Z","required",NA
+"721","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTPN for a given value of TRTP, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTP,TRTPN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"722","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTP for a given value of TRTPN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTPN,TRTP)","predicate","2026-04-21T11:50:50Z","unique",NA
+"723","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTAN for a given value of TRTA, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTA,TRTAN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"724","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTA for a given value of TRTAN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTAN,TRTA)","predicate","2026-04-21T11:50:50Z","unique",NA
+"725","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of APERIODC for a given value of APERIOD, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(APERIOD,APERIODC)","predicate","2026-04-21T11:50:50Z","unique",NA
+"726","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of APERIOD for a given value of APERIODC, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(APERIODC,APERIOD)","predicate","2026-04-21T11:50:50Z","unique",NA
+"738","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of PARAM for a given value of PARAMCD, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(PARAMCD,PARAM)","predicate","2026-04-21T11:50:50Z","unique",NA
+"739","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of PARAMCD for a given value of PARAM, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(PARAM,PARAMCD)","predicate","2026-04-21T11:50:50Z","unique",NA
 "75","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxPN is present and TRTxxP is not present","presence-pair","exists(TRTxxPN) & not_exists(TRTxxP)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
+"752","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQP for a given value of TRTSEQPN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTSEQPN,TRTSEQP)","predicate","2026-04-21T11:50:50Z","unique",NA
+"753","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQPN for a given value of TRTSEQP, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTSEQP,TRTSEQPN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"754","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQA for a given value of TRTSEQAN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTSEQAN,TRTSEQA)","predicate","2026-04-21T11:50:50Z","unique",NA
+"755","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQAN for a given value of TRTSEQA, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTSEQA,TRTSEQAN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"769","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AESEV for a given value of AESEVN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(AESEVN,AESEV)","predicate","2026-04-21T11:50:50Z","unique",NA
+"770","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AESEVN for a given value of AESEV, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(AESEV,AESEVN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"771","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ASEV for a given value of ASEVN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ASEVN,ASEV)","predicate","2026-04-21T11:50:50Z","unique",NA
+"772","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ASEVN for a given value of ASEV, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ASEV,ASEVN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"775","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AEREL for a given value of AERELN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(AERELN,AEREL)","predicate","2026-04-21T11:50:50Z","unique",NA
+"776","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AERELN for a given value of AEREL, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(AEREL,AERELN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"777","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AREL for a given value of ARELN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ARELN,AREL)","predicate","2026-04-21T11:50:50Z","unique",NA
+"778","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ARELN for a given value of AREL, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(AREL,ARELN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"781","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AETOXGR for a given value of AETOXGRN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(AETOXGRN,AETOXGR)","predicate","2026-04-21T11:50:50Z","unique",NA
+"782","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of AETOXGRN for a given value of AETOXGR, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(AETOXGR,AETOXGRN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"783","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ATOXGR for a given value of ATOXGRN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ATOXGRN,ATOXGR)","predicate","2026-04-21T11:50:50Z","unique",NA
+"784","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ATOXGRN for a given value of ATOXGR, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ATOXGR,ATOXGRN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "795","CDISC","ADaM-IG","1.3","Medium","PROJID is populated and PROJIDN is not populated","value-conditional-populated","non_empty(PROJID) & empty(PROJIDN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "796","CDISC","ADaM-IG","1.3","Medium","PROJIDN is populated and PROJID is not populated","value-conditional-populated","non_empty(PROJIDN) & empty(PROJID)","predicate","2026-04-21T11:35:41Z","condition",NA
 "799","CDISC","ADaM-IG","1.3","Medium","PROJIDN is present and PROJID is not present","presence-pair","exists(PROJIDN) & not_exists(PROJID)","predicate","2026-04-21T09:19:57Z","find",NA
@@ -1693,6 +1689,10 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "89","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","USUBJID is not present","presence-required","not_exists(USUBJID)","predicate","2026-04-21T11:26:53Z","required",NA
 "890","CDISC","ADaM-IG","1.3","Medium","AMT is not present","presence-required","not_exists(AMT)","predicate","2026-04-21T11:26:53Z","required",NA
 "90","CDISC","ADaM-IG","1.0","Medium","TRTP is not present","presence-required","not_exists(TRTP)","predicate","2026-04-21T11:26:53Z","required",NA
+"92","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTPN for a given value of TRTP","uniqueness-grouped","is_not_unique_relationship(TRTP,TRTPN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"93","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTP for a given value of TRTPN","uniqueness-grouped","is_not_unique_relationship(TRTPN,TRTP)","predicate","2026-04-21T11:50:50Z","unique",NA
+"95","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTAN for a given value of TRTA","uniqueness-grouped","is_not_unique_relationship(TRTA,TRTAN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"96","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTA for a given value of TRTAN","uniqueness-grouped","is_not_unique_relationship(TRTAN,TRTA)","predicate","2026-04-21T11:50:50Z","unique",NA
 "97","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTPGyN is present and TRTPGy is not present","presence-pair","exists(TRTPGyN) & not_exists(TRTPGy)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
 "CG0040","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","AEOCCUR not present in dataset","presence-forbidden","exists(AEOCCUR)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA
 "CG0044","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","AESTAT not present in dataset","presence-forbidden","exists(AESTAT)","predicate","2026-04-21T10:48:15Z","find_prohibited",NA

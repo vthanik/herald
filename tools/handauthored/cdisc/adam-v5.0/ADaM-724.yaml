@@ -13,9 +13,11 @@ scope:
 variable: TRTA
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where TRTA and TRTAN are both populated
+  all:
+  - name: TRTAN
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTA
 outcome:
   message: There is more than one value of TRTA for a given value of TRTAN, considering
     only those rows on which both variables are populated
@@ -28,5 +30,4 @@ provenance:
     code for TRTA. One-to-one mapping within a study to TRTA.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

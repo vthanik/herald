@@ -10,9 +10,11 @@ scope:
 variable: TRTSEQA
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: TRTSEQAN
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTSEQA
 outcome:
   message: There is more than one value of TRTSEQA for a given value of TRTSEQAN
   severity: Medium
@@ -23,4 +25,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.0, Section 3.1, Table 3.1.1: One-to-one map to TRTSEQA'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

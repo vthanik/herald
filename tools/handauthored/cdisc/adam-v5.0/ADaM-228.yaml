@@ -10,9 +10,11 @@ scope:
 variable: TRTSEQPN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: TRTSEQP
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTSEQPN
 outcome:
   message: There is more than one value of TRTSEQPN for a given value of TRTSEQP
   severity: Medium
@@ -23,4 +25,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.0, Section 3.1, Table 3.1.1: One-to-one map to TRTSEQP'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

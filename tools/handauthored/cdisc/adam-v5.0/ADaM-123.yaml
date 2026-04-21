@@ -12,9 +12,11 @@ scope:
 variable: PARAMTYP
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: PARAMCD
+    operator: is_not_unique_relationship
+    value:
+      related_name: PARAMTYP
 outcome:
   message: There is more than one value of PARAMTYP for a given value of PARAMCD
   severity: Medium
@@ -26,4 +28,4 @@ provenance:
     the parameter is derived as a function of one or more other parameters.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

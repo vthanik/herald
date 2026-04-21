@@ -13,9 +13,11 @@ scope:
 variable: AERELN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both AERELN and AEREL are both populated.
+  all:
+  - name: AEREL
+    operator: is_not_unique_relationship
+    value:
+      related_name: AERELN
 outcome:
   message: There is more than one value of AERELN for a given value of AEREL, considering
     only those rows on which both variables are populated
@@ -32,5 +34,4 @@ provenance:
     OCCDS v1.1, Section 3.2.8, Table 3.2.8.1: CDISC Notes for AERELN state: "Code AE.AEREL to numeric".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

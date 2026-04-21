@@ -13,9 +13,11 @@ scope:
 variable: TRTPN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where TRTPN and TRTP are both populated
+  all:
+  - name: TRTP
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTPN
 outcome:
   message: There is more than one value of TRTPN for a given value of TRTP, considering
     only those rows on which both variables are populated
@@ -28,5 +30,4 @@ provenance:
     code for TRTP. One-to-one mapping within a study to TRTP.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

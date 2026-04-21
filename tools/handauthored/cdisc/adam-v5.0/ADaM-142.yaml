@@ -10,9 +10,11 @@ scope:
 variable: PARAMCD
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - name: PARAM
+    operator: is_not_unique_relationship
+    value:
+      related_name: PARAMCD
 outcome:
   message: There is more than one value of PARAMCD for a given value of PARAM
   severity: Medium
@@ -24,4 +26,4 @@ provenance:
     mapping with PARAM.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

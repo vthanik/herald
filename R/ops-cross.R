@@ -36,15 +36,31 @@ op_is_not_unique_relationship <- function(data, ctx, name, value) {
   }
   if (is.null(data[[related]])) return(rep(NA, n))
 
-  x <- .as_char(data[[name]])
-  y <- .as_char(data[[related]])
+  # Right-trim character values before comparison to mirror Pinnacle 21's
+  # rtrim-null convention (DataEntryFactory.java:313-328). "Heart Rate"
+  # and "Heart Rate " collapse to the same value; "   " becomes NA so
+  # whitespace-only cells are excluded by the "both variables populated"
+  # clause in the CDISC message.
+  .rtrim_na <- function(v) {
+    if (!is.character(v)) return(.as_char(v))
+    r <- sub("\\s+$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+  x <- .rtrim_na(data[[name]])
+  y <- .rtrim_na(data[[related]])
 
-  # Count distinct y per x (excluding NA)
+  # Count distinct y per x (excluding NA in either). Mirrors the
+  # CDISC message clause "considering only those rows on which both
+  # variables are populated".
   key_df <- data.frame(x = x, y = y, stringsAsFactors = FALSE)
   key_df <- key_df[!is.na(key_df$x) & !is.na(key_df$y), , drop = FALSE]
   counts <- tapply(key_df$y, key_df$x, function(v) length(unique(v)))
 
-  # Mark each row whose x has count > 1
+  # Mark each row whose x has count > 1. Unlike P21 (which fires only
+  # the 2nd+ duplicate), herald fires EVERY row in a violating group
+  # so reviewers see the full scope of the inconsistency. Documented
+  # deviation in tools/rule-authoring/CONVENTIONS.md section 4.
   bad_x <- names(counts)[counts > 1L]
   x %in% bad_x
 }
