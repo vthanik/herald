@@ -14,8 +14,12 @@ scope:
   exclude_domains: []
 variable: --STRF
 check:
-  narrative: --STRF = null
-  condition: --OCCUR = 'N'
+  all:
+  - operator: equal_to
+    name: --OCCUR
+    value: 'N'
+  - operator: non_empty
+    name: --STRF
 outcome:
   message: --STRF = null
   severity: Medium
@@ -29,5 +33,4 @@ provenance:
     ending point represented by RFSTDTC and RFENDTC in Demographics.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

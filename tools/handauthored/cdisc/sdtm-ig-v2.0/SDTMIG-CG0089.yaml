@@ -18,8 +18,12 @@ scope:
   exclude_domains: []
 variable: --PRESP
 check:
-  narrative: --PRESP = 'Y'
-  condition: --OCCUR ^= null
+  all:
+  - operator: non_empty
+    name: --OCCUR
+  - operator: not_equal_to
+    name: --PRESP
+    value: 'Y'
 outcome:
   message: --PRESP = 'Y'
   severity: Medium
@@ -38,5 +42,4 @@ provenance:
     occurrence of a specific event is solicited.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

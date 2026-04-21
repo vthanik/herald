@@ -9,8 +9,12 @@ scope:
   exclude_domains: []
 variable: SVPRESP
 check:
-  narrative: SVPRESP = "Y"
-  condition: SVOCCUR ^= null
+  all:
+  - operator: non_empty
+    name: SVOCCUR
+  - operator: not_equal_to
+    name: SVPRESP
+    value: 'Y'
 outcome:
   message: SVPRESP = "Y"
   severity: Medium
@@ -23,5 +27,4 @@ provenance:
 
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

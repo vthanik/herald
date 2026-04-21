@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: DTHFL
 check:
-  narrative: DTHFL = 'Y'
-  condition: DTHDTC ^= null
+  all:
+  - operator: non_empty
+    name: DTHDTC
+  - operator: not_equal_to
+    name: DTHFL
+    value: 'Y'
 outcome:
   message: DTHFL = 'Y'
   severity: Medium
@@ -25,5 +29,4 @@ provenance:
     Should be populated even when the death date is unknown.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

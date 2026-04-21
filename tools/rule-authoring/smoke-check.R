@@ -380,6 +380,57 @@ if (run_all) {
     return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
   }
 
+  # Special-case synth for value-conditional-populated-eq-lit pattern:
+  # {all: [non_empty(cond_var), not_equal_to(target, 'LIT')]}.
+  # Positive row 1: cond populated + target != LIT (violation). Row 2:
+  # cond empty (guard blocks). Negative: cond populated on both rows, but
+  # target equals LIT (compliant).
+  if (length(lv) == 2L &&
+      ops[[1L]] == "non_empty" &&
+      ops[[2L]] == "not_equal_to" &&
+      !isFALSE(lv[[2L]]$value_is_literal)) {
+    cond_var <- as.character(lv[[1L]]$name)
+    target   <- as.character(lv[[2L]]$name)
+    lit      <- as.character(lv[[2L]]$value)
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    rule_std <- toupper(as.character(rule$standard %||% ""))
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else if (grepl("ADAM", rule_std)) {
+      ds_name <- "ADSL"; spec <- list(class_map = list(ADSL = "SUBJECT LEVEL ANALYSIS DATASET"))
+    } else {
+      ds_name <- "DM"; spec <- NULL
+    }
+    dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+    exp <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+    cond_var_r <- exp(cond_var); target_r <- exp(target)
+    mk <- function(fire) {
+      cols_list <- list(USUBJID = c("S1", "S2"))
+      if (isTRUE(fire)) {
+        cols_list[[cond_var_r]] <- c("X", "")
+        cols_list[[target_r]]   <- c("OTHER", lit)
+      } else {
+        cols_list[[cond_var_r]] <- c("X", "X")
+        cols_list[[target_r]]   <- c(lit, lit)
+      }
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) 1L else integer()),
+        notes        = "synth value-conditional-populated-eq-lit",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
   # Special-case synth for value-conditional-null-eq pattern:
   # {all: [equal_to(cond_var, LIT), non_empty(target_var)]} where
   # value_is_literal is TRUE (or not set, defaulting to literal).
@@ -404,10 +455,15 @@ if (run_all) {
       ds_name <- "DS"; spec <- NULL
     }
     topic_col <- if (!is.na(pick$topic_col)) pick$topic_col else NA_character_
+    # Expand --VAR wildcards against the picked dataset's 2-char prefix
+    # so synthetic columns match the names the walker will look up.
+    dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
+    exp <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
+    cond_var_r <- exp(cond_var); target_r <- exp(target)
     mk <- function(fire) {
       cols_list <- list(USUBJID = c("S1", "S2"))
-      cols_list[[cond_var]] <- c(cond_lit, cond_lit)
-      cols_list[[target]]   <- if (isTRUE(fire)) c("VAL", "VAL") else c("", "")
+      cols_list[[cond_var_r]] <- c(cond_lit, cond_lit)
+      cols_list[[target_r]]   <- if (isTRUE(fire)) c("VAL", "VAL") else c("", "")
       if (!is.na(topic_col) && !topic_col %in% names(cols_list)) {
         cols_list[[topic_col]] <- c("T", "T")
       }
