@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "terms_format": "object",
+  "version": "2026-04-17",
+  "source": "CDISC Library CT packages (library.cdisc.org)",
+  "fetched": "2026-04-17T11:17:13Z",
+  "packages": {
+    "sdtm": {
+      "name": "CDISC SDTM Controlled Terminology",
+      "effective": "sdtmct-2026-03-27",
+      "n_codelists": 1215,
+      "n_terms": 45612,
+      "n_extensible": 275,
+      "n_deprecated": 7
+    },
+    "adam": {
+      "name": "CDISC ADaM Controlled Terminology",
+      "effective": "adamct-2026-03-27",
+      "n_codelists": 25,
+      "n_terms": 144,
+      "n_extensible": 8,
+      "n_deprecated": 0
+    }
+  }
+}

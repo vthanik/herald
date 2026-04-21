@@ -266,3 +266,79 @@ op_is_not_ordered_subset_of <- function(data, ctx, name, value) {
     cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
   )
 )
+
+# --- value_in_codelist (CT-driven membership; plan Q7) ----------------------
+# Fires when a row value is NOT in the given CDISC codelist. The CT is
+# loaded once per validate() run via ctx$ct[[package]] and looked up
+# by submission short name, NCI code, or long name.
+#
+# Extensible codelists accept any non-empty sponsor value in addition
+# to the listed terms (CDISC extensible-codelist contract).
+# match_synonyms merges the codelist's synonym field into the
+# accepted-values set for ISO 21090 null-flavor style rules.
+
+op_value_in_codelist <- function(data, ctx, name, codelist,
+                                 extensible     = FALSE,
+                                 match_synonyms = FALSE,
+                                 package        = "sdtm") {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  if (is.null(data[[name]])) return(rep(NA, n))
+
+  ct <- ctx$ct[[package]]
+  if (is.null(ct)) {
+    ct <- tryCatch(load_ct(package), error = function(e) NULL)
+    if (is.null(ct)) return(rep(NA, n))
+    ctx$ct[[package]] <- ct
+  }
+
+  entry <- .lookup_codelist(ct, codelist)
+  if (is.null(entry)) return(rep(NA, n))
+
+  accepted <- as.character(entry$terms$submissionValue %||% character())
+  if (isTRUE(match_synonyms)) {
+    syn <- entry$terms$synonyms %||% character(0)
+    syn <- unlist(strsplit(as.character(syn), ";"), use.names = FALSE)
+    accepted <- unique(c(accepted, trimws(syn)))
+  }
+
+  vals <- as.character(data[[name]])
+  vals <- sub(" +$", "", vals)
+  out <- rep(NA, n)
+  non_empty <- !is.na(vals) & nzchar(vals)
+  out[non_empty] <- !(vals[non_empty] %in% accepted)
+  if (isTRUE(extensible)) {
+    # Extensible codelist: any non-empty value passes (fire only on NA).
+    out[non_empty] <- FALSE
+  }
+  out
+}
+.register_op(
+  "value_in_codelist", op_value_in_codelist,
+  meta = list(
+    kind = "set",
+    summary = "Row value is in the named CDISC CT codelist",
+    arg_schema = list(
+      name           = list(type = "string",  required = TRUE),
+      codelist       = list(type = "string",  required = TRUE),
+      extensible     = list(type = "boolean", default  = FALSE),
+      match_synonyms = list(type = "boolean", default  = FALSE),
+      package        = list(type = "string",  default  = "sdtm")
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+#' Resolve a codelist by submission name, NCI code, or long name.
+#' @noRd
+.lookup_codelist <- function(ct, codelist) {
+  key <- as.character(codelist)
+  if (key %in% names(ct)) return(ct[[key]])
+  # Fall back on codelist_code or codelist_name
+  for (e in ct) {
+    if (identical(e$codelist_code, key)) return(e)
+    if (identical(e$codelist_name, key)) return(e)
+  }
+  NULL
+}
+

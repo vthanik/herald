@@ -14,9 +14,14 @@ scope:
 variable: PPROTFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: PPROTFL is present
+  all:
+  - operator: non_empty
+    name: PPROTFL
+  - operator: is_not_contained_by
+    name: PPROTFL
+    value:
+    - "Y"
+    - "N"
 outcome:
   message: PPROTFL is present and has a value that is not Y or N
   severity: Medium
@@ -28,4 +33,4 @@ provenance:
     have a Codelist / Controlled Term value of "Y, N".'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

@@ -92,6 +92,8 @@ validate <- function(path = NULL,
   ctx$datasets     <- datasets
   ctx$spec         <- spec
   ctx$crossrefs    <- build_crossrefs(datasets, spec)
+  # Per-run CT cache. op_value_in_codelist lazy-loads on first use.
+  ctx$ct           <- list()
   # Pre-scan every dataset for duplicate USUBJID rows. Cross-dataset ops
   # use this cache to surface "ref has duplicate USUBJID" as a first-class
   # finding instead of silently first-matching (plan Q10).

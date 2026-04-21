@@ -14,9 +14,14 @@ scope:
 variable: COMPLFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: COMPLFL is present
+  all:
+  - operator: non_empty
+    name: COMPLFL
+  - operator: is_not_contained_by
+    name: COMPLFL
+    value:
+    - "Y"
+    - "N"
 outcome:
   message: COMPLFL is present and has a value that is not Y or N
   severity: Medium
@@ -28,4 +33,4 @@ provenance:
     have a Codelist / Controlled Term value of "Y, N".'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
