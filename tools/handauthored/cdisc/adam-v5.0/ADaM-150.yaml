@@ -10,9 +10,13 @@ scope:
 variable: AVAL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: ''
+  all:
+  - name: AVALC
+    operator: is_not_unique_relationship
+    value:
+      related_name: AVAL
+      group_by: PARAMCD
 outcome:
   message: Within a given value of PARAMCD, there is more than one value of AVAL for
     a given value of AVALC
@@ -26,4 +30,4 @@ provenance:
     and AVALC within a given PARAM.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

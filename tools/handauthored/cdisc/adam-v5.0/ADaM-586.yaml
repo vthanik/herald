@@ -12,9 +12,10 @@ scope:
 variable: PBCHG
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: PBCHG is populated
+  operator: is_not_pct_diff
+  name: PBCHG
+  minuend: BASE
+  subtrahend: AVAL
 outcome:
   message: Within a given value of PARAMCD for a subject, PBCHG is populated and is
     not equal to ((BASE-AVAL)/AVAL)*100
@@ -26,5 +27,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.2, Section 3.3.4.1, Table 3.3.4.1.1: Equal to ((BASE-AVAL)/AVAL)*100'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

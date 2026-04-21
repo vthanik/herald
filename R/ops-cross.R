@@ -29,12 +29,25 @@ op_is_not_unique_relationship <- function(data, ctx, name, value) {
   n <- nrow(data)
   if (is.null(data[[name]])) return(rep(NA, n))
 
-  # The related column may be passed as a sub-list or a string
-  related <- if (is.list(value)) value$related_name else value
+  # The related column may be passed as a sub-list or a string. The
+  # sub-list form may also include a `group_by` (character vector) that
+  # nests the X/Y uniqueness check inside additional grouping columns
+  # (e.g. PARAMCD-scoped rules: within each PARAMCD, X->Y is 1:1).
+  # Mirrors P21's val:Unique `GroupBy="STUDYID,PARAMCD,..."` composite
+  # group key (UniqueValueValidationRule.java + DataGrouping).
+  if (is.list(value)) {
+    related  <- value$related_name
+    group_by <- as.character(unlist(value$group_by %||% character(0)))
+  } else {
+    related  <- value
+    group_by <- character(0)
+  }
   if (is.null(related) || is.na(related) || !nzchar(related)) {
     return(rep(NA, n))
   }
   if (is.null(data[[related]])) return(rep(NA, n))
+  missing_grp <- setdiff(group_by, names(data))
+  if (length(missing_grp) > 0L) return(rep(NA, n))
 
   # Right-trim character values before comparison to mirror Pinnacle 21's
   # rtrim-null convention (DataEntryFactory.java:313-328). "Heart Rate"
@@ -50,19 +63,31 @@ op_is_not_unique_relationship <- function(data, ctx, name, value) {
   x <- .rtrim_na(data[[name]])
   y <- .rtrim_na(data[[related]])
 
-  # Count distinct y per x (excluding NA in either). Mirrors the
-  # CDISC message clause "considering only those rows on which both
-  # variables are populated".
-  key_df <- data.frame(x = x, y = y, stringsAsFactors = FALSE)
-  key_df <- key_df[!is.na(key_df$x) & !is.na(key_df$y), , drop = FALSE]
+  # Count distinct y per (group_by..., x) tuple (excluding NA). Mirrors
+  # the CDISC message clause "considering only those rows on which both
+  # variables are populated" plus the optional "within a given value of
+  # <G>" outer scope.
+  if (length(group_by) == 0L) {
+    outer_key <- rep("", n)
+  } else {
+    outer_key <- do.call(paste, c(lapply(group_by, function(g)
+      .rtrim_na(data[[g]])), list(sep = "\x1f")))
+  }
+  composite_x <- paste(outer_key, x, sep = "\x1f")
+  key_df <- data.frame(x = composite_x, y = y, stringsAsFactors = FALSE)
+  # Exclude rows with NA in x or y (or any group_by column implicitly
+  # via NA propagation into outer_key).
+  has_na_grp <- if (length(group_by) == 0L) rep(FALSE, n) else
+    Reduce(`|`, lapply(group_by, function(g) is.na(.rtrim_na(data[[g]]))))
+  key_df <- key_df[!is.na(x) & !is.na(y) & !has_na_grp, , drop = FALSE]
   counts <- tapply(key_df$y, key_df$x, function(v) length(unique(v)))
 
-  # Mark each row whose x has count > 1. Unlike P21 (which fires only
-  # the 2nd+ duplicate), herald fires EVERY row in a violating group
-  # so reviewers see the full scope of the inconsistency. Documented
-  # deviation in tools/rule-authoring/CONVENTIONS.md section 4.
+  # Mark each row whose composite group key has count > 1. Unlike P21
+  # (which fires only the 2nd+ duplicate), herald fires EVERY row in a
+  # violating group so reviewers see the full scope of the
+  # inconsistency. Documented deviation in CONVENTIONS.md section 4.
   bad_x <- names(counts)[counts > 1L]
-  x %in% bad_x
+  composite_x %in% bad_x
 }
 .register_op(
   "is_not_unique_relationship", op_is_not_unique_relationship,
@@ -672,6 +697,96 @@ op_missing_in_ref <- function(data, ctx, name,
 # where the first leaf activates only for subjects with a DEAD SS record).
 #
 # rtrim-null applied to the reference column before comparison.
+
+# --- arithmetic calc ops (CHG, PCHG, BCHG, PBCHG) --------------------------
+# ADaM-IG defines CHG = AVAL - BASE (change from baseline), PCHG = ((AVAL -
+# BASE) / BASE) * 100 (percent change), with symmetric BCHG / PBCHG forms
+# reversing the operand direction. P21 expresses these with DSL functions
+# :DIFF(a, b) and :PCTDIFF(a, b) evaluated under the fuzzy-eq operator
+# @feq (Comparison.java:178-181 + Expression.java:45-62 alias map). Default
+# epsilon 0.001 (DEFAULT_EPSILON in Comparison.java:38) or configurable
+# via Engine.FuzzyTolerance.
+#
+# herald op_is_not_diff / op_is_not_pct_diff compute the expected value and
+# fire TRUE when the stored value differs from the computed value by more
+# than the epsilon (default 0.001 matching P21's default).
+
+.nearly_equal <- function(a, b, epsilon = 0.001) {
+  # Mirrors P21's `nearlyEqual` helper (Comparison.java). Both sides
+  # must be finite numeric; NA on either side -> NA.
+  out <- rep(NA, length(a))
+  ok <- !is.na(a) & !is.na(b) & is.finite(a) & is.finite(b)
+  out[ok] <- abs(a[ok] - b[ok]) <= epsilon
+  out
+}
+
+op_is_not_diff <- function(data, ctx, name, minuend, subtrahend,
+                           epsilon = 0.001) {
+  n <- nrow(data)
+  if (is.null(data[[name]]) || is.null(data[[minuend]]) ||
+      is.null(data[[subtrahend]])) {
+    return(rep(NA, n))
+  }
+  target <- suppressWarnings(as.numeric(data[[name]]))
+  a      <- suppressWarnings(as.numeric(data[[minuend]]))
+  b      <- suppressWarnings(as.numeric(data[[subtrahend]]))
+  computed <- a - b
+  eq <- .nearly_equal(target, computed, epsilon)
+  out <- !eq
+  # Rows where inputs are missing -> NA propagated from .nearly_equal.
+  out
+}
+.register_op(
+  "is_not_diff", op_is_not_diff,
+  meta = list(
+    kind = "cross",
+    summary = "Stored `name` value does not equal (minuend - subtrahend) within epsilon",
+    arg_schema = list(
+      name       = list(type = "string",  required = TRUE),
+      minuend    = list(type = "string",  required = TRUE),
+      subtrahend = list(type = "string",  required = TRUE),
+      epsilon    = list(type = "numeric", default  = 0.001)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+op_is_not_pct_diff <- function(data, ctx, name, minuend, subtrahend,
+                               denominator = NULL, epsilon = 0.001) {
+  n <- nrow(data)
+  if (is.null(data[[name]]) || is.null(data[[minuend]]) ||
+      is.null(data[[subtrahend]])) {
+    return(rep(NA, n))
+  }
+  denom_col <- denominator %||% subtrahend
+  if (is.null(data[[denom_col]])) return(rep(NA, n))
+  target <- suppressWarnings(as.numeric(data[[name]]))
+  a      <- suppressWarnings(as.numeric(data[[minuend]]))
+  b      <- suppressWarnings(as.numeric(data[[subtrahend]]))
+  d      <- suppressWarnings(as.numeric(data[[denom_col]]))
+  # Guard against div-by-zero (P21 SD1... with When guard; herald
+  # returns NA on those rows -> advisory).
+  safe_d <- ifelse(!is.na(d) & d != 0, d, NA_real_)
+  computed <- ((a - b) / safe_d) * 100
+  eq <- .nearly_equal(target, computed, epsilon)
+  out <- !eq
+  out
+}
+.register_op(
+  "is_not_pct_diff", op_is_not_pct_diff,
+  meta = list(
+    kind = "cross",
+    summary = "Stored `name` value does not equal ((minuend - subtrahend) / denominator * 100) within epsilon",
+    arg_schema = list(
+      name        = list(type = "string",  required = TRUE),
+      minuend     = list(type = "string",  required = TRUE),
+      subtrahend  = list(type = "string",  required = TRUE),
+      denominator = list(type = "string",  required = FALSE),
+      epsilon     = list(type = "numeric", default  = 0.001)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
 
 op_subject_has_matching_row <- function(data, ctx, name,
                                         reference_dataset,

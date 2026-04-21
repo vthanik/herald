@@ -10,9 +10,13 @@ scope:
 variable: SHIFTyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: 'y'
+  all:
+  - name: SHIFTy
+    operator: is_not_unique_relationship
+    value:
+      related_name: SHIFTyN
+      group_by: PARAMCD
 outcome:
   message: Within a given value of PARAMCD, there is more than one value of SHIFTyN
     for a given value of SHIFTy
@@ -27,4 +31,4 @@ provenance:
     The ADaM Team acknowledges that this cited text does not adequately support the creation of a conformance rule.  The intent of the ADaM Team was clarified in ADaMIG v1.0, Section 3.2.4, Table 3.2.4.1 v1.1.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

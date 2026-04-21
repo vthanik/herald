@@ -313,14 +313,23 @@ if (run_all) {
     dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
     exp_var <- function(x) if (startsWith(x, "--")) paste0(dom2, sub("^--", "", x)) else x
     var_a_r <- exp_var(var_a); var_b_r <- exp_var(var_b)
-    pos_cols <- stats::setNames(
-      list(c("S1","S2"), c("K1","K1"), c("A","B")),
-      c("USUBJID", var_b_r, var_a_r)
-    )
-    neg_cols <- stats::setNames(
-      list(c("S1","S2"), c("K1","K1"), c("A","A")),
-      c("USUBJID", var_b_r, var_a_r)
-    )
+    # Optional composite group_by (e.g. PARAMCD) -- add the scope cols
+    # so the per-group uniqueness check has meaningful groups.
+    group_by <- if (is.list(val)) as.character(unlist(val$group_by %||% character(0)))
+                else character(0)
+    group_by <- group_by[nzchar(group_by)]
+    pos_cols <- list(USUBJID = c("S1","S2"))
+    neg_cols <- list(USUBJID = c("S1","S2"))
+    for (g in group_by) {
+      # All rows share the same outer-scope value so the uniqueness
+      # check is exercised within a single group.
+      pos_cols[[g]] <- c("P1","P1")
+      neg_cols[[g]] <- c("P1","P1")
+    }
+    pos_cols[[var_b_r]] <- c("K1","K1")
+    pos_cols[[var_a_r]] <- c("A","B")
+    neg_cols[[var_b_r]] <- c("K1","K1")
+    neg_cols[[var_a_r]] <- c("A","A")
     mk <- function(cols, fire) list(
       rule_id = as.character(rule$id),
       fixture_type = if (isTRUE(fire)) "positive" else "negative",
@@ -376,6 +385,84 @@ if (run_all) {
         expected     = list(fires = fire,
                             rows = if (isTRUE(fire)) 1L else integer()),
         notes        = "synth value-conditional-literal-assert",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
+  # Special-case synth for value-arith-check pattern:
+  # single-leaf is_not_diff or is_not_pct_diff.
+  if (length(lv) == 1L && ops[[1L]] %in% c("is_not_diff", "is_not_pct_diff")) {
+    target     <- as.character(lv[[1L]]$name)
+    minuend    <- as.character(lv[[1L]]$minuend)
+    subtrahend <- as.character(lv[[1L]]$subtrahend)
+    op_name    <- ops[[1L]]
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else {
+      ds_name <- "ADLB"; spec <- list(class_map = list(ADLB = "BASIC DATA STRUCTURE"))
+    }
+    mk <- function(fire) {
+      a_vals <- c(10, 10)
+      b_vals <- c(8, 8)
+      correct <- if (op_name == "is_not_diff") a_vals - b_vals
+                 else ((a_vals - b_vals) / b_vals) * 100
+      target_vals <- if (isTRUE(fire)) c(99, 99) else correct
+      cols_list <- list(USUBJID = c("S1","S2"), PARAMCD = c("X","X"))
+      cols_list[[minuend]]    <- a_vals
+      if (subtrahend != minuend) cols_list[[subtrahend]] <- b_vals
+      cols_list[[target]]     <- target_vals
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+        notes        = "synth value-arith-check",
+        authored     = "pattern-fixture-synth@1",
+        spec         = spec, `_path` = NA_character_
+      )
+    }
+    return(list(pos = mk(TRUE), neg = mk(FALSE), synth = TRUE))
+  }
+
+  # Special-case synth for uniqueness-grouped-scoped pattern:
+  # is_not_unique_relationship with group_by.
+  if (length(lv) == 1L && ops[[1L]] == "is_not_unique_relationship" &&
+      is.list(lv[[1L]]$value) && !is.null(lv[[1L]]$value$group_by)) {
+    var_b    <- as.character(lv[[1L]]$name)
+    var_a    <- as.character(lv[[1L]]$value$related_name)
+    scope_vs <- as.character(unlist(lv[[1L]]$value$group_by))
+    scope_v  <- scope_vs[[1L]]
+    scope <- tryCatch(rule$scope[[1L]], error = function(e) NULL)
+    pick  <- pick_dataset_for_scope(scope)
+    if (!is.na(pick$dataset)) {
+      ds_name <- pick$dataset
+      spec    <- if (pick$via %in% c("class","domain") &&
+                     !is.na(pick$class) && nzchar(pick$class))
+        list(class_map = stats::setNames(list(pick$class), ds_name)) else NULL
+    } else {
+      ds_name <- "ADLB"; spec <- list(class_map = list(ADLB = "BASIC DATA STRUCTURE"))
+    }
+    mk <- function(fire) {
+      cols_list <- list(USUBJID = c("S1","S2"), PARAMCD = c("P1","P1"))
+      if (scope_v != "PARAMCD") cols_list[[scope_v]] <- c("P1","P1")
+      cols_list[[var_b]] <- c("NORM","NORM")
+      cols_list[[var_a]] <- if (isTRUE(fire)) c("70","80") else c("70","70")
+      list(
+        rule_id      = as.character(rule$id),
+        fixture_type = if (isTRUE(fire)) "positive" else "negative",
+        datasets     = stats::setNames(list(cols_list), ds_name),
+        expected     = list(fires = fire,
+                            rows = if (isTRUE(fire)) c(1L,2L) else integer()),
+        notes        = "synth uniqueness-grouped-scoped",
         authored     = "pattern-fixture-synth@1",
         spec         = spec, `_path` = NA_character_
       )

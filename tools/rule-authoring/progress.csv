@@ -4,34 +4,24 @@
 "102","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRTxxP",NA,NA,"narrative",NA,NA,NA
 "103","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxSDT",NA,NA,"narrative",NA,NA,NA
 "104","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxEDT",NA,NA,"narrative",NA,NA,NA
-"109","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVISITN for a given value of AVISIT",NA,NA,"narrative",NA,NA,NA
 "11","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to N and a variable with the same root and a suffix of FN is not equal to 0",NA,NA,"narrative",NA,NA,NA
-"110","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVISIT for a given value of AVISITN",NA,NA,"narrative",NA,NA,NA
-"117","CDISC","ADaM-IG","1.0,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of ATPT for a given value of ATPTN",NA,NA,"narrative",NA,NA,NA
-"118","CDISC","ADaM-IG","1.0,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of ATPTN for a given value of ATPT",NA,NA,"narrative",NA,NA,NA
 "12","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is equal to null and a variable with the same root and a suffix of FN is not equal to null",NA,NA,"narrative",NA,NA,NA
 "121","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of a variable with a suffix of SDT is greater than the value of a variable with the same root and a suffix of EDT, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "122","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of a variable with a suffix of SDTM is greater than the value of a variable with the same root and a suffix of EDTM, considering only rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "127","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BASE is populated and there is not at least one record with ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
 "128","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BASEC is populated and there is not at least one record with ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
-"129","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD for a subject, there is more than one value of BASE for a given value of BASEC",NA,NA,"narrative",NA,NA,NA
 "13","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a variable name exceeds 8 characters",NA,NA,"narrative",NA,NA,NA
-"130","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD for a subject, there is more than one value of BASEC for a given value of BASE",NA,NA,"narrative",NA,NA,NA
 "131","CDISC","ADaM-IG","1.0,1.2","Medium","Within a given value of PARAMCD, BASETYPE is populated for at least one record and is not populated for at least one record",NA,NA,"narrative",NA,NA,NA
 "132","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","R2BASE is not equal to AVAL divided by BASE",NA,NA,"narrative",NA,NA,NA
 "133","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","R2AyLO is not equal to AVAL divided by AyLO",NA,NA,"narrative",NA,NA,NA
 "134","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","R2AyHI is not equal to AVAL divided by AyHI",NA,NA,"narrative",NA,NA,NA
-"135","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTy for a given value of SHIFTyN",NA,NA,"narrative",NA,NA,NA
-"136","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTyN for a given value of SHIFTy",NA,NA,"narrative",NA,NA,NA
 "137","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CRITyFL is populated and CRITy is not populated",NA,NA,"narrative",NA,NA,NA
 "14","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable name does not start with a letter (A-Z)",NA,NA,"narrative",NA,NA,NA
 "143","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD has more than 8 characters in length",NA,NA,"narrative",NA,NA,NA
 "144","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD starts with a character other than a letter",NA,NA,"narrative",NA,NA,NA
 "145","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD has characters that are not letters, digits, and underscores",NA,NA,"narrative",NA,NA,NA
 "148","CDISC","ADaM-IG","1.0","Medium","PARAMN is not an integer",NA,NA,"narrative",NA,NA,NA
-"149","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVALC for a given value of AVAL",NA,NA,"narrative",NA,NA,NA
 "15","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable name contains a character other than letters (A-Z), underscores (_), or numerals (0-9)",NA,NA,"narrative",NA,NA,NA
-"150","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVAL for a given value of AVALC",NA,NA,"narrative",NA,NA,NA
 "151","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of CRITy",NA,NA,"narrative",NA,NA,NA
 "152","CDISC","ADaM-IG","1.0,1.1,1.2","Medium","BASETYPE is present, BASE is populated, and BASE is not equal to AVAL where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject",NA,NA,"narrative",NA,NA,NA
 "154","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given PARAMCD and BASETYPE for a subject, more than one record has ABLFL equal to Y",NA,NA,"narrative",NA,NA,NA
@@ -72,9 +62,7 @@
 "22","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PPROTFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
 "221","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVALCATy for a given value of AVAL",NA,NA,"narrative",NA,NA,NA
 "222","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of BASECATy for a given value of BASE and y",NA,NA,"narrative",NA,NA,NA
-"223","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, CHG is populated and is not equal to AVAL - BASE",NA,NA,"narrative",NA,NA,NA
 "224","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of CHGCATy for a given value of CHG and y",NA,NA,"narrative",NA,NA,NA
-"225","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PCHG is populated and is not equal to ((AVAL - BASE)/BASE)*100",NA,NA,"narrative",NA,NA,NA
 "226","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of PCHGCATy for a given value of PCHG and y",NA,NA,"narrative",NA,NA,NA
 "23","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SAFFL is present and has a value that is not Y or N",NA,NA,"narrative",NA,NA,NA
 "231","CDISC","ADaM-IG","1.0","Medium","Within a given value of TRTxxP, there is more than one value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
@@ -242,11 +230,9 @@
 "58","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DT is not a numeric variable",NA,NA,"narrative",NA,NA,NA
 "580","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwETF is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
 "581","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","None of TRTP, TRTPGy, TRTA, and TRTAGy are present and none of the character treatment variables in ADSL defined in the IG are present",NA,NA,"narrative",NA,NA,NA
-"582","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BCHG is populated and is not equal to BASE-AVAL",NA,NA,"narrative",NA,NA,NA
 "583","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of BCHGCATy for a given value of BCHG and y, where y is an integer [1-99, not zero-padded]",NA,NA,"narrative",NA,NA,NA
 "584","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BCHGCATy for a given value of BCHGCAyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "585","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BCHGCAyN for a given value of BCHGCATy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"586","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PBCHG is populated and is not equal to ((BASE-AVAL)/AVAL)*100",NA,NA,"narrative",NA,NA,NA
 "587","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of PBCHGCAy for a given value of PBCHG and y, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "588","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of PBCHGCAy for a given value of PBCHGCyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "589","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of PBCHGCyN for a given value of PBCHGCAy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -1239,17 +1225,27 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "105","CDISC","ADaM-IG","1.0","Medium","There is more than one value of APERIODC for a given value of APERIOD","uniqueness-grouped","is_not_unique_relationship(APERIOD,APERIODC)","predicate","2026-04-21T11:50:50Z","unique",NA
 "106","CDISC","ADaM-IG","1.0","Medium","There is more than one value of APERIOD for a given value of APERIODC","uniqueness-grouped","is_not_unique_relationship(APERIODC,APERIOD)","predicate","2026-04-21T11:50:50Z","unique",NA
+"109","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVISITN for a given value of AVISIT","uniqueness-grouped-scoped","is_not_unique_relationship(AVISIT,AVISITN,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
+"110","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVISIT for a given value of AVISITN","uniqueness-grouped-scoped","is_not_unique_relationship(AVISITN,AVISIT,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
 "111","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARELTM is present and ARELTMU is not present","presence-pair","exists(ARELTM) & not_exists(ARELTMU)","predicate","2026-04-20T00:00:00Z","find","demo conversion, predates the presence-pair batch"
 "112","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARELTM is populated and ARELTMU is not populated","value-conditional-populated","non_empty(ARELTM) & empty(ARELTMU)","predicate","2026-04-21T11:35:41Z","condition",NA
 "113","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ARELTMU is present and ARELTM is not present","presence-pair","exists(ARELTMU) & not_exists(ARELTM)","predicate","2026-04-21T09:19:57Z","find",NA
+"117","CDISC","ADaM-IG","1.0,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of ATPT for a given value of ATPTN","uniqueness-grouped-scoped","is_not_unique_relationship(ATPTN,ATPT,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
+"118","CDISC","ADaM-IG","1.0,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of ATPTN for a given value of ATPT","uniqueness-grouped-scoped","is_not_unique_relationship(ATPT,ATPTN,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
 "123","CDISC","ADaM-IG","1.0,1.1","Medium","There is more than one value of PARAMTYP for a given value of PARAMCD","uniqueness-grouped","is_not_unique_relationship(PARAMCD,PARAMTYP)","predicate","2026-04-21T11:50:50Z","unique",NA
 "124","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","There is more than one value of PARCATy for a given value of PARAMCD","uniqueness-grouped","is_not_unique_relationship(PARAMCD,PARCATy)","predicate","2026-04-21T15:33:29Z",NA,NA
 "125","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARCATy for a given value of PARCATyN","uniqueness-grouped","is_not_unique_relationship(PARCATyN,PARCATy)","predicate","2026-04-21T15:33:29Z",NA,NA
 "126","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARCATyN for a given value of PARCATy","uniqueness-grouped","is_not_unique_relationship(PARCATy,PARCATyN)","predicate","2026-04-21T15:33:29Z",NA,NA
+"129","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD for a subject, there is more than one value of BASE for a given value of BASEC","uniqueness-grouped-scoped","is_not_unique_relationship(BASEC,BASE,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
+"130","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD for a subject, there is more than one value of BASEC for a given value of BASE","uniqueness-grouped-scoped","is_not_unique_relationship(BASE,BASEC,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
+"135","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTy for a given value of SHIFTyN","uniqueness-grouped-scoped","is_not_unique_relationship(SHIFTyN,SHIFTy,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
+"136","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTyN for a given value of SHIFTy","uniqueness-grouped-scoped","is_not_unique_relationship(SHIFTy,SHIFTyN,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
 "141","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARAM for a given value of PARAMCD","uniqueness-grouped","is_not_unique_relationship(PARAMCD,PARAM)","predicate","2026-04-21T11:50:50Z","unique",NA
 "142","CDISC","ADaM-IG","1.0","Medium","There is more than one value of PARAMCD for a given value of PARAM","uniqueness-grouped","is_not_unique_relationship(PARAM,PARAMCD)","predicate","2026-04-21T11:50:50Z","unique",NA
 "146","CDISC","ADaM-IG","1.0","Medium","Within a dataset, there is more than one value of PARAM for a given value of PARAMN","uniqueness-grouped","is_not_unique_relationship(PARAMN,PARAM)","predicate","2026-04-21T15:33:29Z",NA,NA
 "147","CDISC","ADaM-IG","1.0","Medium","Within a dataset, there is more than one value of PARAMN for a given value of PARAM","uniqueness-grouped","is_not_unique_relationship(PARAM,PARAMN)","predicate","2026-04-21T15:33:29Z",NA,NA
+"149","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVALC for a given value of AVAL","uniqueness-grouped-scoped","is_not_unique_relationship(AVAL,AVALC,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
+"150","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVAL for a given value of AVALC","uniqueness-grouped-scoped","is_not_unique_relationship(AVALC,AVAL,PARAMCD)","predicate","2026-04-21T16:39:26Z",NA,NA
 "159","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AWTDIFF is populated and AWTARGET is not populated","value-conditional-populated","non_empty(AWTDIFF) & empty(AWTARGET)","predicate","2026-04-21T11:35:41Z","condition",NA
 "163","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BTOXGR is present and ATOXGR is not present","presence-pair","exists(BTOXGR) & not_exists(ATOXGR)","predicate","2026-04-21T09:19:57Z","find",NA
 "164","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BTOXGR is present and ABLFL is not present","presence-pair","exists(BTOXGR) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z","find",NA
@@ -1258,6 +1254,8 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "194","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not present","presence-required","not_exists(PARAM)","predicate","2026-04-21T11:26:53Z","required",NA
 "195","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not present","presence-required","not_exists(PARAMCD)","predicate","2026-04-21T11:26:53Z","required",NA
 "201","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTAGyN is present and TRTAGy is not present","presence-pair","exists(TRTAGyN) & not_exists(TRTAGy)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
+"223","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, CHG is populated and is not equal to AVAL - BASE","value-arith-check","is_not_diff(CHG,AVAL,BASE)","predicate","2026-04-21T16:38:04Z",NA,NA
+"225","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PCHG is populated and is not equal to ((AVAL - BASE)/BASE)*100","value-arith-check","is_not_pct_diff(PCHG,AVAL,BASE)","predicate","2026-04-21T16:38:04Z",NA,NA
 "227","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQP for a given value of TRTSEQPN","uniqueness-grouped","is_not_unique_relationship(TRTSEQPN,TRTSEQP)","predicate","2026-04-21T11:50:50Z","unique",NA
 "228","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQPN for a given value of TRTSEQP","uniqueness-grouped","is_not_unique_relationship(TRTSEQP,TRTSEQPN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "229","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQA for a given value of TRTSEQAN","uniqueness-grouped","is_not_unique_relationship(TRTSEQAN,TRTSEQA)","predicate","2026-04-21T11:50:50Z","unique",NA
@@ -1438,6 +1436,8 @@ NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "562","CDISC","ADaM-IG","1.2,1.3","Medium","STRATAVN is present and STRATAV is not present","presence-pair","exists(STRATAVN) & not_exists(STRATAV)","predicate","2026-04-21T09:19:57Z","find",NA
 "568","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ONTRTFN is present and ONTRTFL is not present","presence-pair","exists(ONTRTFN) & not_exists(ONTRTFL)","predicate","2026-04-21T09:19:57Z","find",NA
 "569","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","LVOTFN is present and LVOTFL is not present","presence-pair","exists(LVOTFN) & not_exists(LVOTFL)","predicate","2026-04-21T09:19:57Z","find",NA
+"582","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BCHG is populated and is not equal to BASE-AVAL","value-arith-check","is_not_diff(BCHG,BASE,AVAL)","predicate","2026-04-21T16:38:04Z",NA,NA
+"586","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PBCHG is populated and is not equal to ((BASE-AVAL)/AVAL)*100","value-arith-check","is_not_pct_diff(PBCHG,BASE,AVAL)","predicate","2026-04-21T16:38:04Z",NA,NA
 "620","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AETERM is not present","presence-required","not_exists(AETERM)","predicate","2026-04-21T11:26:53Z","required",NA
 "621","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEMFL is not present","presence-required","not_exists(TRTEMFL)","predicate","2026-04-21T11:26:53Z","required",NA
 "623","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESEQ is not present","presence-required","not_exists(AESEQ)","predicate","2026-04-21T11:26:53Z","required",NA
