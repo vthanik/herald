@@ -14,9 +14,12 @@ scope:
 variable: TRTxxA where xx is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTxxA is present
+  expand: xx
+  all:
+  - name: TRTxxA
+    operator: exists
+  - name: TRTxxP
+    operator: not_exists
 outcome:
   message: TRTxxA is present and TRTxxP is not present
   severity: Medium
@@ -28,4 +31,4 @@ provenance:
     "At least TRT01P is required."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

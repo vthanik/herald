@@ -109,6 +109,26 @@ if (run_all) {
 
 .synth_rule_fixture <- function(rule, default_fx) {
   ct <- rule$check_tree[[1L]]
+  # If the rule declares an `expand:` placeholder (xx/y/zz), substitute a
+  # concrete probe value so the synth dataset carries the right
+  # instantiated column names.
+  probe_value <- NULL
+  if (is.list(ct) && !is.null(ct$expand)) {
+    probe_value <- switch(as.character(ct$expand)[[1L]],
+                          xx = "01", y = "1", zz = "01", NULL)
+    if (!is.null(probe_value)) {
+      ct <- ct; ct$expand <- NULL
+      # Replace the placeholder in every leaf's name with the probe.
+      .sub <- function(node, ph, v) {
+        if (!is.list(node) || length(node) == 0L) return(node)
+        if (!is.null(node$name)) node$name <- gsub(ph, v, as.character(node$name), fixed = TRUE)
+        for (k in c("all","any")) if (!is.null(node[[k]])) node[[k]] <- lapply(node[[k]], .sub, ph = ph, v = v)
+        if (!is.null(node$not)) node$not <- .sub(node$not, ph, v)
+        node
+      }
+      ct <- .sub(ct, as.character(rule$check_tree[[1L]]$expand)[[1L]], probe_value)
+    }
+  }
   lv <- .extract_leaves_flat(ct)
   ops <- vapply(lv, function(l) l$operator %||% "", character(1L))
   if (length(lv) == 0L || !all(ops %in% c("exists","not_exists"))) {
@@ -136,15 +156,27 @@ if (run_all) {
     spec    <- default_fx$pos$spec
   }
 
-  pos_cols <- stats::setNames(
-    c(list(USUBJID = "S1"),
-      stats::setNames(rep(list(""), sum(wants_pres)), names_req[wants_pres])),
-    c("USUBJID", names_req[wants_pres])
+  # If the scope resolved via class, include the class's topic variable
+  # column in the synth fixture so the dataset is structurally valid for
+  # that class (P21's val:Prototype KeyVariables convention: --TERM for
+  # EVENTS, --TRT for INTERVENTIONS, --TESTCD for FINDINGS, etc.).
+  topic_col <- if (!is.na(pick$topic_col)) pick$topic_col else NA_character_
+
+  # Include the class's topic variable column in both fixtures so the
+  # dataset looks like a valid member of its class at runtime.
+  topic_extra <- if (!is.na(topic_col) && !topic_col %in% names_req) {
+    stats::setNames(list(""), topic_col)
+  } else list()
+
+  pos_cols <- c(
+    list(USUBJID = "S1"),
+    topic_extra,
+    stats::setNames(rep(list(""), sum(wants_pres)), names_req[wants_pres])
   )
-  neg_cols <- stats::setNames(
-    c(list(USUBJID = "S1"),
-      stats::setNames(rep(list(""), length(names_req)), names_req)),
-    c("USUBJID", names_req)
+  neg_cols <- c(
+    list(USUBJID = "S1"),
+    topic_extra,
+    stats::setNames(rep(list(""), length(names_req)), names_req)
   )
 
   mk_fx <- function(cols, fire) {

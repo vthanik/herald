@@ -14,9 +14,12 @@ scope:
 variable: TRTAGy where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTAGyN is present
+  expand: 'y'
+  all:
+  - name: TRTAGyN
+    operator: exists
+  - name: TRTAGy
+    operator: not_exists
 outcome:
   message: TRTAGyN is present and TRTAGy is not present
   severity: Medium
@@ -28,4 +31,4 @@ provenance:
     TRTAGy.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

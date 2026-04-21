@@ -113,7 +113,11 @@ validate <- function(path = NULL,
       # Make dataset name available to the walker for --VAR wildcard expansion
       ctx$current_dataset <- ds_name
       ctx$current_domain  <- toupper(substr(ds_name, 1, 2))
-      mask <- walk_tree(rule$check_tree, d, ctx)
+      # Expand xx / y / zz placeholders (if declared via `expand:` in the
+      # check_tree) against this dataset's columns -- produces a per-index
+      # `{any}` combinator over concrete substitutions.
+      ct <- .expand_indexed(rule$check_tree, d)
+      mask <- walk_tree(ct, d, ctx)
       if (length(mask) == 0L) next
       # Metadata-level rules (only existence-kind leaves) query names(data),
       # not row content. Their mask is uniform; collapse to a single fire per

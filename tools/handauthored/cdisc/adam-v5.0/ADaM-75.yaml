@@ -14,9 +14,12 @@ scope:
 variable: TRTxxPN where xx is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTxxPN is present
+  expand: xx
+  all:
+  - name: TRTxxPN
+    operator: exists
+  - name: TRTxxP
+    operator: not_exists
 outcome:
   message: TRTxxPN is present and TRTxxP is not present
   severity: Medium
@@ -27,4 +30,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.0, Section 3.1, Table 3.1.1: One-to-one map to TRTxxP'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
