@@ -1092,6 +1092,73 @@ review.
 
 ---
 
+## Q33 -- missing reference-dataset semantics (spans Q5-Q7, Q13, Q27-Q30)
+
+**Context:** many rules require a SECOND dataset beyond the one
+being validated. When the reference is absent, the rule cannot
+evaluate. Examples in this corpus:
+
+- **ADSL <-> DM consistency** (Q5, 8 rules) -- needs DM.
+- **ADaM.AESTDY presence-pair** (Q7, 5 rules) -- needs AE.
+- **Cross-dataset join rules** (Q6, 10 rules) -- needs TV, SE,
+  TE, POOLDEF, etc.
+- **TSVAL = valid UNII** (Q13, 6 rules) -- needs user-downloaded
+  SRS cache.
+- **MedDRA / WhoDrug lookups** (Q27, ~6 rules) -- needs
+  user-registered dictionary.
+- **RELREC dependencies** (Q28) -- needs RELREC dataset.
+- **IG-defined treatment-var membership** (Q30) -- needs ADSL.
+
+Today every missing-ref case collapses to the same generic
+"NA -> advisory" output. Reviewers cannot distinguish:
+- "rule did not evaluate because DM was not supplied"
+- "rule ran and found no issue"
+- "rule ran but hit an internal NA condition"
+
+All three produce visually identical advisory rows. The user
+has no actionable hint to fix gaps in the submission package.
+
+**Options:**
+
+**(a)** First-class `skipped_missing_ref` status, grouped in
+the report:
+- Ops signal missing-ref through a new `.ref_ds()` return
+  channel (e.g. a dedicated sentinel class `"herald_missing_ref"`).
+- `emit_findings` routes such rules into `result$skipped`
+  (a new collection alongside `findings`), NOT into findings.
+- Report renderer groups skipped rules by missing reference
+  and emits ONE consolidated actionable banner per missing
+  dataset / registry, not per rule:
+  ```
+  Reference data missing -- provide these to evaluate more rules:
+  * dataset DM (9 rules: CG0069, ADaM-204-210, ADaM-367)
+  * dataset AE (5 rules: ADaM-641-645)
+  * dataset RELREC (4 rules: CG0156-0158, CG0419)
+  * FDA SRS registry (6 rules: CG0442-0451; run `download_srs()`)
+  * MedDRA dictionary (6 rules: CG0020-0021, ...;
+      register via `register_ct("meddra", path = ...)`)
+  ```
+- Header summary has a dedicated cell:
+  `"47 fired, 23 advisory, 14 skipped (ref data missing)"`.
+- Skipped rules do NOT inflate the advisory count; their
+  absence from fire/advise is explicit, not ambiguous.  *[recommended]*
+
+**(b)** Advisory per rule with a boilerplate hint in the
+message. Easy to implement but user must scan through N
+advisories to find the "provide DM" hint. Report cluttered.
+
+**(c)** Silent skip -- drop the rule without any signal beyond
+"rules_total - rules_applied" in the summary. User has no way
+to know what to provide.
+
+**(d)** Hard error on missing ref -- abort `validate()`. Too
+aggressive; submissions legitimately omit optional domains
+(not every study has PC, MB, etc.).
+
+**User answer:** _(pending)_
+
+---
+
 # Cross-cutting bundle (Q15-Q20)
 
 Implementation-layer decisions that surface while executing the
