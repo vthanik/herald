@@ -1483,3 +1483,316 @@ from the target corpus" looks like vs "keep narrative indefinitely".
 
 ---
 
+
+# P21 edge-case cross-Q audit (2026-04-22)
+
+Deep audit of Pinnacle 21 community validator source across
+`DataEntryFactory`, `Comparison`, `NullComparison`,
+`RegexComparison`, `RequiredValidationRule`, `MatchValidationRule`,
+`LookupValidationRule`, `UniqueValueValidationRule`,
+`FindValidationRule`, `DataGrouping`, `AbstractValidationRule`,
+`MagicVariable`, `MagicVariableParser`, and `BlockValidator`.
+Cross-referenced against every locked decision in Q1-Q32.
+
+Only NET findings listed -- edges previously captured in-thread
+(fuzzy date prefix, numeric normalization, NULL==NULL, 4-digit
+year, subject-not-in-ref) omitted.
+
+---
+
+## A. Regex semantics -- herald diverges (affects Q4, Q11, Q24)
+
+**P21:** `~=` uses `Pattern.compile(rx)` + `matcher.matches()`
+(Comparison.java:109-110, 257). `matches()` requires a **full-
+string match** -- caller must add explicit `^` / `$` or the
+pattern must match the entire value.
+
+**Herald:** `op_matches_regex` uses `grepl(pattern, value)` which
+does **partial match** by default.
+
+**Impact:** a rule translated from P21 `TSVAL @re '[0-9]+'`
+fires false negatives in herald (grepl matches anything
+containing a digit). Q24 (ISO 8601 regex) and Q4 condition
+leaves that use `matches_regex` are at risk.
+
+**Recommendation:** change `op_matches_regex` default to full-
+match (anchor with `^...$` internally, or switch to
+`grepl("^(?:<pat>)$", ...)`) and document in CONVENTIONS.md.
+
+---
+
+## B. `^=` and `.=` are case-INSENSITIVE equal / not-equal (affects Q15, Q4)
+
+**P21** (Comparison.java:178-181): `^=` => `compareToAny(rhs,
+false) == 0` (case-INSENSITIVE equal). `.=` => `!= 0` (case-
+insensitive not-equal). The `false` argument is
+`caseSensitive`, not a negation.
+
+**Herald Q15 grammar:** lists `equal_to` / `not_equal_to` as
+case-sensitive. CI variants exist only for list ops
+(`op_is_contained_by_ci`).
+
+**Impact:** a P21 rule `ARMCD ^= 'SCRNFAIL'` must translate to
+a case-insensitive leaf in herald.
+
+**Recommendation:** add `equal_to_ci` / `not_equal_to_ci`
+one-line sugar ops; revise Q15 locked grammar to include them.
+
+---
+
+## C. Numeric fuzzy tolerance `%=` (affects Q5, Q12)
+
+**P21** (Comparison.java:183-192): `%=` numeric equality with
+epsilon tolerance (`Engine.FuzzyTolerance`, default ~1e-3).
+
+**Herald:** `.cdisc_value_equal` uses exact `==` after numeric
+coercion. Floating-point drift could produce false mismatches
+(0.1 + 0.2 vs 0.3).
+
+**Impact:** low. Q5 / Q12 values usually come from the same SAS
+session so drift rare.
+
+**Recommendation:** document the known gap in Q5 / Q12 pattern
+MDs; no code change now.
+
+---
+
+## D. `When=` guard returns -1 (skip), not 0 (pass) (affects Q1, Q4, Q9)
+
+**P21** (ConditionalRequiredValidationRule.java:47-55,
+MatchValidationRule.java:76-78): `performValidation` returns
+`-1` when the `When=` guard evaluates FALSE. No finding is
+emitted for that row -- not even an advisory.
+
+**Herald:** conditional rules today can produce an advisory
+when the condition branch returns NA. Over-reports.
+
+**Impact:** Q1/Q4 conditional literal rules should NOT advise
+when the `when:` guard is FALSE. Only advise when the guard
+itself cannot be evaluated (NA due to column absent, CT
+unavailable, etc.).
+
+**Recommendation:** the condition-grammar implementation gives
+the first leaf of an `all:` a distinct role when the rule is
+tagged `when_gate: TRUE`. Three-state return from the guard:
+- TRUE  -> evaluate assertion
+- FALSE -> skip row entirely (no fire, no advisory)
+- NA    -> advisory only
+
+Engine change scoped to `walk_tree` / `emit_findings`.
+
+---
+
+## E. `Optional=` columns inject NULL_ENTRY (affects Q8)
+
+**P21 AbstractScriptableValidationRule.java:55-64:** variables
+in `Optional=` bypass existence check and are injected as
+`NULL_ENTRY`. Rule still FIRES unless it calls `hasValue()`.
+
+**Herald Q8:** P21's `--STAT != 'NOT DONE'` exemption works
+because `--STAT` is in Optional=; when absent, NULL vs literal
+evaluates TRUE so rule proceeds.
+
+**Impact:** herald must model "optional column absent ->
+NULL_ENTRY behaviour". Current `empty(--STAT)` returns TRUE on
+absence but the comparison semantics differ.
+
+**Recommendation:** when implementing Q8, use the explicit
+`optional_columns` slot on the pattern; document Optional=
+parity in the unit-consistency pattern MD.
+
+---
+
+## F. Column-missing -> CorruptRuleException -> rule REMOVED (affects all Qs)
+
+**P21 AbstractValidationRule.java:152-161 + BlockValidator.java:296-297:**
+referenced-but-absent column throws `CorruptRuleException`
+(state=Unrecoverable). Rule removed from the ruleset for
+subsequent records on that dataset. No further findings.
+
+**Herald:** returns NA mask -> one advisory per (rule x
+dataset). More transparent.
+
+**Divergence:** intentional. Reviewers see "rule could not
+evaluate" instead of silent rule-loss. KEEP.
+
+---
+
+## G. GroupBy tuple hashing + NA collision (affects Q3, Q10, Q12, Q29)
+
+**P21 FindValidationRule.java:275-316:** `HashCodeBuilder(15,
+97)` + `append(DataEntry)` per component. Array equality
+element-wise. GroupBy names uppercased at parse. NULL
+components hashable separately.
+
+**Herald:** `paste(..., sep="\x1f")` -- NAs collapse to the
+literal string `"NA"`, which collides with a real value `"NA"`
+(SUBJID = "NA" exists in real submissions).
+
+**Recommendation:** change the NA sentinel token in the paste
+expression to `"\x00<NA>\x00"` so real-string `"NA"` cannot
+collide.
+
+---
+
+## H. Matching=Yes first-row skip (affects Q10)
+
+**P21 UniqueValueValidationRule.java:90:** returns `null` when
+`(Matching=Yes AND no GroupBy) OR (Matching=No AND GroupBy
+exists)` -- **skips the first row** of a single-group
+Matching=Yes rule so the reference value establishes.
+
+**Herald:** `op_is_not_unique_relationship` evaluates every row
+uniformly. Matching=Yes rules in a single-group dataset may
+over-report by one row compared to P21.
+
+**Recommendation:** after Q10 patterns land, compare finding
+counts against a P21 reference fixture; adjust if counts
+differ. Subtle; unlikely to trip real submissions.
+
+---
+
+## I. MagicVariable wildcards (affects Q11, Q21, Q22, Q23)
+
+**P21** (MagicVariable.java:198-223):
+- `@*` -> `[A-Za-z]+`
+- `#*` -> `[0-9]+`
+- `_*` -> `[A-Za-z0-9]+`
+- `*`  -> `[A-Za-z0-9]+`
+- `@@@` / `###` / `___` -> count-quantified (`{3}`)
+
+**Herald:** fixed-form placeholders (`xx`, `zz`, `y`, `w`,
+`stem`) with specific regex.
+
+**Divergence:** herald's form matches CDISC narrative
+convention ("xx is a zero-padded two-digit integer"). KEEP.
+
+**Gap:** no 3-digit or 4-digit variant. Not an issue today.
+
+---
+
+## J. Capture-group reuse `%Variable.N%` (affects Q21, Q22)
+
+**P21 MagicVariableParser.java:130-133:** `%Variable.N%` stored
+only on **first match**. Subsequent matches don't overwrite.
+
+**Herald .multi_values_in_cols:** iterates ALL matches. KEEP.
+
+---
+
+## K. Replicated vs non-replicated rule execution (affects Q23)
+
+**P21 MagicVariable.java:46-47:** identifier prefix controls
+replication:
+- default -> rule cloned per matched variable
+- `"="` prefix -> non-replicated; one rule fires across all
+  matched vars (comma-joined)
+- `"+"` prefix -> dependency-replicated
+
+**Herald:** pattern system clones per concrete index implicitly
+via `.ids` rows + `expand:`. No `"="` / `"+"` analogue.
+
+**Impact on Q23 TSPARMCD:** herald authors one rule YAML per
+TSPARMCD. P21 could collapse via `"="`. Herald's form is
+easier to audit and attribute. KEEP.
+
+---
+
+## L. rtrim scope (affects every value compare)
+
+**P21 DataEntryFactory.java:313-328:** strips SPACE (0x20)
+only. Tabs / newlines preserved.
+
+**Herald `.cdisc_value_equal`:** `sub(" +$", "", v)` -- aligned
+after commit 6a5fb40.
+
+**Status:** aligned.
+
+---
+
+## M. Lookup no-match -> silent pass (affects Q6, Q28)
+
+**P21 LookupValidationRule.java:165:** no-match is silent
+pass. No finding.
+
+**Herald:** `op_missing_in_ref` fires explicitly;
+`op_differs_by_key` advises on subject absence. More
+transparent. KEEP.
+
+---
+
+## N. Severity conditional by domain (affects Q18)
+
+**P21 RuleDefinition.java:130-147:** `withSeverityFor(domain)`
+supports domain-scoped severity overrides. Precedence:
+exact > domain > context > rule. Same rule can be Error for
+ADSL, Warning for BDS.
+
+**Herald Q18 `severity_map`:** rule_id / regex / category match
+only. No domain dimension.
+
+**Recommendation:** extend each `severity_map` entry to accept
+either a scalar string OR a named list keyed by dataset class:
+```
+severity_map = list(
+  "CG0085" = list(ADSL = "Reject", BDS = "High", default = "Medium")
+)
+```
+Update Q18 locked decision.
+
+---
+
+## O. Empty dataset + Target=Dataset (affects Q9, Q25)
+
+**P21 BlockValidator.java:321-343:** `validateDataset()` called
+unconditionally. Target=Dataset rules fire regardless of
+record count. Target=Record rules skipped when empty.
+
+**Herald:** `.dataset_level_mask` returns a mask against a
+1-row placeholder when the dataset is empty
+(rules-validate.R:163-172). Aligned.
+
+**Status:** aligned.
+
+---
+
+## P. Row numbering in findings (affects Q19 reporting)
+
+**P21 BlockValidator.java:230:** `totalExaminedRecords` counter
+1-indexed.
+
+**Herald `emit_findings`:** `which(fired_rows)` returns 1-indexed
+R integers. Aligned.
+
+**Status:** aligned.
+
+---
+
+## Summary of action items
+
+| Audit | Q's affected | Change required |
+|---|---|---|
+| A. Regex full-match default | Q4, Q11, Q24 | change `op_matches_regex` default; anchor existing patterns |
+| B. `^=` case-insensitive | Q15, Q4 | add `equal_to_ci` / `not_equal_to_ci` sugar ops |
+| C. Numeric fuzzy tolerance | Q5, Q12 | document gap; no code change |
+| D. `when:` guard FALSE vs NA | Q1, Q4, Q9 | three-state return; engine support |
+| E. `Optional=` columns | Q8 | document parity; use explicit slot |
+| F. Column-missing handling | all | KEEP divergence; document |
+| G. GroupBy NA collision | Q3, Q10, Q12, Q29 | change paste NA token |
+| H. Matching=Yes first-row skip | Q10 | fixture-compare with P21; adjust |
+| I. Wildcard syntax divergence | Q11, Q21-23 | KEEP (CDISC-aligned) |
+| J. Capture-group reuse | Q21, Q22 | KEEP (more complete) |
+| K. Replicated rule clone | Q23 | KEEP (cleaner audit) |
+| L. rtrim scope | all | already aligned |
+| M. Lookup no-match | Q6, Q28 | KEEP (more transparent) |
+| N. Severity per-domain | Q18 | extend `severity_map` to nested list |
+| O. Empty Target=Dataset | Q9, Q25 | already aligned |
+| P. Row numbering | Q19 | already aligned |
+
+**Net code changes required:** 5 items (A, B, D, G, N).
+**Divergences intentionally kept:** 5 items (F, I, J, K, M).
+**Already aligned:** 6 items (C, E, L, O, P, H documentation-only).
+
+Every required change is scoped to a single op or engine file;
+none invalidate a prior locked decision -- they harden, not
+revise.
