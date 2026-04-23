@@ -285,28 +285,65 @@ op_value_in_codelist <- function(data, ctx, name, codelist,
   if (n == 0L) return(logical(0))
   if (is.null(data[[name]])) return(rep(NA, n))
 
-  ct <- ctx$ct[[package]]
-  if (is.null(ct)) {
-    ct <- tryCatch(load_ct(package), error = function(e) NULL)
-    if (is.null(ct)) return(rep(NA, n))
-    ctx$ct[[package]] <- ct
+  # Dictionary Provider Protocol: resolve the CDISC CT dictionary
+  # via ctx$dict if populated (Phase 2+); fall back to the legacy
+  # ctx$ct cache so older test fixtures that pre-populate ctx$ct
+  # directly continue to work.
+  provider <- .resolve_provider(ctx, paste0("ct-", package))
+  if (is.null(provider)) {
+    # Auto-install a ct_provider for this package on first use and
+    # memoise on ctx$dict so the subsequent rules share the load.
+    provider <- tryCatch(ct_provider(package), error = function(e) NULL)
+    if (is.null(provider)) {
+      .record_missing_ref(ctx,
+        rule_id = ctx$current_rule_id,
+        kind = "dictionary",
+        name = paste0("ct-", package))
+      return(rep(NA, n))
+    }
+    if (is.null(ctx$dict)) ctx$dict <- list()
+    ctx$dict[[paste0("ct-", package)]] <- provider
   }
 
-  entry <- .lookup_codelist(ct, codelist)
-  if (is.null(entry)) return(rep(NA, n))
-
-  accepted <- as.character(entry$terms$submissionValue %||% character())
+  # The provider's bundled CT object is exposed via the lookup
+  # closure; reach it only for the synonyms branch (not in schema).
+  accepted <- NULL
   if (isTRUE(match_synonyms)) {
-    syn <- entry$terms$synonyms %||% character(0)
-    syn <- unlist(strsplit(as.character(syn), ";"), use.names = FALSE)
-    accepted <- unique(c(accepted, trimws(syn)))
+    # Fall back to the raw CT so we can read the synonyms field.
+    ct <- ctx$ct[[package]] %||% tryCatch(load_ct(package),
+                                          error = function(e) NULL)
+    if (!is.null(ct)) {
+      if (is.null(ctx$ct[[package]])) ctx$ct[[package]] <- ct
+      entry <- .lookup_codelist(ct, codelist)
+      if (!is.null(entry)) {
+        accepted <- as.character(entry$terms$submissionValue %||% character())
+        syn <- entry$terms$synonyms %||% character(0)
+        syn <- unlist(strsplit(as.character(syn), ";"), use.names = FALSE)
+        accepted <- unique(c(accepted, trimws(syn)))
+      }
+    }
   }
 
   vals <- as.character(data[[name]])
   vals <- sub(" +$", "", vals)
   out <- rep(NA, n)
   non_empty <- !is.na(vals) & nzchar(vals)
-  out[non_empty] <- !(vals[non_empty] %in% accepted)
+
+  if (!is.null(accepted)) {
+    # synonyms path (merged set)
+    out[non_empty] <- !(vals[non_empty] %in% accepted)
+  } else {
+    # standard path: delegate to provider$contains
+    hit_mask <- provider$contains(vals[non_empty], field = codelist,
+                                  ignore_case = FALSE)
+    if (all(is.na(hit_mask))) {
+      # Codelist not found in provider; surface as advisory rather
+      # than silently pass. Matches prior behaviour.
+      return(rep(NA, n))
+    }
+    out[non_empty] <- !hit_mask
+  }
+
   if (isTRUE(extensible)) {
     # Extensible codelist: any non-empty value passes (fire only on NA).
     out[non_empty] <- FALSE
