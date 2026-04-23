@@ -154,6 +154,46 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
   rds_path <- file.path(dest, sprintf("%s-ct-%s.rds", package,
                                       url_info$release_date))
 
+  .download_and_cache(
+    url           = url_info$url,
+    rds_path      = rds_path,
+    fetch_ext     = ".txt",
+    parser        = function(tmp, info) {
+      .parse_nci_evs_txt(tmp, package = package,
+                         release_date = info$release_date,
+                         source_url   = info$url)
+    },
+    parser_info   = url_info,
+    manifest_entry = list(
+      package       = package,
+      version       = url_info$release_date,
+      release_date  = url_info$release_date,
+      path          = rds_path
+    ),
+    force         = force,
+    timeout       = timeout,
+    quiet         = quiet,
+    dest          = dest
+  )
+}
+
+# --------------------------------------------------------------------------
+# Generic download-parse-cache helper (shared by download_ct and
+# download_srs). Handles:
+#   - early return when target file exists and !force
+#   - timeout option push / restore
+#   - download.file() to a temp file
+#   - user-supplied parser (tmp, info) -> R object ready for saveRDS
+#   - saveRDS with xz compression
+#   - success log + manifest-write when dest == user cache dir
+# --------------------------------------------------------------------------
+
+#' @noRd
+.download_and_cache <- function(url, rds_path, fetch_ext, parser,
+                                parser_info, manifest_entry,
+                                force = FALSE, timeout = 120L,
+                                quiet = FALSE,
+                                dest  = .ct_cache_dir()) {
   if (file.exists(rds_path) && !isTRUE(force)) {
     if (!isTRUE(quiet)) {
       cli::cli_inform(c("v" = "Using cached {.path {rds_path}}"))
@@ -161,40 +201,38 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
     return(invisible(rds_path))
   }
 
-  tmp <- tempfile(fileext = ".txt")
+  tmp <- tempfile(fileext = fetch_ext)
   on.exit(unlink(tmp), add = TRUE)
-
   if (!isTRUE(quiet)) {
-    cli::cli_inform(c("i" = "Downloading {.url {url_info$url}}"))
+    cli::cli_inform(c("i" = "Downloading {.url {url}}"))
   }
   old_timeout <- getOption("timeout")
   on.exit(options(timeout = old_timeout), add = TRUE)
   options(timeout = max(timeout, old_timeout))
-  utils::download.file(url_info$url, tmp, mode = "wb", quiet = quiet)
+  utils::download.file(url, tmp, mode = "wb", quiet = quiet)
 
-  ct <- .parse_nci_evs_txt(tmp, package = package,
-                           release_date = url_info$release_date,
-                           source_url = url_info$url)
-  saveRDS(ct, rds_path, compress = "xz")
-  n_codelists <- length(ct)
-  n_terms <- sum(vapply(ct, function(e) nrow(e$terms %||% data.frame()),
-                        integer(1L)))
+  payload <- parser(tmp, parser_info)
+  saveRDS(payload, rds_path, compress = "xz")
+  n_rows <- tryCatch(
+    sum(vapply(payload,
+      function(e) nrow(e$terms %||% e %||% data.frame()),
+      integer(1L))),
+    error = function(e) NROW(payload)
+  )
   if (!isTRUE(quiet)) {
     cli::cli_inform(c(
-      "v" = "Saved {.path {rds_path}} ({n_codelists} codelists, {n_terms} terms)"
+      "v" = "Saved {.path {rds_path}} ({n_rows} rows)"
     ))
   }
 
   if (.normalise_path(dest) != .normalise_path(.ct_cache_dir(create = FALSE))) {
     return(invisible(rds_path))
   }
-  .ct_cache_write(list(
-    package       = package,
-    version       = url_info$release_date,
-    release_date  = url_info$release_date,
-    path          = rds_path,
-    downloaded_at = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
-  ), dir = dest)
+  entry <- c(manifest_entry,
+             list(downloaded_at = format(Sys.time(),
+                                         "%Y-%m-%dT%H:%M:%SZ",
+                                         tz = "UTC")))
+  .ct_cache_write(entry, dir = dest)
   invisible(rds_path)
 }
 

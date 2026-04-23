@@ -38,8 +38,10 @@ contract stays stable.
 }
 \seealso{
 Other dict: 
+\code{\link{ct_provider}()},
 \code{\link{list_dictionaries}()},
 \code{\link{register_dictionary}()},
+\code{\link{srs_provider}()},
 \code{\link{unregister_dictionary}()}
 }
 \concept{dict}

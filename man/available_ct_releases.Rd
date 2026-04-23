@@ -43,6 +43,7 @@ rather than errors.
 Other ct: 
 \code{\link{ct_info}()},
 \code{\link{download_ct}()},
+\code{\link{download_srs}()},
 \code{\link{load_ct}()}
 }
 \concept{ct}

@@ -24,6 +24,7 @@ the bundled \code{CT-MANIFEST.json} or the user cache manifest.
 Other ct: 
 \code{\link{available_ct_releases}()},
 \code{\link{download_ct}()},
+\code{\link{download_srs}()},
 \code{\link{load_ct}()}
 }
 \concept{ct}

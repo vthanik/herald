@@ -17,8 +17,10 @@ Remove a dictionary from the session registry
 }
 \seealso{
 Other dict: 
+\code{\link{ct_provider}()},
 \code{\link{list_dictionaries}()},
 \code{\link{new_dict_provider}()},
-\code{\link{register_dictionary}()}
+\code{\link{register_dictionary}()},
+\code{\link{srs_provider}()}
 }
 \concept{dict}

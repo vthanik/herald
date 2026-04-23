@@ -23,8 +23,10 @@ automatically under \code{name} unless explicitly overridden by the
 }
 \seealso{
 Other dict: 
+\code{\link{ct_provider}()},
 \code{\link{list_dictionaries}()},
 \code{\link{new_dict_provider}()},
+\code{\link{srs_provider}()},
 \code{\link{unregister_dictionary}()}
 }
 \concept{dict}

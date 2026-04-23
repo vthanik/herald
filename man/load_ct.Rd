@@ -47,6 +47,7 @@ attr(ct, "version")
 Other ct: 
 \code{\link{available_ct_releases}()},
 \code{\link{ct_info}()},
-\code{\link{download_ct}()}
+\code{\link{download_ct}()},
+\code{\link{download_srs}()}
 }
 \concept{ct}

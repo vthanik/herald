@@ -39,6 +39,7 @@ Other dict:
 \code{\link{list_dictionaries}()},
 \code{\link{new_dict_provider}()},
 \code{\link{register_dictionary}()},
+\code{\link{srs_provider}()},
 \code{\link{unregister_dictionary}()}
 }
 \concept{dict}

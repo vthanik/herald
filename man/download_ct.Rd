@@ -43,6 +43,7 @@ path if the file already exists and \code{!force}.
 Other ct: 
 \code{\link{available_ct_releases}()},
 \code{\link{ct_info}()},
+\code{\link{download_srs}()},
 \code{\link{load_ct}()}
 }
 \concept{ct}
