@@ -11,6 +11,7 @@ validate(
   rules = NULL,
   authorities = NULL,
   standards = NULL,
+  dictionaries = NULL,
   quiet = FALSE
 )
 }

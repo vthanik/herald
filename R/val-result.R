@@ -21,6 +21,9 @@
 #' @param dataset_meta named list of dataset metadata (rows, cols, label, class)
 #' @param rule_catalog tibble of the rules that were run (id, severity, etc.)
 #' @param op_errors list of operator errors collected during the run
+#' @param skipped_refs list of missing reference-data buckets (datasets +
+#'   dictionaries) each carrying `rule_ids` and an actionable `hint`.
+#'   Populated from `ctx$missing_refs` by `.finalize_skipped_refs()`.
 #' @noRd
 new_herald_result <- function(
   findings         = empty_findings(),
@@ -32,7 +35,8 @@ new_herald_result <- function(
   config_hash      = NA_character_,
   dataset_meta     = list(),
   rule_catalog     = tibble::tibble(),
-  op_errors        = list()
+  op_errors        = list(),
+  skipped_refs     = list(datasets = list(), dictionaries = list())
 ) {
   structure(
     list(
@@ -46,7 +50,8 @@ new_herald_result <- function(
       config_hash      = config_hash,
       dataset_meta     = dataset_meta,
       rule_catalog     = rule_catalog,
-      op_errors        = op_errors
+      op_errors        = op_errors,
+      skipped_refs     = skipped_refs
     ),
     class = c("herald_result", "list")
   )

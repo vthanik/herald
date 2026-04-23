@@ -36,6 +36,7 @@ validate <- function(path = NULL,
                      rules = NULL,
                      authorities = NULL,
                      standards = NULL,
+                     dictionaries = NULL,
                      quiet = FALSE) {
   t0 <- Sys.time()
   call      <- rlang::caller_env()
@@ -94,6 +95,11 @@ validate <- function(path = NULL,
   ctx$crossrefs    <- build_crossrefs(datasets, spec)
   # Per-run CT cache. op_value_in_codelist lazy-loads on first use.
   ctx$ct           <- list()
+  # Dictionary registry (Dictionary Provider Protocol). Populated
+  # from the global session registry + the explicit `dictionaries=`
+  # arg. Missing-ref tracker feeds result$skipped_refs at the end.
+  .populate_dict_registry(ctx, dictionaries, call)
+  .init_missing_refs(ctx)
   # Pre-scan every dataset for duplicate USUBJID rows. Cross-dataset ops
   # use this cache to surface "ref has duplicate USUBJID" as a first-class
   # finding instead of silently first-matching (plan Q10).
@@ -245,7 +251,8 @@ validate <- function(path = NULL,
     config_hash      = NA_character_,
     dataset_meta     = dataset_meta,
     rule_catalog     = tibble::as_tibble(catalog[, c("id","authority","standard","severity","message")]),
-    op_errors        = ctx$op_errors
+    op_errors        = ctx$op_errors,
+    skipped_refs     = .finalize_skipped_refs(ctx)
   )
 }
 
