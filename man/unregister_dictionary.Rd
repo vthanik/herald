@@ -19,8 +19,10 @@ Remove a dictionary from the session registry
 Other dict: 
 \code{\link{ct_provider}()},
 \code{\link{list_dictionaries}()},
+\code{\link{meddra_provider}()},
 \code{\link{new_dict_provider}()},
 \code{\link{register_dictionary}()},
-\code{\link{srs_provider}()}
+\code{\link{srs_provider}()},
+\code{\link{whodrug_provider}()}
 }
 \concept{dict}

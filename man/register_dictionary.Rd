@@ -25,8 +25,10 @@ automatically under \code{name} unless explicitly overridden by the
 Other dict: 
 \code{\link{ct_provider}()},
 \code{\link{list_dictionaries}()},
+\code{\link{meddra_provider}()},
 \code{\link{new_dict_provider}()},
 \code{\link{srs_provider}()},
-\code{\link{unregister_dictionary}()}
+\code{\link{unregister_dictionary}()},
+\code{\link{whodrug_provider}()}
 }
 \concept{dict}

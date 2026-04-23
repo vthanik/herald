@@ -30,8 +30,10 @@ name \code{"srs"}.
 Other dict: 
 \code{\link{ct_provider}()},
 \code{\link{list_dictionaries}()},
+\code{\link{meddra_provider}()},
 \code{\link{new_dict_provider}()},
 \code{\link{register_dictionary}()},
-\code{\link{unregister_dictionary}()}
+\code{\link{unregister_dictionary}()},
+\code{\link{whodrug_provider}()}
 }
 \concept{dict}
