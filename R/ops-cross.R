@@ -10,7 +10,16 @@
 .ref_ds <- function(ctx, ref_name) {
   if (is.null(ctx) || is.null(ctx$datasets)) return(NULL)
   up <- toupper(as.character(ref_name))
-  ctx$datasets[[up]]
+  hit <- ctx$datasets[[up]]
+  if (is.null(hit)) {
+    # Q33: surface the missing dataset as an actionable skipped_refs
+    # banner item rather than a silent NA advisory.
+    .record_missing_ref(ctx,
+      rule_id = ctx$current_rule_id,
+      kind    = "dataset",
+      name    = up)
+  }
+  hit
 }
 
 .as_char <- function(x) as.character(x)

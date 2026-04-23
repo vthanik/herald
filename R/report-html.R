@@ -38,6 +38,12 @@ write_report_html <- function(x, path, title = NULL, ...) {
   n_fired  <- sum(findings$status == "fired",    na.rm = TRUE)
   n_adv    <- sum(findings$status == "advisory", na.rm = TRUE)
   n_ds     <- length(x$datasets_checked %||% character())
+  skipped  <- x$skipped_refs %||% list(datasets = list(),
+                                        dictionaries = list())
+  n_skipped_rules <- length(unique(unlist(c(
+    lapply(skipped$datasets, `[[`, "rule_ids"),
+    lapply(skipped$dictionaries, `[[`, "rule_ids")
+  ))))
   counts   <- summarise_counts(findings)
   ds_tbl   <- dataset_meta_tbl(x$dataset_meta, findings)
   rules_df <- applied_rules(x$rule_catalog, findings)
@@ -49,8 +55,12 @@ write_report_html <- function(x, path, title = NULL, ...) {
       "{{FOLIO_RIGHT}}"   = .html_folio_right(version, ts),
       "{{HEADER_META}}"   = .html_header_meta(version, ts, n_ds, n_fired, n_adv,
                                               x$rules_applied, x$rules_total,
-                                              format_duration_secs(x$duration)),
-      "{{TAB_ISSUES}}"    = .html_tab_issues(counts, n_fired, n_adv),
+                                              format_duration_secs(x$duration),
+                                              n_skipped_rules),
+      "{{TAB_ISSUES}}"    = paste0(
+        .html_skipped_refs(skipped),
+        .html_tab_issues(counts, n_fired, n_adv)
+      ),
       "{{TAB_DETAILS}}"   = .html_tab_details(findings),
       "{{TAB_DATASETS}}"  = .html_tab_datasets(ds_tbl),
       "{{TAB_RULES}}"     = .html_tab_rules(rules_df),
@@ -89,7 +99,8 @@ write_report_html <- function(x, path, title = NULL, ...) {
 }
 
 .html_header_meta <- function(version, ts, n_ds, n_fired, n_adv,
-                              rules_applied, rules_total, duration_secs) {
+                              rules_applied, rules_total, duration_secs,
+                              n_skipped = 0L) {
   cell <- function(k, v, mono = FALSE) {
     cls <- if (isTRUE(mono)) "meta-v mono" else "meta-v"
     paste0(
@@ -99,19 +110,79 @@ write_report_html <- function(x, path, title = NULL, ...) {
       '</div>'
     )
   }
+  cells <- paste0(
+    cell("Issued",            htmlesc(ts), mono = TRUE),
+    cell("Engine",            paste0("v", htmlesc(version))),
+    cell("Datasets",          .fmt_int(n_ds)),
+    cell("Findings (fired)",  .fmt_int(n_fired)),
+    cell("Advisories",        .fmt_int(n_adv))
+  )
+  if (as.integer(n_skipped %||% 0L) > 0L) {
+    cells <- paste0(cells, cell("Skipped (ref data)", .fmt_int(n_skipped)))
+  }
   paste0(
     '<div class="meta-grid">',
-      cell("Issued",            htmlesc(ts), mono = TRUE),
-      cell("Engine",            paste0("v", htmlesc(version))),
-      cell("Datasets",          .fmt_int(n_ds)),
-      cell("Findings (fired)",  .fmt_int(n_fired)),
-      cell("Advisories",        .fmt_int(n_adv)),
+      cells,
     '</div>',
     '<p class="eyebrow" style="margin-top:14px;">',
       'Rules exercised ', .fmt_int(rules_applied %||% 0L),
       ' of ', .fmt_int(rules_total %||% 0L),
       ' &middot; run time ', htmlesc(format(duration_secs)), 's.',
     '</p>'
+  )
+}
+
+# -- Skipped reference data banner (Q33) -------------------------------------
+# Renders one actionable row per missing (kind, name), listing every
+# rule that couldn't evaluate because the reference is absent.
+# Emitted at the top of the Issues tab so reviewers see it first
+# and have a direct instruction to fix the gap.
+
+.html_skipped_refs <- function(skipped) {
+  if (!is.list(skipped)) return("")
+  ds_entries   <- skipped$datasets     %||% list()
+  dict_entries <- skipped$dictionaries %||% list()
+  if (length(ds_entries) == 0L && length(dict_entries) == 0L) return("")
+
+  entry_row <- function(nm, e, kind_label) {
+    rule_list <- paste(vapply(e$rule_ids %||% character(),
+                              htmlesc, character(1)),
+                       collapse = ", ")
+    paste0(
+      '<li class="sev-row">',
+        '<span class="sev-label">', htmlesc(kind_label), ': ',
+          htmlesc(nm), '</span>',
+        '<span class="sev-count">',
+          .fmt_int(length(e$rule_ids %||% character())),
+          ' rule', if (length(e$rule_ids %||% character()) == 1L) '' else 's',
+        '</span>',
+        '<div class="skipped-hint" style="grid-column: 1 / -1;',
+            'margin-top:6px; font-family: var(--sans); font-size: 12px;',
+            'color: var(--ink-soft);">',
+          htmlesc(e$hint %||% ""),
+          '<br>',
+          '<span style="font-family: var(--mono); font-size: 11px;',
+              'color: var(--muted);">', rule_list, '</span>',
+        '</div>',
+      '</li>'
+    )
+  }
+
+  rows <- character()
+  for (nm in names(ds_entries))  rows <- c(rows,
+    entry_row(nm, ds_entries[[nm]], "Dataset"))
+  for (nm in names(dict_entries)) rows <- c(rows,
+    entry_row(nm, dict_entries[[nm]], "Dictionary"))
+
+  paste0(
+    '<section style="margin-bottom:28px;">',
+      '<h2 class="section-head">Missing reference data</h2>',
+      '<p class="eyebrow" style="margin-bottom:12px;">',
+        'The rules below could not evaluate. Provide the named ',
+        'source and rerun to unlock them.',
+      '</p>',
+      '<ul class="sev-list">', paste(rows, collapse = ""), '</ul>',
+    '</section>'
   )
 }
 
