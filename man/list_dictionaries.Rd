@@ -23,9 +23,12 @@ CDISC CT. Used for reporting and debugging.
 \seealso{
 Other dict: 
 \code{\link{ct_provider}()},
+\code{\link{custom_provider}()},
+\code{\link{loinc_provider}()},
 \code{\link{meddra_provider}()},
 \code{\link{new_dict_provider}()},
 \code{\link{register_dictionary}()},
+\code{\link{snomed_provider}()},
 \code{\link{srs_provider}()},
 \code{\link{unregister_dictionary}()},
 \code{\link{whodrug_provider}()}

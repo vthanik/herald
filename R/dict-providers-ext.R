@@ -336,3 +336,296 @@ whodrug_provider <- function(path, version = "unknown", format = "b3") {
   tibble::as_tibble(raw[, c("drug_record_number", "drug_name"),
                          drop = FALSE])
 }
+
+# --------------------------------------------------------------------------
+# LOINC (Regenstrief CSV distribution)
+# --------------------------------------------------------------------------
+# LOINC ships as a single Loinc.csv file inside the LOINC_Table/
+# folder of the LOINC distribution. Header row includes at least
+# LOINC_NUM, COMPONENT, SHORTNAME, LONG_COMMON_NAME, STATUS, CLASS.
+# LOINC is free to redistribute under the LOINC licence, but herald
+# still loads user-supplied copies so sponsors pin a specific
+# release.
+
+#' LOINC as a Dictionary Provider
+#'
+#' @description
+#' Reads a Regenstrief LOINC CSV distribution (`Loinc.csv`) and
+#' returns a `herald_dict_provider` with membership lookup by
+#' `LOINC_NUM`, `COMPONENT`, `SHORTNAME`, or `LONG_COMMON_NAME`.
+#'
+#' @param path Path to `Loinc.csv` OR a directory containing it.
+#' @param version LOINC release tag (e.g. `"2.77"`). User-supplied.
+#'
+#' @return A `herald_dict_provider` with name `"loinc"`.
+#' @seealso [register_dictionary()].
+#' @family dict
+#' @export
+loinc_provider <- function(path, version = "unknown") {
+  call <- rlang::caller_env()
+  check_scalar_chr(path, call = call)
+  check_scalar_chr(version, call = call)
+
+  csv_path <- if (dir.exists(path)) {
+    hit <- .find_case_insensitive(path, "Loinc.csv")
+    if (is.na(hit)) {
+      herald_error(
+        "LOINC directory {.path {path}} is missing {.file Loinc.csv}.",
+        class = "herald_error_input", call = call
+      )
+    }
+    hit
+  } else {
+    if (!file.exists(path)) {
+      herald_error(
+        "LOINC file {.path {path}} does not exist.",
+        class = "herald_error_input", call = call
+      )
+    }
+    path
+  }
+
+  raw <- utils::read.csv(csv_path, stringsAsFactors = FALSE,
+                          check.names = FALSE,
+                          na.strings = "", fileEncoding = "UTF-8")
+  keep_cols <- intersect(
+    c("LOINC_NUM", "COMPONENT", "SHORTNAME",
+      "LONG_COMMON_NAME", "STATUS", "CLASS"),
+    names(raw)
+  )
+  if (!"LOINC_NUM" %in% keep_cols) {
+    herald_error(
+      "LOINC file is missing required column LOINC_NUM.",
+      class = "herald_error_runtime", call = call
+    )
+  }
+  tbl <- tibble::as_tibble(raw[, keep_cols, drop = FALSE])
+
+  fields <- tolower(keep_cols)
+  field_col <- stats::setNames(keep_cols, fields)
+
+  contains_fn <- function(value, field = "loinc_num", ignore_case = FALSE) {
+    field <- tolower(as.character(field %||% "loinc_num"))
+    if (!(field %in% names(field_col))) return(rep(NA, length(value)))
+    pool <- as.character(tbl[[field_col[[field]]]])
+    v <- sub(" +$", "", as.character(value))
+    if (isTRUE(ignore_case)) {
+      return(toupper(v) %in% toupper(pool))
+    }
+    v %in% pool
+  }
+
+  lookup_fn <- function(value, field = "loinc_num") {
+    field <- tolower(as.character(field %||% "loinc_num"))
+    if (!(field %in% names(field_col))) return(NULL)
+    hits <- tbl[tbl[[field_col[[field]]]] %in% as.character(value), ,
+                drop = FALSE]
+    if (nrow(hits) == 0L) return(NULL)
+    hits
+  }
+
+  new_dict_provider(
+    name         = "loinc",
+    version      = version,
+    source       = "user-file",
+    license      = "LOINC",
+    license_note = "User-supplied LOINC distribution (Regenstrief licence).",
+    size_rows    = as.integer(nrow(tbl)),
+    fields       = fields,
+    contains     = contains_fn,
+    lookup       = lookup_fn
+  )
+}
+
+# --------------------------------------------------------------------------
+# SNOMED CT (RF2 distribution)
+# --------------------------------------------------------------------------
+# SNOMED ships as a collection of tab-delimited RF2 files. For
+# herald's use (concept membership lookup) we parse the English
+# Description snapshot file (Description_Snapshot-en_*.txt) which
+# carries the concept-ID -> term mapping. RF2 columns:
+#   id, effectiveTime, active, moduleId, conceptId,
+#   languageCode, typeId, term, caseSignificanceId.
+
+#' SNOMED CT as a Dictionary Provider
+#'
+#' @description
+#' Reads an IHTSDO SNOMED CT RF2 Description Snapshot file and
+#' returns a `herald_dict_provider` with concept-id and term
+#' membership lookup. SNOMED requires an affiliate licence in many
+#' jurisdictions; herald never bundles the data.
+#'
+#' @param path Path to the description-snapshot file OR a directory
+#'   containing it (look pattern: `sct2_Description_Snapshot-en_*.txt`).
+#' @param version SNOMED release tag. User-supplied.
+#'
+#' @return A `herald_dict_provider` with name `"snomed"`.
+#' @seealso [register_dictionary()].
+#' @family dict
+#' @export
+snomed_provider <- function(path, version = "unknown") {
+  call <- rlang::caller_env()
+  check_scalar_chr(path, call = call)
+  check_scalar_chr(version, call = call)
+
+  desc_path <- if (dir.exists(path)) {
+    hits <- list.files(
+      path, pattern = "^sct2_Description_Snapshot.*\\.txt$",
+      ignore.case = TRUE, full.names = TRUE, recursive = TRUE
+    )
+    if (length(hits) == 0L) {
+      herald_error(
+        "SNOMED directory {.path {path}} contains no \\
+         sct2_Description_Snapshot*.txt file.",
+        class = "herald_error_input", call = call
+      )
+    }
+    hits[[1L]]
+  } else {
+    if (!file.exists(path)) {
+      herald_error(
+        "SNOMED file {.path {path}} does not exist.",
+        class = "herald_error_input", call = call
+      )
+    }
+    path
+  }
+
+  raw <- utils::read.delim(
+    desc_path, sep = "\t", quote = "",
+    stringsAsFactors = FALSE, check.names = FALSE,
+    na.strings = "", fileEncoding = "UTF-8"
+  )
+  want <- c("conceptId", "term", "active", "typeId")
+  missing_cols <- setdiff(want, names(raw))
+  if (length(missing_cols) > 0L) {
+    herald_error(
+      c("SNOMED description file missing required column{?s}: {.val {missing_cols}}",
+        "i" = "Got: {.val {names(raw)}}"),
+      class = "herald_error_runtime", call = call
+    )
+  }
+  # Keep only active descriptions; they're the canonical reference.
+  tbl <- tibble::as_tibble(raw[raw$active %in% c(1, "1"), want, drop = FALSE])
+
+  contains_fn <- function(value, field = "term", ignore_case = FALSE) {
+    field <- as.character(field %||% "term")
+    col <- switch(field,
+      "term"       = "term",
+      "concept_id" = "conceptId",
+      "conceptId"  = "conceptId",
+      NULL)
+    if (is.null(col)) return(rep(NA, length(value)))
+    pool <- as.character(tbl[[col]])
+    v <- sub(" +$", "", as.character(value))
+    if (isTRUE(ignore_case)) {
+      return(toupper(v) %in% toupper(pool))
+    }
+    v %in% pool
+  }
+
+  lookup_fn <- function(value, field = "term") {
+    field <- as.character(field %||% "term")
+    col <- switch(field, "term" = "term",
+                  "concept_id" = "conceptId",
+                  "conceptId" = "conceptId", NULL)
+    if (is.null(col)) return(NULL)
+    hits <- tbl[tbl[[col]] %in% as.character(value), , drop = FALSE]
+    if (nrow(hits) == 0L) return(NULL)
+    hits
+  }
+
+  new_dict_provider(
+    name         = "snomed",
+    version      = version,
+    source       = "user-file",
+    license      = "IHTSDO",
+    license_note = "User-supplied SNOMED CT RF2 distribution (IHTSDO affiliate licence).",
+    size_rows    = as.integer(nrow(tbl)),
+    fields       = c("term", "concept_id"),
+    contains     = contains_fn,
+    lookup       = lookup_fn
+  )
+}
+
+# --------------------------------------------------------------------------
+# Custom / sponsor-private tables
+# --------------------------------------------------------------------------
+
+#' Generic in-memory Dictionary Provider
+#'
+#' @description
+#' Wraps any data frame into a `herald_dict_provider`. The sponsor
+#' supplies a (usually small) reference table and the fields (column
+#' names) that rules may query. Useful for site codes, custom RACE
+#' categories, pilot-study codelists, or any sponsor-private
+#' terminology that isn't covered by a CDISC CT codelist.
+#'
+#' @param table A data frame. The columns named in `fields` are
+#'   queryable; other columns are kept for `lookup()` only.
+#' @param name Canonical short name used in rule YAMLs
+#'   (`dictionary: my-custom-cat`).
+#' @param fields Character vector of column names to expose. Must be
+#'   column names in `table`. Defaults to every column.
+#' @param version Optional version tag.
+#' @param license Optional license tag (e.g. `"sponsor-private"`).
+#'
+#' @return A `herald_dict_provider`.
+#' @seealso [register_dictionary()].
+#' @family dict
+#' @export
+custom_provider <- function(table,
+                            name,
+                            fields  = NULL,
+                            version = "unknown",
+                            license = "sponsor-private") {
+  call <- rlang::caller_env()
+  if (!is.data.frame(table)) {
+    herald_error(
+      "{.arg table} must be a data frame.",
+      class = "herald_error_input", call = call
+    )
+  }
+  check_scalar_chr(name, call = call)
+  if (is.null(fields)) fields <- names(table)
+  bad <- setdiff(fields, names(table))
+  if (length(bad) > 0L) {
+    herald_error(
+      "{.arg fields} references columns not in {.arg table}: {.val {bad}}.",
+      class = "herald_error_input", call = call
+    )
+  }
+
+  tbl <- tibble::as_tibble(table)
+
+  contains_fn <- function(value, field = NULL, ignore_case = FALSE) {
+    f <- as.character(field %||% fields[[1L]])
+    if (!(f %in% fields)) return(rep(NA, length(value)))
+    pool <- as.character(tbl[[f]])
+    v <- sub(" +$", "", as.character(value))
+    if (isTRUE(ignore_case)) {
+      return(toupper(v) %in% toupper(pool))
+    }
+    v %in% pool
+  }
+
+  lookup_fn <- function(value, field = NULL) {
+    f <- as.character(field %||% fields[[1L]])
+    if (!(f %in% names(tbl))) return(NULL)
+    hits <- tbl[tbl[[f]] %in% as.character(value), , drop = FALSE]
+    if (nrow(hits) == 0L) return(NULL)
+    hits
+  }
+
+  new_dict_provider(
+    name         = name,
+    version      = version,
+    source       = "sponsor",
+    license      = license,
+    license_note = "In-memory sponsor-supplied dictionary.",
+    size_rows    = as.integer(nrow(tbl)),
+    fields       = fields,
+    contains     = contains_fn,
+    lookup       = lookup_fn
+  )
+}

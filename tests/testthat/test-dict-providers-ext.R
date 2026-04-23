@@ -148,3 +148,118 @@ test_that("meddra / whodrug providers work end-to-end via register_dictionary", 
   expect_true("meddra" %in% dfs$name)
   expect_equal(dfs$license[dfs$name == "meddra"], "MSSO")
 })
+
+# --------------------------------------------------------------------------
+# LOINC
+# --------------------------------------------------------------------------
+
+.fake_loinc_csv <- function(dir) {
+  lines <- c(
+    "LOINC_NUM,COMPONENT,SHORTNAME,LONG_COMMON_NAME,STATUS,CLASS",
+    "12345-6,Hemoglobin,Hgb,Hemoglobin [Mass/volume] in Blood,ACTIVE,HEM/BC",
+    "78910-2,Glucose,Gluc,Glucose [Mass/volume] in Serum or Plasma,ACTIVE,CHEM"
+  )
+  writeLines(lines, file.path(dir, "Loinc.csv"))
+}
+
+test_that("loinc_provider parses Loinc.csv and serves membership", {
+  dir <- tempfile("loinc-"); dir.create(dir)
+  .fake_loinc_csv(dir)
+  p <- loinc_provider(dir, version = "2.77")
+
+  expect_s3_class(p, "herald_dict_provider")
+  expect_equal(p$name, "loinc")
+  expect_equal(p$size_rows, 2L)
+  expect_true(p$contains("12345-6", field = "loinc_num"))
+  expect_true(p$contains("Hemoglobin", field = "component"))
+  expect_false(p$contains("NOT_A_CODE", field = "loinc_num"))
+})
+
+test_that("loinc_provider accepts a direct Loinc.csv path", {
+  dir <- tempfile("loinc-direct-"); dir.create(dir)
+  .fake_loinc_csv(dir)
+  p <- loinc_provider(file.path(dir, "Loinc.csv"), version = "2.77")
+  expect_s3_class(p, "herald_dict_provider")
+})
+
+test_that("loinc_provider errors on missing file", {
+  dir <- tempfile("loinc-miss-"); dir.create(dir)
+  expect_error(loinc_provider(dir), class = "herald_error_input")
+})
+
+# --------------------------------------------------------------------------
+# SNOMED CT
+# --------------------------------------------------------------------------
+
+.fake_snomed_snapshot <- function(dir) {
+  lines <- c(
+    paste("id", "effectiveTime", "active", "moduleId",
+          "conceptId", "languageCode", "typeId", "term",
+          "caseSignificanceId", sep = "\t"),
+    paste("1", "20250101", "1", "900000000000207008",
+          "25064002", "en", "900000000000013009", "Headache",
+          "900000000000448009", sep = "\t"),
+    paste("2", "20250101", "1", "900000000000207008",
+          "422587007", "en", "900000000000013009", "Nausea",
+          "900000000000448009", sep = "\t")
+  )
+  path <- file.path(dir, "sct2_Description_Snapshot-en_x.txt")
+  writeLines(lines, path)
+  path
+}
+
+test_that("snomed_provider parses the RF2 description snapshot", {
+  dir <- tempfile("snomed-"); dir.create(dir)
+  .fake_snomed_snapshot(dir)
+  p <- snomed_provider(dir, version = "20250101")
+
+  expect_s3_class(p, "herald_dict_provider")
+  expect_equal(p$name, "snomed")
+  expect_true(p$contains("Headache", field = "term"))
+  expect_true(p$contains("25064002", field = "concept_id"))
+  expect_false(p$contains("Not a term", field = "term"))
+})
+
+test_that("snomed_provider errors when no snapshot file is present", {
+  dir <- tempfile("snomed-empty-"); dir.create(dir)
+  expect_error(snomed_provider(dir), class = "herald_error_input")
+})
+
+# --------------------------------------------------------------------------
+# custom_provider
+# --------------------------------------------------------------------------
+
+test_that("custom_provider wraps a data frame for membership lookup", {
+  tbl <- data.frame(
+    code = c("A", "B", "C"),
+    label = c("Asian", "Black", "Caucasian"),
+    stringsAsFactors = FALSE
+  )
+  p <- custom_provider(tbl, name = "sponsor-race",
+                       fields = c("code", "label"))
+  expect_s3_class(p, "herald_dict_provider")
+  expect_equal(p$name, "sponsor-race")
+  expect_equal(p$source, "sponsor")
+  expect_true(p$contains("A", field = "code"))
+  expect_true(p$contains("Black", field = "label"))
+  expect_false(p$contains("Z", field = "code"))
+  hits <- p$lookup("A", field = "code")
+  expect_equal(hits$label, "Asian")
+})
+
+test_that("custom_provider errors on non-data-frame input", {
+  expect_error(custom_provider(list(), name = "x"),
+               class = "herald_error_input")
+})
+
+test_that("custom_provider errors when fields reference unknown columns", {
+  tbl <- data.frame(x = 1:3)
+  expect_error(custom_provider(tbl, name = "bad", fields = c("x", "nope")),
+               class = "herald_error_input")
+})
+
+test_that("custom_provider defaults fields to all columns", {
+  tbl <- data.frame(a = "1", b = "x", stringsAsFactors = FALSE)
+  p <- custom_provider(tbl, name = "c")
+  expect_setequal(p$fields, c("a", "b"))
+})
