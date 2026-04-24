@@ -14,8 +14,10 @@ scope:
   exclude_domains: []
 variable: ELEMENT
 check:
-  narrative: ELEMENT value does not refer to any specific EPOCH
-  condition: ELEMENT is associated with > 1 EPOCH
+  operator: is_not_unique_relationship
+  name: ETCD
+  value:
+    related_name: EPOCH
 outcome:
   message: ELEMENT value does not refer to any specific EPOCH
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     (ELEMENT) must not refer to any Epochs.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

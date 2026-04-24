@@ -1,0 +1,35 @@
+{
+  "rule_id": "__pattern-element-value-in-ref__",
+  "fixture_type": "positive",
+  "datasets": {
+    "TA": {
+      "STUDYID":  ["STUDY-1", "STUDY-1", "STUDY-1"],
+      "ARMCD":    ["ARM-A", "ARM-B", "ARM-A"],
+      "ARM":      ["Arm A", "Arm B", "Arm A"],
+      "TAETORD":  [1, 1, 2],
+      "ETCD":     ["SCR", "SCR", "TRT"],
+      "ELEMENT":  ["Screening", "Screening", "Treatment"],
+      "EPOCH":    ["SCREENING", "TREATMENT", "TREATMENT"],
+      "TABRANCH": ["", "", ""],
+      "TATRANS":  ["", "", ""]
+    },
+    "TE": {
+      "STUDYID":  ["STUDY-1", "STUDY-1"],
+      "ETCD":     ["SCR", "TRT"],
+      "ELEMENT":  ["Screening", "Treatment"],
+      "TESTRL":   [">=P0D", ">=P0D"],
+      "TEENRL":   ["<P30D", "<P90D"],
+      "TEDUR":    ["P30D", "P90D"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "notes": "CG0322 (TA): ETCD=SCR maps to ARM='Arm A' and ARM='Arm B' -> fires rows 1 and 2. CG0323 (TA): ETCD=SCR maps to EPOCH='SCREENING' (row 1) and EPOCH='TREATMENT' (row 2) -> fires rows 1 and 2."
+  },
+  "spec": {
+    "class_map": {
+      "TA": "TDM",
+      "TE": "TDM"
+    }
+  }
+}
