@@ -63,7 +63,7 @@ under `R CMD check` (one pre-existing failure noted below).
 | Q13 | FDA SRS / UNII | 6 | `op_value_in_srs_table` wired to `srs_provider` |
 | ~~Q14~~ | ~~long-tail small clusters~~ | ~~66~~ | **DONE** 6 new patterns + op_max_n_records_per_group_matching |
 | ~~Q21~~ | ~~indexed compound-var family~~ | ~~72~~ | **DONE** 2 new patterns + 4 .ids expansions |
-| Q22 | prefix+suffix compound templates | 8 | compound-template-pair pattern |
+| ~~Q22~~ | ~~prefix+suffix compound templates~~ | ~~8~~ | **DONE** 4 rules -- presence-pair (66, 70, 895) + value-flag-value-or-null (272) |
 | Q23 | TS-domain parametric | 30 | 1 parametric pattern driven by CSV |
 | Q24 | ISO 8601 conformance | 10 | `op_value_not_iso8601` |
 | Q25 | dataset-naming / domain-code | 13 | 3 micro-patterns |
@@ -970,7 +970,30 @@ pattern `compound-template-pair` with slots
 
 **(b)** Hand-translate each of the 8 inline.
 
-**User answer:** _(pending)_
+**User answer:** (a). Executed in 2026-04-24 session. All 4 remaining
+rules absorbed into existing patterns -- no new pattern needed:
+- ADaM-66: `presence-pair.ids` with `var_a=TRxxPGyN`, `var_b=TRxxPGy`,
+  `expand=xx,y`. Multi-placeholder expansion via `.multi_values_in_cols`.
+- ADaM-70: `presence-pair.ids` with `var_a=TRxxAGyN`, `var_b=TRxxAGy`,
+  `expand=xx,y`. Same shape.
+- ADaM-272: `value-flag-value-or-null.ids` with `var=AOCCzzFL`,
+  `allowed='Y'`, `expand=zz`. OCCDS occurrence flag value check.
+- ADaM-895: `presence-pair.ids` with `var_a=CRITzzFL`, `var_b=CRITzz`,
+  `expand=zz`. Covers the 2-digit (01-99) extension of rule 156.
+  Rule 156 handles y=1..9; 895 handles zz=01..99 independently.
+
+ADaM-156 and 157 were converted in Q21 session and remain in
+`presence-pair.ids`.
+
+**Decisions locked:**
+- No new pattern needed: the `compound-template-pair` concept maps
+  exactly to `presence-pair` with `expand: "xx,y"` (multi-placeholder).
+- Rule 895 is split across two placeholder regimes (y and zz); since
+  156 owns the y-case, 895 gets the zz-case only.
+- ADaM-272 is a value check (not a presence pair); routes to
+  `value-flag-value-or-null` pattern.
+
+**Delivered:** _(delivered)_
 
 ---
 

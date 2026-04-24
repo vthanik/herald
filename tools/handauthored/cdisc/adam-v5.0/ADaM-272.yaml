@@ -14,9 +14,13 @@ scope:
 variable: AOCCzzFL where zz is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: zz
+  all:
+  - operator: non_empty
+    name: AOCCzzFL
+  - operator: is_not_contained_by
+    name: AOCCzzFL
+    value: 'Y'
 outcome:
   message: A variable with a prefix of AOCC and a suffix of FL is not equal to Y or
     null
@@ -31,4 +35,4 @@ provenance:
     OCCDS v1.1, Section 3.2.6, Table 3.2.6.1: Code List / Controlled Terms have allowable values of: "Y"
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

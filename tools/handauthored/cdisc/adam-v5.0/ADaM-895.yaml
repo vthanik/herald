@@ -13,9 +13,12 @@ scope:
 variable: CRITyFL where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: CRITyFL is present
+  expand: zz
+  all:
+  - name: CRITzzFL
+    operator: exists
+  - name: CRITzz
+    operator: not_exists
 outcome:
   message: A variable with a prefix of CRIT, a suffix of FL and containing either
     a one-digit or two-digit number (CRITyFL) is present and a variable with the same
@@ -31,5 +34,4 @@ provenance:
     whether a criterion is met. Required if CRITy exists.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

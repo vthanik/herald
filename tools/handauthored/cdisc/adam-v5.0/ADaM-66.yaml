@@ -14,10 +14,12 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: A variable with a prefix of TR, containing PG and a suffix of
-    N is present
+  expand: xx,y
+  all:
+  - name: TRxxPGyN
+    operator: exists
+  - name: TRxxPGy
+    operator: not_exists
 outcome:
   message: A variable with a prefix of TR, containing PG and a suffix of N is present
     and a variable with the same root without a suffix of N is not present
@@ -29,4 +31,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.0, Section 3.1, Table 3.1.1: One-to-one map to TRxxPGy'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
