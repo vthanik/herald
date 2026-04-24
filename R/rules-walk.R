@@ -311,7 +311,8 @@ walk_tree <- function(node, data, ctx = NULL) {
 #' @noRd
 new_herald_ctx <- function() {
   e <- new.env(parent = emptyenv())
-  e$op_errors <- list()
-  e$op_cache  <- new.env(parent = emptyenv())
+  e$op_errors  <- list()
+  e$op_cache   <- new.env(parent = emptyenv())
+  e$op_results <- list()    # Operations pre-compute results: "$id" -> value
   e
 }

@@ -132,6 +132,17 @@ resolve_ref <- function(token, ctx) {
 
   if (startsWith(token, "$")) {
     key <- tolower(token)
+
+    # Operations results take priority over static crossrefs. They are stamped
+    # by .apply_operations() under the exact $id key (preserving original case).
+    if (!is.null(ctx$op_results)) {
+      res <- ctx$op_results[[token]] %||% ctx$op_results[[key]]
+      if (!is.null(res)) {
+        v <- if (is.list(res)) unlist(res, use.names = FALSE) else res
+        return(as.character(v))
+      }
+    }
+
     reg <- ctx$crossrefs
     if (is.null(reg) || is.null(reg[[key]])) {
       .log_unresolved(ctx, key)

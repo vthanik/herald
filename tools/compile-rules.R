@@ -77,6 +77,9 @@ row_from_core_yaml <- function(yml, path) {
   )
   check_tree <- yml$Check
 
+  # Lowercase the Operations: entry keys so the R engine finds them uniformly.
+  operations <- .lowercase_ops(yml$Operations)
+
   fetched <- yml$herald$fetched %||% NA_character_
   fetched_at <- suppressWarnings(as.POSIXct(fetched, tz = "UTC"))
 
@@ -87,6 +90,7 @@ row_from_core_yaml <- function(yml, path) {
     standard_ver   = as.character(std_ver),
     severity       = as.character(severity),
     scope          = scope,
+    operations     = operations,
     check_tree     = check_tree,
     message        = as.character(message),
     source_document = paste0(cite_block$Document %||% "", " ",
@@ -185,6 +189,7 @@ row_from_herald_yaml <- function(yml, path) {
   message  <- yml$outcome$message %||% yml$description %||% ""
 
   scope <- .normalise_scope(yml$scope)
+  operations <- .lowercase_ops(yml$operations)
   check_tree <- yml$check
 
   # Provenance: HRL-* rules are all self-authored by the herald team.
@@ -237,6 +242,7 @@ row_from_herald_yaml <- function(yml, path) {
     standard_ver   = standard_ver,
     severity       = severity,
     scope          = scope,
+    operations     = operations,
     check_tree     = check_tree,
     message        = as.character(message),
     source_document = as.character(source_doc),
@@ -251,6 +257,19 @@ row_from_herald_yaml <- function(yml, path) {
 
 is_core_schema <- function(yml) {
   !is.null(yml$Core) || !is.null(yml$Authorities)
+}
+
+# Lowercase the PascalCase keys from a CORE Operations: block so that the
+# R engine's .get_operation() and op_entry[["id"]] lookups work uniformly.
+# Returns NULL when ops is NULL / empty (rules with no Operations block).
+.lowercase_ops <- function(ops) {
+  if (is.null(ops) || length(ops) == 0L) return(NULL)
+  lapply(ops, function(e) {
+    if (!is.list(e)) return(e)
+    out <- list()
+    for (k in names(e)) out[[tolower(k)]] <- e[[k]]
+    out
+  })
 }
 
 parse_one <- function(path) {
@@ -309,7 +328,8 @@ cols$fetched_at <- .POSIXct(
   }, numeric(1)),
   tz = "UTC"
 )
-cols$scope <- lapply(rows, function(r) r$scope %||% list())
+cols$scope      <- lapply(rows, function(r) r$scope      %||% list())
+cols$operations <- lapply(rows, function(r) r$operations %||% list())
 cols$check_tree <- lapply(rows, function(r) r$check_tree %||% list())
 
 # tibble handles list-columns cleanly

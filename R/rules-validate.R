@@ -177,6 +177,9 @@ validate <- function(path = NULL,
       ctx$current_dataset <- ds_name
       ctx$current_domain  <- toupper(substr(ds_name, 1, 2))
       rule_emit <- .sev_override(rule, severity_map, .ds_class(ds_name, ctx))
+      # Run Operations: pre-compute phase (stamp $id columns; cache in ctx).
+      ctx$op_results <- list()
+      d <- .apply_operations(rule$operations, d, datasets, ctx)
       # Expand xx / y / zz placeholders against this dataset's columns.
       xp <- .expand_indexed(rule$check_tree, d)
 
