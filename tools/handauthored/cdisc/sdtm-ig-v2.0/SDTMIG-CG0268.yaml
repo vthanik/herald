@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: TSSEQ
 check:
-  narrative: TSSEQ is unique for each distinct value of TSPARMCD
-  condition: TSPARMCD not unique
+  expand: ''
+  all:
+  - name: TSPARMCD
+    operator: is_not_unique_relationship
+    value:
+      related_name: TSSEQ
 outcome:
   message: TSSEQ is unique for each distinct value of TSPARMCD
   severity: Medium
@@ -24,5 +28,4 @@ provenance:
   cited_guidance: TSSEQ has a different value for each record for the same parameter.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -471,24 +471,24 @@
 "CG0254","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TIVERS present in dataset",NA,NA,"narrative",NA,NA,NA
 "CG0255","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETESTCD unique within TIVERS",NA,NA,"narrative",NA,NA,NA
 "CG0256","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETESTCD unique in dataset",NA,NA,"narrative",NA,NA,NA
-"CG0262","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVALn ^= null",NA,NA,"narrative",NA,NA,NA
-"CG0265","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVALCD and TSVAL have a one-to-one relationship.",NA,NA,"narrative",NA,NA,NA
-"CG0268","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSSEQ is unique for each distinct value of TSPARMCD",NA,NA,"narrative",NA,NA,NA
-"CG0270","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVAL conforms to ISO 8601",NA,NA,"narrative",NA,NA,NA
-"CG0272","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL = null or 'HEALTHY SUBJECTS'",NA,NA,"narrative",NA,NA,NA
-"CG0280","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL > 0 and TSVAL <= 1",NA,NA,"narrative",NA,NA,NA
-"CG0281","CDISC","SDTM-IG","3.2,3.3","Medium","TSPARMCD = RANDQT record is present",NA,NA,"narrative",NA,NA,NA
-"CG0283","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL conforms to ISO 8601 date",NA,NA,"narrative",NA,NA,NA
+"CG0262","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVALn ^= null",NA,NA,"narrative",NA,NA,"narrative: indexed suffix ordering (TSVALn present when TSVAL(n+1) present) -- requires numeric-suffix-order op not yet built"
+"CG0265","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVALCD and TSVAL have a one-to-one relationship.","uniqueness-grouped","expand: """" all: - name: TSVALCD operator: is_not_unique_relationship value: related_name: TSVAL","predicate","2026-04-24T13:30:09Z",NA,NA
+"CG0268","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSSEQ is unique for each distinct value of TSPARMCD","uniqueness-grouped","expand: """" all: - name: TSPARMCD operator: is_not_unique_relationship value: related_name: TSSEQ","predicate","2026-04-24T13:30:09Z",NA,NA
+"CG0270","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVAL conforms to ISO 8601",NA,NA,"narrative",NA,NA,"pending-Q24: needs op_value_not_iso8601"
+"CG0272","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL = null or 'HEALTHY SUBJECTS'",NA,NA,"narrative",NA,NA,"narrative: condition depends on cross-record lookup (HLTSUBJI=Y check across TS rows -- no set-membership-across-rows op)"
+"CG0280","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL > 0 and TSVAL <= 1",NA,NA,"narrative",NA,NA,"narrative: numeric range bound (0 < TSVAL <= 1) -- no range-numeric op yet"
+"CG0281","CDISC","SDTM-IG","3.2,3.3","Medium","TSPARMCD = RANDQT record is present",NA,NA,"narrative",NA,NA,"narrative: requires study-design metadata (number of investigational treatments) not present in dataset rows"
+"CG0283","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL conforms to ISO 8601 date",NA,NA,"narrative",NA,NA,"pending-Q24: needs op_value_not_iso8601"
 "CG0284","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is integer and > 0","value-conditional-not-matches-regex","all: - operator: is_contained_by name: TSPARMCD value: ['NARMS'] - operator: not_matches_regex name: TSVAL value: '^[1-9][0-9]*$'","predicate","2026-04-24T12:23:56Z",NA,NA
-"CG0285","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL conforms to ISO 8601 date",NA,NA,"narrative",NA,NA,NA
-"CG0286","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL conforms to ISO 8601 date",NA,NA,"narrative",NA,NA,NA
-"CG0287","CDISC","SDTM-IG","3.2,3.3","High","A set of records exist with at least one record with TSPARMCD equal to each of the required values in the list of Trial Summary Codes in Appendix C1",NA,NA,"narrative",NA,NA,NA
-"CG0288","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVALCD = valid code in the version identified in TSVCDVER",NA,NA,"narrative",NA,NA,NA
-"CG0289","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVCDVER = valid published version (date)",NA,NA,"narrative",NA,NA,NA
-"CG0291","CDISC","SDTM-IG","3.2,3.3,3.4","Low","TSVAL not populated with values or synonyms of values in the ISO 21090 null flavor codelist (or other terms that can be represented as null flavors)",NA,NA,"narrative",NA,NA,NA
-"CG0295","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARMCD = null",NA,NA,"narrative",NA,NA,NA
-"CG0296","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARM = null",NA,NA,"narrative",NA,NA,NA
-"CG0298","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","VISIT is described in protocol",NA,NA,"narrative",NA,NA,NA
+"CG0285","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL conforms to ISO 8601 date",NA,NA,"narrative",NA,NA,"pending-Q24: needs op_value_not_iso8601"
+"CG0286","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL conforms to ISO 8601 date",NA,NA,"narrative",NA,NA,"pending-Q24: needs op_value_not_iso8601"
+"CG0287","CDISC","SDTM-IG","3.2,3.3","High","A set of records exist with at least one record with TSPARMCD equal to each of the required values in the list of Trial Summary Codes in Appendix C1",NA,NA,"narrative",NA,NA,"narrative: requires external reference list (Appendix C1 required TSPARMCD codes) not yet bundled"
+"CG0288","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVALCD = valid code in the version identified in TSVCDVER",NA,NA,"narrative",NA,NA,"narrative: requires versioned CT cross-reference (TSVALCD valid in TSVCDVER-specific codelist) -- dynamic CT lookup not yet supported"
+"CG0289","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TSVCDVER = valid published version (date)",NA,NA,"narrative",NA,NA,"pending-Q24: needs op_value_not_iso8601"
+"CG0291","CDISC","SDTM-IG","3.2,3.3,3.4","Low","TSVAL not populated with values or synonyms of values in the ISO 21090 null flavor codelist (or other terms that can be represented as null flavors)",NA,NA,"narrative",NA,NA,"narrative: requires ISO 21090 null flavor codelist not included in CT bundle"
+"CG0295","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARMCD = null",NA,NA,"narrative",NA,NA,"narrative: condition requires protocol-level ARM independence determination -- not available in dataset"
+"CG0296","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARM = null",NA,NA,"narrative",NA,NA,"narrative: condition requires protocol-level ARM independence determination -- not available in dataset"
+"CG0298","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","VISIT is described in protocol",NA,NA,"narrative",NA,NA,"narrative: requires protocol document cross-reference -- not computable from data alone"
 "CG0303","CDISC","SDTM-IG","3.2","Medium","Variable Label = IG Label",NA,NA,"narrative",NA,NA,NA
 "CG0308","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DOMAIN value length = 2",NA,NA,"narrative",NA,NA,NA
 "CG0309","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DOMAIN value length = 4",NA,NA,"narrative",NA,NA,NA

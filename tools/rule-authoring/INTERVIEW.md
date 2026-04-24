@@ -64,7 +64,7 @@ under `R CMD check` (one pre-existing failure noted below).
 | ~~Q14~~ | ~~long-tail small clusters~~ | ~~66~~ | **DONE** 6 new patterns + op_max_n_records_per_group_matching |
 | ~~Q21~~ | ~~indexed compound-var family~~ | ~~72~~ | **DONE** 2 new patterns + 4 .ids expansions |
 | ~~Q22~~ | ~~prefix+suffix compound templates~~ | ~~8~~ | **DONE** 4 rules -- presence-pair (66, 70, 895) + value-flag-value-or-null (272) |
-| Q23 | TS-domain parametric | 30 | 1 parametric pattern driven by CSV |
+| ~~Q23~~ | ~~TS-domain parametric~~ | ~~30~~ | **PARTIAL** CG0265+CG0268 -> uniqueness-grouped; ISO 8601 cluster -> Q24; 10 narrative (reasons locked) |
 | Q24 | ISO 8601 conformance | 10 | `op_value_not_iso8601` |
 | Q25 | dataset-naming / domain-code | 13 | 3 micro-patterns |
 | Q26 | cross-dataset variable presence | 10 | `op_var_present_in_any_other_dataset` |
@@ -1027,7 +1027,38 @@ a parametric table. Assertion ops are the existing leaves
 **(b)** 30 separate patterns, one per TSPARMCD -- needless
 duplication.
 
-**User answer:** _(pending)_
+**User answer:** Partial conversion. Decision locked 2026-04-24.
+
+**Decisions locked:**
+
+- **CG0265, CG0268** -- converted to `uniqueness-grouped` pattern
+  (CG0265: var_a=TSVAL, var_b=TSVALCD; CG0268: var_a=TSSEQ,
+  var_b=TSPARMCD). Both now predicate.
+- **CG0270, CG0283, CG0285, CG0286, CG0289** -- ISO 8601 date /
+  duration conformance rules. Deferred to Q24 (need
+  `op_value_not_iso8601`). Status: `pending-Q24` in notes.
+- **CG0272** -- narrative. Condition requires cross-record lookup
+  (HLTSUBJI=Y check across TS rows); no set-membership-across-rows
+  op exists.
+- **CG0280** -- narrative. Numeric range bound (0 < TSVAL <= 1);
+  no range-numeric op yet.
+- **CG0281** -- narrative. Condition requires study-design
+  metadata (number of investigational treatments) not present in
+  dataset rows.
+- **CG0287** -- narrative. Requires external reference list
+  (Appendix C1 required TSPARMCD codes) not bundled.
+- **CG0288** -- narrative. Requires versioned CT cross-reference
+  (TSVALCD valid in TSVCDVER-specific codelist); dynamic CT lookup
+  not supported.
+- **CG0291** -- narrative. Requires ISO 21090 null flavor codelist
+  not included in CT bundle.
+- **CG0262** -- narrative. Indexed suffix ordering (TSVALn present
+  when TSVAL(n+1) present); numeric-suffix-order op not built.
+- **CG0295, CG0296** -- narrative. Condition requires
+  protocol-level ARM independence determination; not computable
+  from dataset alone.
+- **CG0298** -- narrative. Requires protocol document
+  cross-reference; not computable from data alone.
 
 ---
 

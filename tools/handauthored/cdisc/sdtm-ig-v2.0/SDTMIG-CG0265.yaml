@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: TSVALCD
 check:
-  narrative: TSVALCD and TSVAL have a one-to-one relationship.
-  condition: TSVAL ^= null and TSVALCD ^= null
+  expand: ''
+  all:
+  - name: TSVALCD
+    operator: is_not_unique_relationship
+    value:
+      related_name: TSVAL
 outcome:
   message: TSVALCD and TSVAL have a one-to-one relationship.
   severity: Medium
@@ -24,5 +28,4 @@ provenance:
   cited_guidance: This is the code of the term in TSVAL.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
