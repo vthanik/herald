@@ -5,19 +5,22 @@
     "ADTTE": {
       "USUBJID": ["STUDY-001", "STUDY-002", "STUDY-003"],
       "PARAMCD": ["OS", "OS", "OS"],
-      "TRTP": ["DRUG A", "DRUG B", "DRUG A"]
+      "TRTP": ["DRUG A", "DRUG B", "DRUG A"],
+      "TRTA": ["DRUG A", "DRUG B", "DRUG A"]
     },
     "ADSL": {
       "USUBJID": ["STUDY-001", "STUDY-002", "STUDY-003"],
       "TRT01P": ["DRUG A", "DRUG A", "DRUG A"],
-      "TRT02P": ["DRUG B", "DRUG B", "DRUG B"]
+      "TRT02P": ["DRUG B", "DRUG B", "DRUG B"],
+      "TRT01A": ["DRUG A", "DRUG A", "DRUG A"],
+      "TRT02A": ["DRUG B", "DRUG B", "DRUG B"]
     }
   },
   "expected": {
     "fires": false,
     "rows": 0
   },
-  "notes": "All TRTP values match at least one TRTxxP in ADSL for each subject; no violations",
+  "notes": "All TRTP/TRTA values match at least one TRTxxP/TRTxxA in ADSL for each subject; no violations",
   "authored": "pattern-fixture@1",
   "spec": {
     "class_map": {

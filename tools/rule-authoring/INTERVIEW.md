@@ -12,7 +12,7 @@ Use Ctrl-F on rule_id to find the decision that covers a rule.
 
 ### Shipped
 
-**Rule corpus:** 962 / 1814 predicate (53.0%). No regressions. (Q31 added 2 in 2026-04-24 session; Q21 added 72 earlier.)
+**Rule corpus:** 1014 / 1814 predicate (55.9%). No regressions. (Q30 fixtures fixed + status locked 2026-04-24.)
 
 **Engine / infrastructure:**
 - Dictionary Provider Protocol (full 6-phase plan complete).
@@ -71,7 +71,7 @@ under `R CMD check` (one pre-existing failure noted below).
 | Q27 | MedDRA / WhoDrug / external dict | 22 | `op_value_in_dictionary` + `register_dictionary` |
 | Q28 | RELREC / associated-person | 5 | combinator pattern |
 | Q29 | ELEMENT / EPOCH / TE-SE | 7 | 3 patterns + `op_next_row_not_equal` |
-| Q30 | IG-defined treatment-var | 3 | reuses Q2 op |
+| ~~Q30~~ | ~~IG-defined treatment-var~~ | ~~2~~ | **DONE** `op_value_not_in_subject_indexed_set` + pattern `trt-value-in-adsl-defined-set` |
 | ~~Q31~~ | ~~Define.xml / sponsor keys~~ | ~~2~~ | **DONE** `R/define-read.R` + `op_key_not_unique_per_define` + `value_in_dictionary` (loinc) |
 | Q32 | compound combinator residual | ~40 | triage script + hand-translate |
 | **total expected net** | | **~1050** | brings corpus to ~1750 / 1814 |
@@ -1271,7 +1271,11 @@ rules.  *[recommended]*
 **(b)** Defer; these are effectively duplicates of Q12's
 baseline-consistency shape with different vars.
 
-**User answer:** _(pending)_
+**User answer:** **(a)** -- shipped 2026-04-24.
+- YAMLs `ADaM-720.yaml` and `ADaM-897.yaml` in `tools/handauthored/cdisc/adam-v5.0/` with predicate `value_not_in_subject_indexed_set` check trees.
+- Pattern `trt-value-in-adsl-defined-set` + `.ids` at `tools/rule-authoring/patterns/`.
+- Fixtures updated to cover both TRTP (ADaM-720) and TRTA (ADaM-897) columns.
+- 2 rules compiled into `inst/rules/rules.rds`.
 
 ---
 
