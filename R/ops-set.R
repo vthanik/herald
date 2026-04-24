@@ -423,6 +423,65 @@ op_value_in_srs_table <- function(data, ctx, name, field = "preferred_name") {
   )
 )
 
+# --- value_in_dictionary -------------------------------------------------------
+# Fires when a row value is NOT found in a user-registered external
+# dictionary (MedDRA, WHO-Drug, etc.). The dictionary is resolved via
+# ctx$dict[[dict_name]] which is populated when the user calls
+# register_dictionary(dict_name, <provider>).
+#
+# When no provider is registered the op returns NA (advisory) with a
+# .record_missing_ref so the result surfaces an actionable hint.
+#
+# field: the provider field to check (e.g. "pt", "soc", "pt_code").
+#
+# Arg shape in rules:
+#   { name: "--DECOD", operator: "value_in_dictionary",
+#     dict_name: "meddra", field: "pt" }
+
+op_value_in_dictionary <- function(data, ctx, name,
+                                   dict_name = "meddra",
+                                   field     = "pt") {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0L))
+  if (is.null(data[[name]])) return(rep(NA, n))
+
+  dict_name <- as.character(dict_name %||% "meddra")
+  field     <- as.character(field     %||% "pt")
+
+  provider <- .resolve_provider(ctx, dict_name)
+  if (is.null(provider)) {
+    .record_missing_ref(ctx,
+      rule_id = ctx$current_rule_id %||% NA_character_,
+      kind    = "dictionary",
+      name    = dict_name)
+    return(rep(NA, n))
+  }
+
+  vals      <- sub(" +$", "", as.character(data[[name]]))
+  out       <- rep(NA, n)
+  non_empty <- !is.na(vals) & nzchar(vals)
+  if (!any(non_empty)) return(out)
+
+  hit_mask <- provider$contains(vals[non_empty], field = field)
+  if (all(is.na(hit_mask))) return(rep(NA, n))
+
+  out[non_empty] <- !hit_mask   # fires (TRUE) when NOT in dictionary
+  out
+}
+.register_op(
+  "value_in_dictionary", op_value_in_dictionary,
+  meta = list(
+    kind    = "set",
+    summary = "Row value is in the named external dictionary (fires when not found)",
+    arg_schema = list(
+      name      = list(type = "string", required = TRUE),
+      dict_name = list(type = "string", default  = "meddra"),
+      field     = list(type = "string", default  = "pt")
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
 #' Resolve a codelist by submission name, NCI code, or long name.
 #' @noRd
 .lookup_codelist <- function(ct, codelist) {

@@ -37,7 +37,9 @@ test_that("meddra_provider(dir) parses mdhier + llt, serves all fields", {
   expect_equal(p$name, "meddra")
   expect_equal(p$version, "27.0")
   expect_equal(p$source, "user-file")
-  expect_setequal(p$fields, c("pt", "hlt", "hlgt", "soc", "llt"))
+  expect_setequal(p$fields,
+    c("pt", "pt_code", "hlt", "hlt_code",
+      "hlgt", "hlgt_code", "soc", "soc_code", "llt", "llt_code"))
 
   expect_true(p$contains("Headache", field = "pt"))
   expect_true(p$contains("Nausea", field = "pt"))
@@ -83,6 +85,24 @@ test_that("meddra_provider returns NA for unknown field", {
   .fake_mdhier(dir)
   p <- meddra_provider(dir, version = "27.0")
   expect_true(all(is.na(p$contains("X", field = "not_a_level"))))
+})
+
+test_that("meddra_provider exposes code fields for pt, hlt, hlgt, soc, llt", {
+  dir <- tempfile("mdd-codes-"); dir.create(dir)
+  .fake_mdhier(dir)
+  .fake_llt(dir)
+  p <- meddra_provider(dir, version = "27.0")
+
+  # Codes from mdhier.asc (see .fake_mdhier for values)
+  expect_true(p$contains("10019211", field = "pt_code"))    # Headache PT code
+  expect_true(p$contains("10019217", field = "hlt_code"))   # Headaches NEC HLT code
+  expect_true(p$contains("10019221", field = "hlgt_code"))  # Neurological HLGT code
+  expect_true(p$contains("10010331", field = "soc_code"))   # Nervous system SOC code
+  expect_false(p$contains("00000000", field = "pt_code"))   # unknown code
+
+  # LLT code from llt.asc
+  expect_true(p$contains("10019228", field = "llt_code"))   # Cephalalgia LLT code
+  expect_false(p$contains("99999999", field = "llt_code"))  # unknown LLT code
 })
 
 # --------------------------------------------------------------------------

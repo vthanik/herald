@@ -15,8 +15,10 @@ scope:
   exclude_domains: []
 variable: --BDSYCD
 check:
-  narrative: --BDSYCD = MedDRA system organ class code
-  condition: ''
+  operator: value_in_dictionary
+  name: --BDSYCD
+  dict_name: meddra
+  field: soc_code
 outcome:
   message: --BDSYCD = MedDRA system organ class code
   severity: Medium
@@ -28,5 +30,4 @@ provenance:
     for analysis.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -49,6 +49,10 @@ emits an individual finding.
 
 ## Batch scope
 
-1 rule: CG0177 (`IESTRESC = IEORRES`, SDTMIG v3.2+ IE domain, no
-condition). Companion to the 5 conditional rules in
-`value-conditional-equal-column`.
+3 rules:
+- CG0177 (`IESTRESC = IEORRES`, SDTMIG v3.2+ IE domain). Companion
+  to the 5 conditional rules in `value-conditional-equal-column`.
+- CG0037 (`--SOCCD = --BDSYCD`, SDTMIG v3.2+ EVT classes, MedDRA
+  SOC code must equal body-system code used for analysis).
+- CG0039 (`--BODSYS = --SOC`, SDTMIG v3.2+ EVT classes, body system
+  must equal primary system organ class).

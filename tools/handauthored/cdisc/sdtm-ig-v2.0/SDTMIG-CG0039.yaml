@@ -15,8 +15,10 @@ scope:
   exclude_domains: []
 variable: --BODSYS
 check:
-  narrative: --BODSYS = --SOC
-  condition: Primary SOC used for analysis
+  operator: not_equal_to
+  name: --BODSYS
+  value: --SOC
+  value_is_literal: no
 outcome:
   message: --BODSYS = --SOC
   severity: Medium
@@ -33,5 +35,4 @@ provenance:
     associated with an event.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

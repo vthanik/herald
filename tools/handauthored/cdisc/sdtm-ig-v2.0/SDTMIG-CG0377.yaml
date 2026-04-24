@@ -15,8 +15,10 @@ scope:
   exclude_domains: []
 variable: --LLT
 check:
-  narrative: --LLT = MedDRA lowest level TERM
-  condition: ''
+  operator: value_in_dictionary
+  name: --LLT
+  dict_name: meddra
+  field: llt
 outcome:
   message: --LLT = MedDRA lowest level TERM
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
   cited_guidance: MedDRA Lowest Level Term.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

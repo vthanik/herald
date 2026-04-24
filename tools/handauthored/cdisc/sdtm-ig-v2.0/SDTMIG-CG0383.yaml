@@ -15,8 +15,10 @@ scope:
   exclude_domains: []
 variable: --HLGT
 check:
-  narrative: --HLGT = MedDRA high level group TERM
-  condition: ''
+  operator: value_in_dictionary
+  name: --HLGT
+  dict_name: meddra
+  field: hlgt
 outcome:
   message: --HLGT = MedDRA high level group TERM
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
   cited_guidance: MedDRA High Level Group Term from the primary path.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

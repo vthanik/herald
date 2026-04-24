@@ -15,8 +15,10 @@ scope:
   exclude_domains: []
 variable: --SOCCD
 check:
-  narrative: --SOCCD = MedDRA primary system organ class code
-  condition: ''
+  operator: value_in_dictionary
+  name: --SOCCD
+  dict_name: meddra
+  field: soc_code
 outcome:
   message: --SOCCD = MedDRA primary system organ class code
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
   cited_guidance: MedDRA primary System Organ Class code.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

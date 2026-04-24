@@ -15,8 +15,10 @@ scope:
   exclude_domains: []
 variable: --HLTCD
 check:
-  narrative: --HLTCD = MedDRA high level TERM code
-  condition: ''
+  operator: value_in_dictionary
+  name: --HLTCD
+  dict_name: meddra
+  field: hlt_code
 outcome:
   message: --HLTCD = MedDRA high level TERM code
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
   cited_guidance: MedDRA High Level Term code from the primary path.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

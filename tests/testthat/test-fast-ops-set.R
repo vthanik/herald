@@ -91,3 +91,72 @@ test_that("value_in_srs_table passes empty/NA values as NA", {
   out <- herald:::op_value_in_srs_table(d, ctx, name = "TSVAL")
   expect_true(all(is.na(out)))
 })
+
+# =============================================================================
+# op_value_in_dictionary
+# =============================================================================
+
+.mk_fake_meddra_ctx <- function(pt_terms, soc_terms = character()) {
+  provider <- herald:::new_dict_provider(
+    name     = "meddra",
+    version  = "test",
+    source   = "test",
+    license  = "MSSO",
+    fields   = c("pt", "soc"),
+    contains = function(value, field = "pt", ignore_case = FALSE) {
+      pool <- if (identical(field, "soc")) as.character(soc_terms)
+              else as.character(pt_terms)
+      as.character(value) %in% pool
+    }
+  )
+  ctx <- herald:::new_herald_ctx()
+  ctx$dict <- list(meddra = provider)
+  ctx
+}
+
+test_that("value_in_dictionary fires when PT not in MedDRA", {
+  d   <- data.frame(AEDECOD = c("Headache", "NotAValidTerm"),
+                    stringsAsFactors = FALSE)
+  ctx <- .mk_fake_meddra_ctx(pt_terms = "Headache")
+  out <- herald:::op_value_in_dictionary(d, ctx, name = "AEDECOD",
+                                         dict_name = "meddra", field = "pt")
+  expect_false(out[[1L]])   # Headache is valid -> pass
+  expect_true(out[[2L]])    # NotAValidTerm not in MedDRA -> fires
+})
+
+test_that("value_in_dictionary returns NA advisory when dict not registered", {
+  d   <- data.frame(AEDECOD = "Headache", stringsAsFactors = FALSE)
+  ctx <- herald:::new_herald_ctx()  # no dict set
+  out <- herald:::op_value_in_dictionary(d, ctx, name = "AEDECOD",
+                                         dict_name = "meddra", field = "pt")
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("value_in_dictionary returns NA when column absent", {
+  d   <- data.frame(OTHER = "A", stringsAsFactors = FALSE)
+  ctx <- .mk_fake_meddra_ctx("Headache")
+  out <- herald:::op_value_in_dictionary(d, ctx, name = "AEDECOD",
+                                         dict_name = "meddra", field = "pt")
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("value_in_dictionary passes empty/NA values as NA", {
+  d   <- data.frame(AEDECOD = c(NA_character_, "", "  "),
+                    stringsAsFactors = FALSE)
+  ctx <- .mk_fake_meddra_ctx("Headache")
+  out <- herald:::op_value_in_dictionary(d, ctx, name = "AEDECOD",
+                                         dict_name = "meddra", field = "pt")
+  expect_true(all(is.na(out)))
+})
+
+test_that("value_in_dictionary records missing_ref when dict absent", {
+  d   <- data.frame(AEDECOD = "Headache", stringsAsFactors = FALSE)
+  ctx <- herald:::new_herald_ctx()
+  herald:::.init_missing_refs(ctx)
+  ctx$current_rule_id <- "CG0379"
+  herald:::op_value_in_dictionary(d, ctx, name = "AEDECOD",
+                                  dict_name = "meddra", field = "pt")
+  # missing_refs$dictionaries is keyed by dict name, value = rule_ids
+  expect_true("meddra" %in% names(ctx$missing_refs$dictionaries))
+  expect_true("CG0379" %in% ctx$missing_refs$dictionaries[["meddra"]])
+})

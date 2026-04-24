@@ -60,12 +60,19 @@ meddra_provider <- function(path, version = "unknown") {
   llt  <- if (!is.null(files$llt)) .parse_meddra_llt(files$llt) else NULL
 
   pool <- list(
-    pt   = unique(hier$pt_name),
-    hlt  = unique(hier$hlt_name),
-    hlgt = unique(hier$hlgt_name),
-    soc  = unique(hier$soc_name)
+    pt        = unique(hier$pt_name),
+    pt_code   = unique(as.character(hier$pt_code)),
+    hlt       = unique(hier$hlt_name),
+    hlt_code  = unique(as.character(hier$hlt_code)),
+    hlgt      = unique(hier$hlgt_name),
+    hlgt_code = unique(as.character(hier$hlgt_code)),
+    soc       = unique(hier$soc_name),
+    soc_code  = unique(as.character(hier$soc_code))
   )
-  if (!is.null(llt)) pool$llt <- unique(llt$llt_name)
+  if (!is.null(llt)) {
+    pool$llt      <- unique(llt$llt_name)
+    pool$llt_code <- unique(as.character(llt$llt_code))
+  }
 
   n_rows <- nrow(hier) + if (!is.null(llt)) nrow(llt) else 0L
 

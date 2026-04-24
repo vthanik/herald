@@ -15,8 +15,10 @@ scope:
   exclude_domains: []
 variable: --BODSYS
 check:
-  narrative: --BODSYS = MedDRA system organ class
-  condition: ''
+  operator: value_in_dictionary
+  name: --BODSYS
+  dict_name: meddra
+  field: soc
 outcome:
   message: --BODSYS = MedDRA system organ class
   severity: Medium
@@ -29,5 +31,4 @@ provenance:
     DISORDERS.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

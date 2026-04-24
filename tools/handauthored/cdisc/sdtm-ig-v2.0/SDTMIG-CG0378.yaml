@@ -15,8 +15,10 @@ scope:
   exclude_domains: []
 variable: --LLTCD
 check:
-  narrative: --LLTCD = MedDRA lowest level code
-  condition: ''
+  operator: value_in_dictionary
+  name: --LLTCD
+  dict_name: meddra
+  field: llt_code
 outcome:
   message: --LLTCD = MedDRA lowest level code
   severity: Medium
@@ -27,5 +29,4 @@ provenance:
   cited_guidance: MedDRA Lowest Level Term.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

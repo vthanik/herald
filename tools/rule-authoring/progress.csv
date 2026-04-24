@@ -377,14 +377,14 @@
 "CG0017","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Split dataset names length > 2 and <= 4","split-dataset-name-length","operator: dataset_name_length_not_in_range min_len: 3 max_len: 4","predicate","2026-04-24T14:00:38Z",NA,NA
 "CG0018","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Split dataset names length <= 8","split-dataset-name-length","operator: dataset_name_length_not_in_range min_len: ~ max_len: 8","predicate","2026-04-24T14:00:38Z",NA,NA
 "CG0019","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Each record is unique per sponsor defined key variables as documented in the define.xml",NA,NA,"narrative",NA,NA,NA
-"CG0020","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Value in associated codelist or 'MULTIPLE'",NA,NA,"narrative",NA,NA,NA
-"CG0021","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Value in associated codelist or 'OTHER'",NA,NA,"narrative",NA,NA,NA
+"CG0020","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Value in associated codelist or 'MULTIPLE'",NA,NA,"narrative",NA,NA,"Q27: stays narrative; requires variable-to-codelist map not yet built"
+"CG0021","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Value in associated codelist or 'OTHER'",NA,NA,"narrative",NA,NA,"Q27: stays narrative; requires variable-to-codelist map not yet built"
 "CG0022","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LNKGRP present in another domain","var-linked-across-submission","all: - operator: exists name: %var% - not: operator: var_present_in_any_other_dataset name: %var%","predicate","2026-04-24T14:28:29Z",NA,NA
 "CG0024","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LNKID present in another domain","var-linked-across-submission","all: - operator: exists name: %var% - not: operator: var_present_in_any_other_dataset name: %var%","predicate","2026-04-24T14:28:29Z",NA,NA
 "CG0028","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SEQ is a unique number per USUBJID per domain, or a unique number per POOLID per domain, including when the domain is split into multiple files",NA,NA,"narrative",NA,NA,NA
 "CG0032","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","VISITDY = TV.VISITDY","value-equals-cross-dataset-col","all: - operator: differs_by_key name: ""VISITDY"" reference_dataset: ""TV"" reference_column: ""VISITDY"" key: ""[STUDYID, VISITNUM]""","predicate","2026-04-24T09:20:55Z",NA,NA
-"CG0037","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SOCCD = --BDSYCD",NA,NA,"narrative",NA,NA,NA
-"CG0039","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--BODSYS = --SOC",NA,NA,"narrative",NA,NA,NA
+"CG0037","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SOCCD = --BDSYCD","value-equal-column","operator: not_equal_to name: --SOCCD value: --BDSYCD value_is_literal: false","predicate","2026-04-24T16:36:11Z",NA,NA
+"CG0039","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--BODSYS = --SOC","value-equal-column","operator: not_equal_to name: --BODSYS value: --SOC value_is_literal: false","predicate","2026-04-24T16:36:11Z",NA,NA
 "CG0041","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","AESER = 'Y'","ae-severity-aeser-y","all: - any: - operator: equal_to name: AESCAN value: 'Y' - operator: equal_to name: AESCONG value: 'Y' - operator: equal_to name: AESDISAB value: 'Y' - operator: equal_to name: AESDTH value: 'Y' - operator: equal_to name: AESHOSP value: 'Y' - operator: equal_to name: AESLIFE value: 'Y' - operator: equal_to name: AESOD value: 'Y' - operator: equal_to name: AESMIE value: 'Y' - operator: not_equal_to name: AESER value: 'Y'","predicate","2026-04-24T04:28:19Z",NA,NA
 "CG0042","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","AESER = 'N'","ae-severity-aeser-n","all: - operator: not_equal_to name: AESCAN value: 'Y' - operator: not_equal_to name: AESCONG value: 'Y' - operator: not_equal_to name: AESDISAB value: 'Y' - operator: not_equal_to name: AESDTH value: 'Y' - operator: not_equal_to name: AESHOSP value: 'Y' - operator: not_equal_to name: AESLIFE value: 'Y' - operator: not_equal_to name: AESOD value: 'Y' - operator: not_equal_to name: AESER value: 'N'","predicate","2026-04-24T04:28:22Z",NA,NA
 "CG0043","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","AESMIE = 'Y'","ae-supp-aeosp-aesmie","all: - operator: subject_has_matching_row name: USUBJID reference_dataset: SUPPAE reference_column: QNAM expected_value: AESOSP - operator: not_equal_to name: AESMIE value: 'Y'","predicate","2026-04-24T04:29:44Z",NA,NA
@@ -442,7 +442,7 @@
 "CG0191","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","MB dataset present in study","submission-conditional-dataset-required","all: - operator: study_metadata_is key: collected_domains value: MB - operator: not_exists name: MB","predicate","2026-04-24T10:02:11Z",NA,NA
 "CG0192","CDISC","SDTM-IG","3.2","Medium","MBTESTCD = 'ORGANISM'",NA,NA,"blocker:no-machine-checkable-condition","2026-04-24T04:31:01Z",NA,"Q4 triage: condition not machine-checkable against SDTM columns."
 "CG0196","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","PEORRES = 'NORMAL'",NA,NA,"blocker:no-machine-checkable-condition","2026-04-24T04:31:01Z",NA,"Q4 triage: condition not machine-checkable against SDTM columns."
-"CG0197","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","PESTRESC = PEORRES OR a dictionary coded preferred term",NA,NA,"narrative",NA,NA,NA
+"CG0197","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","PESTRESC = PEORRES OR a dictionary coded preferred term",NA,NA,"narrative",NA,NA,"Q27: stays narrative; complex OR condition with dict-coded preferred term"
 "CG0198","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Relationships represented in RELREC are collected relationships",NA,NA,"narrative",NA,NA,NA
 "CG0200","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Within a subject each unique RELID is present on multiple RELREC records",NA,NA,"narrative",NA,NA,NA
 "CG0205","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Suppqual dataset names <= 8 characters","split-dataset-name-length","operator: dataset_name_length_not_in_range min_len: ~ max_len: 8","predicate","2026-04-24T14:00:38Z",NA,NA
@@ -529,16 +529,16 @@
 "CG0373","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset present in study with DOMAIN = SUPP--.RDOMAIN","submission-domains-from-ref-column","operator: ref_column_domains_exist reference_column: %reference_column%","predicate","2026-04-24T10:02:11Z",NA,NA
 "CG0374","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset present in study with DOMAIN = RELREC.RDOMAIN","submission-domains-from-ref-column","operator: ref_column_domains_exist reference_column: %reference_column%","predicate","2026-04-24T10:02:11Z",NA,NA
 "CG0376","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TDSTOFF = 0 or positive value in ISO 8601 Duration format","value-conforms-to-iso8601","operator: value_not_iso8601 name: TDSTOFF kind: duration","predicate","2026-04-24T13:46:05Z",NA,NA
-"CG0377","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLT = MedDRA lowest level TERM",NA,NA,"narrative",NA,NA,NA
-"CG0378","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLTCD = MedDRA lowest level code",NA,NA,"narrative",NA,NA,NA
-"CG0379","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--DECOD = MedDRA preferred TERM",NA,NA,"narrative",NA,NA,NA
-"CG0380","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--PTCD = MedDRA preferred TERM code",NA,NA,"narrative",NA,NA,NA
-"CG0381","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLT = MedDRA high level TERM",NA,NA,"narrative",NA,NA,NA
-"CG0382","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLTCD = MedDRA high level TERM code",NA,NA,"narrative",NA,NA,NA
-"CG0383","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLGT = MedDRA high level group TERM",NA,NA,"narrative",NA,NA,NA
-"CG0384","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLGTCD = MedDRA high level group TERM code",NA,NA,"narrative",NA,NA,NA
-"CG0385","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--BODSYS = MedDRA system organ class",NA,NA,"narrative",NA,NA,NA
-"CG0386","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--BDSYCD = MedDRA system organ class code",NA,NA,"narrative",NA,NA,NA
+"CG0377","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLT = MedDRA lowest level TERM","value-in-dictionary","operator: value_in_dictionary name: --LLT dict_name: meddra field: llt","predicate","2026-04-24T16:36:13Z",NA,NA
+"CG0378","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLTCD = MedDRA lowest level code","value-in-dictionary","operator: value_in_dictionary name: --LLTCD dict_name: meddra field: llt_code","predicate","2026-04-24T16:36:13Z",NA,NA
+"CG0379","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--DECOD = MedDRA preferred TERM","value-in-dictionary","operator: value_in_dictionary name: --DECOD dict_name: meddra field: pt","predicate","2026-04-24T16:36:13Z",NA,NA
+"CG0380","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--PTCD = MedDRA preferred TERM code","value-in-dictionary","operator: value_in_dictionary name: --PTCD dict_name: meddra field: pt_code","predicate","2026-04-24T16:36:13Z",NA,NA
+"CG0381","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLT = MedDRA high level TERM","value-in-dictionary","operator: value_in_dictionary name: --HLT dict_name: meddra field: hlt","predicate","2026-04-24T16:36:13Z",NA,NA
+"CG0382","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLTCD = MedDRA high level TERM code","value-in-dictionary","operator: value_in_dictionary name: --HLTCD dict_name: meddra field: hlt_code","predicate","2026-04-24T16:36:13Z",NA,NA
+"CG0383","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLGT = MedDRA high level group TERM","value-in-dictionary","operator: value_in_dictionary name: --HLGT dict_name: meddra field: hlgt","predicate","2026-04-24T16:36:13Z",NA,NA
+"CG0384","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLGTCD = MedDRA high level group TERM code","value-in-dictionary","operator: value_in_dictionary name: --HLGTCD dict_name: meddra field: hlgt_code","predicate","2026-04-24T16:36:13Z",NA,NA
+"CG0385","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--BODSYS = MedDRA system organ class","value-in-dictionary","operator: value_in_dictionary name: --BODSYS dict_name: meddra field: soc","predicate","2026-04-24T16:36:13Z",NA,NA
+"CG0386","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--BDSYCD = MedDRA system organ class code","value-in-dictionary","operator: value_in_dictionary name: --BDSYCD dict_name: meddra field: soc_code","predicate","2026-04-24T16:36:13Z",NA,NA
 "CG0387","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SER in ('Y','N')",NA,NA,"narrative",NA,NA,NA
 "CG0388","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SCAN in ('Y','N')",NA,NA,"narrative",NA,NA,NA
 "CG0389","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SCONG in ('Y','N')",NA,NA,"narrative",NA,NA,NA
@@ -567,8 +567,8 @@
 "CG0418","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TAETORD order of elements match order in TA within ARM of the Subject",NA,NA,"narrative",NA,NA,NA
 "CG0419","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RELTYPE = null","relrec-idvar-seq","all: - operator: matches_regex name: IDVAR value: '.*SEQ' - operator: empty name: RELTYPE","predicate","2026-04-24T16:33:15Z",NA,NA
 "CG0431","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Variable value ^= null",NA,NA,"narrative",NA,NA,NA
-"CG0436","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SOC = MedDRA primary system organ class",NA,NA,"narrative",NA,NA,NA
-"CG0437","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SOCCD = MedDRA primary system organ class code",NA,NA,"narrative",NA,NA,NA
+"CG0436","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SOC = MedDRA primary system organ class","value-in-dictionary","operator: value_in_dictionary name: --SOC dict_name: meddra field: soc","predicate","2026-04-24T16:36:13Z",NA,NA
+"CG0437","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SOCCD = MedDRA primary system organ class code","value-in-dictionary","operator: value_in_dictionary name: --SOCCD dict_name: meddra field: soc_code","predicate","2026-04-24T16:36:13Z",NA,NA
 "CG0438","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL conforms to ISO 8601 time period",NA,NA,"narrative",NA,NA,NA
 "CG0439","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL conforms to ISO 8601 time period",NA,NA,"narrative",NA,NA,NA
 "CG0440","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is integer and > 0","value-conditional-not-matches-regex","all: - operator: is_contained_by name: TSPARMCD value: ['PLANSUB'] - operator: not_matches_regex name: TSVAL value: '^[1-9][0-9]*$'","predicate","2026-04-24T12:23:56Z",NA,NA
@@ -584,8 +584,8 @@
 "CG0454","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid code from NDF-RT",NA,NA,"narrative",NA,NA,NA
 "CG0457","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is integer and > 0","value-conditional-not-matches-regex","all: - operator: is_contained_by name: TSPARMCD value: ['ACTSUB'] - operator: not_matches_regex name: TSVAL value: '^[1-9][0-9]*$'","predicate","2026-04-24T12:23:56Z",NA,NA
 "CG0459","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALNF = null",NA,NA,"narrative",NA,NA,NA
-"CG0460","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLT on path to MedDRA primary system organ class",NA,NA,"narrative",NA,NA,NA
-"CG0461","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLGT on path to MedDRA primary system organ class",NA,NA,"narrative",NA,NA,NA
+"CG0460","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLT on path to MedDRA primary system organ class",NA,NA,"narrative",NA,NA,"Q27: stays narrative; requires MedDRA hierarchy path check (HLT->SOC)"
+"CG0461","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLGT on path to MedDRA primary system organ class",NA,NA,"narrative",NA,NA,"Q27: stays narrative; requires MedDRA hierarchy path check (HLGT->SOC)"
 "CG0463","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TRT present in custom interventions dataset",NA,NA,"narrative",NA,NA,NA
 "CG0464","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TERM present in custom events dataset",NA,NA,"narrative",NA,NA,NA
 "CG0466","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLOQ is expressed using the units in --STRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: --LLOQ - operator: matches_regex name: --LLOQ value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: --STRESU","predicate","2026-04-24T09:34:59Z",NA,NA

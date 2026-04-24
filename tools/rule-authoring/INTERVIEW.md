@@ -1181,7 +1181,21 @@ subscription). Not distributable inside herald.
 **(b)** Mark the entire cluster as `blocker:external-dict`.
 Loses the 12+ easy wins.
 
-**User answer:** _(pending)_
+**User answer:** **(a)** -- hybrid strategy.
+
+**Decisions locked:**
+- Op: `op_value_in_dictionary(name, dict_name, field)` in `R/ops-set.R`.
+  Returns NA advisory when named dict not registered; records missing_ref.
+- `meddra_provider` extended with code fields: `pt_code`, `hlt_code`,
+  `hlgt_code`, `soc_code`, `llt_code`.
+- Pattern `value-in-dictionary` converts 12 MedDRA rules (CG0377-CG0386,
+  CG0436, CG0437).
+- Pattern `value-equal-column` extended with CG0037, CG0039.
+- CG0020, CG0021: stay narrative (requires variable-to-codelist map).
+- CG0160-0162: already predicate (converted in prior Qs).
+- CG0174: stays blocked (requires dynamic parent-domain link op).
+- CG0197, CG0460, CG0461: stay narrative (complex conditions).
+- Scope classes: EVT for CG0037/0039/0377-0386/0436-0437.
 
 ---
 

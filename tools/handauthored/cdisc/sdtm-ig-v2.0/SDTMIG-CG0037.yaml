@@ -15,8 +15,10 @@ scope:
   exclude_domains: []
 variable: --BDSYCD
 check:
-  narrative: --SOCCD = --BDSYCD
-  condition: Primary SOC used for analysis
+  operator: not_equal_to
+  name: --SOCCD
+  value: --BDSYCD
+  value_is_literal: no
 outcome:
   message: --SOCCD = --BDSYCD
   severity: Medium
@@ -32,5 +34,4 @@ provenance:
     Organ Class code corresponding to --BODSYS assigned for analysis.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

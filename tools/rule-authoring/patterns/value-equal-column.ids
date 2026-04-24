@@ -1,2 +1,4 @@
 "rule_id","var_a","var_b"
 "CG0177","IESTRESC","IEORRES"
+"CG0037","--SOCCD","--BDSYCD"
+"CG0039","--BODSYS","--SOC"

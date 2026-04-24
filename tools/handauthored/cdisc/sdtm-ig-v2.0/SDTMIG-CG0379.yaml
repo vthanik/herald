@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: --DECOD
 check:
-  narrative: --DECOD = MedDRA preferred TERM
-  condition: --DECOD ^= null
+  operator: value_in_dictionary
+  name: --DECOD
+  dict_name: meddra
+  field: pt
 outcome:
   message: --DECOD = MedDRA preferred TERM
   severity: Medium
@@ -26,5 +28,4 @@ provenance:
     to the Preferred Term (PT in MedDRA).
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
