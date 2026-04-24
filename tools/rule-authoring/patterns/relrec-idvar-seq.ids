@@ -1,0 +1,2 @@
+rule_id,idvar,seq_pattern,reltype
+CG0419,IDVAR,.*SEQ,RELTYPE

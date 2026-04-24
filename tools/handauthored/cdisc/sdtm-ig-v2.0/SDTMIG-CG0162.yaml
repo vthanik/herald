@@ -12,8 +12,13 @@ scope:
   exclude_domains: []
 variable: SREL
 check:
-  narrative: Describes relationship of associated person to study identified in STUDYID
-  condition: RSUBJID = null and RDEVID = null
+  all:
+  - operator: empty
+    name: RSUBJID
+  - operator: empty
+    name: RDEVID
+  - operator: empty
+    name: SREL
 outcome:
   message: Describes relationship of associated person to study identified in STUDYID
   severity: Medium
@@ -29,5 +34,4 @@ provenance:
     study identified in STUDYID
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

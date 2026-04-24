@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: RELTYPE
 check:
-  narrative: RELTYPE = null
-  condition: IDVAR populated with a --SEQ value
+  all:
+  - operator: matches_regex
+    name: IDVAR
+    value: .*SEQ
+  - operator: empty
+    name: RELTYPE
 outcome:
   message: RELTYPE = null
   severity: Medium
@@ -30,5 +34,4 @@ provenance:
     has meaning within a subject within a dataset; not across datasets.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

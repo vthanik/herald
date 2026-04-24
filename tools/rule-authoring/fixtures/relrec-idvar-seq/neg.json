@@ -1,0 +1,21 @@
+{
+  "rule_id": "CG0419",
+  "fixture_type": "negative",
+  "description": "Negative cases: (a) IDVAR does not end with SEQ; (b) IDVAR ends with SEQ but RELTYPE is populated",
+  "datasets": {
+    "RELREC": {
+      "STUDYID": ["STUDY01", "STUDY01", "STUDY01"],
+      "USUBJID": ["STUDY01-001", "STUDY01-001", "STUDY01-001"],
+      "RDOMAIN": ["AE", "AE", "CM"],
+      "IDVAR":   ["AEGRPID", "AESEQ", "CMGRPID"],
+      "IDVARVAL": ["GRP1", "1", "GRP2"],
+      "RELTYPE": ["ONE", "MANY", ""]
+    }
+  },
+  "expected_findings": {
+    "CG0419": {
+      "dataset": "RELREC",
+      "max_findings": 0
+    }
+  }
+}

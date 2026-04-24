@@ -420,9 +420,9 @@
 "CG0157","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RSUBJID in DM.USUBJID","value-in-cross-dataset-col","all: - operator: missing_in_ref name: ""RSUBJID"" reference_dataset: ""DM"" reference_key: ""USUBJID""","predicate","2026-04-24T09:20:58Z",NA,"AP-scoped (Associated Persons, SDTMIG-AP); deferred"
 "CG0158","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RSUBJID in POOLDEF.POOLID","value-in-cross-dataset-col","all: - operator: missing_in_ref name: ""RSUBJID"" reference_dataset: ""POOLDEF"" reference_key: ""POOLID""","predicate","2026-04-24T09:20:58Z",NA,"AP-scoped (Associated Persons, SDTMIG-AP); deferred"
 "CG0159","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RSUBJID = null",NA,NA,"narrative",NA,NA,NA
-"CG0160","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Describes relationship of associated person to study subject or pool",NA,NA,"narrative",NA,NA,NA
-"CG0161","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Describes relationship of associated person to device identified in RDEVID",NA,NA,"narrative",NA,NA,NA
-"CG0162","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Describes relationship of associated person to study identified in STUDYID",NA,NA,"narrative",NA,NA,NA
+"CG0160","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Describes relationship of associated person to study subject or pool","value-conditional-populated","all: - name: RSUBJID operator: non_empty - name: SREL operator: empty","predicate","2026-04-24T16:33:05Z",NA,NA
+"CG0161","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Describes relationship of associated person to device identified in RDEVID","value-conditional-populated","all: - name: RDEVID operator: non_empty - name: SREL operator: empty","predicate","2026-04-24T16:33:05Z",NA,NA
+"CG0162","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Describes relationship of associated person to study identified in STUDYID","relrec-double-null-populated","all: - operator: empty name: RSUBJID - operator: empty name: RDEVID - operator: empty name: SREL","predicate","2026-04-24T16:33:10Z",NA,NA
 "CG0167","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Comments are unsolicited, free-text and voluntary",NA,NA,"narrative",NA,NA,NA
 "CG0169","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","COVALn not present in dataset",NA,NA,"narrative",NA,NA,NA
 "CG0172","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SSDTC >= all DS.DSSTDTC",NA,NA,"narrative",NA,NA,NA
@@ -565,7 +565,7 @@
 "CG0415","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ARMCD is a valid planned arm code",NA,NA,"narrative",NA,NA,NA
 "CG0417","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","QNAM value length <=8 and cannot start with a number and cannot contain characters other than letters in upper case, numbers, or underscores",NA,NA,"narrative",NA,NA,NA
 "CG0418","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TAETORD order of elements match order in TA within ARM of the Subject",NA,NA,"narrative",NA,NA,NA
-"CG0419","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RELTYPE = null",NA,NA,"narrative",NA,NA,NA
+"CG0419","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RELTYPE = null","relrec-idvar-seq","all: - operator: matches_regex name: IDVAR value: '.*SEQ' - operator: empty name: RELTYPE","predicate","2026-04-24T16:33:15Z",NA,NA
 "CG0431","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Variable value ^= null",NA,NA,"narrative",NA,NA,NA
 "CG0436","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SOC = MedDRA primary system organ class",NA,NA,"narrative",NA,NA,NA
 "CG0437","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SOCCD = MedDRA primary system organ class code",NA,NA,"narrative",NA,NA,NA
