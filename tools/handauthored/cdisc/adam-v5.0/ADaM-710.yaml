@@ -12,9 +12,12 @@ scope:
 variable: '*RFL'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: Variable with a suffix of RFL is present
+  all:
+  - operator: is_not_contained_by
+    name: stemRFL
+    value:
+    - 'Y'
+    - 'N'
 outcome:
   message: A variable with a suffix of RFL has a value that is not Y, N, or null
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     Null values are allowed.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

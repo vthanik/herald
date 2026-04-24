@@ -12,9 +12,12 @@ scope:
 variable: '*RFN'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: Variable with a suffix of RFN is present
+  all:
+  - operator: is_not_contained_by
+    name: stemRFN
+    value:
+    - '1'
+    - '0'
 outcome:
   message: A variable with a suffix of RFN has a value that is not 1, 0 or null
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     Null values are allowed.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

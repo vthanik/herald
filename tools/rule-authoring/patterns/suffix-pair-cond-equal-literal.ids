@@ -1,0 +1,3 @@
+"rule_id","suffix1","cond_value","suffix2","required_value"
+"10","FL","Y","FN","1"
+"11","FL","N","FN","0"

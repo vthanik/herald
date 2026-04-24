@@ -24,6 +24,11 @@
 
 .as_char <- function(x) as.character(x)
 
+# P21 audit item G: replace NA with a sentinel that cannot appear as a real
+# value so that NA group-key components don't collide with the literal string
+# "NA" when keys are pasted with sep="\x1f".
+.na_sent <- function(v) { v[is.na(v)] <- "\x01<NA>\x01"; v }
+
 # CDISC ISO-8601 partial-date pattern -- mirrors P21's DATE_PATTERN
 # (DataEntryFactory.java:31-46). Covers bare year through full datetime,
 # with "-" as the CDISC partial-unknown placeholder.
@@ -193,9 +198,9 @@ op_is_not_unique_relationship <- function(data, ctx, name, value) {
     outer_key <- rep("", n)
   } else {
     outer_key <- do.call(paste, c(lapply(group_by, function(g)
-      .rtrim_na(data[[g]])), list(sep = "\x1f")))
+      .na_sent(.rtrim_na(data[[g]]))), list(sep = "\x1f")))
   }
-  composite_x <- paste(outer_key, x, sep = "\x1f")
+  composite_x <- paste(outer_key, .na_sent(x), sep = "\x1f")
   key_df <- data.frame(x = composite_x, y = y, stringsAsFactors = FALSE)
   # Exclude rows with NA in x or y (or any group_by column implicitly
   # via NA propagation into outer_key).
@@ -557,7 +562,7 @@ op_differs_by_key <- function(data, ctx, name,
 
   .paste_cols <- function(df, cols) {
     if (length(cols) == 1L) return(.as_char(df[[cols]]))
-    do.call(paste, c(lapply(cols, function(c) .as_char(df[[c]])),
+    do.call(paste, c(lapply(cols, function(c) .na_sent(.as_char(df[[c]]))),
                      list(sep = "\x1f")))
   }
 
@@ -1205,7 +1210,7 @@ op_next_row_not_equal <- function(data, ctx, name, value) {
     missing_grp <- setdiff(group_by, names(data))
     if (length(missing_grp) > 0L) return(rep(NA, n))
     grp_key <- do.call(paste, c(lapply(group_by, function(g)
-      as.character(data[[g]])), list(sep = "\x1f")))
+      .na_sent(as.character(data[[g]]))), list(sep = "\x1f")))
   }
 
   # Sort order within group
@@ -1856,7 +1861,7 @@ op_is_not_constant_per_group <- function(data, ctx, name, group_by) {
     group_key <- rep("", n)
   } else {
     group_key <- do.call(paste, c(
-      lapply(grp_cols, function(g) .rtrim_null(data[[g]])),
+      lapply(grp_cols, function(g) .na_sent(.rtrim_null(data[[g]]))),
       list(sep = "\x1f")
     ))
   }
@@ -1925,7 +1930,7 @@ op_no_baseline_record <- function(data, ctx, name, flag_var, flag_value,
     group_key <- rep("", n)
   } else {
     group_key <- do.call(paste, c(
-      lapply(grp_cols, function(g) .rtrim_null(data[[g]])),
+      lapply(grp_cols, function(g) .na_sent(.rtrim_null(data[[g]]))),
       list(sep = "\x1f")
     ))
   }
@@ -2009,7 +2014,7 @@ op_base_not_equal_abl_row <- function(data, ctx, b_var, a_var,
   group_key <- if (length(grp_cols) == 0L) {
     rep("", n)
   } else {
-    do.call(paste, c(lapply(grp_cols, function(g) .rtrim_null(data[[g]])),
+    do.call(paste, c(lapply(grp_cols, function(g) .na_sent(.rtrim_null(data[[g]]))),
                      list(sep = "\x1f")))
   }
 

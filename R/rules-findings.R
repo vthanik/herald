@@ -10,20 +10,21 @@
 #' @noRd
 empty_findings <- function() {
   tibble::tibble(
-    rule_id         = character(),
-    authority       = character(),
-    standard        = character(),
-    severity        = character(),
-    status          = character(),   # "fired" | "advisory" | "error"
-    dataset         = character(),
-    variable        = character(),
-    row             = integer(),
-    value           = character(),
-    expected        = character(),
-    message         = character(),
-    source_url      = character(),
+    rule_id           = character(),
+    authority         = character(),
+    standard          = character(),
+    severity          = character(),
+    severity_override = character(),  # original severity when overridden via severity_map; NA otherwise
+    status            = character(),  # "fired" | "advisory" | "error"
+    dataset           = character(),
+    variable          = character(),
+    row               = integer(),
+    value             = character(),
+    expected          = character(),
+    message           = character(),
+    source_url        = character(),
     p21_id_equivalent = character(),
-    license         = character()
+    license           = character()
   )
 }
 
@@ -79,6 +80,7 @@ emit_findings <- function(rule, ds_name, mask, data, variable = NA_character_) {
       authority         = rep(rule[["authority"]] %||% NA_character_, length(fired_rows)),
       standard          = rep(rule[["standard"]] %||% NA_character_, length(fired_rows)),
       severity          = rep(rule[["severity"]] %||% "Medium", length(fired_rows)),
+      severity_override = rep(NA_character_, length(fired_rows)),
       status            = rep("fired", length(fired_rows)),
       dataset           = rep(ds_name, length(fired_rows)),
       variable          = rep(var_display, length(fired_rows)),
@@ -98,6 +100,7 @@ emit_findings <- function(rule, ds_name, mask, data, variable = NA_character_) {
       authority         = rule[["authority"]] %||% NA_character_,
       standard          = rule[["standard"]] %||% NA_character_,
       severity          = rule[["severity"]] %||% "Medium",
+      severity_override = NA_character_,
       status            = "advisory",
       dataset           = ds_name,
       variable          = if (length(var_txt) > 1L) paste(var_txt, collapse = ",") else var_txt,
@@ -149,6 +152,7 @@ emit_submission_finding <- function(rule, status = "fired", message = NULL,
     authority         = rule[["authority"]] %||% NA_character_,
     standard          = rule[["standard"]]  %||% NA_character_,
     severity          = severity %||% rule[["severity"]] %||% "Medium",
+    severity_override = NA_character_,
     status            = status,
     dataset           = .SUBMISSION_DATASET,
     variable          = variable,

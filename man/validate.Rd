@@ -14,6 +14,7 @@ validate(
   dictionaries = NULL,
   study_metadata = NULL,
   define = NULL,
+  severity_map = NULL,
   quiet = FALSE
 )
 }
@@ -51,6 +52,19 @@ firing a definitive finding.}
 carrying sponsor-defined key variables and dictionary version metadata.
 When supplied, rules that depend on Define-XML (e.g. CG0019, CG0400)
 evaluate against the parsed metadata; otherwise they return NA advisory.}
+
+\item{severity_map}{Optional named character vector (or named list for
+domain-scoped overrides) that remaps rule severities at runtime without
+editing the rule catalog. Names are matched in priority order:
+\enumerate{
+\item Exact rule id (\code{"CG0085" = "Reject"}).
+\item Regex against rule id (\code{"^ADaM-7[0-9]{2}$" = "High"}).
+\item Severity category (\code{"Medium" = "High"}).
+}
+For domain-scoped overrides supply a named list as the value:
+\code{list("CG0085" = list(ADSL = "Reject", BDS = "High", default = "Medium"))}.
+First match wins. Findings include a \code{severity_override} column carrying
+the original severity whenever an override is applied.}
 
 \item{quiet}{Suppress progress output. Default FALSE.}
 }

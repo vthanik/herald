@@ -14,9 +14,14 @@ scope:
 variable: '*FL'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: Variable with a suffix of FN is present
+  expand:
+  - FN
+  - FL
+  all:
+  - operator: exists
+    name: stemFN
+  - operator: not_exists
+    name: stemFL
 outcome:
   message: A variable with a suffix of FN is present but a variable with the same
     root and a suffix of FL is not present
@@ -32,4 +37,4 @@ provenance:
     (*FN) can also be included.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

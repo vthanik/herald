@@ -32,6 +32,18 @@
 #'   carrying sponsor-defined key variables and dictionary version metadata.
 #'   When supplied, rules that depend on Define-XML (e.g. CG0019, CG0400)
 #'   evaluate against the parsed metadata; otherwise they return NA advisory.
+#' @param severity_map Optional named character vector (or named list for
+#'   domain-scoped overrides) that remaps rule severities at runtime without
+#'   editing the rule catalog. Names are matched in priority order:
+#'   \enumerate{
+#'     \item Exact rule id (`"CG0085" = "Reject"`).
+#'     \item Regex against rule id (`"^ADaM-7[0-9]{2}$" = "High"`).
+#'     \item Severity category (`"Medium" = "High"`).
+#'   }
+#'   For domain-scoped overrides supply a named list as the value:
+#'   `list("CG0085" = list(ADSL = "Reject", BDS = "High", default = "Medium"))`.
+#'   First match wins. Findings include a `severity_override` column carrying
+#'   the original severity whenever an override is applied.
 #' @param quiet Suppress progress output. Default FALSE.
 #'
 #' @return A `herald_result` S3 object.
@@ -53,6 +65,7 @@ validate <- function(path = NULL,
                      dictionaries = NULL,
                      study_metadata = NULL,
                      define = NULL,
+                     severity_map = NULL,
                      quiet = FALSE) {
   t0 <- Sys.time()
   call      <- rlang::caller_env()
@@ -142,8 +155,10 @@ validate <- function(path = NULL,
       ctx$current_domain  <- ""
       mask <- walk_tree(rule$check_tree, stub, ctx)
       if (length(mask) > 0L && any(!is.na(mask) & mask)) {
-        f <- emit_submission_finding(rule)
+        rule_emit <- .sev_override(rule, severity_map, NULL)
+        f <- emit_submission_finding(rule_emit$rule)
         if (nrow(f) > 0L) {
+          if (rule_emit$changed) f$severity_override <- rule_emit$orig
           all_findings[[length(all_findings) + 1L]] <- f
           rules_applied <- rules_applied + 1L
         }
@@ -161,6 +176,7 @@ validate <- function(path = NULL,
       # Make dataset name available to the walker for --VAR wildcard expansion
       ctx$current_dataset <- ds_name
       ctx$current_domain  <- toupper(substr(ds_name, 1, 2))
+      rule_emit <- .sev_override(rule, severity_map, .ds_class(ds_name, ctx))
       # Expand xx / y / zz placeholders against this dataset's columns.
       xp <- .expand_indexed(rule$check_tree, d)
 
@@ -190,10 +206,11 @@ validate <- function(path = NULL,
             msg <- .render_indexed_text(msg, p, v)
             var_inst <- .render_indexed_text(var_inst, p, v)
           }
-          inst_rule <- rule
+          inst_rule <- rule_emit$rule
           inst_rule$message <- msg
           f <- emit_findings(inst_rule, ds_name, m, d, variable = var_inst)
           if (nrow(f) > 0L) {
+            if (rule_emit$changed) f$severity_override <- rule_emit$orig
             all_findings[[length(all_findings) + 1L]] <- f
           }
         }
@@ -223,8 +240,9 @@ validate <- function(path = NULL,
         mask <- c(TRUE, rep(FALSE, length(mask) - 1L))
       }
       var <- primary_variable(rule$check_tree)
-      f <- emit_findings(rule, ds_name, mask, d, variable = var)
+      f <- emit_findings(rule_emit$rule, ds_name, mask, d, variable = var)
       if (nrow(f) > 0L) {
+        if (rule_emit$changed) f$severity_override <- rule_emit$orig
         all_findings[[length(all_findings) + 1L]] <- f
         rule_fired <- TRUE
       } else if (any(!is.na(mask) & mask)) {
@@ -359,6 +377,61 @@ validate <- function(path = NULL,
   if (nrow(fired) == 0L) return(adv)
   if (nrow(adv)   == 0L) return(fired)
   rbind(fired, adv)
+}
+
+# --- severity_map helpers ----------------------------------------------------
+
+#' Apply severity_map to a single rule, returning a list with the (possibly
+#' mutated) rule, the original severity, and a flag indicating change.
+#' @noRd
+.sev_override <- function(rule, severity_map, ds_class) {
+  orig <- rule[["severity"]] %||% "Medium"
+  if (is.null(severity_map) || length(severity_map) == 0L) {
+    return(list(rule = rule, orig = orig, changed = FALSE))
+  }
+  new_sev <- .apply_sev_map(rule[["id"]] %||% "", orig, severity_map, ds_class)
+  changed <- !identical(new_sev, orig)
+  if (changed) rule[["severity"]] <- new_sev
+  list(rule = rule, orig = orig, changed = changed)
+}
+
+#' Three-tier severity lookup: exact rule_id -> regex -> category.
+#' @noRd
+.apply_sev_map <- function(rule_id, orig_sev, severity_map, ds_class) {
+  nm <- names(severity_map)
+  if (is.null(nm)) return(orig_sev)
+
+  # tier 1: exact rule_id
+  i <- match(rule_id, nm, nomatch = 0L)
+  if (i > 0L) return(.resolve_sev_entry(severity_map[[i]], ds_class, orig_sev))
+
+  # tier 2: regex match against rule_id
+  for (j in seq_along(nm)) {
+    pat <- nm[[j]]
+    if (!nzchar(pat)) next
+    hit <- tryCatch(grepl(pat, rule_id, perl = TRUE), error = function(e) FALSE)
+    if (isTRUE(hit)) return(.resolve_sev_entry(severity_map[[j]], ds_class, orig_sev))
+  }
+
+  # tier 3: severity category
+  i <- match(orig_sev, nm, nomatch = 0L)
+  if (i > 0L) return(.resolve_sev_entry(severity_map[[i]], ds_class, orig_sev))
+
+  orig_sev
+}
+
+#' Resolve a severity_map entry that may be a scalar string or a domain-keyed
+#' list (`list(ADSL = "Reject", BDS = "High", default = "Medium")`).
+#' @noRd
+.resolve_sev_entry <- function(entry, ds_class, orig_sev) {
+  if (is.character(entry) && length(entry) == 1L) return(entry)
+  if (is.list(entry)) {
+    if (!is.null(ds_class) && nzchar(ds_class) && !is.null(entry[[ds_class]])) {
+      return(as.character(entry[[ds_class]]))
+    }
+    if (!is.null(entry[["default"]])) return(as.character(entry[["default"]]))
+  }
+  orig_sev
 }
 
 .rules_path <- function() {

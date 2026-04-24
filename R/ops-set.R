@@ -8,6 +8,9 @@
   as.character(unlist(x))
 }
 
+# P21 audit item G: prevent NA group keys from colliding with literal "NA".
+.na_sent_set <- function(v) { v[is.na(v)] <- "\x01<NA>\x01"; v }
+
 op_is_contained_by <- function(data, ctx, name, value) {
   col <- data[[name]]
   if (is.null(col)) return(rep(NA, nrow(data)))
@@ -101,7 +104,8 @@ op_is_unique_set <- function(data, ctx, name) {
   names_vec <- .as_set(name)
   missing_cols <- setdiff(names_vec, names(data))
   if (length(missing_cols) > 0L) return(rep(NA, nrow(data)))
-  key <- do.call(paste, c(data[, names_vec, drop = FALSE], list(sep = "\x1f")))
+  key <- do.call(paste, c(lapply(names_vec, function(col)
+    .na_sent_set(as.character(data[[col]]))), list(sep = "\x1f")))
   counts <- table(key)
   rep_count <- as.integer(counts[key])
   rep_count == 1L

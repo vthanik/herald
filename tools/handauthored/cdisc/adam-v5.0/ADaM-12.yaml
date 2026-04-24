@@ -14,10 +14,14 @@ scope:
 variable: '*FN'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: Variable with a suffix of FL is present and equal to null, and
-    a variable with the same root and a suffix of FN is present
+  expand:
+  - FL
+  - FN
+  all:
+  - operator: empty
+    name: stemFL
+  - operator: non_empty
+    name: stemFN
 outcome:
   message: A variable with a suffix of FL is equal to null and a variable with the
     same root and a suffix of FN is not equal to null
@@ -33,4 +37,4 @@ provenance:
     flags that are not population indicators.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
