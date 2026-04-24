@@ -87,20 +87,8 @@ op_iso8601 <- function(data, ctx, name, allow_missing = TRUE) {
 
 # --- matches_regex -----------------------------------------------------------
 
-#' Operator: matches_regex
-#'
-#' Check that column values match a PCRE pattern. NA / empty are
-#' considered compliant unless allow_missing = FALSE.
-#'
-#' @noRd
-#' Anchor a user-supplied regex so an unanchored pattern is matched
-#' against the ENTIRE value (Pinnacle 21 parity:
-#' `RegularExpressionValidationRule.java:71` uses `matcher.matches()`).
-#'
-#' A pattern that EXPLICITLY carries either anchor (`^` at start OR `$`
-#' at end) is left untouched -- the rule author has signalled intent
-#' (`^AE` means "starts with AE", `AE$` means "ends with AE"). Only
-#' fully-unanchored patterns get wrapped with `^(?:...)$`.
+# Wrap unanchored patterns with ^(?:...)$ so matching applies to the full
+# value. Patterns already carrying ^ or $ are left untouched.
 .anchor_regex <- function(pat) {
   pat <- as.character(pat)
   if (!nzchar(pat)) return(pat)
@@ -108,6 +96,12 @@ op_iso8601 <- function(data, ctx, name, allow_missing = TRUE) {
   paste0("^(?:", pat, ")$")
 }
 
+#' Operator: matches_regex
+#'
+#' Check that column values match a PCRE pattern. NA / empty are
+#' considered compliant unless allow_missing = FALSE.
+#'
+#' @noRd
 op_matches_regex <- function(data, ctx, name, value, allow_missing = TRUE) {
   values <- data[[name]]
   if (is.null(values)) return(rep(NA, nrow(data)))
