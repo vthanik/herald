@@ -1,0 +1,49 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Rscript *)",
+      "Bash(air *)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git stash*)",
+      "Bash(git restore*)",
+      "Bash(wc *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(du *)",
+      "Bash(ls *)",
+      "Bash(mkdir -p *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(cat *)"
+    ],
+    "deny": [
+      "Bash(rm -rf*)",
+      "Bash(rm -fr*)",
+      "Bash(find * -delete)",
+      "Bash(git push*)",
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -fdx*)",
+      "Bash(Rscript -e *install.packages*)",
+      "Bash(Rscript -e *remove.packages*)",
+      "Bash(Rscript -e *renv::*)",
+      "Bash(Rscript -e *setwd*)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(sudo *)",
+      "Write(man/**)",
+      "Write(NAMESPACE)",
+      "Write(renv/library/**)",
+      "Write(inst/rules/rules.rds)",
+      "Write(inst/rules/rules.jsonl)",
+      "Write(inst/rules/MANIFEST.json)",
+      "Write(docs/**)",
+      "Read(**/renv/library/**)"
+    ]
+  }
+}

@@ -24,10 +24,11 @@ renv/lock/
 renv/python/
 renv/staging/
 
-# Claude + local
-.claude/
+# Claude + local (CLAUDE.md + .claude/ tracked; only personal
+# overrides and deprecated claudeignore ignored)
+.claude/settings.local.json
 .claudeignore
-CLAUDE.md
+CLAUDE.local.md
 .local/
 tasks/todo.md
 
