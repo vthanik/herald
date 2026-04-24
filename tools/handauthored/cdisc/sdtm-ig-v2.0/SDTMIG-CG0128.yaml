@@ -9,8 +9,16 @@ scope:
   exclude_domains: []
 variable: ARMCD
 check:
-  narrative: ARMCD in ('SCRNFAIL', 'NOTASSGN')
-  condition: ARMCD not in TA.ARMCD
+  all:
+  - operator: missing_in_ref
+    name: ARMCD
+    reference_dataset: TA
+    reference_key: ARMCD
+  - operator: is_not_contained_by
+    name: ARMCD
+    value:
+    - SCRNFAIL
+    - NOTASSGN
 outcome:
   message: ARMCD in ('SCRNFAIL', 'NOTASSGN')
   severity: Medium
@@ -24,5 +32,4 @@ provenance:
     failures, should have ARMCD ='NOTASSGN' and ARM = 'Not Assigned'.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

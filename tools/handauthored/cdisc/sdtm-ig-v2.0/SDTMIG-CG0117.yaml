@@ -9,9 +9,18 @@ scope:
   exclude_domains: []
 variable: ACTARM
 check:
-  narrative: ACTARM in ('Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned
-    Treatment')
-  condition: ACTARM not in TA.ARM
+  all:
+  - operator: missing_in_ref
+    name: ACTARM
+    reference_dataset: TA
+    reference_key: ARM
+  - operator: is_not_contained_by
+    name: ACTARM
+    value:
+    - Screen Failure
+    - Not Assigned
+    - Not Treated
+    - Unplanned Treatment
 outcome:
   message: ACTARM in ('Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned
     Treatment')
@@ -27,5 +36,4 @@ provenance:
     Restricted to values in Trial Arms in all other cases.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

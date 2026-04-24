@@ -9,8 +9,18 @@ scope:
   exclude_domains: []
 variable: ACTARMCD
 check:
-  narrative: ACTARMCD in ('SCRNFAIL', 'NOTASSGN', 'NOTTRT', 'UNPLAN')
-  condition: ACTARMCD not in TA.ARMCD
+  all:
+  - operator: missing_in_ref
+    name: ACTARMCD
+    reference_dataset: TA
+    reference_key: ARMCD
+  - operator: is_not_contained_by
+    name: ACTARMCD
+    value:
+    - SCRNFAIL
+    - NOTASSGN
+    - NOTTRT
+    - UNPLAN
 outcome:
   message: ACTARMCD in ('SCRNFAIL', 'NOTASSGN', 'NOTTRT', 'UNPLAN')
   severity: Medium
@@ -25,5 +35,4 @@ provenance:
     all other cases
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

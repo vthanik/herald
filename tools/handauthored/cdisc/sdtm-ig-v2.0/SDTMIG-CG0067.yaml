@@ -12,8 +12,15 @@ scope:
   exclude_domains: []
 variable: DSDECOD
 check:
-  narrative: DSDECOD = 'DEATH'
-  condition: SS.SSSTRESC = 'DEAD'
+  all:
+  - operator: subject_has_matching_row
+    name: USUBJID
+    reference_dataset: SS
+    reference_column: SSSTRESC
+    expected_value: DEAD
+  - operator: not_equal_to
+    name: DSDECOD
+    value: DEATH
 outcome:
   message: DSDECOD = 'DEATH'
   severity: Medium
@@ -25,5 +32,4 @@ provenance:
     of death must be stored in DM and within a final disposition record in DS.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

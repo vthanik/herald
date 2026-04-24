@@ -9,8 +9,9 @@ scope:
   exclude_domains: []
 variable: SVPRESP
 check:
-  narrative: SVPRESP in ("Y", null)
-  condition: ''
+  operator: is_not_contained_by
+  name: SVPRESP
+  value: 'Y'
 outcome:
   message: SVPRESP in ("Y", null)
   severity: Medium
@@ -21,5 +22,4 @@ provenance:
   cited_guidance: Subject Visits[SVPRESP][Values should be "Y" or null.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

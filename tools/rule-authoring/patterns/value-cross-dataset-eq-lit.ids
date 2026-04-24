@@ -1,4 +1,5 @@
 "rule_id","ref_ds","ref_col","ref_value","target_var","target_lit"
+"CG0067","SS","SSSTRESC","DEAD","DSDECOD","DEATH"
 "CG0132","SS","SSSTRESC","DEAD","DTHFL","Y"
 "CG0134","AE","AEOUT","FATAL","DTHFL","Y"
 "CG0135","AE","AESDTH","Y","DTHFL","Y"
