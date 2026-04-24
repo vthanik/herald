@@ -14,10 +14,14 @@ scope:
 variable: '*FN'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: Variable with a suffix of FL is present and a variable with the
-    same root and a suffix of FN is present
+  all:
+  - operator: non_empty
+    name: stemFL
+  - operator: is_not_contained_by
+    name: stemFN
+    value:
+    - '0'
+    - '1'
 outcome:
   message: A variable with a suffix of FL is present and a variable with the same
     root and a suffix of FN has a value that is not  0, 1 or null
@@ -32,4 +36,4 @@ provenance:
     ADaMIG v1.0, Section 3, Item 9 (General Flag Variable Conventions): For character flags with variable names that end in FL and that are not population flags, a scheme of Y/N/null, or Y/null may be specified. As indicated in Table 3.3.4.2, and Table 3.3.8.1, some common character flags use the scheme Y/null. Corresponding 1/0/null and 1/null schemes apply to numeric flags with variable names that end in FN and that are not population indicators.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

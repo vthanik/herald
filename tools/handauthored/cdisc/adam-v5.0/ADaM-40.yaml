@@ -14,9 +14,11 @@ scope:
 variable: '*TMF'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: Variable with a suffix of TMF
+  all:
+  - operator: value_in_codelist
+    name: stemTMF
+    codelist: TIMEFL
+    package: adam
 outcome:
   message: A variable with a suffix of TMF has a value that is not within Controlled
     Terminology for TIMEFL
@@ -40,4 +42,4 @@ provenance:
     the level of imputation in *DTM if imputation was done.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

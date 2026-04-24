@@ -14,9 +14,10 @@ scope:
 variable: '*DTM'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  all:
+  - operator: var_by_suffix_not_numeric
+    name: stemDTM
+    exclude_prefix: ''
 outcome:
   message: A variable with a suffix of DTM is not a numeric variable
   severity: Medium
@@ -28,4 +29,4 @@ provenance:
     Variables whose names end in DTM are numeric datetimes.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

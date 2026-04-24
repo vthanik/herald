@@ -64,49 +64,49 @@
 "252","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is present or AVALC is present",NA,NA,"narrative",NA,NA,NA
 "254","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is present",NA,NA,"narrative",NA,NA,NA
 "256","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The values of USUBJID are not present in ADSL",NA,NA,"narrative",NA,NA,NA
-"26","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COMPLFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"26","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COMPLFN is present and has a value that is not 1 or 0","value-flag-fn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: [""1"", ""0""]","predicate","2026-04-24T11:15:15Z",NA,NA
 "269","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEMFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
-"27","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","FASFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"27","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","FASFN is present and has a value that is not 1 or 0","value-flag-fn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: [""1"", ""0""]","predicate","2026-04-24T11:15:15Z",NA,NA
 "270","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PREFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
 "271","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","FUPFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
 "272","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a prefix of AOCC and a suffix of FL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
 "279","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AESEVN is not equal to 1, 2, 3, or null",NA,NA,"narrative",NA,NA,NA
-"28","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ITTFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"28","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ITTFN is present and has a value that is not 1 or 0","value-flag-fn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: [""1"", ""0""]","predicate","2026-04-24T11:15:15Z",NA,NA
 "282","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ASEVN is not equal to 1, 2, 3, or null",NA,NA,"narrative",NA,NA,NA
-"29","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PPROTFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
-"30","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SAFFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"29","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PPROTFN is present and has a value that is not 1 or 0","value-flag-fn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: [""1"", ""0""]","predicate","2026-04-24T11:15:15Z",NA,NA
+"30","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SAFFN is present and has a value that is not 1 or 0","value-flag-fn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: [""1"", ""0""]","predicate","2026-04-24T11:15:15Z",NA,NA
 "304","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzNAM is populated and SMQzzCD is not populated",NA,NA,"narrative",NA,NA,NA
 "305","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzNAM is populated and SMQzzSC is not populated",NA,NA,"narrative",NA,NA,NA
 "306","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzCD is populated and SMQzzNAM is not populated",NA,NA,"narrative",NA,NA,NA
 "307","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzCD is populated and SMQzzSC is not populated",NA,NA,"narrative",NA,NA,NA
 "308","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzSC is populated and SMQzzNAM is not populated",NA,NA,"narrative",NA,NA,NA
 "309","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzSC is populated and SMQzzCD is not populated",NA,NA,"narrative",NA,NA,NA
-"31","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","RANDFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"31","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","RANDFN is present and has a value that is not 1 or 0","value-flag-fn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: [""1"", ""0""]","predicate","2026-04-24T11:15:15Z",NA,NA
 "312","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzSC is not equal to BROAD or NARROW, where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
 "313","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SMQzzSCN is not equal to 1 or 2, where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
-"32","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ENRLFN is present and has a value that is not 1 or 0",NA,NA,"narrative",NA,NA,NA
+"32","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ENRLFN is present and has a value that is not 1 or 0","value-flag-fn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: [""1"", ""0""]","predicate","2026-04-24T11:15:15Z",NA,NA
 "321","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A dataset label is ""Subject-Level Analysis Dataset"" and the dataset is not named ADSL",NA,NA,"narrative",NA,NA,NA
 "322","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of TRTP, there is more than one value of TRTPGy, where y is an integer [1-99, not zero-padded]","uniqueness-grouped-nested",NA,"predicate","2026-04-24T10:44:15Z",NA,NA
 "323","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a study, there is more than one value of APHASEN for a given value of APHASE, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "324","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a study, there is more than one value of APHASE for a given value of APHASEN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "325","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a value of APERIOD, there is more than one value of ASPER for a given value of ASPERC, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "326","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a value of APERIOD, there is more than one value of ASPERC for a given value of ASPER, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"33","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of RFL has a value that is not Y or null",NA,NA,"narrative",NA,NA,NA
+"33","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of RFL has a value that is not Y or null","suffix-var-value-in-set","all: - operator: is_not_contained_by name: stemRFL value: ['Y']","predicate","2026-04-24T11:15:10Z",NA,NA
 "335","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CRITyFL is present and CRITy is not present",NA,NA,"narrative",NA,NA,NA
 "336","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CRITy is present and CRITyFL is not present",NA,NA,"narrative",NA,NA,NA
 "337","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","MCRITyML is present and MCRITy is not present",NA,NA,"narrative",NA,NA,NA
 "338","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","MCRITy is present and MCRITyML is not present",NA,NA,"narrative",NA,NA,NA
 "339","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","MCRITyML is populated and MCRITy is not populated",NA,NA,"narrative",NA,NA,NA
-"34","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of PFL has a value that is not Y or null",NA,NA,"narrative",NA,NA,NA
+"34","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of PFL has a value that is not Y or null","suffix-var-value-in-set","all: - operator: is_not_contained_by name: stemPFL value: ['Y']","predicate","2026-04-24T11:15:10Z",NA,NA
 "346","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","R2AyLO is present and AyLO is not present",NA,NA,"narrative",NA,NA,NA
 "349","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","R2AyHI is present and AyHI is not present",NA,NA,"narrative",NA,NA,NA
-"35","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of RFN has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
+"35","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of RFN has a value that is not 1 or null","suffix-var-value-in-set","all: - operator: is_not_contained_by name: stemRFN value: ['1']","predicate","2026-04-24T11:15:10Z",NA,NA
 "352","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","AyIND is present and AyLO, AyHI, AyLOC, and AyHIC are all not present",NA,NA,"narrative",NA,NA,NA
 "353","CDISC","ADaM-IG","1.1,1.2","Medium","BASETYPE is present, ByIND is populated, and ByIND is not equal to AyIND where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject",NA,NA,"narrative",NA,NA,NA
 "354","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","BASETYPE is not present, ByIND is populated, and ByIND is not equal to AyIND where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
 "355","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of REGIONy for a given value of REGIONyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "356","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of REGIONyN for a given value of REGIONy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"36","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of PFN has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
+"36","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of PFN has a value that is not 1 or null","suffix-var-value-in-set","all: - operator: is_not_contained_by name: stemPFN value: ['1']","predicate","2026-04-24T11:15:10Z",NA,NA
 "361","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ASTDT is greater than the value of AENDT, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "362","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ASTDTM is greater than the value of AENDTM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "363","CDISC","ADaM-IG","1.0,1.1","Medium","ONTRTFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
@@ -119,8 +119,8 @@
 "37","CDISC","ADaM-IG","1.0","Medium","There is more than one value of a variable which has a suffix of GRyN for a given value of a variable with the same root name and suffix of GRy",NA,NA,"narrative",NA,NA,NA
 "370","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","*TMF is populated and neither *TM nor *DTM is populated",NA,NA,"narrative",NA,NA,NA
 "38","CDISC","ADaM-IG","1.0","Medium","There is more than one value of a variable which has a suffix of GRy for a given value of a variable with the same root name and suffix of GRyN",NA,NA,"narrative",NA,NA,NA
-"39","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DTF has a value that is not within Controlled Terminology for DATEFL",NA,NA,"narrative",NA,NA,NA
-"40","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of TMF has a value that is not within Controlled Terminology for TIMEFL",NA,NA,"narrative",NA,NA,NA
+"39","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DTF has a value that is not within Controlled Terminology for DATEFL","suffix-var-value-in-codelist","all: - operator: value_in_codelist name: stemDTF codelist: ""DATEFL"" package: ""adam""","predicate","2026-04-24T11:15:14Z",NA,NA
+"40","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of TMF has a value that is not within Controlled Terminology for TIMEFL","suffix-var-value-in-codelist","all: - operator: value_in_codelist name: stemTMF codelist: ""TIMEFL"" package: ""adam""","predicate","2026-04-24T11:15:14Z",NA,NA
 "401","CDISC","ADaM-IG","1.2,1.3","Medium","AVAL is not populated or ATOXGRL is not populated, and ATOXDSCL is populated",NA,NA,"narrative",NA,NA,NA
 "402","CDISC","ADaM-IG","1.2,1.3","Medium","AVAL is not populated or ATOXGRH is not populated, and ATOXDSCH is populated",NA,NA,"narrative",NA,NA,NA
 "403","CDISC","ADaM-IG","1.2,1.3","Medium","Within a subject, there is more than one value of ATOXDSCL for a given value of PARAM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -143,7 +143,7 @@
 "496","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A dataset name does not start with ""AD"" when dataset class is not missing",NA,NA,"narrative",NA,NA,NA
 "497","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A dataset name starts with ""AD"" when the dataset class is missing",NA,NA,"narrative",NA,NA,NA
 "498","CDISC","ADaM-IG","1.2,1.3","Medium","For every unique combination of a w value of ASPER and xx value of APERIOD in BDS or OCCDS datasets, there is not a variable PxxSw",NA,NA,"narrative",NA,NA,NA
-"5","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL has a value that is not Y, N or null",NA,NA,"narrative",NA,NA,NA
+"5","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL has a value that is not Y, N or null","suffix-var-value-in-set","all: - operator: is_not_contained_by name: stemFL value: ['Y', 'N']","predicate","2026-04-24T11:15:10Z",NA,NA
 "521","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A variable which has a suffix of GRyN is present and a variable with the same root name and suffix of GRy is not present",NA,NA,"narrative",NA,NA,NA
 "526","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","ANLzzFN is present and ANLzzFL is not present",NA,NA,"narrative",NA,NA,NA
 "53","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of USUBJID is not present in SDTM.DM",NA,NA,"narrative",NA,NA,NA
@@ -176,11 +176,11 @@
 "577","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwEDM is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
 "578","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwETM is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
 "579","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwEDF is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
-"58","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DT is not a numeric variable",NA,NA,"narrative",NA,NA,NA
+"58","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DT is not a numeric variable","suffix-var-is-numeric","all: - operator: var_by_suffix_not_numeric name: stemDT exclude_prefix: """"","predicate","2026-04-24T11:15:14Z",NA,NA
 "580","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwETF is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
 "583","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of BCHGCATy for a given value of BCHG and y, where y is an integer [1-99, not zero-padded]","uniqueness-grouped-nested",NA,"predicate","2026-04-24T10:44:15Z",NA,NA
 "587","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of PBCHGCAy for a given value of PBCHG and y, where y is a single-digit integer [1-9]","uniqueness-grouped-nested",NA,"predicate","2026-04-24T10:44:15Z",NA,NA
-"59","CDISC","ADaM-IG","1.0","Medium","A variable with a suffix of TM is not a numeric variable",NA,NA,"narrative",NA,NA,NA
+"59","CDISC","ADaM-IG","1.0","Medium","A variable with a suffix of TM is not a numeric variable","suffix-var-is-numeric","all: - operator: var_by_suffix_not_numeric name: stemTM exclude_prefix: """"","predicate","2026-04-24T11:15:14Z",NA,NA
 "592","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APERSDT is not equal to the value of variable APxxSDT where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
 "593","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APERSTM is not equal to the value of variable APxxSTM where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
 "594","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APERSDTM is not equal to the value of variable APxxSDTM where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
@@ -189,8 +189,8 @@
 "597","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APEREDTM is not equal to the value of variable APxxEDTM where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
 "598","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRSDT is not equal to the value of variable PxxSwSDT where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
 "599","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRSTM is not equal to the value of variable PxxSwSTM where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
-"6","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is present and a variable with the same root and a suffix of FN has a value that is not  0, 1 or null",NA,NA,"narrative",NA,NA,NA
-"60","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DTM is not a numeric variable",NA,NA,"narrative",NA,NA,NA
+"6","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of FL is present and a variable with the same root and a suffix of FN has a value that is not  0, 1 or null","suffix-pair-value-in-set","all: - operator: non_empty name: stemFL - operator: is_not_contained_by name: stemFN value: ['0', '1']","predicate","2026-04-24T11:15:14Z",NA,NA
+"60","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DTM is not a numeric variable","suffix-var-is-numeric","all: - operator: var_by_suffix_not_numeric name: stemDTM exclude_prefix: """"","predicate","2026-04-24T11:15:14Z",NA,NA
 "601","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPREDT is not equal to the value of variable PxxSwEDT where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
 "602","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRETM is not equal to the value of variable PxxSwETM where xx equals the value of APERIOD and w equals the value of ASPER",NA,NA,"narrative",NA,NA,NA
 "604","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, APHASEN is not present and the value of PHSDT is not equal to the value of at least one PHwSDT variable",NA,NA,"narrative",NA,NA,NA
@@ -268,7 +268,7 @@
 "713","CDISC","ADaM-IG","1.2,1.3","Medium","A variable with a suffix of PFN has a value that is not 1, 0, or null",NA,NA,"narrative",NA,NA,NA
 "714","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of a variable which has a suffix of GRyN for a given value of a variable with the same root name and suffix of GRy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "715","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of a variable which has a suffix of GRy for a given value of a variable with the same root name and suffix of GRyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"716","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A variable with a suffix of TM is not a numeric variable excluding SDTM variables with a suffix of ELTM",NA,NA,"narrative",NA,NA,NA
+"716","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","A variable with a suffix of TM is not a numeric variable excluding SDTM variables with a suffix of ELTM","suffix-var-is-numeric","all: - operator: var_by_suffix_not_numeric name: stemTM exclude_prefix: ""EL""","predicate","2026-04-24T11:15:14Z",NA,NA
 "717","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTxxPN for a given value of TRTxxP, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "718","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTxxP for a given value of TRTxxPN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "719","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","None of the subject-level or record-level treatment variables defined in the IG is present",NA,NA,"narrative",NA,NA,NA

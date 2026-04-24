@@ -665,7 +665,7 @@ needs a tiny op.
   TIMEFL are confirmed in the bundled CT, + 7 via existing
   `value-flag-yn`).
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** _(delivered)_
 
 ---
 

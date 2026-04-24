@@ -352,6 +352,36 @@ op_any_value_exceeds_length <- function(data, ctx, value) {
   )
 )
 
+# --- var_by_suffix_not_numeric -----------------------------------------------
+# Row-level: fires on every row when the named column (resolved via stem
+# wildcard expansion) is not a numeric vector. Used for *DT/*TM/*DTM rules
+# (ADaM-58/59/60/716) which require date-time displacement variables to be
+# stored as numeric. `exclude_prefix` allows a specific stem to be skipped
+# (ADaM-716: exclude ELTM whose stem is "EL").
+
+op_var_by_suffix_not_numeric <- function(data, ctx, name,
+                                         exclude_prefix = NULL) {
+  col <- data[[name]]
+  if (is.null(col)) return(rep(NA, nrow(data)))
+  excl <- as.character(exclude_prefix %||% "")
+  if (nzchar(excl) && startsWith(name, excl)) return(rep(FALSE, nrow(data)))
+  rep(!is.numeric(col), nrow(data))
+}
+.register_op(
+  "var_by_suffix_not_numeric", op_var_by_suffix_not_numeric,
+  meta = list(
+    kind = "existence",
+    summary = "Column resolved by suffix wildcard is not a numeric variable",
+    arg_schema = list(
+      name           = list(type = "string", required = TRUE),
+      exclude_prefix = list(type = "string", default = NULL)
+    ),
+    cost_hint     = "O(1)",
+    column_arg    = "name",
+    returns_na_ok = TRUE
+  )
+)
+
 # --- no_var_with_suffix (plan Q24) -------------------------------------------
 # ADSL must carry at least one flag variable (suffix `FL`). Usable beyond
 # ADSL: any rule that asserts "a variable ending in <SUFFIX> must be

@@ -13,9 +13,10 @@ scope:
 variable: '*TM'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: Excluding SDTM variables with a suffix of ELTM
+  all:
+  - operator: var_by_suffix_not_numeric
+    name: stemTM
+    exclude_prefix: EL
 outcome:
   message: A variable with a suffix of TM is not a numeric variable excluding SDTM
     variables with a suffix of ELTM
@@ -28,5 +29,4 @@ provenance:
     TM are numeric times'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

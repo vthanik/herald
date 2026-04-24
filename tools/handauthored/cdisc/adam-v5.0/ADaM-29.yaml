@@ -14,9 +14,14 @@ scope:
 variable: PPROTFN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: PPROTFN is present
+  all:
+  - operator: non_empty
+    name: PPROTFN
+  - operator: is_not_contained_by
+    name: PPROTFN
+    value:
+    - '1'
+    - '0'
 outcome:
   message: PPROTFN is present and has a value that is not 1 or 0
   severity: Medium
@@ -29,4 +34,4 @@ provenance:
     version (*FN) can also be included.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

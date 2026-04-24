@@ -14,9 +14,12 @@ scope:
 variable: '*FL'
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: 'Variable with a suffix of FL '
+  all:
+  - operator: is_not_contained_by
+    name: stemFL
+    value:
+    - 'Y'
+    - 'N'
 outcome:
   message: A variable with a suffix of FL has a value that is not Y, N or null
   severity: Medium
@@ -30,4 +33,4 @@ provenance:
     ADaMIG v1.0, Section 3, Item 9 (General Flag Variable Conventions): For character flags that are not population flags, a scheme of Y/N/null, or Y/null may be specified. As indicated in Table 3.2.6.1, some common character flags use the scheme Y/null. Corresponding 1/0/null and 1/null schemes apply to numeric flags that are not population indicators.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
