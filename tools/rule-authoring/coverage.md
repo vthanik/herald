@@ -4,8 +4,8 @@ Scanned 1814 handauthored rules.
 
 | status | count |
 |---|---:|
-| narrative (needs authoring) | 1195 |
-| predicate (converted) | 619 |
+| narrative (needs authoring) | 1118 |
+| predicate (converted) | 696 |
 | skipped / blocked | 0 |
 | **total** | 1814 |
 
@@ -13,8 +13,8 @@ Scanned 1814 handauthored rules.
 
 | standard | status | count |
 |---|---|---:|
-| ADaM-IG | narrative | 414 |
-| ADaM-IG | predicate | 376 |
+| ADaM-IG | narrative | 337 |
+| ADaM-IG | predicate | 453 |
 | SDTM-IG | narrative | 291 |
 | SDTM-IG | predicate | 243 |
 
@@ -22,13 +22,14 @@ Scanned 1814 handauthored rules.
 
 | pattern | count |
 |---|---:|
+| uniqueness-grouped | 115 |
 | value-conditional-populated | 84 |
-| uniqueness-grouped | 77 |
 | presence-pair | 70 |
 | presence-forbidden | 63 |
 | value-not-null | 58 |
 | value-pair-coupled | 54 |
 | presence-required | 51 |
+| paired-var-consistency-param | 32 |
 | cross-lookup | 21 |
 | metadata-label-contains | 18 |
 | value-conditional-null-empty | 11 |
@@ -36,6 +37,7 @@ Scanned 1814 handauthored rules.
 | value-conditional-null-populated | 9 |
 | value-length-le | 9 |
 | value-conditional-literal-assert | 8 |
+| value-flag-yn | 7 |
 | uniqueness-composite-key | 5 |
 | value-conditional-equal-column | 5 |
 | value-conditional-null-eq | 5 |

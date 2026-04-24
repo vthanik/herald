@@ -31,11 +31,9 @@
 "181","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BASETYPE is not present, BASE is populated, and BASE is not equal to AVAL where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
 "182","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BASETYPE is not present, BTOXGR is populated, and BTOXGR is not equal to ATOXGR where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
 "183","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BASETYPE is not present, BNRIND is populated, and BNRIND is not equal to ANRIND where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
-"19","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COMPLFL is present and has a value that is not Y or N","value-flag-yn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: - Y - N","predicate","2026-04-21T21:32:39Z",NA,NA
 "198","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is not present and AVALC is not present",NA,NA,"narrative",NA,NA,NA
 "199","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable present in SDTM but the variables do not have identical data types",NA,NA,"narrative",NA,NA,NA
 "2","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable present in SDTM but the variables do not have identical labels",NA,NA,"narrative",NA,NA,NA
-"20","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","FASFL is present and has a value that is not Y or N","value-flag-yn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: - Y - N","predicate","2026-04-21T21:32:39Z",NA,NA
 "200","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present in ADaM with the same name as a variable defined in the ADaM IG but the variables do not have identical data types",NA,NA,"narrative",NA,NA,NA
 "204","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.AGE is not equal to DM.AGE",NA,NA,"narrative",NA,NA,NA
 "205","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.AGEU is not equal to DM.AGEU",NA,NA,"narrative",NA,NA,NA
@@ -43,16 +41,13 @@
 "207","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.RACE is not equal to DM.RACE",NA,NA,"narrative",NA,NA,NA
 "208","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.SUBJID is not equal to DM.SUBJID",NA,NA,"narrative",NA,NA,NA
 "209","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.SITEID is not equal to DM.SITEID",NA,NA,"narrative",NA,NA,NA
-"21","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ITTFL is present and has a value that is not Y or N","value-flag-yn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: - Y - N","predicate","2026-04-21T21:32:39Z",NA,NA
 "210","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.ARM is not equal to DM.ARM",NA,NA,"narrative",NA,NA,NA
 "211","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ABLFN is not equal to 1 or null",NA,NA,"narrative",NA,NA,NA
 "212","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ANLzzFN is not equal to 1 or null where zz is a zero-padded two-digit integer [01-99]",NA,NA,"narrative",NA,NA,NA
-"22","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PPROTFL is present and has a value that is not Y or N","value-flag-yn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: - Y - N","predicate","2026-04-21T21:32:39Z",NA,NA
 "221","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of AVALCATy for a given value of AVAL",NA,NA,"narrative",NA,NA,NA
 "222","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of BASECATy for a given value of BASE and y",NA,NA,"narrative",NA,NA,NA
 "224","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of CHGCATy for a given value of CHG and y",NA,NA,"narrative",NA,NA,NA
 "226","CDISC","ADaM-IG","1.0","Medium","Within a given value of PARAMCD, there is more than one value of PCHGCATy for a given value of PCHG and y",NA,NA,"narrative",NA,NA,NA
-"23","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SAFFL is present and has a value that is not Y or N","value-flag-yn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: - Y - N","predicate","2026-04-21T21:32:39Z",NA,NA
 "231","CDISC","ADaM-IG","1.0","Medium","Within a given value of TRTxxP, there is more than one value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "232","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRxxPGy for a given value of TRxxPGyN, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "233","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRxxPGyN for a given value of TRxxPGy, where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
@@ -62,12 +57,10 @@
 "237","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTPGy for a given value of TRTPGyN, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "238","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTPGyN for a given value of TRTPGy, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "239","CDISC","ADaM-IG","1.0","Medium","TRTPGy is present and TRTA is present but TRTAGy is not present, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"24","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","RANDFL is present and has a value that is not Y or N","value-flag-yn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: - Y - N","predicate","2026-04-21T21:32:39Z",NA,NA
 "240","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTAGy for a given value of TRTAGyN, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "241","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTAGyN for a given value of TRTAGy, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
 "242","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTxxAN for a given value of TRTxxA, where xx is an integer [01-99, zero-padded]",NA,NA,"narrative",NA,NA,NA
 "243","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTxxA for a given value of TRTxxAN, where xx is an integer [01-99, zero-padded]",NA,NA,"narrative",NA,NA,NA
-"25","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ENRLFL is present and has a value that is not Y or N","value-flag-yn","all: - operator: non_empty name: %var% - operator: is_not_contained_by name: %var% value: - Y - N","predicate","2026-04-21T21:32:39Z",NA,NA
 "252","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AVAL is present or AVALC is present",NA,NA,"narrative",NA,NA,NA
 "254","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is present",NA,NA,"narrative",NA,NA,NA
 "256","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The values of USUBJID are not present in ADSL",NA,NA,"narrative",NA,NA,NA
@@ -98,34 +91,16 @@
 "324","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a study, there is more than one value of APHASE for a given value of APHASEN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "325","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a value of APERIOD, there is more than one value of ASPER for a given value of ASPERC, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "326","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a value of APERIOD, there is more than one value of ASPERC for a given value of ASPER, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"327","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AVALCATy for a given value of AVALCAyN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: AVALCAyN operator: is_not_unique_relationship value: related_name: AVALCATy group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"328","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AVALCAyN for a given value of AVALCATy, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: AVALCATy operator: is_not_unique_relationship value: related_name: AVALCAyN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"329","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of BASECATy for a given value of BASECAyN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: BASECAyN operator: is_not_unique_relationship value: related_name: BASECATy group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
 "33","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of RFL has a value that is not Y or null",NA,NA,"narrative",NA,NA,NA
-"330","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of BASECAyN for a given value of BASECATy, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: BASECATy operator: is_not_unique_relationship value: related_name: BASECAyN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"331","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of CHGCATy for a given value of CHGCATyN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: CHGCATyN operator: is_not_unique_relationship value: related_name: CHGCATy group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"332","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of CHGCATyN for a given value of CHGCATy, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: CHGCATy operator: is_not_unique_relationship value: related_name: CHGCATyN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"333","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of PCHGCATy for a given value of PCHGCAyN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: PCHGCAyN operator: is_not_unique_relationship value: related_name: PCHGCATy group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"334","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of PCHGCAyN for a given value of PCHGCATy, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: PCHGCATy operator: is_not_unique_relationship value: related_name: PCHGCAyN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
 "335","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CRITyFL is present and CRITy is not present",NA,NA,"narrative",NA,NA,NA
 "336","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CRITy is present and CRITyFL is not present",NA,NA,"narrative",NA,NA,NA
 "337","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","MCRITyML is present and MCRITy is not present",NA,NA,"narrative",NA,NA,NA
 "338","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","MCRITy is present and MCRITyML is not present",NA,NA,"narrative",NA,NA,NA
 "339","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","MCRITyML is populated and MCRITy is not populated",NA,NA,"narrative",NA,NA,NA
 "34","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of PFL has a value that is not Y or null",NA,NA,"narrative",NA,NA,NA
-"340","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of MCRITyML for a given value of MCRITyMN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: MCRITyMN operator: is_not_unique_relationship value: related_name: MCRITyML group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"341","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of MCRITyMN for a given value of MCRITyML, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: MCRITyML operator: is_not_unique_relationship value: related_name: MCRITyMN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"342","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of ANRLO for a given value of ANRLOC","paired-var-consistency-param","expand: """" all: - name: ANRLOC operator: is_not_unique_relationship value: related_name: ANRLO group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"343","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of ANRLOC for a given value of ANRLO","paired-var-consistency-param","expand: """" all: - name: ANRLO operator: is_not_unique_relationship value: related_name: ANRLOC group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"344","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of ANRHI for a given value of ANRHIC","paired-var-consistency-param","expand: """" all: - name: ANRHIC operator: is_not_unique_relationship value: related_name: ANRHI group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"345","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of ANRHIC for a given value of ANRHI","paired-var-consistency-param","expand: """" all: - name: ANRHI operator: is_not_unique_relationship value: related_name: ANRHIC group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
 "346","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","R2AyLO is present and AyLO is not present",NA,NA,"narrative",NA,NA,NA
-"347","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyLO for a given value of AyLOC","paired-var-consistency-param","expand: ""y"" all: - name: AyLOC operator: is_not_unique_relationship value: related_name: AyLO group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"348","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyLOC for a given value of AyLO","paired-var-consistency-param","expand: ""y"" all: - name: AyLO operator: is_not_unique_relationship value: related_name: AyLOC group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
 "349","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","R2AyHI is present and AyHI is not present",NA,NA,"narrative",NA,NA,NA
 "35","CDISC","ADaM-IG","1.0,1.1","Medium","A variable with a suffix of RFN has a value that is not 1 or null",NA,NA,"narrative",NA,NA,NA
-"350","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyHI for a given value of AyHIC","paired-var-consistency-param","expand: ""y"" all: - name: AyHIC operator: is_not_unique_relationship value: related_name: AyHI group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"351","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyHIC for a given value of AyHI","paired-var-consistency-param","expand: ""y"" all: - name: AyHI operator: is_not_unique_relationship value: related_name: AyHIC group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
 "352","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","AyIND is present and AyLO, AyHI, AyLOC, and AyHIC are all not present",NA,NA,"narrative",NA,NA,NA
 "353","CDISC","ADaM-IG","1.1,1.2","Medium","BASETYPE is present, ByIND is populated, and ByIND is not equal to AyIND where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject",NA,NA,"narrative",NA,NA,NA
 "354","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","BASETYPE is not present, ByIND is populated, and ByIND is not equal to AyIND where ABLFL is equal to Y for a given value of PARAMCD for a subject",NA,NA,"narrative",NA,NA,NA
@@ -144,18 +119,8 @@
 "37","CDISC","ADaM-IG","1.0","Medium","There is more than one value of a variable which has a suffix of GRyN for a given value of a variable with the same root name and suffix of GRy",NA,NA,"narrative",NA,NA,NA
 "370","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","*TMF is populated and neither *TM nor *DTM is populated",NA,NA,"narrative",NA,NA,NA
 "38","CDISC","ADaM-IG","1.0","Medium","There is more than one value of a variable which has a suffix of GRy for a given value of a variable with the same root name and suffix of GRyN",NA,NA,"narrative",NA,NA,NA
-"381","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGR for a given value of BTOXGRN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: """" all: - name: BTOXGRN operator: is_not_unique_relationship value: related_name: BTOXGR group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"382","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRN for a given value of BTOXGR, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: """" all: - name: BTOXGR operator: is_not_unique_relationship value: related_name: BTOXGRN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"383","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRL for a given value of BTOXGRLN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: """" all: - name: BTOXGRLN operator: is_not_unique_relationship value: related_name: BTOXGRL group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"384","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRLN for a given value of BTOXGRL, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: """" all: - name: BTOXGRL operator: is_not_unique_relationship value: related_name: BTOXGRLN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"387","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRH for a given value of BTOXGRHN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: """" all: - name: BTOXGRHN operator: is_not_unique_relationship value: related_name: BTOXGRH group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"388","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRHN for a given value of BTOXGRH, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: """" all: - name: BTOXGRH operator: is_not_unique_relationship value: related_name: BTOXGRHN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
 "39","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DTF has a value that is not within Controlled Terminology for DATEFL",NA,NA,"narrative",NA,NA,NA
-"395","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of ATOXGRL for a given value of ATOXGRLN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: """" all: - name: ATOXGRLN operator: is_not_unique_relationship value: related_name: ATOXGRL group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"396","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of ATOXGRLN for a given value of ATOXGRL, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: """" all: - name: ATOXGRL operator: is_not_unique_relationship value: related_name: ATOXGRLN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"399","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of ATOXGRH for a given value of ATOXGRHN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: """" all: - name: ATOXGRHN operator: is_not_unique_relationship value: related_name: ATOXGRH group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
 "40","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of TMF has a value that is not within Controlled Terminology for TIMEFL",NA,NA,"narrative",NA,NA,NA
-"400","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of ATOXGRHN for a given value of ATOXGRH, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: """" all: - name: ATOXGRH operator: is_not_unique_relationship value: related_name: ATOXGRHN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
 "401","CDISC","ADaM-IG","1.2,1.3","Medium","AVAL is not populated or ATOXGRL is not populated, and ATOXDSCL is populated",NA,NA,"narrative",NA,NA,NA
 "402","CDISC","ADaM-IG","1.2,1.3","Medium","AVAL is not populated or ATOXGRH is not populated, and ATOXDSCH is populated",NA,NA,"narrative",NA,NA,NA
 "403","CDISC","ADaM-IG","1.2,1.3","Medium","Within a subject, there is more than one value of ATOXDSCL for a given value of PARAM, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
@@ -214,11 +179,7 @@
 "58","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable with a suffix of DT is not a numeric variable",NA,NA,"narrative",NA,NA,NA
 "580","CDISC","ADaM-IG","1.2,1.3","Medium","PxxSwETF is present and TRTxxP is not present for the same ""xx"" value",NA,NA,"narrative",NA,NA,NA
 "583","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of BCHGCATy for a given value of BCHG and y, where y is an integer [1-99, not zero-padded]",NA,NA,"narrative",NA,NA,NA
-"584","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BCHGCATy for a given value of BCHGCAyN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: BCHGCAyN operator: is_not_unique_relationship value: related_name: BCHGCATy group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"585","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BCHGCAyN for a given value of BCHGCATy, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: BCHGCATy operator: is_not_unique_relationship value: related_name: BCHGCAyN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
 "587","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of PBCHGCAy for a given value of PBCHG and y, where y is a single-digit integer [1-9]",NA,NA,"narrative",NA,NA,NA
-"588","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of PBCHGCAy for a given value of PBCHGCyN, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: PBCHGCyN operator: is_not_unique_relationship value: related_name: PBCHGCAy group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
-"589","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of PBCHGCyN for a given value of PBCHGCAy, considering only those rows on which both variables are populated","paired-var-consistency-param","expand: ""y"" all: - name: PBCHGCAy operator: is_not_unique_relationship value: related_name: PBCHGCyN group_by: - PARAMCD","predicate","2026-04-21T21:48:40Z",NA,NA
 "59","CDISC","ADaM-IG","1.0","Medium","A variable with a suffix of TM is not a numeric variable",NA,NA,"narrative",NA,NA,NA
 "592","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APERSDT is not equal to the value of variable APxxSDT where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
 "593","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of APERSTM is not equal to the value of variable APxxSTM where xx equals the value of APERIOD",NA,NA,"narrative",NA,NA,NA
@@ -323,8 +284,6 @@
 "735","CDISC","ADaM-IG","1.3","Medium","Within a given value of PARAMCD where either BASE or BASEC are populated, BASETYPE is populated for at least one record and is not populated for at least one record",NA,NA,"narrative",NA,NA,NA
 "736","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTy for a given value of SHIFTyN, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "737","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of SHIFTyN for a given value of SHIFTy, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
-"740","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a dataset, there is more than one value of PARAM for a given value of PARAMN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: PARAMN operator: is_not_unique_relationship value: related_name: PARAM","predicate","2026-04-21T21:48:01Z",NA,NA
-"741","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a dataset, there is more than one value of PARAMN for a given value of PARAM, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: PARAM operator: is_not_unique_relationship value: related_name: PARAMN","predicate","2026-04-21T21:48:01Z",NA,NA
 "742","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of AVALC for a given value of AVAL, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "743","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a given value of PARAMCD, there is more than one value of AVAL for a given value of AVALC, considering only those rows on which both variables are populated",NA,NA,"narrative",NA,NA,NA
 "744","CDISC","ADaM-IG","1.3","Medium","BASETYPE is populated, BTOXGR is populated, and BTOXGR is not equal to ATOXGR where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject",NA,NA,"narrative",NA,NA,NA
@@ -364,44 +323,8 @@
 "792","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of SDT has a value greater than a value of a variable with the same root and a suffix of EDT, and both variables are populated",NA,NA,"narrative",NA,NA,NA
 "793","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of STM has a value greater than a value of a variable with the same root and a suffix of ETM, and both variables are populated",NA,NA,"narrative",NA,NA,NA
 "794","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, a variable with a suffix of SDTM has a value greater than a value of a variable with the same root and a suffix of EDTM, and both variables are populated",NA,NA,"narrative",NA,NA,NA
-"797","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of PROJIDN for a given value of PROJID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: PROJID operator: is_not_unique_relationship value: related_name: PROJIDN","predicate","2026-04-21T21:48:01Z",NA,NA
-"798","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of PROJID for a given value of PROJIDN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: PROJIDN operator: is_not_unique_relationship value: related_name: PROJID","predicate","2026-04-21T21:48:01Z",NA,NA
-"802","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of STUDYIDN for a given value of STUDYID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: STUDYID operator: is_not_unique_relationship value: related_name: STUDYIDN","predicate","2026-04-21T21:48:01Z",NA,NA
-"803","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of STUDYID for a given value of STUDYIDN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: STUDYIDN operator: is_not_unique_relationship value: related_name: STUDYID","predicate","2026-04-21T21:48:01Z",NA,NA
-"807","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SUBJTYPC for a given value of SUBJTYP, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: SUBJTYP operator: is_not_unique_relationship value: related_name: SUBJTYPC","predicate","2026-04-21T21:48:01Z",NA,NA
-"808","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SUBJTYP for a given value of SUBJTYPC, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: SUBJTYPC operator: is_not_unique_relationship value: related_name: SUBJTYP","predicate","2026-04-21T21:48:01Z",NA,NA
 "81","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxP is present and xx is greater than 01 and TRT{xx-1}P is not present",NA,NA,"narrative",NA,NA,NA
-"812","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of USUBJIDN for a given value of USUBJID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: USUBJID operator: is_not_unique_relationship value: related_name: USUBJIDN","predicate","2026-04-21T21:48:01Z",NA,NA
-"813","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of USUBJID for a given value of USUBJIDN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: USUBJIDN operator: is_not_unique_relationship value: related_name: USUBJID","predicate","2026-04-21T21:48:01Z",NA,NA
-"817","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SUBJIDN for a given value of SUBJID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: SUBJID operator: is_not_unique_relationship value: related_name: SUBJIDN","predicate","2026-04-21T21:48:01Z",NA,NA
-"818","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SUBJID for a given value of SUBJIDN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: SUBJIDN operator: is_not_unique_relationship value: related_name: SUBJID","predicate","2026-04-21T21:48:01Z",NA,NA
-"822","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SITEIDN for a given value of SITEID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: SITEID operator: is_not_unique_relationship value: related_name: SITEIDN","predicate","2026-04-21T21:48:01Z",NA,NA
-"823","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SITEID for a given value of SITEIDN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: SITEIDN operator: is_not_unique_relationship value: related_name: SITEID","predicate","2026-04-21T21:48:01Z",NA,NA
-"827","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FLGREASC for a given value of FLGREAS, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: FLGREAS operator: is_not_unique_relationship value: related_name: FLGREASC","predicate","2026-04-21T21:48:01Z",NA,NA
-"828","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FLGREAS for a given value of FLGREASC, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: FLGREASC operator: is_not_unique_relationship value: related_name: FLGREAS","predicate","2026-04-21T21:48:01Z",NA,NA
-"832","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of DVIDN for a given value of DVID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: DVID operator: is_not_unique_relationship value: related_name: DVIDN","predicate","2026-04-21T21:48:01Z",NA,NA
-"833","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of DVID for a given value of DVIDN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: DVIDN operator: is_not_unique_relationship value: related_name: DVID","predicate","2026-04-21T21:48:01Z",NA,NA
-"837","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of BLQFN for a given value of BLQFL, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: BLQFL operator: is_not_unique_relationship value: related_name: BLQFN","predicate","2026-04-21T21:48:01Z",NA,NA
-"838","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of BLQFL for a given value of BLQFN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: BLQFN operator: is_not_unique_relationship value: related_name: BLQFL","predicate","2026-04-21T21:48:01Z",NA,NA
 "84","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEDT is not equal to the maximum value of all TRxxEDT variables",NA,NA,"narrative",NA,NA,NA
-"842","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ALQFN for a given value of ALQFL, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: ALQFL operator: is_not_unique_relationship value: related_name: ALQFN","predicate","2026-04-21T21:48:01Z",NA,NA
-"843","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ALQFL for a given value of ALQFN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: ALQFN operator: is_not_unique_relationship value: related_name: ALQFL","predicate","2026-04-21T21:48:01Z",NA,NA
-"847","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FORMN for a given value of FORM, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: FORM operator: is_not_unique_relationship value: related_name: FORMN","predicate","2026-04-21T21:48:01Z",NA,NA
-"848","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FORM for a given value of FORMN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: FORMN operator: is_not_unique_relationship value: related_name: FORM","predicate","2026-04-21T21:48:01Z",NA,NA
-"852","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ROUTEN for a given value of ROUTE, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: ROUTE operator: is_not_unique_relationship value: related_name: ROUTEN","predicate","2026-04-21T21:48:01Z",NA,NA
-"853","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ROUTE for a given value of ROUTEN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: ROUTEN operator: is_not_unique_relationship value: related_name: ROUTE","predicate","2026-04-21T21:48:01Z",NA,NA
-"857","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ACYCLEC for a given value of ACYCLE, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: ACYCLE operator: is_not_unique_relationship value: related_name: ACYCLEC","predicate","2026-04-21T21:48:01Z",NA,NA
-"858","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ACYCLE for a given value of ACYCLEC, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: ACYCLEC operator: is_not_unique_relationship value: related_name: ACYCLE","predicate","2026-04-21T21:48:01Z",NA,NA
-"862","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COHORTC for a given value of COHORT, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: COHORT operator: is_not_unique_relationship value: related_name: COHORTC","predicate","2026-04-21T21:48:01Z",NA,NA
-"863","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COHORT for a given value of COHORTC, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: COHORTC operator: is_not_unique_relationship value: related_name: COHORT","predicate","2026-04-21T21:48:01Z",NA,NA
-"867","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of RACEN for a given value of RACE, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: RACE operator: is_not_unique_relationship value: related_name: RACEN","predicate","2026-04-21T21:48:01Z",NA,NA
-"868","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of RACE for a given value of RACEN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: RACEN operator: is_not_unique_relationship value: related_name: RACE","predicate","2026-04-21T21:48:01Z",NA,NA
-"872","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SEXN for a given value of SEX, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: SEX operator: is_not_unique_relationship value: related_name: SEXN","predicate","2026-04-21T21:48:01Z",NA,NA
-"873","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SEX for a given value of SEXN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: SEXN operator: is_not_unique_relationship value: related_name: SEX","predicate","2026-04-21T21:48:01Z",NA,NA
-"877","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRYN for a given value of COUNTRY, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: COUNTRY operator: is_not_unique_relationship value: related_name: COUNTRYN","predicate","2026-04-21T21:48:01Z",NA,NA
-"878","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRY for a given value of COUNTRYN, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: COUNTRYN operator: is_not_unique_relationship value: related_name: COUNTRY","predicate","2026-04-21T21:48:01Z",NA,NA
-"882","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRYL for a given value of COUNTRY, considering only those rows on which both variables are populated.  ","uniqueness-grouped","expand: """" all: - name: COUNTRY operator: is_not_unique_relationship value: related_name: COUNTRYL","predicate","2026-04-21T21:48:01Z",NA,NA
-"883","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRY for a given value of COUNTRYL, considering only those rows on which both variables are populated","uniqueness-grouped","expand: """" all: - name: COUNTRYL operator: is_not_unique_relationship value: related_name: COUNTRY","predicate","2026-04-21T21:48:01Z",NA,NA
 "891","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, there is more than one value of COHORTN for a given value of COHORT",NA,NA,"narrative",NA,NA,NA
 "892","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, there is more than one value of COHORT for a given value of COHORTN",NA,NA,"narrative",NA,NA,NA
 "893","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","On a given record, there is more than one value of ACYCLEC for a given value of ACYCLE",NA,NA,"narrative",NA,NA,NA
@@ -706,496 +629,496 @@
 "CG0662","CDISC","SDTM-IG","3.2","Medium","--SEQ is in consistent chronological order",NA,NA,"narrative",NA,NA,NA
 "CG0663","CDISC","SDTM-IG","3.4","Medium","Value length = 4 characters beginning with 'AP' and ending with 2 character SDTM domain ",NA,NA,"narrative",NA,NA,NA
 "CG0664","CDISC","SDTM-IG","3.4","Medium","Variables are ordered with Identifiers first, followed by the Topic, Qualifier, and Timing variables. Within each role, variables are ordered as shown in SDTM tables in sections 3.1.1, 3.1.2, 3.1.3, 3.1.3.1, 3.1.4, and 3.1.5",NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
-NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
+NA,NA,NA,"NA",NA,NA,NA,NA,"narrative",NA,NA,NA
 "1","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ADSL dataset does not exist","submission-dataset-exists","not_exists(ADSL)","predicate","2026-04-21T20:31:18Z",NA,NA
 "102","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRTxxP","adsl-index-var-exists","any_index_missing_ref_var(APERIOD,ADSL,TRTxxP,xx)","predicate","2026-04-21T20:08:03Z",NA,NA
 "103","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","For every unique xx value of APERIOD, there is not an ADSL variable TRxxSDT","adsl-index-var-exists","any_index_missing_ref_var(APERIOD,ADSL,TRxxSDT,xx)","predicate","2026-04-21T20:08:03Z",NA,NA
@@ -1234,17 +1157,24 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "166","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BNRIND is present and ANRIND is not present","presence-pair","exists(BNRIND) & not_exists(ANRIND)","predicate","2026-04-21T09:19:57Z","find",NA
 "167","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","BNRIND is present and ABLFL is not present","presence-pair","exists(BNRIND) & not_exists(ABLFL)","predicate","2026-04-21T09:19:57Z","find",NA
 "17","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","The length of a character value is greater than 200 characters","value-all-vars-length-le","any_value_exceeds_length(200)","predicate","2026-04-21T17:40:33Z",NA,NA
+"19","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","COMPLFL is present and has a value that is not Y or N","value-flag-yn","non_empty(COMPLFL) & is_not_contained_by(COMPLFL,Y,N)","predicate","2026-04-21T21:32:39Z",NA,NA
 "194","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not present","presence-required","not_exists(PARAM)","predicate","2026-04-21T11:26:53Z","required",NA
 "195","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not present","presence-required","not_exists(PARAMCD)","predicate","2026-04-21T11:26:53Z","required",NA
 "196","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAM is not populated","value-populated-required","empty(PARAM)","predicate","2026-04-21T17:32:45Z",NA,NA
 "197","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PARAMCD is not populated","value-populated-required","empty(PARAMCD)","predicate","2026-04-21T17:32:45Z",NA,NA
+"20","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","FASFL is present and has a value that is not Y or N","value-flag-yn","non_empty(FASFL) & is_not_contained_by(FASFL,Y,N)","predicate","2026-04-21T21:32:39Z",NA,NA
 "201","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTAGyN is present and TRTAGy is not present","presence-pair","exists(TRTAGyN) & not_exists(TRTAGy)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
+"21","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ITTFL is present and has a value that is not Y or N","value-flag-yn","non_empty(ITTFL) & is_not_contained_by(ITTFL,Y,N)","predicate","2026-04-21T21:32:39Z",NA,NA
+"22","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","PPROTFL is present and has a value that is not Y or N","value-flag-yn","non_empty(PPROTFL) & is_not_contained_by(PPROTFL,Y,N)","predicate","2026-04-21T21:32:39Z",NA,NA
 "223","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, CHG is populated and is not equal to AVAL - BASE","value-arith-check","is_not_diff(CHG,AVAL,BASE)","predicate","2026-04-21T16:38:04Z",NA,NA
 "225","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PCHG is populated and is not equal to ((AVAL - BASE)/BASE)*100","value-arith-check","is_not_pct_diff(PCHG,AVAL,BASE)","predicate","2026-04-21T16:38:04Z",NA,NA
 "227","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQP for a given value of TRTSEQPN","uniqueness-grouped","is_not_unique_relationship(TRTSEQPN,TRTSEQP)","predicate","2026-04-21T11:50:50Z","unique",NA
 "228","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQPN for a given value of TRTSEQP","uniqueness-grouped","is_not_unique_relationship(TRTSEQP,TRTSEQPN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "229","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQA for a given value of TRTSEQAN","uniqueness-grouped","is_not_unique_relationship(TRTSEQAN,TRTSEQA)","predicate","2026-04-21T11:50:50Z","unique",NA
+"23","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SAFFL is present and has a value that is not Y or N","value-flag-yn","non_empty(SAFFL) & is_not_contained_by(SAFFL,Y,N)","predicate","2026-04-21T21:32:39Z",NA,NA
 "230","CDISC","ADaM-IG","1.0","Medium","There is more than one value of TRTSEQAN for a given value of TRTSEQA","uniqueness-grouped","is_not_unique_relationship(TRTSEQA,TRTSEQAN)","predicate","2026-04-21T11:50:50Z","unique",NA
+"24","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","RANDFL is present and has a value that is not Y or N","value-flag-yn","non_empty(RANDFL) & is_not_contained_by(RANDFL,Y,N)","predicate","2026-04-21T21:32:39Z",NA,NA
+"25","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ENRLFL is present and has a value that is not Y or N","value-flag-yn","non_empty(ENRLFL) & is_not_contained_by(ENRLFL,Y,N)","predicate","2026-04-21T21:32:39Z",NA,NA
 "261","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEDECOD is not present","presence-required","not_exists(AEDECOD)","predicate","2026-04-21T11:26:53Z","required",NA
 "262","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEBODSYS is not present","presence-required","not_exists(AEBODSYS)","predicate","2026-04-21T11:26:53Z","required",NA
 "268","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","ADURN is populated and ADURU is not populated","value-conditional-populated","non_empty(ADURN) & empty(ADURU)","predicate","2026-04-21T11:35:41Z","condition",NA
@@ -1270,6 +1200,24 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "310","CDISC","ADaM-IG","1.0","Medium","There is more than one value of SMQzzSC for a given value of SMQzzSCN","uniqueness-grouped","is_not_unique_relationship(SMQzzSCN,SMQzzSC)","predicate","2026-04-21T15:33:29Z",NA,NA
 "311","CDISC","ADaM-IG","1.0","Medium","There is more than one value of SMQzzSCN for a given value of SMQzzSC","uniqueness-grouped","is_not_unique_relationship(SMQzzSC,SMQzzSCN)","predicate","2026-04-21T15:33:29Z",NA,NA
 "320","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A dataset is named ADSL and the dataset label is not ""Subject-Level Analysis Dataset""","dataset-label-match","dataset_label_not(Subject-Level Analysis Dataset)","predicate","2026-04-21T20:10:58Z",NA,NA
+"327","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AVALCATy for a given value of AVALCAyN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(AVALCAyN,AVALCATy,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"328","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AVALCAyN for a given value of AVALCATy, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(AVALCATy,AVALCAyN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"329","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of BASECATy for a given value of BASECAyN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(BASECAyN,BASECATy,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"330","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of BASECAyN for a given value of BASECATy, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(BASECATy,BASECAyN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"331","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of CHGCATy for a given value of CHGCATyN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(CHGCATyN,CHGCATy,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"332","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of CHGCATyN for a given value of CHGCATy, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(CHGCATy,CHGCATyN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"333","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of PCHGCATy for a given value of PCHGCAyN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(PCHGCAyN,PCHGCATy,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"334","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of PCHGCAyN for a given value of PCHGCATy, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(PCHGCATy,PCHGCAyN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"340","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of MCRITyML for a given value of MCRITyMN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(MCRITyMN,MCRITyML,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"341","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of MCRITyMN for a given value of MCRITyML, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(MCRITyML,MCRITyMN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"342","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of ANRLO for a given value of ANRLOC","paired-var-consistency-param","is_not_unique_relationship(ANRLOC,ANRLO,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"343","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of ANRLOC for a given value of ANRLO","paired-var-consistency-param","is_not_unique_relationship(ANRLO,ANRLOC,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"344","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of ANRHI for a given value of ANRHIC","paired-var-consistency-param","is_not_unique_relationship(ANRHIC,ANRHI,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"345","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of ANRHIC for a given value of ANRHI","paired-var-consistency-param","is_not_unique_relationship(ANRHI,ANRHIC,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"347","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyLO for a given value of AyLOC","paired-var-consistency-param","is_not_unique_relationship(AyLOC,AyLO,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"348","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyLOC for a given value of AyLO","paired-var-consistency-param","is_not_unique_relationship(AyLO,AyLOC,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"350","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyHI for a given value of AyHIC","paired-var-consistency-param","is_not_unique_relationship(AyHIC,AyHI,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"351","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a parameter, there is more than one value of AyHIC for a given value of AyHI","paired-var-consistency-param","is_not_unique_relationship(AyHI,AyHIC,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
 "359","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUS for a given value of DTHCAUSN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(DTHCAUSN,DTHCAUS)","predicate","2026-04-21T11:50:50Z","unique",NA
 "360","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of DTHCAUSN for a given value of DTHCAUS, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(DTHCAUS,DTHCAUSN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "373","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","CNSR is not present","presence-required","not_exists(CNSR)","predicate","2026-04-21T11:26:53Z","required",NA
@@ -1280,16 +1228,26 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "378","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, TRTxxPN is populated and TRTxxP is not populated","value-pair-coupled","non_empty(TRTxxPN) & empty(TRTxxP)","predicate","2026-04-21T13:12:28Z",NA,NA
 "379","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRN is populated and BTOXGR is not populated","value-conditional-populated","non_empty(BTOXGRN) & empty(BTOXGR)","predicate","2026-04-21T11:35:41Z","condition",NA
 "380","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGR is populated and BTOXGRN is not populated","value-conditional-populated","non_empty(BTOXGR) & empty(BTOXGRN)","predicate","2026-04-21T11:35:41Z","condition",NA
+"381","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGR for a given value of BTOXGRN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(BTOXGRN,BTOXGR,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"382","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRN for a given value of BTOXGR, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(BTOXGR,BTOXGRN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"383","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRL for a given value of BTOXGRLN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(BTOXGRLN,BTOXGRL,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"384","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRLN for a given value of BTOXGRL, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(BTOXGRL,BTOXGRLN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
 "385","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRL is populated and BTOXGRLN is not populated","value-conditional-populated","non_empty(BTOXGRL) & empty(BTOXGRLN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "386","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRLN is populated and BTOXGRL is not populated","value-conditional-populated","non_empty(BTOXGRLN) & empty(BTOXGRL)","predicate","2026-04-21T11:35:41Z","condition",NA
+"387","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRH for a given value of BTOXGRHN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(BTOXGRHN,BTOXGRH,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"388","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BTOXGRHN for a given value of BTOXGRH, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(BTOXGRH,BTOXGRHN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
 "389","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRH is populated and BTOXGRHN is not populated","value-conditional-populated","non_empty(BTOXGRH) & empty(BTOXGRHN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "390","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, BTOXGRHN is populated and BTOXGRH is not populated","value-conditional-populated","non_empty(BTOXGRHN) & empty(BTOXGRH)","predicate","2026-04-21T11:35:41Z","condition",NA
 "391","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGR is populated and ATOXGRN is not populated","value-conditional-populated","non_empty(ATOXGR) & empty(ATOXGRN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "392","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGRN is populated and ATOXGR is not populated","value-conditional-populated","non_empty(ATOXGRN) & empty(ATOXGR)","predicate","2026-04-21T11:35:41Z","condition",NA
 "393","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGRL is populated and ATOXGRLN is not populated","value-conditional-populated","non_empty(ATOXGRL) & empty(ATOXGRLN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "394","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGRLN is populated and ATOXGRL is not populated","value-conditional-populated","non_empty(ATOXGRLN) & empty(ATOXGRL)","predicate","2026-04-21T11:35:41Z","condition",NA
+"395","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of ATOXGRL for a given value of ATOXGRLN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(ATOXGRLN,ATOXGRL,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"396","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of ATOXGRLN for a given value of ATOXGRL, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(ATOXGRL,ATOXGRLN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
 "397","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGRH is populated and ATOXGRHN is not populated","value-conditional-populated","non_empty(ATOXGRH) & empty(ATOXGRHN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "398","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ATOXGRHN is populated and ATOXGRH is not populated","value-conditional-populated","non_empty(ATOXGRHN) & empty(ATOXGRH)","predicate","2026-04-21T11:35:41Z","condition",NA
+"399","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of ATOXGRH for a given value of ATOXGRHN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(ATOXGRHN,ATOXGRH,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"400","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of ATOXGRHN for a given value of ATOXGRH, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(ATOXGRH,ATOXGRHN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
 "407","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ABLFN is populated and ABLFL is not populated","value-conditional-populated","non_empty(ABLFN) & empty(ABLFL)","predicate","2026-04-21T11:35:41Z","condition",NA
 "408","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, ABLFL is populated and ABLFN is not populated","value-conditional-populated","non_empty(ABLFL) & empty(ABLFN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "409","CDISC","ADaM-IG","1.2,1.3","Medium","There is more than one value of ABLFN for a given value of ABLFL, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ABLFL,ABLFN)","predicate","2026-04-21T11:50:50Z","unique",NA
@@ -1427,7 +1385,11 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "569","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","LVOTFN is present and LVOTFL is not present","presence-pair","exists(LVOTFN) & not_exists(LVOTFL)","predicate","2026-04-21T09:19:57Z","find",NA
 "581","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","None of TRTP, TRTPGy, TRTA, and TRTAGy are present and none of the character treatment variables in ADSL defined in the IG are present","adsl-treatment-presence","treatment_var_absent_across_datasets(TRTP,TRTPGy,TRTA,TRTAGy,TRTxxP,TRTxxA,ADSL)","predicate","2026-04-21T20:13:13Z",NA,NA
 "582","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD for a subject, BCHG is populated and is not equal to BASE-AVAL","value-arith-check","is_not_diff(BCHG,BASE,AVAL)","predicate","2026-04-21T16:38:04Z",NA,NA
+"584","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BCHGCATy for a given value of BCHGCAyN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(BCHGCAyN,BCHGCATy,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"585","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of BCHGCAyN for a given value of BCHGCATy, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(BCHGCATy,BCHGCAyN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
 "586","CDISC","ADaM-IG","1.2,1.3","Medium","Within a given value of PARAMCD for a subject, PBCHG is populated and is not equal to ((BASE-AVAL)/AVAL)*100","value-arith-check","is_not_pct_diff(PBCHG,BASE,AVAL)","predicate","2026-04-21T16:38:04Z",NA,NA
+"588","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of PBCHGCAy for a given value of PBCHGCyN, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(PBCHGCyN,PBCHGCAy,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
+"589","CDISC","ADaM-IG","1.2,1.3","Medium","Within a parameter, there is more than one value of PBCHGCyN for a given value of PBCHGCAy, considering only those rows on which both variables are populated","paired-var-consistency-param","is_not_unique_relationship(PBCHGCAy,PBCHGCyN,PARAMCD)","predicate","2026-04-21T21:48:40Z",NA,NA
 "590","CDISC","ADaM-IG","1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical data types","adsl-var-attr-consistency","shared_attr_mismatch(type,ADSL)","predicate","2026-04-21T20:05:57Z",NA,NA
 "591","CDISC","ADaM-IG","1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical values for a given value of USUBJID","adsl-var-values-consistency","shared_values_mismatch_by_key(ADSL,USUBJID)","predicate","2026-04-21T20:31:18Z",NA,NA
 "600","CDISC","ADaM-IG","1.2,1.3","Medium","On a given record, the value of ASPRSDTM is not equal to the value of variable PxxSwSDM where xx equals the value of APERIOD and w equals the value of ASPER","value-compare-subject-templated-ref","not_equal_subject_templated_ref(ASPRSDTM,ADSL,PxxSwSDM,APERIOD,ASPER)","predicate","2026-04-21T20:31:18Z",NA,NA
@@ -1482,6 +1444,8 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "726","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of APERIOD for a given value of APERIODC, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(APERIODC,APERIOD)","predicate","2026-04-21T11:50:50Z","unique",NA
 "738","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of PARAM for a given value of PARAMCD, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(PARAMCD,PARAM)","predicate","2026-04-21T11:50:50Z","unique",NA
 "739","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of PARAMCD for a given value of PARAM, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(PARAM,PARAMCD)","predicate","2026-04-21T11:50:50Z","unique",NA
+"740","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a dataset, there is more than one value of PARAM for a given value of PARAMN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(PARAMN,PARAM)","predicate","2026-04-21T21:48:01Z",NA,NA
+"741","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","Within a dataset, there is more than one value of PARAMN for a given value of PARAM, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(PARAM,PARAMN)","predicate","2026-04-21T21:48:01Z",NA,NA
 "75","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxPN is present and TRTxxP is not present","presence-pair","exists(TRTxxPN) & not_exists(TRTxxP)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
 "752","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQP for a given value of TRTSEQPN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTSEQPN,TRTSEQP)","predicate","2026-04-21T11:50:50Z","unique",NA
 "753","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of TRTSEQPN for a given value of TRTSEQP, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(TRTSEQP,TRTSEQPN)","predicate","2026-04-21T11:50:50Z","unique",NA
@@ -1503,61 +1467,97 @@ NA,NA,NA,NA,NA,NA,NA,NA,"narrative",NA,NA,NA
 "784","CDISC","ADaM-IG","1.1,1.2,1.3","Medium","There is more than one value of ATOXGRN for a given value of ATOXGR, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ATOXGR,ATOXGRN)","predicate","2026-04-21T11:50:50Z","unique",NA
 "795","CDISC","ADaM-IG","1.3","Medium","PROJID is populated and PROJIDN is not populated","value-conditional-populated","non_empty(PROJID) & empty(PROJIDN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "796","CDISC","ADaM-IG","1.3","Medium","PROJIDN is populated and PROJID is not populated","value-conditional-populated","non_empty(PROJIDN) & empty(PROJID)","predicate","2026-04-21T11:35:41Z","condition",NA
+"797","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of PROJIDN for a given value of PROJID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(PROJID,PROJIDN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"798","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of PROJID for a given value of PROJIDN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(PROJIDN,PROJID)","predicate","2026-04-21T21:48:01Z",NA,NA
 "799","CDISC","ADaM-IG","1.3","Medium","PROJIDN is present and PROJID is not present","presence-pair","exists(PROJIDN) & not_exists(PROJID)","predicate","2026-04-21T09:19:57Z","find",NA
 "80","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTxxA is present and TRTxxP is not present","presence-pair","exists(TRTxxA) & not_exists(TRTxxP)","predicate","2026-04-21T10:17:01Z","find","xx/y-indexed via expand: key"
 "800","CDISC","ADaM-IG","1.3","Medium","STUDYID is populated and STUDYIDN is not populated","value-conditional-populated","non_empty(STUDYID) & empty(STUDYIDN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "801","CDISC","ADaM-IG","1.3","Medium","STUDYIDN is populated and STUDYID is not populated","value-conditional-populated","non_empty(STUDYIDN) & empty(STUDYID)","predicate","2026-04-21T11:35:41Z","condition",NA
+"802","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of STUDYIDN for a given value of STUDYID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(STUDYID,STUDYIDN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"803","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of STUDYID for a given value of STUDYIDN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(STUDYIDN,STUDYID)","predicate","2026-04-21T21:48:01Z",NA,NA
 "804","CDISC","ADaM-IG","1.3","Medium","STUDYIDN is present and STUDYID is not present","presence-pair","exists(STUDYIDN) & not_exists(STUDYID)","predicate","2026-04-21T09:19:57Z","find",NA
 "805","CDISC","ADaM-IG","1.3","Medium","SUBJTYP is populated and SUBJTYPC is not populated","value-conditional-populated","non_empty(SUBJTYP) & empty(SUBJTYPC)","predicate","2026-04-21T11:35:41Z","condition",NA
 "806","CDISC","ADaM-IG","1.3","Medium","SUBJTYPC is populated and SUBJTYP is not populated","value-conditional-populated","non_empty(SUBJTYPC) & empty(SUBJTYP)","predicate","2026-04-21T11:35:41Z","condition",NA
+"807","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SUBJTYPC for a given value of SUBJTYP, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(SUBJTYP,SUBJTYPC)","predicate","2026-04-21T21:48:01Z",NA,NA
+"808","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SUBJTYP for a given value of SUBJTYPC, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(SUBJTYPC,SUBJTYP)","predicate","2026-04-21T21:48:01Z",NA,NA
 "809","CDISC","ADaM-IG","1.3","Medium","SUBJTYPC is present and SUBJTYP is not present","presence-pair","exists(SUBJTYPC) & not_exists(SUBJTYP)","predicate","2026-04-21T09:19:57Z","find",NA
 "810","CDISC","ADaM-IG","1.3","Medium","USUBJID is populated and USUBJIDN is not populated","value-conditional-populated","non_empty(USUBJID) & empty(USUBJIDN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "811","CDISC","ADaM-IG","1.3","Medium","USUBJIDN is populated and USUBJID is not populated","value-conditional-populated","non_empty(USUBJIDN) & empty(USUBJID)","predicate","2026-04-21T11:35:41Z","condition",NA
+"812","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of USUBJIDN for a given value of USUBJID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(USUBJID,USUBJIDN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"813","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of USUBJID for a given value of USUBJIDN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(USUBJIDN,USUBJID)","predicate","2026-04-21T21:48:01Z",NA,NA
 "814","CDISC","ADaM-IG","1.3","Medium","USUBJIDN is present and USUBJID is not present","presence-pair","exists(USUBJIDN) & not_exists(USUBJID)","predicate","2026-04-21T09:19:57Z","find",NA
 "815","CDISC","ADaM-IG","1.3","Medium","SUBJID is populated and SUBJIDN is not populated","value-conditional-populated","non_empty(SUBJID) & empty(SUBJIDN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "816","CDISC","ADaM-IG","1.3","Medium","SUBJIDN is populated and SUBJID is not populated","value-conditional-populated","non_empty(SUBJIDN) & empty(SUBJID)","predicate","2026-04-21T11:35:41Z","condition",NA
+"817","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SUBJIDN for a given value of SUBJID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(SUBJID,SUBJIDN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"818","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SUBJID for a given value of SUBJIDN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(SUBJIDN,SUBJID)","predicate","2026-04-21T21:48:01Z",NA,NA
 "819","CDISC","ADaM-IG","1.3","Medium","SUBJIDN is present and SUBJID is not present","presence-pair","exists(SUBJIDN) & not_exists(SUBJID)","predicate","2026-04-21T09:19:57Z","find",NA
 "820","CDISC","ADaM-IG","1.3","Medium","SITEID is populated and SITEIDN is not populated","value-conditional-populated","non_empty(SITEID) & empty(SITEIDN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "821","CDISC","ADaM-IG","1.3","Medium","SITEIDN is populated and SITEID is not populated","value-conditional-populated","non_empty(SITEIDN) & empty(SITEID)","predicate","2026-04-21T11:35:41Z","condition",NA
+"822","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SITEIDN for a given value of SITEID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(SITEID,SITEIDN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"823","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SITEID for a given value of SITEIDN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(SITEIDN,SITEID)","predicate","2026-04-21T21:48:01Z",NA,NA
 "824","CDISC","ADaM-IG","1.3","Medium","SITEIDN is present and SITEID is not present","presence-pair","exists(SITEIDN) & not_exists(SITEID)","predicate","2026-04-21T09:19:57Z","find",NA
 "825","CDISC","ADaM-IG","1.3","Medium","FLGREAS is populated and FLGREASC is not populated","value-conditional-populated","non_empty(FLGREAS) & empty(FLGREASC)","predicate","2026-04-21T11:35:41Z","condition",NA
 "826","CDISC","ADaM-IG","1.3","Medium","FLGREASC is populated and FLGREAS is not populated","value-conditional-populated","non_empty(FLGREASC) & empty(FLGREAS)","predicate","2026-04-21T11:35:41Z","condition",NA
+"827","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FLGREASC for a given value of FLGREAS, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(FLGREAS,FLGREASC)","predicate","2026-04-21T21:48:01Z",NA,NA
+"828","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FLGREAS for a given value of FLGREASC, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(FLGREASC,FLGREAS)","predicate","2026-04-21T21:48:01Z",NA,NA
 "829","CDISC","ADaM-IG","1.3","Medium","FLGREASC is present and FLGREAS is not present","presence-pair","exists(FLGREASC) & not_exists(FLGREAS)","predicate","2026-04-21T09:19:57Z","find",NA
 "830","CDISC","ADaM-IG","1.3","Medium","DVID is populated and DVIDN is not populated","value-conditional-populated","non_empty(DVID) & empty(DVIDN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "831","CDISC","ADaM-IG","1.3","Medium","DVIDN is populated and DVID is not populated","value-conditional-populated","non_empty(DVIDN) & empty(DVID)","predicate","2026-04-21T11:35:41Z","condition",NA
+"832","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of DVIDN for a given value of DVID, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(DVID,DVIDN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"833","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of DVID for a given value of DVIDN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(DVIDN,DVID)","predicate","2026-04-21T21:48:01Z",NA,NA
 "834","CDISC","ADaM-IG","1.3","Medium","DVIDN is present and DVID is not present","presence-pair","exists(DVIDN) & not_exists(DVID)","predicate","2026-04-21T09:19:57Z","find",NA
 "835","CDISC","ADaM-IG","1.3","Medium","BLQFL is populated and BLQFN is not populated","value-conditional-populated","non_empty(BLQFL) & empty(BLQFN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "836","CDISC","ADaM-IG","1.3","Medium","BLQFN is populated and BLQFL is not populated","value-conditional-populated","non_empty(BLQFN) & empty(BLQFL)","predicate","2026-04-21T11:35:41Z","condition",NA
+"837","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of BLQFN for a given value of BLQFL, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(BLQFL,BLQFN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"838","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of BLQFL for a given value of BLQFN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(BLQFN,BLQFL)","predicate","2026-04-21T21:48:01Z",NA,NA
 "839","CDISC","ADaM-IG","1.3","Medium","BLQFN is present and BLQFL is not present","presence-pair","exists(BLQFN) & not_exists(BLQFL)","predicate","2026-04-21T09:19:57Z","find",NA
 "840","CDISC","ADaM-IG","1.3","Medium","ALQFL is populated and ALQFN is not populated","value-conditional-populated","non_empty(ALQFL) & empty(ALQFN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "841","CDISC","ADaM-IG","1.3","Medium","ALQFN is populated and ALQFL is not populated","value-conditional-populated","non_empty(ALQFN) & empty(ALQFL)","predicate","2026-04-21T11:35:41Z","condition",NA
+"842","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ALQFN for a given value of ALQFL, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(ALQFL,ALQFN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"843","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ALQFL for a given value of ALQFN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ALQFN,ALQFL)","predicate","2026-04-21T21:48:01Z",NA,NA
 "844","CDISC","ADaM-IG","1.3","Medium","ALQFN is present and ALQFL is not present","presence-pair","exists(ALQFN) & not_exists(ALQFL)","predicate","2026-04-21T09:19:57Z","find",NA
 "845","CDISC","ADaM-IG","1.3","Medium","FORM is populated and FORMN is not populated","value-conditional-populated","non_empty(FORM) & empty(FORMN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "846","CDISC","ADaM-IG","1.3","Medium","FORMN is populated and FORM is not populated","value-conditional-populated","non_empty(FORMN) & empty(FORM)","predicate","2026-04-21T11:35:41Z","condition",NA
+"847","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FORMN for a given value of FORM, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(FORM,FORMN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"848","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of FORM for a given value of FORMN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(FORMN,FORM)","predicate","2026-04-21T21:48:01Z",NA,NA
 "849","CDISC","ADaM-IG","1.3","Medium","FORMN is present and FORM is not present","presence-pair","exists(FORMN) & not_exists(FORM)","predicate","2026-04-21T09:19:57Z","find",NA
 "85","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical labels","adsl-var-attr-consistency","shared_attr_mismatch(label,ADSL)","predicate","2026-04-21T20:05:57Z",NA,NA
 "850","CDISC","ADaM-IG","1.3","Medium","ROUTE is populated and ROUTEN is not populated","value-conditional-populated","non_empty(ROUTE) & empty(ROUTEN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "851","CDISC","ADaM-IG","1.3","Medium","ROUTEN is populated and ROUTE is not populated","value-conditional-populated","non_empty(ROUTEN) & empty(ROUTE)","predicate","2026-04-21T11:35:41Z","condition",NA
+"852","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ROUTEN for a given value of ROUTE, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(ROUTE,ROUTEN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"853","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ROUTE for a given value of ROUTEN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ROUTEN,ROUTE)","predicate","2026-04-21T21:48:01Z",NA,NA
 "854","CDISC","ADaM-IG","1.3","Medium","ROUTEN is present and ROUTE is not present","presence-pair","exists(ROUTEN) & not_exists(ROUTE)","predicate","2026-04-21T09:19:57Z","find",NA
 "855","CDISC","ADaM-IG","1.3","Medium","ACYCLE is populated and ACYCLEC is not populated","value-conditional-populated","non_empty(ACYCLE) & empty(ACYCLEC)","predicate","2026-04-21T11:35:41Z","condition",NA
 "856","CDISC","ADaM-IG","1.3","Medium","ACYCLEC is populated and ACYCLE is not populated","value-conditional-populated","non_empty(ACYCLEC) & empty(ACYCLE)","predicate","2026-04-21T11:35:41Z","condition",NA
+"857","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ACYCLEC for a given value of ACYCLE, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(ACYCLE,ACYCLEC)","predicate","2026-04-21T21:48:01Z",NA,NA
+"858","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of ACYCLE for a given value of ACYCLEC, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(ACYCLEC,ACYCLE)","predicate","2026-04-21T21:48:01Z",NA,NA
 "859","CDISC","ADaM-IG","1.3","Medium","ACYCLEC is present and ACYCLE is not present","presence-pair","exists(ACYCLEC) & not_exists(ACYCLE)","predicate","2026-04-21T09:19:57Z","find",NA
 "86","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","A variable is present with the same name as a variable present in ADSL but the variables do not have identical formats","adsl-var-attr-consistency","shared_attr_mismatch(format,ADSL)","predicate","2026-04-21T20:05:57Z",NA,NA
 "860","CDISC","ADaM-IG","1.3","Medium","COHORT is populated and COHORTC is not populated","value-conditional-populated","non_empty(COHORT) & empty(COHORTC)","predicate","2026-04-21T11:35:41Z","condition",NA
 "861","CDISC","ADaM-IG","1.3","Medium","COHORTC is populated and COHORT is not populated","value-conditional-populated","non_empty(COHORTC) & empty(COHORT)","predicate","2026-04-21T11:35:41Z","condition",NA
+"862","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COHORTC for a given value of COHORT, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(COHORT,COHORTC)","predicate","2026-04-21T21:48:01Z",NA,NA
+"863","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COHORT for a given value of COHORTC, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(COHORTC,COHORT)","predicate","2026-04-21T21:48:01Z",NA,NA
 "864","CDISC","ADaM-IG","1.3","Medium","COHORTC is present and COHORT is not present","presence-pair","exists(COHORTC) & not_exists(COHORT)","predicate","2026-04-21T09:19:57Z","find",NA
 "865","CDISC","ADaM-IG","1.3","Medium","RACE is populated and RACEN is not populated","value-conditional-populated","non_empty(RACE) & empty(RACEN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "866","CDISC","ADaM-IG","1.3","Medium","RACEN is populated and RACE is not populated","value-conditional-populated","non_empty(RACEN) & empty(RACE)","predicate","2026-04-21T11:35:41Z","condition",NA
+"867","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of RACEN for a given value of RACE, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(RACE,RACEN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"868","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of RACE for a given value of RACEN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(RACEN,RACE)","predicate","2026-04-21T21:48:01Z",NA,NA
 "869","CDISC","ADaM-IG","1.3","Medium","RACEN is present and RACE is not present","presence-pair","exists(RACEN) & not_exists(RACE)","predicate","2026-04-21T09:19:57Z","find",NA
 "870","CDISC","ADaM-IG","1.3","Medium","SEX is populated and SEXN is not populated","value-conditional-populated","non_empty(SEX) & empty(SEXN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "871","CDISC","ADaM-IG","1.3","Medium","SEXN is populated and SEX is not populated","value-conditional-populated","non_empty(SEXN) & empty(SEX)","predicate","2026-04-21T11:35:41Z","condition",NA
+"872","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SEXN for a given value of SEX, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(SEX,SEXN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"873","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of SEX for a given value of SEXN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(SEXN,SEX)","predicate","2026-04-21T21:48:01Z",NA,NA
 "874","CDISC","ADaM-IG","1.3","Medium","SEXN is present and SEX is not present","presence-pair","exists(SEXN) & not_exists(SEX)","predicate","2026-04-21T09:19:57Z","find",NA
 "875","CDISC","ADaM-IG","1.3","Medium","COUNTRY is populated and COUNTRYN is not populated","value-conditional-populated","non_empty(COUNTRY) & empty(COUNTRYN)","predicate","2026-04-21T11:35:41Z","condition",NA
 "876","CDISC","ADaM-IG","1.3","Medium","COUNTRYN is populated and COUNTRY is not populated","value-conditional-populated","non_empty(COUNTRYN) & empty(COUNTRY)","predicate","2026-04-21T11:35:41Z","condition",NA
+"877","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRYN for a given value of COUNTRY, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(COUNTRY,COUNTRYN)","predicate","2026-04-21T21:48:01Z",NA,NA
+"878","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRY for a given value of COUNTRYN, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(COUNTRYN,COUNTRY)","predicate","2026-04-21T21:48:01Z",NA,NA
 "879","CDISC","ADaM-IG","1.3","Medium","COUNTRYN is present and COUNTRY is not present","presence-pair","exists(COUNTRYN) & not_exists(COUNTRY)","predicate","2026-04-21T09:19:57Z","find",NA
 "88","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","STUDYID is not present","presence-required","not_exists(STUDYID)","predicate","2026-04-21T11:26:53Z","required",NA
 "880","CDISC","ADaM-IG","1.3","Medium","COUNTRY is populated and COUNTRYL is not populated","value-conditional-populated","non_empty(COUNTRY) & empty(COUNTRYL)","predicate","2026-04-21T11:35:41Z","condition",NA
 "881","CDISC","ADaM-IG","1.3","Medium","COUNTRYL is populated and COUNTRY is not populated","value-conditional-populated","non_empty(COUNTRYL) & empty(COUNTRY)","predicate","2026-04-21T11:35:41Z","condition",NA
+"882","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRYL for a given value of COUNTRY, considering only those rows on which both variables are populated.  ","uniqueness-grouped","is_not_unique_relationship(COUNTRY,COUNTRYL)","predicate","2026-04-21T21:48:01Z",NA,NA
+"883","CDISC","ADaM-IG","1.3","Medium","Within a dataset, there is more than one value of COUNTRY for a given value of COUNTRYL, considering only those rows on which both variables are populated","uniqueness-grouped","is_not_unique_relationship(COUNTRYL,COUNTRY)","predicate","2026-04-21T21:48:01Z",NA,NA
 "884","CDISC","ADaM-IG","1.3","Medium","COUNTRYL is present and COUNTRY is not present","presence-pair","exists(COUNTRYL) & not_exists(COUNTRY)","predicate","2026-04-21T09:19:57Z","find",NA
 "885","CDISC","ADaM-IG","1.3","Medium","USUBJIDN is not present","presence-required","not_exists(USUBJIDN)","predicate","2026-04-21T11:26:53Z","required",NA
 "886","CDISC","ADaM-IG","1.3","Medium","AFRLT is not present","presence-required","not_exists(AFRLT)","predicate","2026-04-21T11:26:53Z","required",NA
