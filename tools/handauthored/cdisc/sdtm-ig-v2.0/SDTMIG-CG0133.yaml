@@ -12,8 +12,15 @@ scope:
   exclude_domains: []
 variable: DTHFL
 check:
-  narrative: DTHFL = 'Y'
-  condition: DD record present for subject
+  all:
+  - operator: has_next_corresponding_record
+    name: USUBJID
+    value:
+      reference_dataset: DD
+      by: USUBJID
+  - operator: not_equal_to
+    name: DTHFL
+    value: 'Y'
 outcome:
   message: DTHFL = 'Y'
   severity: Medium
@@ -27,5 +34,4 @@ provenance:
     of death.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: DSTERM
 check:
-  narrative: DSTERM = 'COMPLETED' or the reason for discontinuation
-  condition: DSCAT = 'DISPOSITION EVENT'
+  all:
+  - operator: is_contained_by
+    name: DSCAT
+    value: DISPOSITION EVENT
+  - operator: empty
+    name: DSTERM
 outcome:
   message: DSTERM = 'COMPLETED' or the reason for discontinuation
   severity: Medium
@@ -26,5 +30,4 @@ provenance:
     event
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

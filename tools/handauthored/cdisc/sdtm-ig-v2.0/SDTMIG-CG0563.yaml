@@ -30,5 +30,4 @@ provenance:
     tool, such as an eCRF or ePRO device, then RSDRVL should be "Y".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: blocker:requires-data-collection-tool-metadata

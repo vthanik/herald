@@ -24,5 +24,4 @@ provenance:
     could be 'UNKNOWN'.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: blocker:requires-subject-intent-metadata

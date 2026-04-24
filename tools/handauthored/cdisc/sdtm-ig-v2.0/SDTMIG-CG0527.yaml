@@ -25,5 +25,4 @@ provenance:
     in SUPPDM
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: blocker:requires-supp-qnam-rowcount-op

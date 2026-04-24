@@ -26,5 +26,4 @@ provenance:
     terminology, in which case FAOBJ should then match the value in --DECOD.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: blocker:requires-dynamic-parent-domain-link-op

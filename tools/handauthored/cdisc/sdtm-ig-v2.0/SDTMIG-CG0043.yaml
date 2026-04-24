@@ -12,8 +12,15 @@ scope:
   exclude_domains: []
 variable: AESMIE
 check:
-  narrative: AESMIE = 'Y'
-  condition: Record present in SUPPAE where SUPPAE.QNAM=AESOSP
+  all:
+  - operator: subject_has_matching_row
+    name: USUBJID
+    reference_dataset: SUPPAE
+    reference_column: QNAM
+    expected_value: AESOSP
+  - operator: not_equal_to
+    name: AESMIE
+    value: 'Y'
 outcome:
   message: AESMIE = 'Y'
   severity: Medium
@@ -26,5 +33,4 @@ provenance:
     the SUPPAE dataset using the standard supplemental qualifier name code AESOSP.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

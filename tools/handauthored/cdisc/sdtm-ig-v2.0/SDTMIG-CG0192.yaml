@@ -21,5 +21,4 @@ provenance:
   cited_guidance: 3. MBTESTCD value for organisms present in a specimen is 'ORGANISM'.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: blocker:no-machine-checkable-condition

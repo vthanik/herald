@@ -12,9 +12,35 @@ scope:
   exclude_domains: []
 variable: AESER
 check:
-  narrative: AESER = 'Y'
-  condition: AESCAN = 'Y' or AESCONG = 'Y' or AESDISAB = 'Y' or AESDTH = 'Y' or AESHOSP
-    = 'Y' or AESLIFE = 'Y' or AESOD = 'Y' or AESMIE = 'Y'
+  all:
+  - any:
+    - operator: equal_to
+      name: AESCAN
+      value: 'Y'
+    - operator: equal_to
+      name: AESCONG
+      value: 'Y'
+    - operator: equal_to
+      name: AESDISAB
+      value: 'Y'
+    - operator: equal_to
+      name: AESDTH
+      value: 'Y'
+    - operator: equal_to
+      name: AESHOSP
+      value: 'Y'
+    - operator: equal_to
+      name: AESLIFE
+      value: 'Y'
+    - operator: equal_to
+      name: AESOD
+      value: 'Y'
+    - operator: equal_to
+      name: AESMIE
+      value: 'Y'
+  - operator: not_equal_to
+    name: AESER
+    value: 'Y'
 outcome:
   message: AESER = 'Y'
   severity: Medium
@@ -29,5 +55,4 @@ provenance:
     However, if Serious is answered "Yes, " at least one of them will have a "Y" response.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

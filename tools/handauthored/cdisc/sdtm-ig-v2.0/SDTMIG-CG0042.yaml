@@ -12,9 +12,31 @@ scope:
   exclude_domains: []
 variable: AESER
 check:
-  narrative: AESER = 'N'
-  condition: AESCAN ^= 'Y' and AESCONG ^= 'Y' and AESDISAB ^= 'Y' and AESDTH ^= 'Y'
-    and AESHOSP ^= 'Y' and AESLIFE ^= 'Y' and AESOD ^= 'Y' and AESMIE ^= 'Y'
+  all:
+  - operator: not_equal_to
+    name: AESCAN
+    value: 'Y'
+  - operator: not_equal_to
+    name: AESCONG
+    value: 'Y'
+  - operator: not_equal_to
+    name: AESDISAB
+    value: 'Y'
+  - operator: not_equal_to
+    name: AESDTH
+    value: 'Y'
+  - operator: not_equal_to
+    name: AESHOSP
+    value: 'Y'
+  - operator: not_equal_to
+    name: AESLIFE
+    value: 'Y'
+  - operator: not_equal_to
+    name: AESOD
+    value: 'Y'
+  - operator: not_equal_to
+    name: AESER
+    value: 'N'
 outcome:
   message: AESER = 'N'
   severity: Medium
@@ -29,5 +51,4 @@ provenance:
     However, if Serious is answered "Yes, " at least one of them will have a "Y" response.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

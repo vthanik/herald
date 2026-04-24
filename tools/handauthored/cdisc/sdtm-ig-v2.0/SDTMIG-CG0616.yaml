@@ -25,5 +25,4 @@ provenance:
     to be present.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: blocker:no-machine-checkable-condition
