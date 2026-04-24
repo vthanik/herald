@@ -13,9 +13,12 @@ scope:
 variable: R2AyHI where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: R2AyHI is present
+  expand: 'y'
+  all:
+  - name: R2AyHI
+    operator: exists
+  - name: AyHI
+    operator: not_exists
 outcome:
   message: R2AyHI is present and AyHI is not present
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     state: "AyHI must exist in the ADaM dataset."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

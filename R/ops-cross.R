@@ -440,6 +440,58 @@ op_ref_col_populated <- function(data, ctx, name, value) {
     cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
   )
 )
+# --- max_n_records_per_group_matching ----------------------------------------
+# Fires on ALL rows in a group when more than max_n rows within that group
+# have data[[name]] equal to value (after rtrim). Group is defined by the
+# character vector group_keys.
+#
+# Returns:
+#   TRUE  -- row's group violates the max_n constraint
+#   FALSE -- row's group is within the limit
+#   NA    -- name column or any group_keys column is absent
+
+op_max_n_records_per_group_matching <- function(data, ctx, name, value,
+                                                group_keys, max_n = 1L) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  if (is.null(data[[name]])) return(rep(NA, n))
+  gk <- as.character(unlist(group_keys))
+  for (k in gk) {
+    if (is.null(data[[k]])) return(rep(NA, n))
+  }
+  max_n <- as.integer(max_n)
+  # rtrim + case-sensitive match
+  raw <- as.character(data[[name]])
+  raw <- sub("\\s+$", "", raw)
+  matched <- !is.na(raw) & raw == as.character(value)
+  # Build composite group key (paste-sep is safe; unique separator)
+  if (length(gk) == 1L) {
+    gkey <- as.character(data[[gk]])
+  } else {
+    gkey <- do.call(paste, c(lapply(gk, function(k) as.character(data[[k]])),
+                             list(sep = "\u0001")))
+  }
+  # Count matching rows per group
+  cnt <- tapply(matched, gkey, sum, na.rm = TRUE)
+  # Map back to rows; rows in violating groups fire
+  row_cnt <- cnt[gkey]
+  as.logical(row_cnt > max_n)
+}
+.register_op(
+  "max_n_records_per_group_matching", op_max_n_records_per_group_matching,
+  meta = list(
+    kind = "cross",
+    summary = "fires when more than max_n rows per group match a value",
+    arg_schema = list(
+      name       = list(type = "string",  required = TRUE),
+      value      = list(type = "string",  required = TRUE),
+      group_keys = list(type = "array",   required = TRUE),
+      max_n      = list(type = "integer", required = FALSE, default = 1L)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
 .register_op(
   "has_next_corresponding_record", op_has_next_corresponding_record,
   meta = list(

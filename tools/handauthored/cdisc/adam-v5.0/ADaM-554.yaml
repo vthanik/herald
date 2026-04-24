@@ -15,9 +15,12 @@ scope:
 variable: SHIFTyN where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SHIFTyN is present
+  expand: 'y'
+  all:
+  - name: SHIFTyN
+    operator: exists
+  - name: SHIFTy
+    operator: not_exists
 outcome:
   message: SHIFTyN is present and SHIFTy is not present
   severity: Medium
@@ -30,5 +33,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

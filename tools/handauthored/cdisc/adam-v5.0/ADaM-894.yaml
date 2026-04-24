@@ -16,9 +16,12 @@ scope:
 variable: ACYCLE
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: ''
+  all:
+  - name: ACYCLEC
+    operator: is_not_unique_relationship
+    value:
+      related_name: ACYCLE
 outcome:
   message: On a given record, there is more than one value of ACYCLE for a given value
     of ACYCLEC
@@ -32,4 +35,4 @@ provenance:
     on a given record, either both must be populated or both must be null.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

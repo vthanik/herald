@@ -28,3 +28,12 @@
 "790","ByIND","AyIND","- USUBJID
 - PARAMCD
 - BASETYPE","populated","y"
+"152","BASE","AVAL","- USUBJID
+- PARAMCD
+- BASETYPE","populated",""
+"165","BTOXGR","ATOXGR","- USUBJID
+- PARAMCD
+- BASETYPE","populated",""
+"168","BNRIND","ANRIND","- USUBJID
+- PARAMCD
+- BASETYPE","populated",""

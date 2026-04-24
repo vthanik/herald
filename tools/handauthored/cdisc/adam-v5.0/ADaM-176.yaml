@@ -12,9 +12,13 @@ scope:
 variable: ABLFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: ''
+  all:
+  - operator: non_empty
+    name: ABLFL
+  - operator: is_not_contained_by
+    name: ABLFL
+    value: 'Y'
 outcome:
   message: ABLFL is not equal to Y or null
   severity: Medium
@@ -26,4 +30,4 @@ provenance:
     Terms: Y {Y,NULL}'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

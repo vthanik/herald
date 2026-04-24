@@ -15,9 +15,12 @@ scope:
 variable: CRITyFN where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: CRITyFN is present
+  expand: 'y'
+  all:
+  - name: CRITyFN
+    operator: exists
+  - name: CRITyFL
+    operator: not_exists
 outcome:
   message: CRITyFN is present and CRITyFL is not present
   severity: Medium
@@ -30,5 +33,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

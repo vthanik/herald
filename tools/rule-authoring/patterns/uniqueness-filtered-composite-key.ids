@@ -1,0 +1,8 @@
+"rule_id","filter_var","filter_values","keys"
+"CG0398","DSCAT","'DISPOSITION EVENT'","  - USUBJID
+  - EPOCH"
+"CG0536","DSCAT","'DISPOSITION EVENT'","  - USUBJID
+  - DSSCAT
+  - EPOCH"
+"CG0537","DSCAT","'DISPOSITION EVENT'","  - USUBJID
+  - EPOCH"

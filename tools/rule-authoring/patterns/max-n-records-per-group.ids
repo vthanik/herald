@@ -1,0 +1,6 @@
+"rule_id","name","value","group_keys","max_n"
+"154","ABLFL","Y","- USUBJID
+- PARAMCD
+- BASETYPE","1"
+"155","ABLFL","Y","- USUBJID
+- PARAMCD","1"

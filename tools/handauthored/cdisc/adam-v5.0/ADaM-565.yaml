@@ -12,9 +12,12 @@ scope:
 variable: BCHGCAyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BCHGCAyN is present
+  expand: 'y'
+  all:
+  - name: BCHGCAyN
+    operator: exists
+  - name: BCHGCATy
+    operator: not_exists
 outcome:
   message: BCHGCAyN is present and BCHGCATy is not present
   severity: Medium
@@ -26,5 +29,4 @@ provenance:
     included in the dataset, then the primary variable must also be included.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

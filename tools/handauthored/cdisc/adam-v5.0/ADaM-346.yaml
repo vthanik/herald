@@ -13,9 +13,12 @@ scope:
 variable: R2AyLO where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: R2AyLO is present
+  expand: 'y'
+  all:
+  - name: R2AyLO
+    operator: exists
+  - name: AyLO
+    operator: not_exists
 outcome:
   message: R2AyLO is present and AyLO is not present
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     state: "AyLO must exist in the ADaM dataset."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

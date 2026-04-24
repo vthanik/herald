@@ -14,9 +14,12 @@ scope:
 variable: CRITyFL where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: CRITyFL is present
+  expand: 'y'
+  all:
+  - name: CRITyFL
+    operator: exists
+  - name: CRITy
+    operator: not_exists
 outcome:
   message: CRITyFL is present and CRITy is not present
   severity: Medium
@@ -28,4 +31,4 @@ provenance:
     state: "Required if CRITy exists."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

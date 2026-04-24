@@ -14,9 +14,13 @@ scope:
 variable: TRTEMFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: ''
+  all:
+  - operator: non_empty
+    name: TRTEMFL
+  - operator: is_not_contained_by
+    name: TRTEMFL
+    value: 'Y'
 outcome:
   message: TRTEMFL is not equal to Y or null
   severity: Medium
@@ -30,4 +34,4 @@ provenance:
     OCCDS v1.1, Section 3.2.5, Table 3.2.5.3: Code List / Controlled Terms have allowable values of: "Y"
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

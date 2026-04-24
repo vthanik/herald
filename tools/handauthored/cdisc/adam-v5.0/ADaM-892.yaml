@@ -16,9 +16,12 @@ scope:
 variable: COHORT
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: ''
+  all:
+  - name: COHORTN
+    operator: is_not_unique_relationship
+    value:
+      related_name: COHORT
 outcome:
   message: On a given record, there is more than one value of COHORT for a given value
     of COHORTN
@@ -32,4 +35,4 @@ provenance:
     on a given record, either both must be populated or both must be null.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

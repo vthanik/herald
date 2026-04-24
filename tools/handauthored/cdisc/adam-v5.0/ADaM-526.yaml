@@ -15,9 +15,12 @@ scope:
 variable: ANLzzFN where zz is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ANLzzFN is present
+  expand: zz
+  all:
+  - name: ANLzzFN
+    operator: exists
+  - name: ANLzzFL
+    operator: not_exists
 outcome:
   message: ANLzzFN is present and ANLzzFL is not present
   severity: Medium
@@ -30,5 +33,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

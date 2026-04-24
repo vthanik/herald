@@ -16,9 +16,12 @@ scope:
 variable: COHORTN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: COHORT is populated
+  expand: ''
+  all:
+  - operator: non_empty
+    name: COHORT
+  - operator: empty
+    name: COHORTN
 outcome:
   message: On a given record, COHORT is populated and COHORTN is present and not populated
   severity: Medium
@@ -31,4 +34,4 @@ provenance:
     on a given record, either both must be populated or both must be null.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

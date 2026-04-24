@@ -56,6 +56,7 @@ present) and `VAR_B` (primary; must also be present). `apply-pattern.R`
 substitutes them per rule from the `.ids` CSV.
 
 ```yaml check_tree
+expand: "%expand%"
 all:
 - name: %var_a%
   operator: exists

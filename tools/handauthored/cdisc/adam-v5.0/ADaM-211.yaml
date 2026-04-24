@@ -14,9 +14,13 @@ scope:
 variable: ABLFN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: ''
+  all:
+  - operator: non_empty
+    name: ABLFN
+  - operator: is_not_contained_by
+    name: ABLFN
+    value: '1'
 outcome:
   message: ABLFN is not equal to 1 or null
   severity: Medium
@@ -28,4 +32,4 @@ provenance:
     Terms: 1 {1,NULL}'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

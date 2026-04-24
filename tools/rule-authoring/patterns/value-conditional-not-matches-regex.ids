@@ -1,0 +1,4 @@
+"rule_id","cond_var","cond_values","target_var","pattern"
+"CG0284","TSPARMCD","'NARMS'","TSVAL","^[1-9][0-9]*$"
+"CG0440","TSPARMCD","'PLANSUB'","TSVAL","^[1-9][0-9]*$"
+"CG0457","TSPARMCD","'ACTSUB'","TSVAL","^[1-9][0-9]*$"

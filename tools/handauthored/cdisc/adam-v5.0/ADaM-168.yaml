@@ -13,9 +13,15 @@ scope:
 variable: BNRIND
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BASETYPE is present and BNRIND is populated
+  expand: ''
+  operator: base_not_equal_abl_row
+  b_var: BNRIND
+  a_var: ANRIND
+  group_by:
+  - USUBJID
+  - PARAMCD
+  - BASETYPE
+  basetype_gate: populated
 outcome:
   message: BASETYPE is present, BNRIND is populated, and BNRIND is not equal to ANRIND
     where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE
@@ -28,4 +34,4 @@ provenance:
     record identified by ABLFL.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

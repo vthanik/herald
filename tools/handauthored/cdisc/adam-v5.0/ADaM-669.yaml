@@ -16,9 +16,12 @@ scope:
 variable: ACYCLE
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ACYCLEC is populated
+  expand: ''
+  all:
+  - operator: non_empty
+    name: ACYCLEC
+  - operator: empty
+    name: ACYCLE
 outcome:
   message: On a given record, ACYCLEC is populated and ACYCLE is present and not populated
   severity: Medium
@@ -31,4 +34,4 @@ provenance:
     on a given record, either both must be populated or both must be null.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

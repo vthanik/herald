@@ -12,8 +12,13 @@ scope:
   exclude_domains: []
 variable: --ENRTPT
 check:
-  narrative: --ENRTPT in ('BEFORE', 'COINCIDENT', 'ONGOING', 'UNKNOWN')
-  condition: --ENTPT corresponds to the date of collection or assessment.
+  operator: is_not_contained_by
+  name: --ENRTPT
+  value:
+  - BEFORE
+  - COINCIDENT
+  - ONGOING
+  - UNKNOWN
 outcome:
   message: --ENRTPT in ('BEFORE', 'COINCIDENT', 'ONGOING', 'UNKNOWN')
   severity: Medium
@@ -30,5 +35,4 @@ provenance:
     value in this case because it would represent an event after the date of collection.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

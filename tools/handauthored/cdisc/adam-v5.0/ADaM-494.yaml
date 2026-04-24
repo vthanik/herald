@@ -12,9 +12,10 @@ scope:
 variable: ABLFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: ''
+  operator: is_contained_by
+  name: ABLFL
+  value: 'N'
 outcome:
   message: ABLFL is equal to "N"
   severity: Medium
@@ -28,5 +29,4 @@ provenance:
     null should be used when "N" and null are treated differently in the analysis.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

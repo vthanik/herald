@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: TAETORD
 check:
-  narrative: TAETORD is an integer
-  condition: ''
+  operator: not_matches_regex
+  name: TAETORD
+  value: ^[0-9]+$
 outcome:
   message: TAETORD is an integer
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
   cited_guidance: TAETORD is an integer.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

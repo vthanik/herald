@@ -11,8 +11,13 @@ scope:
   exclude_domains: []
 variable: TSVAL
 check:
-  narrative: TSVAL is integer and > 0
-  condition: TSPARMCD = 'ACTSUB'
+  all:
+  - operator: is_contained_by
+    name: TSPARMCD
+    value: ACTSUB
+  - operator: not_matches_regex
+    name: TSVAL
+    value: ^[1-9][0-9]*$
 outcome:
   message: TSVAL is integer and > 0
   severity: Medium
@@ -24,5 +29,4 @@ provenance:
     1. TSVAL may have controlled terminology depending on the value of TSPARMCD
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -14,9 +14,13 @@ scope:
 variable: ABLFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BASETYPE is not present
+  operator: max_n_records_per_group_matching
+  name: ABLFL
+  value: 'Y'
+  group_keys:
+  - USUBJID
+  - PARAMCD
+  max_n: 1
 outcome:
   message: Within a given PARAMCD for a subject, more than one record has ABLFL equal
     to Y and BASETYPE is not present
@@ -30,4 +34,4 @@ provenance:
     A baseline record may be derived (e.g., it may be an average), in which case DTYPE must also be populated. If BASE is populated for a parameter, and BASE is non-null for a subject for that parameter, then there must be a record flagged by ABLFL for that subject and parameter.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

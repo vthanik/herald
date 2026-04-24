@@ -12,9 +12,10 @@ scope:
 variable: ANLzzFL where zz is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: zz
+  operator: is_contained_by
+  name: ANLzzFL
+  value: 'N'
 outcome:
   message: ANLzzFL is equal to "N" where zz is a zero-padded two-digit integer [01-99]
   severity: Medium
@@ -28,5 +29,4 @@ provenance:
     null should be used when "N" and null are treated differently in the analysis.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

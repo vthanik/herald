@@ -11,9 +11,17 @@ scope:
   exclude_domains: []
 variable: GEN
 check:
-  narrative: No more than 1 record per subject has DSSCAT = 'STUDY TREATMENT'
-  condition: Subject has more than one record per Epoch with DSCAT = 'DISPOSITION
-    EVENT'
+  all:
+  - operator: is_contained_by
+    name: DSCAT
+    value:
+    - DISPOSITION EVENT
+  - operator: max_n_records_per_group_matching
+    name: DSSCAT
+    value: STUDY TREATMENT
+    group_keys:
+    - USUBJID
+    max_n: 1
 outcome:
   message: No more than 1 record per subject has DSSCAT = 'STUDY TREATMENT'
   severity: Medium
@@ -26,5 +34,5 @@ provenance:
     has multiple treatments, then DSSCAT should name the individual treatment.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
 

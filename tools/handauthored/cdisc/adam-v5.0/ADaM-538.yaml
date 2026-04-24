@@ -13,9 +13,12 @@ scope:
 variable: SMQzzSCN where zz is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SMQzzSCN is present
+  expand: zz
+  all:
+  - name: SMQzzSCN
+    operator: exists
+  - name: SMQzzSC
+    operator: not_exists
 outcome:
   message: SMQzzSCN is present and SMQzzSC is not present
   severity: Medium
@@ -28,5 +31,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

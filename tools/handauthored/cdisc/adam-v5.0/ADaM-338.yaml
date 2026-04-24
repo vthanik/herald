@@ -13,9 +13,12 @@ scope:
 variable: MCRITy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: MCRITy is present
+  expand: 'y'
+  all:
+  - name: MCRITy
+    operator: exists
+  - name: MCRITyML
+    operator: not_exists
 outcome:
   message: MCRITy is present and MCRITyML is not present
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     state: "Required if MCRITy exists."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

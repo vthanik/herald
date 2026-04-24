@@ -11,8 +11,14 @@ scope:
   exclude_domains: []
 variable: GEN
 check:
-  narrative: At most one record per subject per epoch
-  condition: DSCAT = 'DISPOSITION EVENT' and DSSCAT is NOT present in dataset.
+  all:
+  - operator: is_contained_by
+    name: DSCAT
+    value: DISPOSITION EVENT
+  - operator: is_not_unique_set
+    name:
+    - USUBJID
+    - EPOCH
 outcome:
   message: At most one record per subject per epoch
   severity: Medium
@@ -30,5 +36,4 @@ provenance:
     DSDECOD. Additional reasons should be submitted in SUPPDS.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

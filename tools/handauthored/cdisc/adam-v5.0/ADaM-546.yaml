@@ -13,9 +13,12 @@ scope:
 variable: PCHGCAyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: PCHGCAyN is present
+  expand: 'y'
+  all:
+  - name: PCHGCAyN
+    operator: exists
+  - name: PCHGCATy
+    operator: not_exists
 outcome:
   message: PCHGCAyN is present and PCHGCATy is not present
   severity: Medium
@@ -28,5 +31,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

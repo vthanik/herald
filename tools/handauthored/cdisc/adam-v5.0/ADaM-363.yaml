@@ -14,9 +14,13 @@ scope:
 variable: ONTRTFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: ''
+  all:
+  - operator: non_empty
+    name: ONTRTFL
+  - operator: is_not_contained_by
+    name: ONTRTFL
+    value: 'Y'
 outcome:
   message: ONTRTFL is not equal to Y or null
   severity: Medium
@@ -28,4 +32,4 @@ provenance:
     Terms for ONTRTFL have allowable values of: "Y"'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

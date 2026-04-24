@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: --STRTPT
 check:
-  narrative: --STRTPT in ('BEFORE', 'COINCIDENT', 'UNKNOWN')
-  condition: --STTPT corresponds to the date of collection or assessment.
+  operator: is_not_contained_by
+  name: --STRTPT
+  value:
+  - BEFORE
+  - COINCIDENT
+  - UNKNOWN
 outcome:
   message: --STRTPT in ('BEFORE', 'COINCIDENT', 'UNKNOWN')
   severity: Medium
@@ -30,5 +34,4 @@ provenance:
     value in this case because it would represent an event after the date of collection.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

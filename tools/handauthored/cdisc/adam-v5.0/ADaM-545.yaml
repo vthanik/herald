@@ -13,9 +13,12 @@ scope:
 variable: CHGCATyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: CHGCATyN is present
+  expand: 'y'
+  all:
+  - name: CHGCATyN
+    operator: exists
+  - name: CHGCATy
+    operator: not_exists
 outcome:
   message: CHGCATyN is present and CHGCATy is not present
   severity: Medium
@@ -28,5 +31,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

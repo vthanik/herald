@@ -14,9 +14,15 @@ scope:
 variable: SMQzzSC where zz is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SMQzzNAM is populated
+  expand: zz
+  all:
+  - operator: non_empty
+    name: SMQzzSC
+  - operator: is_not_contained_by
+    name: SMQzzSC
+    value:
+    - BROAD
+    - NARROW
 outcome:
   message: SMQzzSC is not equal to BROAD or NARROW, where zz is a zero-padded two-digit
     integer [01-99]
@@ -31,4 +37,4 @@ provenance:
     OCCDS v1.1, Section 3.2.9, Table 3.2.9.1: Code List / Controlled Terms have allowable values of: "BROAD", "NARROW".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

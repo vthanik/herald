@@ -1,2 +1,5 @@
-"rule_id","cond_var","target_var"
-"CG0426","--STRESU","--STRESC"
+"rule_id","cond_var","target_var","expand"
+"CG0426","--STRESU","--STRESC",""
+"664","COHORT","COHORTN",""
+"669","ACYCLEC","ACYCLE",""
+"339","MCRITyML","MCRITy","y"

@@ -11,9 +11,14 @@ scope:
   exclude_domains: []
 variable: ARM
 check:
-  narrative: ARM not in ('Screen Failure', 'Not Assigned', 'Unplanned Treatment',
-    'Not Treated')
-  condition: ''
+  expand: ''
+  operator: is_contained_by
+  name: ARM
+  value:
+  - Screen Failure
+  - Not Assigned
+  - Unplanned Treatment
+  - Not Treated
 outcome:
   message: ARM not in ('Screen Failure', 'Not Assigned', 'Unplanned Treatment', 'Not
     Treated')
@@ -25,5 +30,4 @@ provenance:
   cited_guidance: The trial arms table describes each planned arm in the trial.
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

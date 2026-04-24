@@ -12,7 +12,7 @@ Use Ctrl-F on rule_id to find the decision that covers a rule.
 
 ### Shipped
 
-**Rule corpus:** 786 / 1814 predicate (43.3%). No regressions. (Q10 added 39 in 2026-04-24 session.)
+**Rule corpus:** 852 / 1814 predicate (47.0%). No regressions. (Q14 added 66 in 2026-04-24 session.)
 
 **Engine / infrastructure:**
 - Dictionary Provider Protocol (full 6-phase plan complete).
@@ -42,7 +42,7 @@ Use Ctrl-F on rule_id to find the decision that covers a rule.
 - `result$environment` carries Herald version + CT versions +
   IG versions (Q19 provenance; wiring pending in renderer).
 
-**Tests:** 2485 / 2485 PASS under `devtools::test()`. 2484 / 2485
+**Tests:** 2602 / 2602 PASS under `devtools::test()`. 2601 / 2602
 under `R CMD check` (one pre-existing failure noted below).
 
 ### Pending
@@ -61,7 +61,7 @@ under `R CMD check` (one pre-existing failure noted below).
 | Q11 | suffix-pattern value + type | 21 | 3 patterns + `op_var_by_suffix_not_numeric` |
 | Q12 | baseline-consistency compound | 11 | `op_base_not_equal_abl_row` |
 | Q13 | FDA SRS / UNII | 6 | `op_value_in_srs_table` wired to `srs_provider` |
-| Q14 | residual singletons | ~30 | inline triage; 4-bucket sort |
+| ~~Q14~~ | ~~long-tail small clusters~~ | ~~66~~ | **DONE** 6 new patterns + op_max_n_records_per_group_matching |
 | Q21 | indexed compound-var family | ~50 | 2 patterns, existing `expand:` |
 | Q22 | prefix+suffix compound templates | 8 | compound-template-pair pattern |
 | Q23 | TS-domain parametric | 30 | 1 parametric pattern driven by CSV |

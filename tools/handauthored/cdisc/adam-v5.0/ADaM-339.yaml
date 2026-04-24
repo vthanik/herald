@@ -13,9 +13,12 @@ scope:
 variable: MCRITy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: MCRITyML is populated
+  expand: 'y'
+  all:
+  - operator: non_empty
+    name: MCRITyML
+  - operator: empty
+    name: MCRITy
 outcome:
   message: MCRITyML is populated and MCRITy is not populated
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     state: "Required if MCRITy exists."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

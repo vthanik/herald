@@ -14,9 +14,16 @@ scope:
 variable: AESEVN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: ''
+  all:
+  - operator: non_empty
+    name: AESEVN
+  - operator: is_not_contained_by
+    name: AESEVN
+    value:
+    - '1'
+    - '2'
+    - '3'
 outcome:
   message: AESEVN is not equal to 1, 2, 3, or null
   severity: Medium
@@ -32,4 +39,4 @@ provenance:
     OCCDS v1.1, Section 3.2.8, Table 3.2.8.1: CDISC Notes for AESEVN state: "Code AE.AESEV to numeric".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

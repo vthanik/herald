@@ -399,3 +399,127 @@ test_that("base_not_equal_abl_row returns NA advisory for absent b_var column", 
   )
   expect_true(is.na(out[[1L]]))
 })
+
+# =============================================================================
+# op_max_n_records_per_group_matching
+# =============================================================================
+
+test_that("max_n_records_per_group_matching fires all rows in violating group", {
+  d <- data.frame(
+    USUBJID = c("S1", "S1", "S1", "S2"),
+    DSSCAT  = c("STUDY PARTICIPATION", "STUDY PARTICIPATION", "OTHER",
+                "STUDY PARTICIPATION"),
+    stringsAsFactors = FALSE
+  )
+  # S1: 2 matches > max_n=1 -> ALL S1 rows fire (including OTHER row)
+  # S2: 1 match == max_n=1 -> does not fire
+  out <- herald:::op_max_n_records_per_group_matching(
+    d, ctx_empty,
+    name       = "DSSCAT",
+    value      = "STUDY PARTICIPATION",
+    group_keys = "USUBJID",
+    max_n      = 1L
+  )
+  expect_true(out[[1L]])
+  expect_true(out[[2L]])
+  expect_true(out[[3L]])   # OTHER row still in S1 group -> fires
+  expect_false(out[[4L]])
+})
+
+test_that("max_n_records_per_group_matching does not fire when count equals max_n", {
+  d <- data.frame(
+    USUBJID = c("S1", "S1"),
+    FLAG    = c("Y", "N"),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_max_n_records_per_group_matching(
+    d, ctx_empty,
+    name       = "FLAG",
+    value      = "Y",
+    group_keys = "USUBJID",
+    max_n      = 1L
+  )
+  expect_equal(out, c(FALSE, FALSE))
+})
+
+test_that("max_n_records_per_group_matching returns NA when name column absent", {
+  d <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  out <- herald:::op_max_n_records_per_group_matching(
+    d, ctx_empty,
+    name       = "DSSCAT",
+    value      = "STUDY PARTICIPATION",
+    group_keys = "USUBJID",
+    max_n      = 1L
+  )
+  expect_equal(out, c(NA, NA))
+})
+
+test_that("max_n_records_per_group_matching returns NA when group_keys col absent", {
+  d <- data.frame(
+    DSSCAT = c("STUDY PARTICIPATION", "OTHER"),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_max_n_records_per_group_matching(
+    d, ctx_empty,
+    name       = "DSSCAT",
+    value      = "STUDY PARTICIPATION",
+    group_keys = "USUBJID",
+    max_n      = 1L
+  )
+  expect_equal(out, c(NA, NA))
+})
+
+test_that("max_n_records_per_group_matching handles empty dataset", {
+  d <- data.frame(
+    USUBJID = character(0L),
+    DSSCAT  = character(0L),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_max_n_records_per_group_matching(
+    d, ctx_empty,
+    name       = "DSSCAT",
+    value      = "STUDY PARTICIPATION",
+    group_keys = "USUBJID",
+    max_n      = 1L
+  )
+  expect_length(out, 0L)
+})
+
+test_that("max_n_records_per_group_matching works with composite group_keys", {
+  d <- data.frame(
+    USUBJID = c("S1", "S1", "S1", "S1"),
+    PARAMCD = c("HR", "HR", "SBP", "SBP"),
+    ABLFL   = c("Y",  "Y",  "Y",   "N"),
+    stringsAsFactors = FALSE
+  )
+  # HR group: 2 matches > max_n=1 -> fires all HR rows
+  # SBP group: 1 match <= max_n=1 -> no fire
+  out <- herald:::op_max_n_records_per_group_matching(
+    d, ctx_empty,
+    name       = "ABLFL",
+    value      = "Y",
+    group_keys = c("USUBJID", "PARAMCD"),
+    max_n      = 1L
+  )
+  expect_true(out[[1L]])
+  expect_true(out[[2L]])
+  expect_false(out[[3L]])
+  expect_false(out[[4L]])
+})
+
+test_that("max_n_records_per_group_matching trims trailing whitespace before match", {
+  d <- data.frame(
+    USUBJID = c("S1", "S1"),
+    DSSCAT  = c("STUDY PARTICIPATION  ", "STUDY PARTICIPATION"),
+    stringsAsFactors = FALSE
+  )
+  # Both rtrim to same -> 2 matches -> fires
+  out <- herald:::op_max_n_records_per_group_matching(
+    d, ctx_empty,
+    name       = "DSSCAT",
+    value      = "STUDY PARTICIPATION",
+    group_keys = "USUBJID",
+    max_n      = 1L
+  )
+  expect_true(all(out))
+})

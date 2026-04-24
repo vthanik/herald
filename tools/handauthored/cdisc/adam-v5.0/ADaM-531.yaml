@@ -13,9 +13,12 @@ scope:
 variable: SEVGRyN where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SEVGRyN is present
+  expand: 'y'
+  all:
+  - name: SEVGRyN
+    operator: exists
+  - name: SEVGRy
+    operator: not_exists
 outcome:
   message: SEVGRyN is present and SEVGRy is not present
   severity: Medium
@@ -28,5 +31,4 @@ provenance:
     the dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

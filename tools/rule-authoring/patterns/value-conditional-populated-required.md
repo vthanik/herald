@@ -46,6 +46,7 @@ fires when cond is populated AND target is empty. No XML/DSL copy.
 ## herald check_tree template
 
 ```yaml check_tree
+expand: "%expand%"
 all:
 - operator: non_empty
   name: %cond_var%
