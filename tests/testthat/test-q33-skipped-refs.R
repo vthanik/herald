@@ -22,7 +22,6 @@ test_that("validate() surfaces missing datasets in result$skipped_refs", {
   # ADaM-581 (treatment_var_absent_across_datasets) is scoped to BDS and
   # references ADSL. Running it against a BDS-classed dataset without
   # ADSL in the submission must record ADSL as a missing ref.
-  devtools::load_all(".", quiet = TRUE)
 
   bds <- data.frame(USUBJID = "S1", AEDECOD = "X",
                     stringsAsFactors = FALSE)
@@ -75,7 +74,6 @@ test_that(".html_skipped_refs renders both kinds with rule lists", {
 
 test_that("write_report_html() includes the skipped_refs banner + header cell", {
   skip_if_not(requireNamespace("herald", quietly = TRUE))
-  devtools::load_all(".", quiet = TRUE)
 
   # Synthesise a herald_result with populated skipped_refs.
   empty_findings <- herald:::empty_findings()

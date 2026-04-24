@@ -33,6 +33,11 @@ compiled catalog.}
 \item{standards}{Optional character vector of standards to include
 (e.g. \code{c("SDTM-IG", "ADaM-IG")}). \code{NULL} = all.}
 
+\item{dictionaries}{Optional named list of \code{herald_dict_provider}
+objects (from \code{ct_provider()}, \code{srs_provider()}, \code{meddra_provider()},
+etc.) to install for this run. Entries override the session-level
+registry from \code{register_dictionary()}.}
+
 \item{quiet}{Suppress progress output. Default FALSE.}
 }
 \value{

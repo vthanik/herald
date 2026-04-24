@@ -57,7 +57,6 @@ test_that("lookup() returns NULL for unknown field or value", {
 })
 
 test_that("op_value_in_codelist still works unchanged (provider shim)", {
-  devtools::load_all(".", quiet = TRUE)
   d <- data.frame(FL = c("Y", "N", "UNKNOWN", NA_character_),
                   stringsAsFactors = FALSE)
   ctx <- list()
@@ -67,7 +66,6 @@ test_that("op_value_in_codelist still works unchanged (provider shim)", {
 })
 
 test_that("op_value_in_codelist populates ctx$dict on first use", {
-  devtools::load_all(".", quiet = TRUE)
   d <- data.frame(FL = "Y", stringsAsFactors = FALSE)
   ctx <- new.env()
   ctx$dict <- list()
@@ -77,7 +75,6 @@ test_that("op_value_in_codelist populates ctx$dict on first use", {
 })
 
 test_that("op_value_in_codelist with match_synonyms reads raw CT", {
-  devtools::load_all(".", quiet = TRUE)
   # NY codelist has no synonyms; this exercises the synonym branch
   # code path and confirms it still returns a correct membership.
   d <- data.frame(FL = c("Y", "UNKNOWN_VALUE"), stringsAsFactors = FALSE)

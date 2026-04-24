@@ -18,6 +18,10 @@
 #'   (e.g. `c("CDISC", "FDA")`). `NULL` = all.
 #' @param standards Optional character vector of standards to include
 #'   (e.g. `c("SDTM-IG", "ADaM-IG")`). `NULL` = all.
+#' @param dictionaries Optional named list of `herald_dict_provider`
+#'   objects (from `ct_provider()`, `srs_provider()`, `meddra_provider()`,
+#'   etc.) to install for this run. Entries override the session-level
+#'   registry from `register_dictionary()`.
 #' @param quiet Suppress progress output. Default FALSE.
 #'
 #' @return A `herald_result` S3 object.
