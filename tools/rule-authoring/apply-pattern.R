@@ -42,7 +42,7 @@ project_root   <- getwd()
 handauth_root  <- file.path(project_root, "tools", "handauthored", "cdisc")
 authoring_root <- file.path(project_root, "tools", "rule-authoring")
 pattern_md     <- file.path(authoring_root, "patterns", paste0(pat_name, ".md"))
-progress_csv   <- file.path(authoring_root, "progress.csv")
+progress_csv   <- file.path(authoring_root, "catalog.csv")
 
 stopifnot(file.exists(pattern_md), file.exists(ids_csv))
 
