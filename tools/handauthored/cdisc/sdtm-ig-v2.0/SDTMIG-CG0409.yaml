@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: STUDYID
 check:
-  narrative: STUDYID = DM.STUDYID
-  condition: ''
+  all:
+  - operator: differs_by_key
+    name: STUDYID
+    reference_dataset: DM
+    reference_column: STUDYID
+    key: USUBJID
 outcome:
   message: STUDYID = DM.STUDYID
   severity: Medium
@@ -25,5 +29,4 @@ provenance:
     describe that study
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

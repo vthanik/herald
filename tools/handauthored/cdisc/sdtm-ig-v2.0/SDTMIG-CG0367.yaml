@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: RSUBJID
 check:
-  narrative: RSUBJID = DM.USUBJID
-  condition: RSUBJID ^=null and RSUBJID ^= POOLID
+  all:
+  - operator: differs_by_key
+    name: RSUBJID
+    reference_dataset: DM
+    reference_column: USUBJID
+    key: USUBJID
 outcome:
   message: RSUBJID = DM.USUBJID
   severity: Medium
@@ -28,5 +32,4 @@ provenance:
     of the study subjects.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

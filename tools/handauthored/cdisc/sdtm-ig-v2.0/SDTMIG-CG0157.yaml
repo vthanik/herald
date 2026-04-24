@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: RSUBJID
 check:
-  narrative: RSUBJID in DM.USUBJID
-  condition: ''
+  all:
+  - operator: missing_in_ref
+    name: RSUBJID
+    reference_dataset: DM
+    reference_key: USUBJID
 outcome:
   message: RSUBJID in DM.USUBJID
   severity: Medium
@@ -25,4 +28,4 @@ provenance:
     or the POOLID of the related pool.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

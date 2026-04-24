@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: DSSTDTC
 check:
-  narrative: DSSTDTC = DM.DTHDTC
-  condition: DSDECOD = 'DEATH'
+  all:
+  - operator: differs_by_key
+    name: DSSTDTC
+    reference_dataset: DM
+    reference_column: DTHDTC
+    key: USUBJID
 outcome:
   message: DSSTDTC = DM.DTHDTC
   severity: Medium
@@ -25,5 +29,4 @@ provenance:
     Should represent the date/time that is captured in the clinical-trial database.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

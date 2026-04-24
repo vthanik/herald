@@ -481,20 +481,40 @@ op_differs_by_key <- function(data, ctx, name,
   ref_ds <- .ref_ds(ctx, reference_dataset)
   if (is.null(ref_ds)) return(rep(NA, n))
 
-  join_key     <- key           %||% name
-  ref_join_key <- reference_key %||% join_key
-  if (is.null(data[[join_key]]) ||
-      is.null(ref_ds[[ref_join_key]]) ||
+  # key / reference_key may be a character vector (composite join) or a
+  # bracketed string like "[STUDYID, VISITNUM]" produced by apply-pattern.R
+  # slot substitution. Parse the bracketed form into a proper vector so the
+  # composite-key path works regardless of how the YAML was written.
+  .parse_key <- function(k) {
+    k <- as.character(unlist(k %||% character(0)))
+    if (length(k) == 1L && grepl("^\\[", k)) {
+      inner <- sub("^\\[\\s*", "", sub("\\s*\\]$", "", k))
+      k <- trimws(strsplit(inner, ",", fixed = TRUE)[[1L]])
+    }
+    k
+  }
+  join_key     <- .parse_key(key     %||% name)
+  ref_join_key <- .parse_key(reference_key %||% join_key)
+
+  # Validate all key columns exist in both datasets.
+  if (any(!join_key     %in% names(data))   ||
+      any(!ref_join_key %in% names(ref_ds)) ||
       is.null(ref_ds[[reference_column]])) {
     return(rep(NA, n))
   }
 
+  .paste_cols <- function(df, cols) {
+    if (length(cols) == 1L) return(.as_char(df[[cols]]))
+    do.call(paste, c(lapply(cols, function(c) .as_char(df[[c]])),
+                     list(sep = "\x1f")))
+  }
+
   lut <- stats::setNames(.as_char(ref_ds[[reference_column]]),
-                         .as_char(ref_ds[[ref_join_key]]))
+                         .paste_cols(ref_ds, ref_join_key))
   lut <- lut[!duplicated(names(lut))]
 
   mine  <- .as_char(data[[name]])
-  their <- unname(lut[.as_char(data[[join_key]])])
+  their <- unname(lut[.paste_cols(data, join_key)])
   out <- mine != their
   out[is.na(mine) | is.na(their)] <- NA
   out
@@ -508,8 +528,8 @@ op_differs_by_key <- function(data, ctx, name,
       name              = list(type = "string", required = TRUE),
       reference_dataset = list(type = "string", required = TRUE),
       reference_column  = list(type = "string", required = TRUE),
-      key               = list(type = "string", required = FALSE),
-      reference_key     = list(type = "string", required = FALSE)
+      key               = list(type = "any",    required = FALSE),
+      reference_key     = list(type = "any",    required = FALSE)
     ),
     cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
   )

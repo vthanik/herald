@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: TAETORD
 check:
-  narrative: TAETORD = SE.TAETORD
-  condition: TAETORD present in dataset and SESTDTC <= SVSTDTC and SVSTDTC <= SEENDTC
+  all:
+  - operator: differs_by_key
+    name: TAETORD
+    reference_dataset: SE
+    reference_column: TAETORD
+    key: USUBJID
 outcome:
   message: TAETORD = SE.TAETORD
   severity: Medium
@@ -27,5 +31,4 @@ provenance:
     topic of this dataset is visits.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

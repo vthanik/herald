@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: APID
 check:
-  narrative: APID in POOLDEF.POOLID
-  condition: ''
+  all:
+  - operator: missing_in_ref
+    name: APID
+    reference_dataset: POOLDEF
+    reference_key: POOLID
 outcome:
   message: APID in POOLDEF.POOLID
   severity: Medium
@@ -26,4 +29,4 @@ provenance:
     must exist for each associated person.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

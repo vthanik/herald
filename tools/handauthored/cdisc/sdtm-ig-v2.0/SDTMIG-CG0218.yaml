@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: EPOCH
 check:
-  narrative: EPOCH = SE.EPOCH
-  condition: EPOCH present in dataset and SESTDTC <= SVSTDTC and SVSTDTC <= SEENDTC
+  all:
+  - operator: differs_by_key
+    name: EPOCH
+    reference_dataset: SE
+    reference_column: EPOCH
+    key: '[USUBJID, ETCD]'
 outcome:
   message: EPOCH = SE.EPOCH
   severity: Medium
@@ -27,5 +31,4 @@ provenance:
     topic of this dataset is visits.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

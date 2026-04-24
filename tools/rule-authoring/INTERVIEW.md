@@ -401,7 +401,7 @@ Neither needs a new op.
 - Null-on-ref-side path (CG0069 DSSTDTC vs DM.DTHDTC) returns
   NA -> advisory in `op_differs_by_key`; matches P21.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** _(delivered)_
 
 ---
 

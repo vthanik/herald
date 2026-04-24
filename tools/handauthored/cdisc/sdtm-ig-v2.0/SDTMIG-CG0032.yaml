@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: VISITDY
 check:
-  narrative: VISITDY = TV.VISITDY
-  condition: VISITNUM is in TV.VISITNUM
+  all:
+  - operator: differs_by_key
+    name: VISITDY
+    reference_dataset: TV
+    reference_column: VISITDY
+    key: '[STUDYID, VISITNUM]'
 outcome:
   message: VISITDY = TV.VISITDY
   severity: Medium
@@ -25,5 +29,4 @@ provenance:
     be those defined in the Trial Visits dataset,
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

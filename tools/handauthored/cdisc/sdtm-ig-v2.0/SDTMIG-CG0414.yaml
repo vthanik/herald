@@ -16,8 +16,12 @@ scope:
   exclude_domains: []
 variable: ETCD
 check:
-  narrative: ETCD = TE.ETCD
-  condition: ETCD ^= 'UNPLAN'
+  all:
+  - operator: differs_by_key
+    name: ETCD
+    reference_dataset: TE
+    reference_column: ETCD
+    key: ETCD
 outcome:
   message: ETCD = TE.ETCD
   severity: Medium
@@ -33,5 +37,4 @@ provenance:
     and describe the planned sequences of lements for the Arms of the trial.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

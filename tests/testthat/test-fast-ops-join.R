@@ -102,3 +102,41 @@ test_that("both ops are discoverable via the op table", {
   expect_true("differs_by_key" %in% .list_ops())
   expect_true("matches_by_key" %in% .list_ops())
 })
+
+test_that("differs_by_key supports a composite (vector) key", {
+  # SE has multiple rows per USUBJID; EPOCH differs per ETCD.
+  # Join by c(USUBJID, ETCD) to pick the right reference row.
+  sv <- data.frame(
+    USUBJID = c("S1", "S1", "S2"),
+    ETCD    = c("A",  "B",  "A"),
+    EPOCH   = c("TREATMENT", "FOLLOW-UP", "WRONG"),
+    stringsAsFactors = FALSE
+  )
+  se <- data.frame(
+    USUBJID = c("S1", "S1", "S2"),
+    ETCD    = c("A",  "B",  "A"),
+    EPOCH   = c("TREATMENT", "FOLLOW-UP", "TREATMENT"),
+    stringsAsFactors = FALSE
+  )
+  ctx <- mk_ctx_with(list(SV = sv, SE = se))
+  mask <- herald:::op_differs_by_key(sv, ctx, name = "EPOCH",
+                                     reference_dataset = "SE",
+                                     reference_column  = "EPOCH",
+                                     key = c("USUBJID", "ETCD"))
+  # S1/A: equal, S1/B: equal, S2/A: WRONG != TREATMENT -> fires
+  expect_equal(mask, c(FALSE, FALSE, TRUE))
+})
+
+test_that("differs_by_key NA when composite key col missing in data", {
+  sv <- data.frame(USUBJID = c("S1"), EPOCH = c("TREATMENT"),
+                   stringsAsFactors = FALSE)
+  se <- data.frame(USUBJID = c("S1"), ETCD = c("A"),
+                   EPOCH = c("TREATMENT"), stringsAsFactors = FALSE)
+  ctx <- mk_ctx_with(list(SV = sv, SE = se))
+  mask <- herald:::op_differs_by_key(sv, ctx, name = "EPOCH",
+                                     reference_dataset = "SE",
+                                     reference_column  = "EPOCH",
+                                     key = c("USUBJID", "ETCD"))
+  # ETCD absent from sv -> NA
+  expect_equal(mask, NA)
+})
