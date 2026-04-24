@@ -1404,6 +1404,82 @@ op_not_equal_subject_templated_ref <- function(data, ctx, name,
   )
 )
 
+# --- supp_row_count_exceeds (multi-row SUPP QNAM count) --------------------
+# For each row in the current dataset, join to a supplemental dataset
+# (SUPPDM / SUPPAE / ...) by a key column (default USUBJID), filter SUPP
+# rows whose QNAM column matches a regex, count per key, fire when the
+# per-key count exceeds `threshold`.
+#
+# Used by CDISC DM.RACE='MULTIPLE' rules (CG0140, CG0527) where the
+# precondition is "multiple SUPPDM records with RACE-prefixed QNAM for
+# the subject". P21 does not encode these -- herald authors them as
+# predicate rules against the SUPP dataset row count.
+#
+# Arg shape in rules:
+#   { name: "USUBJID", operator: "supp_row_count_exceeds",
+#     ref_dataset: "SUPPDM", qnam_pattern: "^RACE", threshold: 1 }
+#
+# Missing SUPP dataset -> NA (advisory). No matching SUPP rows for a
+# given key -> count 0 -> FALSE (no fire).
+
+op_supp_row_count_exceeds <- function(data, ctx, ref_dataset, qnam_pattern,
+                                      threshold = 1L, key = NULL,
+                                      name = NULL) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+
+  # `name` is the conventional check_tree slot for the primary-variable
+  # column; for this op it doubles as the join key when `key` is not
+  # specified explicitly. Default is USUBJID when neither is supplied.
+  join_key <- key %||% name %||% "USUBJID"
+
+  ref_ds <- .ref_ds(ctx, ref_dataset)
+  if (is.null(ref_ds)) return(rep(NA, n))
+
+  if (is.null(data[[join_key]]) ||
+      is.null(ref_ds[[join_key]]) ||
+      is.null(ref_ds[["QNAM"]])) {
+    return(rep(NA, n))
+  }
+
+  thr <- suppressWarnings(as.integer(threshold))
+  if (length(thr) != 1L || is.na(thr)) thr <- 1L
+
+  qnam_rx <- as.character(qnam_pattern)
+  hits    <- grepl(qnam_rx, as.character(ref_ds[["QNAM"]]), perl = TRUE)
+  keys_hit <- as.character(ref_ds[[join_key]])[hits]
+  keys_hit <- keys_hit[!is.na(keys_hit)]
+
+  if (length(keys_hit) == 0L) {
+    return(rep(FALSE, n))
+  }
+  # tabulate by key; strip the `table` class to keep the op's return a
+  # plain logical vector (expect_equal compares dim/class).
+  counts <- as.integer(table(keys_hit))
+  names(counts) <- names(table(keys_hit))
+
+  row_keys <- as.character(data[[join_key]])
+  row_counts <- unname(counts[row_keys])
+  row_counts[is.na(row_counts)] <- 0L
+  out <- row_counts > thr
+  as.logical(out)
+}
+.register_op(
+  "supp_row_count_exceeds", op_supp_row_count_exceeds,
+  meta = list(
+    kind = "cross",
+    summary = "Supplemental dataset has more than `threshold` rows whose QNAM matches `qnam_pattern` for the row's key",
+    arg_schema = list(
+      ref_dataset  = list(type = "string",  required = TRUE),
+      qnam_pattern = list(type = "string",  required = TRUE),
+      threshold    = list(type = "integer", default  = 1L),
+      name         = list(type = "string",  required = FALSE),
+      key          = list(type = "string",  required = FALSE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
 # --- shared values per key (plan Q12 / ADaM-591) -----------------------------
 # For each column shared between the current dataset and the reference
 # dataset, join by subject key and fire any row whose value differs from
