@@ -11,8 +11,13 @@ scope:
   exclude_domains: []
 variable: TSVAL
 check:
-  narrative: TSVAL conforms to ISO 8601 date
-  condition: TSPARMCD = DCUTDTC
+  all:
+  - operator: is_contained_by
+    name: TSPARMCD
+    value: DCUTDTC
+  - operator: value_not_iso8601
+    name: TSVAL
+    kind: date
 outcome:
   message: TSVAL conforms to ISO 8601 date
   severity: Medium
@@ -24,5 +29,4 @@ provenance:
     1. TSVAL may have controlled terminology depending on the value of TSPARMCD
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

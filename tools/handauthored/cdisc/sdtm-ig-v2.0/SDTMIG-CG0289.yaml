@@ -12,8 +12,13 @@ scope:
   exclude_domains: []
 variable: TSVCDVER
 check:
-  narrative: TSVCDVER = valid published version (date)
-  condition: TSVCDREF = 'CDISC'
+  all:
+  - operator: is_contained_by
+    name: TSVCDREF
+    value: CDISC
+  - operator: value_not_iso8601
+    name: TSVCDVER
+    kind: date
 outcome:
   message: TSVCDVER = valid published version (date)
   severity: Medium
@@ -24,5 +29,4 @@ provenance:
   cited_guidance: The version number of the Reference Terminology, if applicable.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

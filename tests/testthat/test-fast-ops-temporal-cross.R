@@ -141,3 +141,38 @@ test_that("does_not_contain", {
   d <- data.frame(X = c("HEADACHE", "NAUSEA"), stringsAsFactors = FALSE)
   expect_equal(op_does_not_contain(d, NULL, "X", "HEAD"), c(FALSE, TRUE))
 })
+
+# --- op_value_not_iso8601 ----------------------------------------------------
+
+test_that("op_value_not_iso8601 kind=date delegates to op_invalid_date", {
+  d <- data.frame(
+    TSVAL = c("2026-01-15", "not-a-date", "", NA_character_),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_value_not_iso8601(d, NULL, "TSVAL", kind = "date")
+  expect_equal(out, c(FALSE, TRUE, NA, NA))
+})
+
+test_that("op_value_not_iso8601 kind=duration delegates to op_invalid_duration", {
+  d <- data.frame(
+    TDSTOFF = c("P1Y", "P2Y3M", "NOT-DUR", "", NA_character_),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_value_not_iso8601(d, NULL, "TDSTOFF", kind = "duration")
+  expect_equal(out, c(FALSE, FALSE, TRUE, NA, NA))
+})
+
+test_that("op_value_not_iso8601 default kind is date", {
+  d <- data.frame(X = c("2026-01-15", "bad"), stringsAsFactors = FALSE)
+  expect_equal(herald:::op_value_not_iso8601(d, NULL, "X"),
+               herald:::op_invalid_date(d, NULL, "X"))
+})
+
+test_that("op_value_not_iso8601 returns NA on absent column", {
+  d <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  expect_equal(herald:::op_value_not_iso8601(d, NULL, "TSVAL", kind = "date"), NA)
+})
+
+test_that("op_value_not_iso8601 is registered", {
+  expect_true("value_not_iso8601" %in% herald:::.list_ops())
+})

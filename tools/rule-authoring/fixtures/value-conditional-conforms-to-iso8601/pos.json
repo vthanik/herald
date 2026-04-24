@@ -1,0 +1,23 @@
+{
+  "rule_id": "__pattern-value-conditional-conforms-to-iso8601__",
+  "fixture_type": "positive",
+  "datasets": {
+    "TS": {
+      "TSPARMCD": ["DCUTDTC", "SSTDTC", "SENDTC", "AGEMAX", "OTHERVAL"],
+      "TSVAL": ["not-a-date", "20260115", "not-a-date", "not-a-date", "not-a-date"],
+      "TSVCDREF": ["", "", "", "", ""],
+      "TSVCDVER": ["", "", "", "", ""]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "pattern=value-conditional-conforms-to-iso8601; rows 1,2,3,4 have matching TSPARMCD with non-ISO8601 TSVAL; row 5 has non-matching TSPARMCD.",
+  "authored": "pattern-fixture@1",
+  "spec": {
+    "class_map": {
+      "TS": "TRIAL DESIGN"
+    }
+  }
+}

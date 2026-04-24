@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: TDSTOFF
 check:
-  narrative: TDSTOFF = 0 or positive value in ISO 8601 Duration format
-  condition: ''
+  operator: value_not_iso8601
+  name: TDSTOFF
+  kind: duration
 outcome:
   message: TDSTOFF = 0 or positive value in ISO 8601 Duration format
   severity: Medium
@@ -32,5 +33,4 @@ provenance:
     and will be represented in ISO 8601 character format.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

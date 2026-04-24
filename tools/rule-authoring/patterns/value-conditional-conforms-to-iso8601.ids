@@ -1,0 +1,6 @@
+"rule_id","cond_var","cond_val","target_var","kind"
+"CG0270","TSPARMCD","AGEMAX","TSVAL","date"
+"CG0283","TSPARMCD","DCUTDTC","TSVAL","date"
+"CG0285","TSPARMCD","SSTDTC","TSVAL","date"
+"CG0286","TSPARMCD","SENDTC","TSVAL","date"
+"CG0289","TSVCDREF","CDISC","TSVCDVER","date"

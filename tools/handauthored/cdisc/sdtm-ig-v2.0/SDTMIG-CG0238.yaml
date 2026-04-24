@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --ORRES
 check:
-  narrative: --ORRES in ISO 8601 date format
-  condition: Date Value
+  operator: value_not_iso8601
+  name: --ORRES
+  kind: date
 outcome:
   message: --ORRES in ISO 8601 date format
   severity: Medium
@@ -37,5 +38,4 @@ provenance:
     dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

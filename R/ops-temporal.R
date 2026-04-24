@@ -144,6 +144,42 @@ op_invalid_duration <- function(data, ctx, name) {
   )
 )
 
+# --- op_value_not_iso8601 (unified date / duration format check) -----------
+# Dispatches to op_invalid_date or op_invalid_duration based on `kind`.
+# kind = "date"     -> fires TRUE when value is NOT a valid SDTM ISO 8601 date
+#                      (same as op_invalid_date -- dash-substitution accepted)
+# kind = "duration" -> fires TRUE when value is NOT a valid ISO 8601 duration
+# NA and empty values are advisory (return NA).
+
+op_value_not_iso8601 <- function(data, ctx, name,
+                                 kind = c("date", "duration")) {
+  kind <- match.arg(kind)
+  if (kind == "date") {
+    op_invalid_date(data, ctx, name)
+  } else {
+    op_invalid_duration(data, ctx, name)
+  }
+}
+.register_op(
+  "value_not_iso8601", op_value_not_iso8601,
+  meta = list(
+    kind          = "temporal",
+    summary       = "Value does not conform to ISO 8601 date or duration format",
+    arg_schema    = list(
+      name = list(type = "string",  required = TRUE),
+      kind = list(type = "string",  required = FALSE, default = "date",
+                  enum = c("date", "duration"))
+    ),
+    cost_hint     = "O(n)",
+    column_arg    = "name",
+    returns_na_ok = TRUE,
+    examples      = list(
+      list(name = "TSVAL",   kind = "date"),
+      list(name = "TDSTOFF", kind = "duration")
+    )
+  )
+)
+
 # --- ordinal date comparisons ----------------------------------------------
 
 .date_cmp <- function(col, value, op, data) {
