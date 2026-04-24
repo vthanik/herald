@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: SEENDTC
 check:
-  narrative: SEENDTC = SESTDTC of next ELEMENT
-  condition: Next ELEMENT present in dataset
+  operator: next_row_not_equal
+  name: SEENDTC
+  value:
+    prev_name: SESTDTC
+    order_by: TAETORD
+    group_by: USUBJID
 outcome:
   message: SEENDTC = SESTDTC of next ELEMENT
   severity: Medium
@@ -26,5 +30,4 @@ provenance:
     the next Element
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

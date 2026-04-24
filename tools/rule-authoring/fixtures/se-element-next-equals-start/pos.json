@@ -1,0 +1,23 @@
+{
+  "rule_id": "__pattern-se-element-next-equals-start__",
+  "fixture_type": "positive",
+  "datasets": {
+    "SE": {
+      "STUDYID":  ["STUDY-1", "STUDY-1"],
+      "USUBJID":  ["STUDY-1-001", "STUDY-1-001"],
+      "TAETORD":  [1, 2],
+      "ETCD":     ["SCR", "TRT"],
+      "SESTDTC":  ["2024-01-01", "2024-01-05"],
+      "SEENDTC":  ["2024-01-04", "2024-01-10"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "notes": "Row 1 SEENDTC=2024-01-04 != Row 2 SESTDTC=2024-01-05 (gap of 1 day) -- row 1 fires. Row 2 is last element, does not fire."
+  },
+  "spec": {
+    "class_map": {
+      "SE": "SPC"
+    }
+  }
+}

@@ -1157,6 +1157,112 @@ op_subject_has_matching_row <- function(data, ctx, name,
   )
 )
 
+# --- next-row adjacency op (Q29 / CG0207) ------------------------------------
+# Within each group_by partition (e.g. USUBJID), rows are sorted by order_by
+# (e.g. TAETORD). For each row i, the op checks that data[[name]][i] equals
+# data[[prev_name]][i+1]. Fires TRUE on row i when the next row's `prev_name`
+# differs from this row's `name`. The last row in each group always returns
+# FALSE (no next row). NA rows propagate NA.
+#
+# CDISC rationale: in SE, there are no gaps between elements; therefore
+# SEENDTC of element i == SESTDTC of element i+1 (CG0207).
+#
+# Arg shape in rules YAML:
+#   operator: next_row_not_equal
+#   name: SEENDTC
+#   value:
+#     prev_name: SESTDTC
+#     order_by: TAETORD
+#     group_by:
+#       - USUBJID
+
+op_next_row_not_equal <- function(data, ctx, name, value) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0))
+  if (is.null(data[[name]])) return(rep(NA, n))
+
+  # Unpack value sub-list
+  if (!is.list(value)) {
+    herald_error(
+      c("Bad {.arg value} for `next_row_not_equal`.",
+        "x" = "Must be a list with `prev_name`, `order_by`, and `group_by`."),
+      class = "herald_error_input", call = rlang::caller_env()
+    )
+  }
+  prev_name <- value$prev_name
+  order_by  <- value$order_by %||% character(0)
+  group_by  <- as.character(unlist(value$group_by %||% character(0)))
+
+  if (is.null(prev_name) || !nzchar(as.character(prev_name))) {
+    return(rep(NA, n))
+  }
+  if (is.null(data[[prev_name]])) return(rep(NA, n))
+
+  # Build group key for partitioning
+  if (length(group_by) == 0L) {
+    grp_key <- rep("__all__", n)
+  } else {
+    missing_grp <- setdiff(group_by, names(data))
+    if (length(missing_grp) > 0L) return(rep(NA, n))
+    grp_key <- do.call(paste, c(lapply(group_by, function(g)
+      as.character(data[[g]])), list(sep = "\x1f")))
+  }
+
+  # Sort order within group
+  if (length(order_by) == 0L || is.null(data[[order_by]])) {
+    ord_vals <- seq_len(n)
+  } else {
+    ord_vals <- data[[order_by]]
+  }
+
+  out <- logical(n)
+
+  # Process each partition independently
+  groups <- unique(grp_key)
+  for (g in groups) {
+    idx <- which(grp_key == g)
+    # Sort rows within group by order_by
+    idx_sorted <- idx[order(ord_vals[idx])]
+    m <- length(idx_sorted)
+    if (m < 2L) {
+      # Only one element -- no next row to compare; never fires
+      out[idx_sorted] <- FALSE
+      next
+    }
+    cur_vals  <- as.character(data[[name]][idx_sorted])
+    next_vals <- as.character(data[[prev_name]][idx_sorted])
+    # For row i (1..m-1): fires when cur_vals[i] != next_vals[i+1]
+    # For row m (last): FALSE (no next element)
+    fires <- logical(m)
+    for (k in seq_len(m - 1L)) {
+      a <- cur_vals[[k]]
+      b <- next_vals[[k + 1L]]
+      if (is.na(a) || is.na(b)) {
+        fires[[k]] <- NA
+      } else {
+        fires[[k]] <- !.cdisc_value_equal(a, b)
+      }
+    }
+    fires[[m]] <- FALSE
+    out[idx_sorted] <- fires
+  }
+  out
+}
+.register_op(
+  "next_row_not_equal", op_next_row_not_equal,
+  meta = list(
+    kind    = "cross",
+    summary = "Current row `name` does not equal next row `prev_name` (within group ordered by order_by)",
+    arg_schema = list(
+      name  = list(type = "string", required = TRUE),
+      value = list(type = "object", required = TRUE)
+    ),
+    cost_hint    = "O(n log n)",
+    column_arg   = "name",
+    returns_na_ok = TRUE
+  )
+)
+
 # --- attr-reading ops (plan Q12/Q15/Q16) -------------------------------------
 # These ops read column / dataset attributes that `apply_spec()`, the XPT
 # reader, or the Dataset-JSON reader populate at ingest. Validation stays

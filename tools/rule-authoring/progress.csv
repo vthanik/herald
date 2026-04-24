@@ -446,7 +446,7 @@
 "CG0198","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Relationships represented in RELREC are collected relationships",NA,NA,"narrative",NA,NA,NA
 "CG0200","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Within a subject each unique RELID is present on multiple RELREC records",NA,NA,"narrative",NA,NA,NA
 "CG0205","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Suppqual dataset names <= 8 characters","split-dataset-name-length","operator: dataset_name_length_not_in_range min_len: ~ max_len: 8","predicate","2026-04-24T14:00:38Z",NA,NA
-"CG0207","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SEENDTC = SESTDTC of next ELEMENT",NA,NA,"narrative",NA,NA,NA
+"CG0207","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","SEENDTC = SESTDTC of next ELEMENT","se-element-next-equals-start","operator: next_row_not_equal name: SEENDTC value: prev_name: SESTDTC order_by: TAETORD group_by: - USUBJID","predicate","2026-04-24T16:22:47Z",NA,NA
 "CG0214","CDISC","SDTM-IG","3.2,3.3","Medium","VISITNUM not in TV.VISITNUM",NA,NA,"narrative",NA,NA,NA
 "CG0217","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TAETORD = SE.TAETORD","value-equals-cross-dataset-col","all: - operator: differs_by_key name: ""TAETORD"" reference_dataset: ""SE"" reference_column: ""TAETORD"" key: ""USUBJID""","predicate","2026-04-24T09:20:55Z",NA,NA
 "CG0218","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","EPOCH = SE.EPOCH","value-equals-cross-dataset-col","all: - operator: differs_by_key name: ""EPOCH"" reference_dataset: ""SE"" reference_column: ""EPOCH"" key: ""[USUBJID, ETCD]""","predicate","2026-04-24T09:20:55Z",NA,NA
@@ -467,7 +467,7 @@
 "CG0247","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TAETORD is unique within an ARM",NA,NA,"narrative",NA,NA,NA
 "CG0248","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TAETORD is an integer","value-regex-format","operator: not_matches_regex name: TAETORD value: '^[0-9]+$'","predicate","2026-04-24T12:24:18Z",NA,NA
 "CG0249","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TATRANS = null",NA,NA,"narrative",NA,NA,NA
-"CG0250","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Each value of EPOCH is not associated with more than one conceptual trial period",NA,NA,"narrative",NA,NA,NA
+"CG0250","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Each value of EPOCH is not associated with more than one conceptual trial period","epoch-unique-per-conceptual-period","operator: is_not_unique_relationship name: ""EPOCH"" value: related_name: ""TAETORD""","predicate","2026-04-24T16:22:48Z",NA,NA
 "CG0254","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TIVERS present in dataset",NA,NA,"narrative",NA,NA,NA
 "CG0255","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETESTCD unique within TIVERS",NA,NA,"narrative",NA,NA,NA
 "CG0256","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IETESTCD unique in dataset",NA,NA,"narrative",NA,NA,NA
@@ -498,10 +498,10 @@
 "CG0318","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","PC dataset present in study","submission-conditional-dataset-required","all: - operator: study_metadata_is key: collected_domains value: PC - operator: not_exists name: PC","predicate","2026-04-24T10:02:11Z",NA,NA
 "CG0320","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TESTCD present in custom findings dataset",NA,NA,"narrative",NA,NA,NA
 "CG0321","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Custom domain is based on one of the observation classes",NA,NA,"narrative",NA,NA,NA
-"CG0322","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ELEMENT value does not refer to any specific ARM",NA,NA,"narrative",NA,NA,NA
-"CG0323","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ELEMENT value does not refer to any specific EPOCH",NA,NA,"narrative",NA,NA,NA
+"CG0322","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ELEMENT value does not refer to any specific ARM","element-value-in-ref","operator: is_not_unique_relationship name: ETCD value: related_name: ""%ref_col%""","predicate","2026-04-24T16:22:48Z",NA,NA
+"CG0323","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ELEMENT value does not refer to any specific EPOCH","element-value-in-ref","operator: is_not_unique_relationship name: ETCD value: related_name: ""%ref_col%""","predicate","2026-04-24T16:22:48Z",NA,NA
 "CG0324","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TEENRL value does not refer to any specific ARM",NA,NA,"narrative",NA,NA,NA
-"CG0325","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","The combination of ELEMENT, TESTRL, TEENRL, and TEDUR is unique for each ETCD",NA,NA,"narrative",NA,NA,NA
+"CG0325","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","The combination of ELEMENT, TESTRL, TEENRL, and TEDUR is unique for each ETCD","epoch-unique-per-conceptual-period","operator: is_not_unique_relationship name: ""ETCD"" value: related_name: ""ELEMENT""","predicate","2026-04-24T16:22:48Z",NA,NA
 "CG0330","CDISC","SDTM-IG","3.2,3.3","Medium","Variables are ordered with Identifiers first, followed by the Topic, Qualifier, and Timing variables. Within each role, variables are ordered as shown in SDTM: Tables 2.2.1, 2.2.2, 2.2.3, 2.2.3.1, 2.2.4, and 2.2.5",NA,NA,"narrative",NA,NA,NA
 "CG0332","CDISC","SDTM-IG","3.2,3.3,3.4","High","The first two characters of the dataset name must equal a domain that is present in the study",NA,NA,"narrative",NA,NA,NA
 "CG0333","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","The characters of the dataset name after 'FA' equal a domain that present in the study",NA,NA,"narrative",NA,NA,NA
