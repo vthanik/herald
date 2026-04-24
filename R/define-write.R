@@ -1751,23 +1751,17 @@ write_define_html <- function(spec, path, define_xml = NULL) {
 
   # -- Assemble from template --------------------------------------------------
   html_tmpl_path <- system.file("extdata", "define.html", package = "herald")
-  css_path       <- system.file("extdata", "define.css",  package = "herald")
 
   # Fallback for devtools::load_all() when system.file returns ""
   if (!nzchar(html_tmpl_path) || !file.exists(html_tmpl_path)) {
     html_tmpl_path <- file.path("inst", "extdata", "define.html")
   }
-  if (!nzchar(css_path) || !file.exists(css_path)) {
-    css_path <- file.path("inst", "extdata", "define.css")
-  }
 
   html_tmpl <- paste(readLines(html_tmpl_path, warn = FALSE), collapse = "\n")
-  css        <- paste(readLines(css_path,       warn = FALSE), collapse = "\n")
 
-  # Substitute {{PLACEHOLDER}} tokens
+  # Substitute {{PLACEHOLDER}} tokens (CSS is now inlined in the template)
   subs <- list(
     "{{TITLE}}"            = .h(title),
-    "{{CSS}}"              = css,
     "{{STUDY_NAME}}"       = .h(study_name),
     "{{HERALD_VERSION}}"   = as.character(utils::packageVersion("herald")),
     "{{TIMESTAMP}}"        = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),

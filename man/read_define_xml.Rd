@@ -53,6 +53,7 @@ Other spec:
 \code{\link{as_herald_spec}()},
 \code{\link{herald_spec}()},
 \code{\link{is_herald_spec}()},
+\code{\link{write_define_html}()},
 \code{\link{write_define_xml}()}
 }
 \concept{spec}
