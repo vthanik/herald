@@ -6,6 +6,135 @@ approach**, alternatives rank-ordered after.
 
 Use Ctrl-F on rule_id to find the decision that covers a rule.
 
+---
+
+## Status snapshot (2026-04-24) -- read this first
+
+### Shipped
+
+**Rule corpus:** 696 / 1814 predicate (38.4%). No regressions.
+
+**Engine / infrastructure:**
+- Dictionary Provider Protocol (full 6-phase plan complete).
+  - Registry: `register_dictionary`, `unregister_dictionary`,
+    `list_dictionaries`, `new_dict_provider`.
+  - Factories: `ct_provider`, `srs_provider`, `meddra_provider`,
+    `whodrug_provider`, `loinc_provider`, `snomed_provider`,
+    `custom_provider`.
+  - Downloader: `download_ct` (CDISC NCI EVS), `download_srs`
+    (FDA SRS / UNII, cache-only).
+  - Missing-ref tracking: `ctx$missing_refs` + `result$skipped_refs`
+    with kind + name + rule_ids + actionable hint.
+  - Report banner: `write_report_html()` renders
+    "Missing reference data" section + "N skipped" header cell.
+- CT bundle: `inst/rules/ct/{sdtm,adam}-ct.rds` (2026-03-27).
+- Engine fix: `.substitute_index` recurses into nested
+  `value.related_name` / `value.group_by` slots.
+- P21-aligned value compare: datetime fuzzy prefix, numeric
+  normalization, NULL==NULL == equal, POSIXct / Date / difftime
+  canonicalisation, 4-digit-year heuristic.
+
+**Validation UX:**
+- `validate(... dictionaries = list(...))` explicit override.
+- `result$skipped_refs` structured per kind + name.
+- Submission-level rule routing (`scope.submission: true`) for
+  ADSL-existence-style checks.
+- `result$environment` carries Herald version + CT versions +
+  IG versions (Q19 provenance; wiring pending in renderer).
+
+**Tests:** 2485 / 2485 PASS under `devtools::test()`. 2484 / 2485
+under `R CMD check` (one pre-existing failure noted below).
+
+### Pending
+
+**Rule conversion backlog (interview-queued, not yet executed):**
+
+| block | cluster | rules | plan |
+|---|---|---:|---|
+| Q4  | conditional literal-assertion (VAR = LIT / VAR in (...)) | 21 | two patterns, existing ops |
+| Q5  | ADSL <-> DM consistency | 8 | adsl-dm-consistency pattern |
+| Q6  | cross-dataset equality / membership | 10 | two patterns |
+| Q7  | cross-dataset presence pair | 5 | combinator pattern |
+| Q8  | unit-consistency | 7 | pattern w/ numeric guard |
+| Q9  | dataset-presence-in-study | 10 | 3 patterns + `op_study_metadata_is` |
+| Q10 | composite-group uniqueness | 28 | 2 patterns + `op_is_not_constant_per_group` |
+| Q11 | suffix-pattern value + type | 21 | 3 patterns + `op_var_by_suffix_not_numeric` |
+| Q12 | baseline-consistency compound | 11 | `op_base_not_equal_abl_row` |
+| Q13 | FDA SRS / UNII | 6 | `op_value_in_srs_table` wired to `srs_provider` |
+| Q14 | residual singletons | ~30 | inline triage; 4-bucket sort |
+| Q21 | indexed compound-var family | ~50 | 2 patterns, existing `expand:` |
+| Q22 | prefix+suffix compound templates | 8 | compound-template-pair pattern |
+| Q23 | TS-domain parametric | 30 | 1 parametric pattern driven by CSV |
+| Q24 | ISO 8601 conformance | 10 | `op_value_not_iso8601` |
+| Q25 | dataset-naming / domain-code | 13 | 3 micro-patterns |
+| Q26 | cross-dataset variable presence | 10 | `op_var_present_in_any_other_dataset` |
+| Q27 | MedDRA / WhoDrug / external dict | 22 | `op_value_in_dictionary` + `register_dictionary` |
+| Q28 | RELREC / associated-person | 5 | combinator pattern |
+| Q29 | ELEMENT / EPOCH / TE-SE | 7 | 3 patterns + `op_next_row_not_equal` |
+| Q30 | IG-defined treatment-var | 3 | reuses Q2 op |
+| Q31 | Define.xml / sponsor keys | 2 | new `R/define-read.R` reader |
+| Q32 | compound combinator residual | ~40 | triage script + hand-translate |
+| **total expected net** | | **~1050** | brings corpus to ~1750 / 1814 |
+
+**P21 audit follow-on changes (queued, not coded):**
+- A. `op_matches_regex` full-match default (Q4 / Q11 / Q24).
+- B. `equal_to_ci` / `not_equal_to_ci` sugar ops (Q15 / Q4).
+- D. `when:` guard three-state return (Q1 / Q4 / Q9).
+- G. `paste` NA-sentinel fix (Q3 / Q10 / Q12 / Q29).
+- N. `severity_map` nested-list domain form (Q18).
+
+**Follow-on features (queued):**
+- Q15 condition-primitive grammar (`ends_with`,
+  `less_than_literal` / `greater_than_literal`).
+- Q16 fixture convention (pos/neg Dataset-JSON per pattern).
+- Q17 `variable:` prose normalisation on `apply-pattern.R`.
+- Q18 `severity_map` arg on `validate()`.
+- Q19 HEADER_META expanded provenance (CT versions + IG
+  versions) -- `result$environment` spec captured; renderer
+  not yet updated.
+- Q20 four-state progress.csv taxonomy
+  (`narrative` / `predicate` / `blocker:*` / `drop:*` /
+  `deprecated:*`).
+
+**Known pre-existing test issue (NOT from this session):**
+- `tests/testthat/test-fast-ops-meta.R:31` calls `.op_meta()`
+  and `.get_op()` unqualified -- works under `devtools::test()`
+  via `load_all()`, fails under `R CMD check` installed-package
+  mode. One-line fix: prefix `herald:::`. Not committed; user
+  sign-off pending.
+
+### Where the detail lives
+
+- Full decision log (Q1-Q33): below, each question with
+  "User answer" + "Decisions locked".
+- P21 cross-Q audit: bottom of this file under "P21 edge-case
+  cross-Q audit (2026-04-22)".
+- Dictionary Provider Protocol plan:
+  `/Users/vignesh/.claude/plans/cached-nibbling-penguin.md`.
+- Implementation commits: `git log --oneline -12` from
+  `9b4afe8` downward.
+- Memory: `/Users/vignesh/.claude/projects/-Users-vignesh-projects-r-herald/memory/`
+  (MEMORY.md indexes the session-persistent rules).
+
+### To resume
+
+1. Pick a Q from "Pending rule conversion backlog" (all
+   recommended = "a" already; user consent implicit in the
+   hardened 95%+ target).
+2. Read that Q's "Decisions locked" section -- has slots, op
+   names, scope.
+3. Author pattern MD + .ids, run `apply-pattern.R`, run
+   `compile-rules.R`, run `devtools::test()`, commit per
+   pattern.
+4. Loop.
+
+Recommended starting order: Q4 (conditional literal) -> Q10
+(composite uniqueness) -> Q11 (suffix patterns) -> Q21
+(indexed compound). These four unlock ~120 rules with no new
+ops; pure pattern + .ids + existing engine.
+
+---
+
 ## Coverage commitment (set at Q20, hardened after Q32)
 
 | state | allowed | current (696 / 1814) | post-cycle target |
