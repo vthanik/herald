@@ -1,0 +1,28 @@
+{
+  "rule_id": "__pattern-domain-code-format__",
+  "fixture_type": "positive",
+  "datasets": {
+    "AE": {
+      "USUBJID": ["STUDY-001", "STUDY-002"],
+      "DOMAIN": ["ABCD", "AE"],
+      "AEDECOD": ["Headache", "Nausea"]
+    },
+    "ADEFF": {
+      "USUBJID": ["STUDY-001", "STUDY-002"],
+      "SRCDOM": ["ABCDE", "AE"],
+      "AVAL": [1.0, 2.0]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "pattern=domain-code-format; AE row 1 DOMAIN=ABCD (4 chars, fails CG0308 which requires 2). ADEFF row 1 SRCDOM=ABCDE (5 chars, not valid domain or ADaM prefix, fails ADaM-746).",
+  "authored": "pattern-fixture@1",
+  "spec": {
+    "class_map": {
+      "AE": "EVENTS",
+      "ADEFF": "BASIC DATA STRUCTURE"
+    }
+  }
+}

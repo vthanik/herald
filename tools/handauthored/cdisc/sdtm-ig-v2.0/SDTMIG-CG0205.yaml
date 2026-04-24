@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: GEN
 check:
-  narrative: Suppqual dataset names <= 8 characters
-  condition: ''
+  operator: dataset_name_length_not_in_range
+  min_len: ~
+  max_len: 8
 outcome:
   message: Suppqual dataset names <= 8 characters
   severity: Medium
@@ -30,5 +31,4 @@ provenance:
     resulting in a dataset name of SQAPFAMH.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

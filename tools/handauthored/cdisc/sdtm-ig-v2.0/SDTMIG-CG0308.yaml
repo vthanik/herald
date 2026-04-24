@@ -14,8 +14,9 @@ scope:
   exclude_domains: []
 variable: DOMAIN
 check:
-  narrative: DOMAIN value length = 2
-  condition: ''
+  operator: not_matches_regex
+  name: DOMAIN
+  value: ^[A-Z]{2}$
 outcome:
   message: DOMAIN value length = 2
   severity: Medium
@@ -27,5 +28,4 @@ provenance:
     code
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

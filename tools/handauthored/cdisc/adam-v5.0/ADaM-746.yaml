@@ -15,9 +15,9 @@ scope:
 variable: SRCDOM
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SRCDOM is present
+  operator: not_matches_regex
+  name: SRCDOM
+  value: ^([A-Z]{2}|AD[A-Z0-9]{0,6})$
 outcome:
   message: SRCDOM has a value that is not an SDTM domain name, ADaM dataset name,
     or null
@@ -32,5 +32,4 @@ provenance:
     will contain the value of RDOMAIN in SUPP-- or SUPPQUAL.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

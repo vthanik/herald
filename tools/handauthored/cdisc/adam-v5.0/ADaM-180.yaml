@@ -10,9 +10,9 @@ scope:
 variable: SRCDOM
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SRCDOM is present
+  operator: not_matches_regex
+  name: SRCDOM
+  value: ^[A-Z]{2}$
 outcome:
   message: SRCDOM has a value that is not an SDTM domain name or null
   severity: Medium
@@ -24,4 +24,4 @@ provenance:
     of the SDTM domain that relates to AVAL or AVALC.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

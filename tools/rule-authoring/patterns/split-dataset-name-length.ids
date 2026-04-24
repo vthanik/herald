@@ -1,0 +1,4 @@
+rule_id,min_len,max_len
+CG0017,3,4
+CG0018,,8
+CG0205,,8

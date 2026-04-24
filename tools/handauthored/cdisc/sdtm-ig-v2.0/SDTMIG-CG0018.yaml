@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: GEN
 check:
-  narrative: Split dataset names length <= 8
-  condition: Supplemental Qualifier datasets
+  operator: dataset_name_length_not_in_range
+  min_len: ~
+  max_len: 8
 outcome:
   message: Split dataset names length <= 8
   severity: Medium
@@ -26,5 +27,4 @@ provenance:
     to identify the split dataset.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

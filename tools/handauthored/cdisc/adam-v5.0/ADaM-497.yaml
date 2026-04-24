@@ -13,9 +13,9 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: Dataset class is missing
+  operator: dataset_name_prefix_not
+  prefix: AD
+  when_class_is_missing: yes
 outcome:
   message: A dataset name starts with "AD" when the dataset class is missing
   severity: Medium
@@ -27,5 +27,4 @@ provenance:
     not start with the prefix AD'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

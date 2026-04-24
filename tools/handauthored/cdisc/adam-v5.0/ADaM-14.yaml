@@ -14,9 +14,8 @@ scope:
 variable: ALL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: any_var_name_not_matching_regex
+  value: ^[A-Z]
 outcome:
   message: A variable name does not start with a letter (A-Z)
   severity: Medium
@@ -30,4 +29,4 @@ provenance:
     ADaMIG v1.0, Section 3, Item 5 (General Variable Naming Conventions): To ensure compliance with SAS Transport file and Oracle constraints, all ADaM variable names must be no more than 8 characters in length, start with a letter (not underscore), and be comprised only of letters (A-Z), underscore (_), and numerals (0-9). All ADaM variable labels must be no more than 40 characters in length. All ADaM character variables must be no more than 200 characters in length.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

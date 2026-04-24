@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: GEN
 check:
-  narrative: Split dataset names length > 2 and <= 4
-  condition: Non-Supplemental Qualifier datasets
+  operator: dataset_name_length_not_in_range
+  min_len: 3
+  max_len: 4
 outcome:
   message: Split dataset names length > 2 and <= 4
   severity: Medium
@@ -29,5 +30,4 @@ provenance:
     domain codes are therefore four characters long.]
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

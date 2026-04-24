@@ -405,3 +405,157 @@ op_no_var_with_suffix <- function(data, ctx, suffix) {
     returns_na_ok = FALSE
   )
 )
+
+# --- dataset_name_prefix_not (Q25) -------------------------------------------
+# Metadata-level: fires once per dataset when the dataset name does NOT start
+# with the given prefix AND the dataset class is non-missing (when_class_is_missing
+# = FALSE), or when the name DOES start with the prefix AND the class IS missing
+# (when_class_is_missing = TRUE).
+#
+# Used for ADaM-496 (name must start with "AD" when class non-missing) and
+# ADaM-497 (name must NOT start with "AD" when class missing):
+#   ADaM-496: prefix="AD", when_class_is_missing=FALSE
+#   ADaM-497: prefix="AD", when_class_is_missing=TRUE
+#
+# Class is resolved via .ds_class() / infer_class(); NA or "" counts as missing.
+
+op_dataset_name_prefix_not <- function(data, ctx,
+                                       prefix,
+                                       when_class_is_missing = FALSE) {
+  n    <- nrow(data)
+  pfx  <- as.character(prefix %||% "")
+  mode_missing <- isTRUE(as.logical(when_class_is_missing))
+
+  # Derive current dataset name and its class from ctx.
+  ds_name <- as.character(ctx$current_dataset %||% "")
+
+  # For "class is missing" detection, consult only the caller-supplied spec
+  # (Define-XML) -- not the name-based heuristic. A dataset named "ADxxx"
+  # always gets a non-missing heuristic class, which would prevent ADaM-497
+  # from ever firing. CDISC conformance rules reference the class as declared
+  # in the submission's Define-XML, not as inferred from the name.
+  cls <- NA_character_
+  if (nzchar(ds_name)) {
+    spec_cls <- tryCatch({
+      sp <- ctx$spec
+      if (!is.null(sp) && !is.null(sp$ds_spec)) {
+        ds_col  <- sp$ds_spec[["dataset"]] %||% sp$ds_spec[["Dataset"]]
+        cls_col <- sp$ds_spec[["class"]]   %||% sp$ds_spec[["Class"]]
+        if (!is.null(ds_col) && !is.null(cls_col)) {
+          hit <- which(toupper(as.character(ds_col)) == toupper(ds_name))
+          if (length(hit) > 0L) as.character(cls_col[hit[[1L]]]) else NA_character_
+        } else NA_character_
+      } else NA_character_
+    }, error = function(e) NA_character_)
+    cls <- spec_cls
+  }
+  class_missing <- is.null(cls) || is.na(cls) || !nzchar(trimws(cls))
+
+  if (mode_missing) {
+    # ADaM-497 shape: fires when name DOES start with prefix AND class IS missing.
+    violated <- startsWith(toupper(ds_name), toupper(pfx)) && class_missing
+  } else {
+    # ADaM-496 shape: fires when name does NOT start with prefix AND class non-missing.
+    violated <- !startsWith(toupper(ds_name), toupper(pfx)) && !class_missing
+  }
+  .dataset_level_mask(isTRUE(violated), n)
+}
+.register_op(
+  "dataset_name_prefix_not", op_dataset_name_prefix_not,
+  meta = list(
+    kind    = "existence",
+    summary = "Dataset name prefix vs class check (ADaM-496 / ADaM-497 pattern)",
+    arg_schema = list(
+      prefix              = list(type = "string",  required = TRUE),
+      when_class_is_missing = list(type = "boolean", default  = FALSE)
+    ),
+    cost_hint     = "O(1)",
+    column_arg    = NA_character_,
+    returns_na_ok = FALSE
+  )
+)
+
+# --- dataset_name_length_not_in_range (Q25) ----------------------------------
+# Metadata-level: fires once per dataset when the dataset name's length does
+# NOT fall within [min_len, max_len]. Omit min_len to skip lower-bound check;
+# omit max_len to skip upper-bound check. Used for split-dataset and SUPPQUAL
+# name-length constraints (CG0017, CG0018, CG0205).
+#
+# CG0017: min_len=3, max_len=4  (length > 2 and <= 4)
+# CG0018: max_len=8             (length <= 8)
+# CG0205: max_len=8             (SUPPQUAL dataset names <= 8)
+#
+# Name length is measured in Unicode characters (nchar type="chars"), matching
+# the SDTM dataset-naming convention (all ASCII names in practice).
+
+op_dataset_name_length_not_in_range <- function(data, ctx,
+                                                 min_len = NULL,
+                                                 max_len = NULL) {
+  n       <- nrow(data)
+  ds_name <- as.character(ctx$current_dataset %||% "")
+  if (!nzchar(ds_name)) return(.dataset_level_mask(FALSE, n))
+
+  len     <- nchar(ds_name, type = "chars")
+  lo      <- if (!is.null(min_len)) suppressWarnings(as.integer(min_len)) else NA_integer_
+  hi      <- if (!is.null(max_len)) suppressWarnings(as.integer(max_len)) else NA_integer_
+
+  violated <- FALSE
+  if (!is.na(lo) && len < lo) violated <- TRUE
+  if (!is.na(hi) && len > hi) violated <- TRUE
+  .dataset_level_mask(isTRUE(violated), n)
+}
+.register_op(
+  "dataset_name_length_not_in_range", op_dataset_name_length_not_in_range,
+  meta = list(
+    kind    = "existence",
+    summary = "Dataset name length is outside the required [min_len, max_len] range",
+    arg_schema = list(
+      min_len = list(type = "integer", default = NULL),
+      max_len = list(type = "integer", default = NULL)
+    ),
+    cost_hint     = "O(1)",
+    column_arg    = NA_character_,
+    returns_na_ok = FALSE
+  )
+)
+
+# --- any_var_name_not_matching_regex (Q25) ------------------------------------
+# Metadata-level: fires once per dataset when at least one variable name does
+# NOT match the given regex. Used for variable-naming structural rules
+# (ADaM-14: name must start with letter; ADaM-15: name must contain only
+# [A-Z0-9_]).
+#
+# regex is a POSIX/Perl-compatible regular expression that a VALID variable
+# name should match (positive case). The op fires when any name fails to match.
+#
+# P21 parity: P21 models ADaM-14/15 via val:Regex Target=Metadata Variable=
+# VARIABLE where the test regex is a positive pattern; the op inverts the logic
+# (fires on non-match), matching CDISC's "error if the name does not conform".
+#
+# Column name comparison is uppercase (CDISC convention: variable names are
+# always stored uppercase in XPT). The regex is applied UPPERCASE; callers
+# should write the pattern for uppercase names.
+
+op_any_var_name_not_matching_regex <- function(data, ctx, value) {
+  n    <- nrow(data)
+  cols <- names(data)
+  if (length(cols) == 0L) return(.dataset_level_mask(FALSE, n))
+  rx <- as.character(value %||% "")
+  if (!nzchar(rx)) return(.dataset_level_mask(FALSE, n))
+  violated <- any(
+    !grepl(rx, toupper(cols), perl = TRUE),
+    na.rm = TRUE
+  )
+  .dataset_level_mask(isTRUE(violated), n)
+}
+.register_op(
+  "any_var_name_not_matching_regex", op_any_var_name_not_matching_regex,
+  meta = list(
+    kind    = "existence",
+    summary = "Fires when any variable name does not match the required regex",
+    arg_schema = list(value = list(type = "string", required = TRUE)),
+    cost_hint     = "O(1)",
+    column_arg    = NA_character_,
+    returns_na_ok = FALSE
+  )
+)

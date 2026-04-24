@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: DOMAIN
 check:
-  narrative: DOMAIN = valid Domain Code published by CDISC
-  condition: Not custom domain
+  operator: value_in_codelist
+  name: DOMAIN
+  codelist: DOMAIN
+  extensible: yes
+  package: sdtm
 outcome:
   message: DOMAIN = valid Domain Code published by CDISC
   severity: Medium
@@ -27,5 +30,4 @@ provenance:
     domain code to be used consistently throughout the submission.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
