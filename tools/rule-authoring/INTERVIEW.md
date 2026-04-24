@@ -721,7 +721,7 @@ sibling pair). Composite-key lookup with a selector row.
 - Findings include the anchor row's (PARAMCD, USUBJID[, BASETYPE])
   in the message for reviewer clarity.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** _(delivered)_
 
 ---
 

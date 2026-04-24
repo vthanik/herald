@@ -10,9 +10,15 @@ scope:
 variable: BASE
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BASETYPE is populated and BASE is populated
+  expand: ''
+  operator: base_not_equal_abl_row
+  b_var: BASE
+  a_var: AVAL
+  group_by:
+  - USUBJID
+  - PARAMCD
+  - BASETYPE
+  basetype_gate: populated
 outcome:
   message: BASETYPE is populated, BASE is populated, and BASE is not equal to AVAL
     where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject
@@ -26,5 +32,4 @@ provenance:
     must be a record flagged by ABLFL for that subject and parameter.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

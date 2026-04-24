@@ -10,10 +10,15 @@ scope:
 variable: ByIND where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: USUBJID and SPDEVID are present, BASETYPE is not present, and
-    ByIND is populated
+  expand: 'y'
+  operator: base_not_equal_abl_row
+  b_var: ByIND
+  a_var: AyIND
+  group_by:
+  - USUBJID
+  - SPDEVID
+  - PARAMCD
+  basetype_gate: absent
 outcome:
   message: BASETYPE is not present, ByIND is populated, and ByIND is not equal to
     AyIND where ABLFL is equal to Y for a given value of PARAMCD for a combination
@@ -29,5 +34,4 @@ provenance:
     record identified by ABLFL.\""
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

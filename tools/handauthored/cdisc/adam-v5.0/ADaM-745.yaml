@@ -10,9 +10,15 @@ scope:
 variable: BNRIND
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BASETYPE is populated and BNRIND is populated
+  expand: ''
+  operator: base_not_equal_abl_row
+  b_var: BNRIND
+  a_var: ANRIND
+  group_by:
+  - USUBJID
+  - PARAMCD
+  - BASETYPE
+  basetype_gate: populated
 outcome:
   message: BASETYPE is populated, BNRIND is populated, and BNRIND is not equal to
     ANRIND where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for
@@ -28,5 +34,4 @@ provenance:
     ADaMIG v1.3, Section 3.3.7, Table 3.3.7.1: ANRIND of the baseline record identified by ABLFL.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

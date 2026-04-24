@@ -1798,6 +1798,110 @@ op_no_baseline_record <- function(data, ctx, name, flag_var, flag_value,
   )
 )
 
+# --- base_not_equal_abl_row ---------------------------------------------------
+# Fires when b_var is populated AND b_var != a_var on the group's anchor row
+# (the row where abl_col == abl_value). This is the ADaM baseline-consistency
+# check: BASE must equal AVAL on the record flagged by ABLFL='Y' within each
+# PARAMCD+USUBJID group.
+#
+# basetype_gate values:
+#   "absent"    -- entire dataset skipped when BASETYPE column is present
+#   "populated" -- only rows where BASETYPE is non-null are evaluated
+#   "any"       -- no gate (default)
+#
+# Returns NA (advisory) for rows whose group has no anchor row.
+#
+# Arg shape in rules:
+#   { operator: "base_not_equal_abl_row",
+#     b_var: "BASE", a_var: "AVAL",
+#     group_by: [USUBJID, PARAMCD],
+#     basetype_gate: "absent" }
+
+op_base_not_equal_abl_row <- function(data, ctx, b_var, a_var,
+                                       group_by,
+                                       abl_col = "ABLFL",
+                                       abl_value = "Y",
+                                       basetype_gate = "any") {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0L))
+
+  gate <- as.character(basetype_gate %||% "any")
+
+  # Dataset-level gate: skip when BASETYPE column is present
+  if (gate == "absent" && "BASETYPE" %in% names(data))
+    return(rep(FALSE, n))
+
+  if (is.null(data[[b_var]]) || is.null(data[[a_var]]) || is.null(data[[abl_col]]))
+    return(rep(NA, n))
+
+  grp_cols <- as.character(unlist(group_by %||% character(0L)))
+  if (length(setdiff(grp_cols, names(data))) > 0L) return(rep(NA, n))
+
+  .rtrim_null <- function(v) {
+    if (!is.character(v)) return(as.character(v))
+    r <- sub("\\s+$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+
+  b_vals   <- .rtrim_null(data[[b_var]])
+  a_vals   <- .rtrim_null(data[[a_var]])
+  abl_vals <- .rtrim_null(data[[abl_col]])
+
+  group_key <- if (length(grp_cols) == 0L) {
+    rep("", n)
+  } else {
+    do.call(paste, c(lapply(grp_cols, function(g) .rtrim_null(data[[g]])),
+                     list(sep = "\x1f")))
+  }
+
+  # Build anchor map: first anchor row per group -> a_var value
+  is_anchor  <- !is.na(abl_vals) & abl_vals == as.character(abl_value)
+  anch_gk    <- group_key[is_anchor]
+  anch_av    <- a_vals[is_anchor]
+  uniq_anch  <- !duplicated(anch_gk)
+  anchor_map <- setNames(anch_av[uniq_anch], anch_gk[uniq_anch])
+
+  # Active rows: b_var populated + optional row-level basetype gate
+  active <- !is.na(b_vals)
+  if (gate == "populated" && "BASETYPE" %in% names(data))
+    active <- active & !is.na(.rtrim_null(data$BASETYPE))
+
+  out <- rep(FALSE, n)
+  ai  <- which(active)
+  if (length(ai) == 0L) return(out)
+
+  gk_ai     <- group_key[ai]
+  no_anchor <- !gk_ai %in% names(anchor_map)
+  out[ai[no_anchor]] <- NA
+
+  has_idx <- ai[!no_anchor]
+  if (length(has_idx) == 0L) return(out)
+
+  b_cmp <- b_vals[has_idx]
+  a_cmp <- unname(anchor_map[group_key[has_idx]])
+  eq    <- .cdisc_value_equal(b_cmp, a_cmp)
+  out[has_idx] <- !eq   # !TRUE=FALSE (pass), !FALSE=TRUE (fire), !NA=NA (advisory)
+
+  out
+}
+.register_op(
+  "base_not_equal_abl_row", op_base_not_equal_abl_row,
+  meta = list(
+    kind    = "cross",
+    summary = "b_var is populated and not equal to a_var on the anchor row (abl_col==abl_value) within each group",
+    arg_schema = list(
+      b_var         = list(type = "string", required = TRUE),
+      a_var         = list(type = "string", required = TRUE),
+      group_by      = list(type = "array",  required = TRUE),
+      abl_col       = list(type = "string", default = "ABLFL"),
+      abl_value     = list(type = "string", default = "Y"),
+      basetype_gate = list(type = "string", default = "any")
+    ),
+    cost_hint = "O(n)", column_arg = "b_var", returns_na_ok = TRUE
+  )
+)
+
 #' Resolve a templated column name (e.g. "TRTxxP" or "PxxSw") against a
 #' dataset's column list. Returns the concrete column names that match.
 #' @noRd

@@ -10,9 +10,15 @@ scope:
 variable: ByIND where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BASETYPE is populated and ByIND is populated
+  expand: 'y'
+  operator: base_not_equal_abl_row
+  b_var: ByIND
+  a_var: AyIND
+  group_by:
+  - USUBJID
+  - PARAMCD
+  - BASETYPE
+  basetype_gate: populated
 outcome:
   message: BASETYPE is populated, ByIND is populated, and ByIND is not equal to AyIND
     where ABLFL is equal to Y for a given value of PARAMCD and BASETYPE for a subject
@@ -27,5 +33,4 @@ provenance:
     ADaMIG v1.3, Section 3.3.7, Table 3.3.7.1: CDISC Notes for ByIND state: "AyIND of the baseline record identified by ABLFL."
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

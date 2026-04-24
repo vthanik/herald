@@ -264,3 +264,138 @@ test_that("no_baseline_record uses exact flag_value match (case-sensitive)", {
   )
   expect_equal(out, c(TRUE, TRUE))
 })
+
+# =============================================================================
+# op_base_not_equal_abl_row
+# =============================================================================
+
+test_that("base_not_equal_abl_row fires when b_var differs from anchor a_var", {
+  d <- data.frame(
+    USUBJID = c("S1", "S1", "S1"),
+    PARAMCD = c("HR", "HR", "HR"),
+    ABLFL   = c("Y",  NA,   NA),
+    AVAL    = c(70,   75,   80),
+    BASE    = c(70,   75,   75),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_base_not_equal_abl_row(
+    d, ctx_empty, b_var = "BASE", a_var = "AVAL",
+    group_by = list("USUBJID", "PARAMCD"), basetype_gate = "any"
+  )
+  # anchor AVAL=70; row2 BASE=75 != 70 -> fires; row3 BASE=75 != 70 -> fires
+  expect_true(out[[2L]])
+  expect_true(out[[3L]])
+  expect_false(isTRUE(out[[1L]]))  # anchor row itself: BASE=70 == AVAL=70 -> pass
+})
+
+test_that("base_not_equal_abl_row passes when b_var matches anchor a_var", {
+  d <- data.frame(
+    USUBJID = c("S1", "S1"),
+    PARAMCD = c("HR", "HR"),
+    ABLFL   = c("Y",  NA),
+    AVAL    = c(70,   70),
+    BASE    = c(70,   70),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_base_not_equal_abl_row(
+    d, ctx_empty, b_var = "BASE", a_var = "AVAL",
+    group_by = list("USUBJID", "PARAMCD"), basetype_gate = "any"
+  )
+  expect_true(all(!out))
+})
+
+test_that("base_not_equal_abl_row passes when b_var is not populated", {
+  d <- data.frame(
+    USUBJID = "S1",
+    PARAMCD = "HR",
+    ABLFL   = "Y",
+    AVAL    = 70,
+    BASE    = NA_real_,
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_base_not_equal_abl_row(
+    d, ctx_empty, b_var = "BASE", a_var = "AVAL",
+    group_by = list("USUBJID", "PARAMCD"), basetype_gate = "any"
+  )
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("base_not_equal_abl_row returns NA when group has no anchor row", {
+  d <- data.frame(
+    USUBJID = c("S1", "S1"),
+    PARAMCD = c("HR", "HR"),
+    ABLFL   = c(NA,   NA),
+    AVAL    = c(70,   75),
+    BASE    = c(70,   75),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_base_not_equal_abl_row(
+    d, ctx_empty, b_var = "BASE", a_var = "AVAL",
+    group_by = list("USUBJID", "PARAMCD"), basetype_gate = "any"
+  )
+  expect_true(all(is.na(out)))
+})
+
+test_that("base_not_equal_abl_row skips dataset when basetype_gate=absent and BASETYPE present", {
+  d <- data.frame(
+    USUBJID  = c("S1", "S1"),
+    PARAMCD  = c("HR", "HR"),
+    ABLFL    = c("Y",  NA),
+    AVAL     = c(70,   70),
+    BASE     = c(70,   99),
+    BASETYPE = c("Last", "Last"),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_base_not_equal_abl_row(
+    d, ctx_empty, b_var = "BASE", a_var = "AVAL",
+    group_by = list("USUBJID", "PARAMCD"), basetype_gate = "absent"
+  )
+  expect_true(all(!out))
+})
+
+test_that("base_not_equal_abl_row runs when basetype_gate=absent and BASETYPE absent", {
+  d <- data.frame(
+    USUBJID = c("S1", "S1"),
+    PARAMCD = c("HR", "HR"),
+    ABLFL   = c("Y",  NA),
+    AVAL    = c(70,   70),
+    BASE    = c(70,   99),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_base_not_equal_abl_row(
+    d, ctx_empty, b_var = "BASE", a_var = "AVAL",
+    group_by = list("USUBJID", "PARAMCD"), basetype_gate = "absent"
+  )
+  expect_true(out[[2L]])
+})
+
+test_that("base_not_equal_abl_row skips null-BASETYPE rows when gate=populated", {
+  d <- data.frame(
+    USUBJID  = c("S1", "S1", "S1"),
+    PARAMCD  = c("HR", "HR", "HR"),
+    ABLFL    = c("Y",  NA,   NA),
+    AVAL     = c(70,   70,   70),
+    BASE     = c(70,   99,   99),
+    BASETYPE = c(NA,   NA,   "Last"),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_base_not_equal_abl_row(
+    d, ctx_empty, b_var = "BASE", a_var = "AVAL",
+    group_by = list("USUBJID", "PARAMCD", "BASETYPE"), basetype_gate = "populated"
+  )
+  # row1: b_var=70 == anchor (same group key includes BASETYPE=NA) -> varies
+  # row2: BASETYPE is NA -> skipped (FALSE)
+  # row3: BASETYPE="Last" -> active; anchor in "Last" group? anchor ABLFL="Y" is
+  #   in BASETYPE=NA group, so no anchor for "Last" group -> NA advisory
+  expect_false(isTRUE(out[[2L]]))
+  expect_true(is.na(out[[3L]]))
+})
+
+test_that("base_not_equal_abl_row returns NA advisory for absent b_var column", {
+  d <- data.frame(USUBJID = "S1", AVAL = 70, ABLFL = "Y", stringsAsFactors = FALSE)
+  out <- herald:::op_base_not_equal_abl_row(
+    d, ctx_empty, b_var = "BASE", a_var = "AVAL",
+    group_by = list("USUBJID"), basetype_gate = "any"
+  )
+  expect_true(is.na(out[[1L]]))
+})
