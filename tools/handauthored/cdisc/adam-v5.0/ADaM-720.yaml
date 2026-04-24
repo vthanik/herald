@@ -13,9 +13,10 @@ scope:
 variable: TRTP
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTP is populated
+  operator: value_not_in_subject_indexed_set
+  name: TRTP
+  reference_dataset: ADSL
+  reference_template: TRTxxP
 outcome:
   message: A non-missing value of TRTP is not equal to at least one value of the character
     planned treatment variables in ADSL defined in the IG
@@ -31,5 +32,4 @@ provenance:
     TRTSEQP, TRxxPGy)."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -1,0 +1,28 @@
+{
+  "rule_id": "__pattern-trt-value-in-adsl-defined-set__",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADTTE": {
+      "USUBJID": ["STUDY-001", "STUDY-002", "STUDY-003"],
+      "PARAMCD": ["OS", "OS", "OS"],
+      "TRTP": ["DRUG A", "DRUG C", "DRUG B"]
+    },
+    "ADSL": {
+      "USUBJID": ["STUDY-001", "STUDY-002", "STUDY-003"],
+      "TRT01P": ["DRUG A", "DRUG A", "DRUG B"],
+      "TRT02P": ["DRUG B", "DRUG B", "DRUG A"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "STUDY-002 has TRTP='DRUG C' but ADSL only has TRT01P='DRUG A', TRT02P='DRUG B' for that subject; STUDY-001 and STUDY-003 match",
+  "authored": "pattern-fixture@1",
+  "spec": {
+    "class_map": {
+      "ADTTE": "BASIC DATA STRUCTURE",
+      "ADSL": "SUBJECT LEVEL ANALYSIS DATASET"
+    }
+  }
+}

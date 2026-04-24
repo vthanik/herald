@@ -13,9 +13,10 @@ scope:
 variable: TRTA
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTA is populated
+  operator: value_not_in_subject_indexed_set
+  name: TRTA
+  reference_dataset: ADSL
+  reference_template: TRTxxA
 outcome:
   message: A non-missing value of TRTA is not equal to at least one value of the character
     actual treatment variables in ADSL defined in the IG
@@ -29,5 +30,4 @@ provenance:
     As noted previously, at least one treatment variable is required. This requirement is satisfied by any subject-level or record-level treatment variables (e.g., TRTxxP, TRTP, TRTA). Even if not used for analysis, any ADSL treatment variable may be included in the BDS dataset.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
