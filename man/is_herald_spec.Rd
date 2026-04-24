@@ -18,6 +18,9 @@ Is \code{x} a \code{herald_spec}?
 \seealso{
 Other spec: 
 \code{\link{apply_spec}()},
-\code{\link{as_herald_spec}()}
+\code{\link{as_herald_spec}()},
+\code{\link{herald_spec}()},
+\code{\link{read_define_xml}()},
+\code{\link{write_define_xml}()}
 }
 \concept{spec}

@@ -51,6 +51,9 @@ attributes from a \code{herald_spec}.
 
 Other spec: 
 \code{\link{apply_spec}()},
-\code{\link{is_herald_spec}()}
+\code{\link{herald_spec}()},
+\code{\link{is_herald_spec}()},
+\code{\link{read_define_xml}()},
+\code{\link{write_define_xml}()}
 }
 \concept{spec}

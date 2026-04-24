@@ -51,6 +51,8 @@ if (requireNamespace("xml2", quietly = TRUE)) {
 Other spec: 
 \code{\link{apply_spec}()},
 \code{\link{as_herald_spec}()},
-\code{\link{is_herald_spec}()}
+\code{\link{herald_spec}()},
+\code{\link{is_herald_spec}()},
+\code{\link{write_define_xml}()}
 }
 \concept{spec}

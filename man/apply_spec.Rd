@@ -58,6 +58,9 @@ attr(out$DM$USUBJID, "label")
 
 Other spec: 
 \code{\link{as_herald_spec}()},
-\code{\link{is_herald_spec}()}
+\code{\link{herald_spec}()},
+\code{\link{is_herald_spec}()},
+\code{\link{read_define_xml}()},
+\code{\link{write_define_xml}()}
 }
 \concept{spec}
