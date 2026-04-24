@@ -31,3 +31,63 @@ test_that("missing column returns all-NA mask", {
   d <- data.frame(y = "A", stringsAsFactors = FALSE)
   expect_equal(op_is_contained_by(d, NULL, "x", c("A")), rep(NA, 1L))
 })
+
+# =============================================================================
+# op_value_in_srs_table
+# =============================================================================
+
+.mk_fake_srs_ctx <- function(pt_terms, unii_terms) {
+  pool_pt   <- as.character(pt_terms)
+  pool_unii <- as.character(unii_terms)
+  provider <- herald:::new_dict_provider(
+    name     = "srs",
+    version  = "test",
+    source   = "test",
+    license  = "public",
+    fields   = c("preferred_name", "unii"),
+    contains = function(value, field = "preferred_name", ignore_case = FALSE) {
+      pool <- if (identical(field, "unii")) pool_unii else pool_pt
+      as.character(value) %in% pool
+    }
+  )
+  ctx <- herald:::new_herald_ctx()
+  ctx$dict <- list(srs = provider)
+  ctx
+}
+
+test_that("value_in_srs_table fires when preferred_name not in SRS", {
+  d   <- data.frame(TSVAL = c("ASPIRIN", "UNKNOWN_DRUG"), stringsAsFactors = FALSE)
+  ctx <- .mk_fake_srs_ctx(pt_terms = "ASPIRIN", unii_terms = character())
+  out <- herald:::op_value_in_srs_table(d, ctx, name = "TSVAL", field = "preferred_name")
+  expect_false(out[[1L]])   # ASPIRIN is valid -> pass
+  expect_true(out[[2L]])    # UNKNOWN_DRUG not in SRS -> fires
+})
+
+test_that("value_in_srs_table fires when unii not in SRS", {
+  d   <- data.frame(TSVALCD = c("R16CO5Y76E", "BADINVALID"), stringsAsFactors = FALSE)
+  ctx <- .mk_fake_srs_ctx(pt_terms = character(), unii_terms = "R16CO5Y76E")
+  out <- herald:::op_value_in_srs_table(d, ctx, name = "TSVALCD", field = "unii")
+  expect_false(out[[1L]])
+  expect_true(out[[2L]])
+})
+
+test_that("value_in_srs_table returns NA advisory when SRS cache absent", {
+  d   <- data.frame(TSVAL = "ASPIRIN", stringsAsFactors = FALSE)
+  ctx <- herald:::new_herald_ctx()  # no dict set
+  out <- herald:::op_value_in_srs_table(d, ctx, name = "TSVAL")
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("value_in_srs_table returns NA when column absent", {
+  d   <- data.frame(OTHER = "A", stringsAsFactors = FALSE)
+  ctx <- .mk_fake_srs_ctx("ASPIRIN", character())
+  out <- herald:::op_value_in_srs_table(d, ctx, name = "TSVAL")
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("value_in_srs_table passes empty/NA values as NA", {
+  d   <- data.frame(TSVAL = c(NA_character_, "", "  "), stringsAsFactors = FALSE)
+  ctx <- .mk_fake_srs_ctx("ASPIRIN", character())
+  out <- herald:::op_value_in_srs_table(d, ctx, name = "TSVAL")
+  expect_true(all(is.na(out)))
+})

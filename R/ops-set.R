@@ -366,6 +366,63 @@ op_value_in_codelist <- function(data, ctx, name, codelist,
   )
 )
 
+# --- value_in_srs_table -------------------------------------------------------
+# Fires when a row value is NOT found in the FDA SRS / UNII registry.
+# The SRS provider is resolved via ctx$dict[["srs"]] (injected by
+# srs_provider() or validate(dictionaries = list(srs = srs_provider()))).
+# When no cached SRS table exists, records a missing_ref and returns NA
+# (advisory) so the rule stays predicate even without the download.
+#
+# field: "preferred_name" checks the PT column; "unii" checks UNII codes.
+#
+# Arg shape in rules:
+#   { name: "TSVAL", operator: "value_in_srs_table", field: "preferred_name" }
+
+op_value_in_srs_table <- function(data, ctx, name, field = "preferred_name") {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0L))
+  if (is.null(data[[name]])) return(rep(NA, n))
+
+  field <- as.character(field %||% "preferred_name")
+
+  provider <- .resolve_provider(ctx, "srs")
+  if (is.null(provider)) {
+    provider <- tryCatch(srs_provider(), error = function(e) NULL)
+    if (is.null(provider)) {
+      .record_missing_ref(ctx,
+        rule_id = ctx$current_rule_id %||% NA_character_,
+        kind    = "dictionary",
+        name    = "srs")
+      return(rep(NA, n))
+    }
+    if (is.null(ctx$dict)) ctx$dict <- list()
+    ctx$dict[["srs"]] <- provider
+  }
+
+  vals      <- sub(" +$", "", as.character(data[[name]]))
+  out       <- rep(NA, n)
+  non_empty <- !is.na(vals) & nzchar(vals)
+  if (!any(non_empty)) return(out)
+
+  hit_mask <- provider$contains(vals[non_empty], field = field)
+  if (all(is.na(hit_mask))) return(rep(NA, n))
+
+  out[non_empty] <- !hit_mask   # fires (TRUE) when NOT in SRS
+  out
+}
+.register_op(
+  "value_in_srs_table", op_value_in_srs_table,
+  meta = list(
+    kind    = "set",
+    summary = "Row value is in the FDA SRS / UNII registry (fires when not found)",
+    arg_schema = list(
+      name  = list(type = "string", required = TRUE),
+      field = list(type = "string", default  = "preferred_name")
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
 #' Resolve a codelist by submission name, NCI code, or long name.
 #' @noRd
 .lookup_codelist <- function(ct, codelist) {

@@ -562,14 +562,14 @@
 "CG0438","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL conforms to ISO 8601 time period",NA,NA,"narrative",NA,NA,NA
 "CG0439","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL conforms to ISO 8601 time period",NA,NA,"narrative",NA,NA,NA
 "CG0440","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is integer and > 0",NA,NA,"narrative",NA,NA,NA
-"CG0442","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid preferred term from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
-"CG0443","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid unique ingredient identifier from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
-"CG0445","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid preferred term from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
-"CG0446","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid unique ingredient identifier from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
+"CG0442","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid preferred term from FDA Substance Registration System (SRS)","value-in-srs-registry","all: - name: TSPARMCD operator: equal_to value: CURTRT - name: TSVAL operator: value_in_srs_table field: preferred_name","predicate","2026-04-24T11:43:04Z",NA,NA
+"CG0443","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid unique ingredient identifier from FDA Substance Registration System (SRS)","value-in-srs-registry","all: - name: TSPARMCD operator: equal_to value: CURTRT - name: TSVALCD operator: value_in_srs_table field: unii","predicate","2026-04-24T11:43:04Z",NA,NA
+"CG0445","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid preferred term from FDA Substance Registration System (SRS)","value-in-srs-registry","all: - name: TSPARMCD operator: equal_to value: COMPTRT - name: TSVAL operator: value_in_srs_table field: preferred_name","predicate","2026-04-24T11:43:04Z",NA,NA
+"CG0446","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid unique ingredient identifier from FDA Substance Registration System (SRS)","value-in-srs-registry","all: - name: TSPARMCD operator: equal_to value: COMPTRT - name: TSVALCD operator: value_in_srs_table field: unii","predicate","2026-04-24T11:43:04Z",NA,NA
 "CG0448","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid term from SNOMED CT",NA,NA,"narrative",NA,NA,NA
 "CG0449","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid concept identifier from SNOMED CT",NA,NA,"narrative",NA,NA,NA
-"CG0450","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid preferred term from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
-"CG0451","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid unique ingredient identifier from FDA Substance Registration System (SRS)",NA,NA,"narrative",NA,NA,NA
+"CG0450","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid preferred term from FDA Substance Registration System (SRS)","value-in-srs-registry","all: - name: TSPARMCD operator: equal_to value: TRT - name: TSVAL operator: value_in_srs_table field: preferred_name","predicate","2026-04-24T11:43:04Z",NA,NA
+"CG0451","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid unique ingredient identifier from FDA Substance Registration System (SRS)","value-in-srs-registry","all: - name: TSPARMCD operator: equal_to value: TRT - name: TSVALCD operator: value_in_srs_table field: unii","predicate","2026-04-24T11:43:04Z",NA,NA
 "CG0453","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is a valid term from NDF-RT",NA,NA,"narrative",NA,NA,NA
 "CG0454","CDISC","SDTM-IG","3.2,3.3","Medium","TSVALCD is a valid code from NDF-RT",NA,NA,"narrative",NA,NA,NA
 "CG0457","CDISC","SDTM-IG","3.2,3.3","Medium","TSVAL is integer and > 0",NA,NA,"narrative",NA,NA,NA

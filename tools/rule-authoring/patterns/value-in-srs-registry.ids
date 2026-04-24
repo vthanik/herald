@@ -1,0 +1,7 @@
+"rule_id","var","field","tsparmcd"
+"CG0442","TSVAL","preferred_name","CURTRT"
+"CG0443","TSVALCD","unii","CURTRT"
+"CG0445","TSVAL","preferred_name","COMPTRT"
+"CG0446","TSVALCD","unii","COMPTRT"
+"CG0450","TSVAL","preferred_name","TRT"
+"CG0451","TSVALCD","unii","TRT"

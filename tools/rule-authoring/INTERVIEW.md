@@ -771,7 +771,7 @@ https://www.fda.gov/industry/fda-resources-data-standards/).
   - https://fis.fda.gov/extensions/FDA_SRS_UNII/FDA_SRS_UNII.html
   - https://precision.fda.gov/uniisearch/ (search UI)
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** _(delivered)_
 
 ---
 

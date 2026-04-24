@@ -11,9 +11,13 @@ scope:
   exclude_domains: []
 variable: TSVALCD
 check:
-  narrative: TSVALCD is a valid unique ingredient identifier from FDA Substance Registration
-    System (SRS)
-  condition: TSPARMCD = 'TRT'
+  all:
+  - name: TSPARMCD
+    operator: equal_to
+    value: TRT
+  - name: TSVALCD
+    operator: value_in_srs_table
+    field: unii
 outcome:
   message: TSVALCD is a valid unique ingredient identifier from FDA Substance Registration
     System (SRS)
@@ -26,5 +30,4 @@ provenance:
     1. TSVAL may have controlled terminology depending on the value of TSPARMCD
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
