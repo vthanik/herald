@@ -10,10 +10,14 @@ scope:
 variable: BASE
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: USUBJID and SPDEVID are present, and BASE and BASEC are both
-    populated
+  operator: is_not_unique_relationship
+  name: BASEC
+  value:
+    related_name: BASE
+    group_by:
+    - PARAMCD
+    - USUBJID
+    - SPDEVID
 outcome:
   message: Within a given value of PARAMCD for a combination of device and subject,
     there is more than one value of BASE for a given value of BASEC, considering only
@@ -30,5 +34,4 @@ provenance:
     mapping between BASEC and BASE on all rows on which both variables are populated."
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

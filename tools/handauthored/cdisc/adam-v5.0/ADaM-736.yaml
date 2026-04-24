@@ -13,9 +13,13 @@ scope:
 variable: SHIFTy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where SHIFTy and SHIFTyN are both populated
+  operator: is_not_unique_relationship
+  name: SHIFTyN
+  value:
+    related_name: SHIFTy
+    group_by:
+    - PARAMCD
+  expand: 'y'
 outcome:
   message: Within a given value of PARAMCD, there is more than one value of SHIFTy
     for a given value of SHIFTyN, considering only those rows on which both variables
@@ -29,5 +33,4 @@ provenance:
     to SHIFTy within a parameter.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

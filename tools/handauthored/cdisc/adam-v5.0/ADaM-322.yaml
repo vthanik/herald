@@ -15,9 +15,11 @@ scope:
 variable: TRTPGy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: is_not_unique_relationship
+  name: TRTP
+  value:
+    related_name: TRTPGy
+  expand: 'y'
 outcome:
   message: Within a given value of TRTP, there is more than one value of TRTPGy, where
     y is an integer [1-99, not zero-padded]
@@ -30,5 +32,4 @@ provenance:
     state: "Each value of TRTP is pooled within at most one value of TRTPGy."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

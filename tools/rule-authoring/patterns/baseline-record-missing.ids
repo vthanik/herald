@@ -1,0 +1,5 @@
+"rule_id","name","flag_var","flag_value","group_by"
+"127","BASE","ABLFL","Y","PARAMCD,USUBJID"
+"128","BASEC","ABLFL","Y","PARAMCD,USUBJID"
+"691","BASE","ABLFL","Y","PARAMCD,USUBJID,SPDEVID"
+"692","BASEC","ABLFL","Y","PARAMCD,USUBJID,SPDEVID"

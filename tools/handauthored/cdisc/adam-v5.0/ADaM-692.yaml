@@ -10,9 +10,14 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: USUBJID and SPDEVID are present and BASEC is populated
+  operator: no_baseline_record
+  name: BASEC
+  flag_var: ABLFL
+  flag_value: 'Y'
+  group_by:
+  - PARAMCD
+  - USUBJID
+  - SPDEVID
 outcome:
   message: Within a given value of PARAMCD for a combination of device and subject,
     BASEC is populated and there is not at least one record with ABLFL equal to Y
@@ -27,5 +32,4 @@ provenance:
     a record within the parameter on which ABLFL = \"Y\"."
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

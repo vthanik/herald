@@ -10,9 +10,13 @@ scope:
 variable: PCHGCATy where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: Within a given value of PARAMCD
+  operator: is_not_unique_relationship
+  name: PCHG
+  value:
+    related_name: PCHGCATy
+    group_by:
+    - PARAMCD
+  expand: 'y'
 outcome:
   message: Within a given value of PARAMCD, there is more than one value of PCHGCATy
     for a given value of PCHG and y
@@ -25,4 +29,4 @@ provenance:
     of PCHG'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

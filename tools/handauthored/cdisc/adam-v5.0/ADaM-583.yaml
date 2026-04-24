@@ -12,9 +12,13 @@ scope:
 variable: BCHGCATy where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: is_not_unique_relationship
+  name: BCHG
+  value:
+    related_name: BCHGCATy
+    group_by:
+    - PARAMCD
+  expand: 'y'
 outcome:
   message: Within a given value of PARAMCD, there is more than one value of BCHGCATy
     for a given value of BCHG and y, where y is an integer [1-99, not zero-padded]
@@ -28,5 +32,4 @@ provenance:
     BCHGCAyN cannot be present unless BCHGCATy is also present. When BCHGCATy and BCHGCAyN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

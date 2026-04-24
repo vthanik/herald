@@ -10,9 +10,14 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: USUBJID and SPDEVID are present and BASE is populated
+  operator: no_baseline_record
+  name: BASE
+  flag_var: ABLFL
+  flag_value: 'Y'
+  group_by:
+  - PARAMCD
+  - USUBJID
+  - SPDEVID
 outcome:
   message: Within a given value of PARAMCD for a combination of device and subject,
     BASE is populated and there is not at least one record with ABLFL equal to Y
@@ -28,5 +33,4 @@ provenance:
     must be a record flagged by ABLFL for that subject and parameter."
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,9 +12,10 @@ scope:
 variable: BASETYPE
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: is_not_constant_per_group
+  name: BASETYPE
+  group_by:
+  - PARAMCD
 outcome:
   message: Within a given value of PARAMCD, BASETYPE is populated for at least one
     record and is not populated for at least one record
@@ -28,4 +29,4 @@ provenance:
     be populated for all records of that PARAM.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

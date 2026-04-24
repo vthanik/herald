@@ -14,9 +14,10 @@ scope:
 variable: CRITy where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  operator: is_not_constant_per_group
+  name: CRITy
+  group_by:
+  - PARAMCD
 outcome:
   message: Within a given value of PARAMCD, there is more than one value of CRITy
   severity: Medium
@@ -29,4 +30,4 @@ provenance:
     rows within the same value of PARAM.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

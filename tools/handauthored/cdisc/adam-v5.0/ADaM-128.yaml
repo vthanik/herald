@@ -14,9 +14,13 @@ scope:
 variable: ABLFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: BASEC is populated
+  operator: no_baseline_record
+  name: BASEC
+  flag_var: ABLFL
+  flag_value: 'Y'
+  group_by:
+  - PARAMCD
+  - USUBJID
 outcome:
   message: Within a given value of PARAMCD for a subject, BASEC is populated and there
     is not at least one record with ABLFL equal to Y
@@ -28,4 +32,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.0, Section 3.2.4, Table 3.2.4.1: Baseline value of AVALC.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

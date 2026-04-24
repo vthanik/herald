@@ -1661,6 +1661,143 @@ op_ref_column_domains_exist <- function(data, ctx, reference_column) {
   )
 )
 
+# --- is_not_constant_per_group -----------------------------------------------
+# Fires rows whose outer group (defined by group_by columns) has >1 distinct
+# non-NA value of `name`. Semantics: within each combination of group_by
+# values, the `name` column must be constant (single distinct non-NA value).
+# If the group has only NA values in `name` it is not flagged. If the `name`
+# column is absent returns NA for all rows (advisory).
+#
+# Shape covered: "Within a given value of PARAMCD, there is more than one
+# value of <X>" -- e.g. CRITy, BASETYPE.
+#
+# Arg shape in rules:
+#   { name: "CRITy", operator: "is_not_constant_per_group",
+#     group_by: [PARAMCD] }
+
+op_is_not_constant_per_group <- function(data, ctx, name, group_by) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0L))
+  if (is.null(data[[name]])) return(rep(NA, n))
+
+  grp_cols <- as.character(unlist(group_by %||% character(0L)))
+  missing_grp <- setdiff(grp_cols, names(data))
+  if (length(missing_grp) > 0L) return(rep(NA, n))
+
+  # rtrim-null mirrors Pinnacle 21 convention.
+  .rtrim_null <- function(v) {
+    if (!is.character(v)) return(as.character(v))
+    r <- sub("\\s+$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+
+  x <- .rtrim_null(data[[name]])
+
+  if (length(grp_cols) == 0L) {
+    group_key <- rep("", n)
+  } else {
+    group_key <- do.call(paste, c(
+      lapply(grp_cols, function(g) .rtrim_null(data[[g]])),
+      list(sep = "\x1f")
+    ))
+  }
+
+  # For each group_key, count distinct non-NA values of x.
+  df <- data.frame(g = group_key, x = x, stringsAsFactors = FALSE)
+  df_ok <- df[!is.na(df$x), , drop = FALSE]
+  if (nrow(df_ok) == 0L) return(rep(FALSE, n))
+
+  counts <- tapply(df_ok$x, df_ok$g, function(v) length(unique(v)))
+  bad_keys <- names(counts)[counts > 1L]
+  group_key %in% bad_keys
+}
+.register_op(
+  "is_not_constant_per_group", op_is_not_constant_per_group,
+  meta = list(
+    kind = "cross",
+    summary = "Within each group_by bucket, `name` has more than one distinct non-NA value",
+    arg_schema = list(
+      name     = list(type = "string", required = TRUE),
+      group_by = list(type = "array",  required = TRUE)
+    ),
+    cost_hint = "O(n log n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
+# --- no_baseline_record ------------------------------------------------------
+# Fires rows in groups (defined by group_by) where:
+#   (a) the `name` column is populated on at least one row, AND
+#   (b) NO row in that group has `flag_var == flag_value`.
+#
+# Shape covered: "Within a given value of PARAMCD for a subject, BASE is
+# populated and there is not at least one record where ABLFL='Y'".
+#
+# If `name` or `flag_var` column is absent, returns NA for all rows.
+#
+# Arg shape in rules:
+#   { name: "BASE", operator: "no_baseline_record",
+#     flag_var: "ABLFL", flag_value: "Y",
+#     group_by: [PARAMCD, USUBJID] }
+
+op_no_baseline_record <- function(data, ctx, name, flag_var, flag_value,
+                                  group_by) {
+  n <- nrow(data)
+  if (n == 0L) return(logical(0L))
+  if (is.null(data[[name]]) || is.null(data[[flag_var]])) {
+    return(rep(NA, n))
+  }
+
+  grp_cols <- as.character(unlist(group_by %||% character(0L)))
+  missing_grp <- setdiff(grp_cols, names(data))
+  if (length(missing_grp) > 0L) return(rep(NA, n))
+
+  .rtrim_null <- function(v) {
+    if (!is.character(v)) return(as.character(v))
+    r <- sub("\\s+$", "", v)
+    r[is.na(v) | !nzchar(r)] <- NA_character_
+    r
+  }
+
+  nm_vals  <- .rtrim_null(data[[name]])
+  flg_vals <- .rtrim_null(data[[flag_var]])
+  fv       <- as.character(flag_value)
+
+  if (length(grp_cols) == 0L) {
+    group_key <- rep("", n)
+  } else {
+    group_key <- do.call(paste, c(
+      lapply(grp_cols, function(g) .rtrim_null(data[[g]])),
+      list(sep = "\x1f")
+    ))
+  }
+
+  # Determine which group keys:
+  #   (a) have at least one populated `name` row
+  #   (b) have at least one row where flag_var == flag_value
+  keys_with_name <- unique(group_key[!is.na(nm_vals)])
+  keys_with_flag <- unique(group_key[!is.na(flg_vals) & flg_vals == fv])
+
+  # Fire rows in groups that have `name` populated somewhere but lack the
+  # baseline flag record.
+  bad_keys <- setdiff(keys_with_name, keys_with_flag)
+  group_key %in% bad_keys
+}
+.register_op(
+  "no_baseline_record", op_no_baseline_record,
+  meta = list(
+    kind = "cross",
+    summary = "Group has `name` populated on at least one row but no row with flag_var equal to flag_value",
+    arg_schema = list(
+      name       = list(type = "string", required = TRUE),
+      flag_var   = list(type = "string", required = TRUE),
+      flag_value = list(type = "string", required = TRUE),
+      group_by   = list(type = "array",  required = TRUE)
+    ),
+    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+  )
+)
+
 #' Resolve a templated column name (e.g. "TRTxxP" or "PxxSw") against a
 #' dataset's column list. Returns the concrete column names that match.
 #' @noRd

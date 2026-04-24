@@ -10,9 +10,10 @@ scope:
 variable: CHG
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: USUBJID and SPDEVID are present and CHG is populated
+  operator: is_not_diff
+  name: CHG
+  minuend: AVAL
+  subtrahend: BASE
 outcome:
   message: Within a given value of PARAMCD for a combination of device and subject,
     CHG is populated and is not equal to AVAL - BASE
@@ -26,5 +27,4 @@ provenance:
     Section 3.3.4.1, Table 3.3.4.1.1: Equal to AVAL-BASE."
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -13,9 +13,12 @@ scope:
 variable: AVISIT
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where AVISIT and AVISITN are both populated
+  operator: is_not_unique_relationship
+  name: AVISIT
+  value:
+    related_name: AVISITN
+    group_by:
+    - PARAMCD
 outcome:
   message: Within a given value of PARAMCD, there is more than one value of AVISIT
     for a given value of AVISITN, considering only those rows on which both variables
@@ -30,5 +33,4 @@ provenance:
     has the same value for each distinct AVISIT.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

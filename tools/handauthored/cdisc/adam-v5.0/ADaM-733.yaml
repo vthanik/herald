@@ -13,9 +13,13 @@ scope:
 variable: BASEC
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where BASEC and BASE are both populated
+  operator: is_not_unique_relationship
+  name: BASE
+  value:
+    related_name: BASEC
+    group_by:
+    - PARAMCD
+    - USUBJID
 outcome:
   message: Within a given value of PARAMCD for a subject, there is more than one value
     of BASEC for a given value of BASE, considering only those rows on which both
@@ -31,5 +35,4 @@ provenance:
     are populated.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

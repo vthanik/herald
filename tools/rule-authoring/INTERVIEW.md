@@ -12,7 +12,7 @@ Use Ctrl-F on rule_id to find the decision that covers a rule.
 
 ### Shipped
 
-**Rule corpus:** 696 / 1814 predicate (38.4%). No regressions.
+**Rule corpus:** 786 / 1814 predicate (43.3%). No regressions. (Q10 added 39 in 2026-04-24 session.)
 
 **Engine / infrastructure:**
 - Dictionary Provider Protocol (full 6-phase plan complete).
@@ -57,7 +57,7 @@ under `R CMD check` (one pre-existing failure noted below).
 | Q7  | cross-dataset presence pair | 5 | combinator pattern |
 | Q8  | unit-consistency | 7 | pattern w/ numeric guard |
 | Q9  | dataset-presence-in-study | 10 | 3 patterns + `op_study_metadata_is` |
-| Q10 | composite-group uniqueness | 28 | 2 patterns + `op_is_not_constant_per_group` |
+| ~~Q10~~ | ~~composite-group uniqueness~~ | ~~39~~ | **DONE** 3 patterns + `op_is_not_constant_per_group` + `op_no_baseline_record` |
 | Q11 | suffix-pattern value + type | 21 | 3 patterns + `op_var_by_suffix_not_numeric` |
 | Q12 | baseline-consistency compound | 11 | `op_base_not_equal_abl_row` |
 | Q13 | FDA SRS / UNII | 6 | `op_value_in_srs_table` wired to `srs_provider` |
@@ -594,7 +594,11 @@ accepts `group_by: [c1, c2, ...]`. No new op needed.
   (e.g. "within PARAMCD=HR, AVALCAT1 has multiple values for
   AVAL=70") for reviewer clarity.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** 2026-04-24 -- 39 rules converted across 3 tracks:
+  - `uniqueness-grouped-nested` (28 rules): ADaM-221/222/224/226/231/234/322/583/587/693/694/727/728/729/732/733/736/737/742/743/747/748/749/750/751/756/759/791. Uses `op_is_not_unique_relationship` with list-valued `group_by`.
+  - `value-constant-per-group` (3 rules): ADaM-131/151/735. New op `op_is_not_constant_per_group`.
+  - `baseline-record-missing` (4 rules): ADaM-127/128/691/692. New op `op_no_baseline_record`.
+  - `value-arith-check` (4 rules): ADaM-700/701/704/705. Reuses existing `op_is_not_diff`/`op_is_not_pct_diff`.
 
 ---
 
