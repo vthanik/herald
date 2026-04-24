@@ -1,0 +1,5 @@
+"rule_id","var","ref_ds","ref_col","sentinels"
+"CG0117","ACTARM","TA","ARM","'Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned Treatment'"
+"CG0120","ARM","TA","ARM","'Screen Failure', 'Not Assigned'"
+"CG0124","ACTARMCD","TA","ARMCD","'SCRNFAIL', 'NOTASSGN', 'NOTTRT', 'UNPLAN'"
+"CG0128","ARMCD","TA","ARMCD","'SCRNFAIL', 'NOTASSGN'"
