@@ -1,0 +1,26 @@
+id: define_arm_display_ref_exists
+version: 1
+standard: Define-XML
+description: |
+  AnalysisResults Display ID must exist in the AnalysisDisplays sheet when provided.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: display_id
+    operator: empty
+  - name: __display_exists_in_disp_spec
+    operator: equal_to
+    value: yes
+outcome:
+  message: DEFINE_ARM_DISPLAY_REF_EXISTS
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.7.1
+  cited_guidance: |
+    Each AnalysisResult must reference a valid AnalysisDisplay.
+  executability: predicate
+  license: MIT

@@ -1,0 +1,28 @@
+id: define_dataset_purpose_valid
+version: 2
+standard: Define-XML
+description: |
+  Purpose must be 'Tabulation' for SDTM/SEND or 'Analysis' for ADaM.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: purpose
+    operator: empty
+  - name: purpose
+    operator: in
+    value:
+    - Tabulation
+    - Analysis
+outcome:
+  message: DEFINE_DATASET_PURPOSE_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.11
+  cited_guidance: |
+    Purpose -- Required. 'Tabulation', 'Analysis'. For SDTM and SEND, use Tabulation. For ADaM, use Analysis.
+  executability: predicate
+  license: MIT

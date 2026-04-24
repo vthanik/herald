@@ -1,0 +1,23 @@
+id: define_variable_name_required
+version: 2
+standard: Define-XML
+description: |
+  Variable name is required in the Variables sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: variable
+    operator: non_empty
+outcome:
+  message: DEFINE_VARIABLE_NAME_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.12
+  cited_guidance: |
+    Name -- Required. Dataset Variable name or Variable Value Name.
+  executability: predicate
+  license: MIT

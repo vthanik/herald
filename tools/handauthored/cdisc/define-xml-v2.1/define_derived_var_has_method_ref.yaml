@@ -1,0 +1,24 @@
+id: define_derived_var_has_method_ref
+version: 1
+standard: Define-XML
+description: |
+  Variables with Origin Type = 'Derived' must have a corresponding MethodRef pointing to a MethodDef that documents the derivation logic. A derived variable without a method is not reproducible from metadata alone.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: __origin_type__
+    operator: equal_to
+    value: Derived
+  - name: __method_ref__
+    operator: empty
+outcome:
+  message: DEFINE_DERIVED_VAR_HAS_METHOD_REF
+  severity: Error
+provenance:
+  source_doc: StudySAS Blog — Define.xml Review Checklist (2026-03)
+  authority: Herald
+  reference_url: https://studysas.blogspot.com/2026/03/a-definexml-review-checklist-i-actually.html
+  executability: predicate
+  license: MIT

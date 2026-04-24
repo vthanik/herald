@@ -1,0 +1,26 @@
+id: define_arm_display_oid_unique
+version: 1
+standard: Define-XML
+description: |
+  The OID for an arm:ResultDisplay element must be unique within the arm:AnalysisResultDisplays element.
+scope:
+  classes: []
+  domains: []
+  datasets:
+  - Define_ARM_Metadata
+outcome:
+  message: DEFINE_ARM_DISPLAY_OID_UNIQUE
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: Herald
+  p21_id_equivalent: DD0088
+  executability: predicate
+  license: MIT
+  builder_dataset: Define_ARM_Metadata
+notes: Blocked on `arm_oid_unique` operator (arm:ResultDisplay OID must be unique
+  within arm:AnalysisResultDisplays). See HANDOFF section 4i.
+check:
+  all:
+  - name: display_oid
+    operator: arm_oid_unique

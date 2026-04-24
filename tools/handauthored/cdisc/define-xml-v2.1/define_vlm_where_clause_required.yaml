@@ -1,0 +1,23 @@
+id: define_vlm_where_clause_required
+version: 2
+standard: Define-XML
+description: |
+  Where Clause is required for all value-level metadata entries.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: where_clause
+    operator: non_empty
+outcome:
+  message: DEFINE_VLM_WHERE_CLAUSE_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.10
+  cited_guidance: |
+    Each Value definition may have a Where Clause attached to describe when that Value applies.
+  executability: predicate
+  license: MIT

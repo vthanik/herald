@@ -474,10 +474,11 @@ a:hover { color: var(--ink); }
 </header>
 
 <nav class="tabs" role="tablist" aria-label="Report sections">
-  <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="panel-issues"   data-tab="issues">Issues</button>
-  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-details"  data-tab="details">Issue Details</button>
-  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-datasets" data-tab="datasets">Datasets</button>
-  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-rules"    data-tab="rules">Rules</button>
+  <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="panel-issues"       data-tab="issues">Issues</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-details"    data-tab="details">Issue Details</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-datasets"   data-tab="datasets">Datasets</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-rules"      data-tab="rules">Rules</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-spec-valid" data-tab="spec-valid">Spec Validation</button>
 </nav>
 
 <section id="panel-issues" class="panel is-active" role="tabpanel" data-title="I &middot; Issues">
@@ -547,6 +548,29 @@ a:hover { color: var(--ink); }
     </thead>
     <tbody>
       {{TAB_RULES}}
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="panel-spec-valid" class="panel" role="tabpanel" data-title="V &middot; Spec Validation">
+  <h2 class="section-head">Spec validation findings &middot; define_* rules</h2>
+  <div class="table-wrap">
+  <table class="report">
+    <thead>
+      <tr>
+        <th>Rule</th>
+        <th>Severity</th>
+        <th>Status</th>
+        <th>Dataset</th>
+        <th>Variable</th>
+        <th class="num">Row</th>
+        <th>Value</th>
+        <th class="wide">Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{TAB_SPEC_VALIDATION}}
     </tbody>
   </table>
   </div>

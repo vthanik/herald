@@ -1,0 +1,31 @@
+id: define_variable_pages_required_collected
+version: 2
+standard: Define-XML
+description: |
+  Pages reference is required when Origin is 'Collected' and Source is 'Investigator' or 'Subject'.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: origin
+    operator: not_equal_to
+    value: Collected
+  - name: source
+    operator: not_in
+    value:
+    - Investigator
+    - Subject
+  - name: pages
+    operator: non_empty
+outcome:
+  message: DEFINE_VARIABLE_PAGES_REQUIRED_COLLECTED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.7.1.1; 5.3.12.3
+  cited_guidance: |
+    def:PDFPageRef -- Required for def:Origin/@Type='Collected' and def:Origin/@Source in ('Investigator','Subject').
+  executability: predicate
+  license: MIT

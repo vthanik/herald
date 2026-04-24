@@ -1,0 +1,26 @@
+id: define_variable_order_positive_int
+version: 1
+standard: Define-XML
+description: |
+  Variable order must be a positive integer when provided.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: order
+    operator: empty
+  - name: order
+    operator: greater_than
+    value: 0
+outcome:
+  message: DEFINE_VARIABLE_ORDER_POSITIVE_INT
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.9.2
+  cited_guidance: |
+    OrderNumber -- Optional. Integer. Display order of the variable within the domain dataset.
+  executability: predicate
+  license: MIT

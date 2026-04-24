@@ -1,11 +1,12 @@
 # -----------------------------------------------------------------------------
-# report-xlsx.R -- herald_result -> 4-sheet XLSX workbook
+# report-xlsx.R -- herald_result -> 5-sheet XLSX workbook
 # -----------------------------------------------------------------------------
 # Sheets:
-#   summary   key/value metadata (no readiness banner / score)
-#   findings  full findings tibble
-#   datasets  per-dataset metadata + fired/advisory counts
-#   rules     applied rules + per-rule fired/advisory counts + source_url
+#   summary          key/value metadata (no readiness banner / score)
+#   findings         full findings tibble
+#   datasets         per-dataset metadata + fired/advisory counts
+#   rules            applied rules + per-rule fired/advisory counts + source_url
+#   spec_validation  findings filtered to Define-XML / define_* rules only
 
 #' Write a herald_result as an XLSX workbook
 #'
@@ -50,16 +51,28 @@ write_report_xlsx <- function(x, path, ...) {
     creator = "herald",
     title   = "herald validation report"
   )
-  .add_sheet(wb, "summary",  summary_df, filter = FALSE)
-  .add_sheet(wb, "findings", findings)
-  .add_sheet(wb, "datasets", ds_meta)
-  .add_sheet(wb, "rules",    rules_df)
+  spec_val <- .spec_validation_df(findings)
+
+  .add_sheet(wb, "summary",          summary_df, filter = FALSE)
+  .add_sheet(wb, "findings",         findings)
+  .add_sheet(wb, "datasets",         ds_meta)
+  .add_sheet(wb, "rules",            rules_df)
+  .add_sheet(wb, "spec_validation",  spec_val)
 
   openxlsx2::wb_save(wb, path, overwrite = TRUE)
   invisible(path)
 }
 
 # -- internals ---------------------------------------------------------------
+
+.spec_validation_df <- function(findings) {
+  if (!is.data.frame(findings) || nrow(findings) == 0L) {
+    return(findings[integer(0), , drop = FALSE])
+  }
+  is_spec <- (!is.na(findings$standard) & findings$standard == "Define-XML") |
+             grepl("^define_", findings$rule_id %||% "")
+  findings[is_spec, , drop = FALSE]
+}
 
 .add_sheet <- function(wb, name, df, filter = TRUE) {
   wb$add_worksheet(name)

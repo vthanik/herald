@@ -1,0 +1,23 @@
+id: define_codelist_term_required
+version: 2
+standard: Define-XML
+description: |
+  Term (CodedValue) is required for each codelist entry.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: term
+    operator: non_empty
+outcome:
+  message: DEFINE_CODELIST_TERM_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.13.1; 5.3.13.2
+  cited_guidance: |
+    CodedValue -- Required. The coded value.
+  executability: predicate
+  license: MIT

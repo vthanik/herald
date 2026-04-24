@@ -1,0 +1,26 @@
+id: define_variable_dataset_ref_exists
+version: 1
+standard: Define-XML
+description: |
+  Dataset referenced in Variables sheet must exist in the Datasets sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: dataset
+    operator: empty
+  - name: __dataset_exists_in_ds_spec
+    operator: equal_to
+    value: yes
+outcome:
+  message: DEFINE_VARIABLE_DATASET_REF_EXISTS
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.11; 5.3.12
+  cited_guidance: |
+    Each ItemOID used in an ItemRef must match an OID for an ItemDef. Variables are associated with datasets through ItemRefs contained in ItemGroupDef elements.
+  executability: predicate
+  license: MIT

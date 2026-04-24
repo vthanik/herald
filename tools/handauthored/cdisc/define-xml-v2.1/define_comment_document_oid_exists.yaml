@@ -1,0 +1,26 @@
+id: define_comment_document_oid_exists
+version: 1
+standard: Define-XML
+description: |
+  Comment Document ID must exist in the Documents sheet when provided.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: document_id
+    operator: empty
+  - name: __document_exists_in_doc_spec
+    operator: equal_to
+    value: yes
+outcome:
+  message: DEFINE_COMMENT_DOCUMENT_OID_EXISTS
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.16
+  cited_guidance: |
+    leafID -- Reference to the unique ID of the def:leaf element.
+  executability: predicate
+  license: MIT

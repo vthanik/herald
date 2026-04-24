@@ -1,0 +1,27 @@
+id: define_variable_text_length_le_200
+version: 1
+standard: Define-XML
+description: |
+  Length must not exceed 200 for text variables (SAS v5 Transport limit).
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: data_type
+    operator: not_equal_to
+    value: text
+  - name: length
+    operator: less_than_or_equal_to
+    value: 200
+outcome:
+  message: DEFINE_VARIABLE_TEXT_LENGTH_LE_200
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 4.3.1
+  cited_guidance: |
+    text -- Char -- Maximum allowable length. SAS v.5 Transport files restrict variable lengths to 200 characters.
+  executability: predicate
+  license: MIT

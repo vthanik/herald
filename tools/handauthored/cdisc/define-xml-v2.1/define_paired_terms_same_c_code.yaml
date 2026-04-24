@@ -1,0 +1,19 @@
+id: define_paired_terms_same_c_code
+version: 1
+standard: Define-XML
+description: Paired variables such as TEST/TESTCD must be populated using terms with
+  the same Term Code (C-Code) value.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: DEFINE_PAIRED_TERMS_SAME_C_CODE
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: Herald
+  p21_id_equivalent: DD0152
+  executability: blocker:requires-op:paired_terms_same_c_code
+  license: MIT
+notes: Blocked on `paired_terms_same_c_code` operator (TEST/TESTCD pair codes must
+  share NCI C-Code). See HANDOFF section 4g.

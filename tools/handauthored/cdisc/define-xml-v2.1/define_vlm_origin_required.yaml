@@ -1,0 +1,23 @@
+id: define_vlm_origin_required
+version: 2
+standard: Define-XML
+description: |
+  Origin is required for value-level metadata in regulatory submissions.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: origin
+    operator: non_empty
+outcome:
+  message: DEFINE_VLM_ORIGIN_REQUIRED
+  severity: Warning
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 4.9; 5.3.12.3
+  cited_guidance: |
+    For regulatory submissions, def:Origin metadata must be provided for all variables. In some cases, def:Origin will be provided only at the Value level.
+  executability: predicate
+  license: MIT
