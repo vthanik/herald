@@ -76,11 +76,18 @@ ct_provider <- function(package = c("sdtm", "adam"),
     hits
   }
 
+  src_path <- attr(ct, "source_path") %||% ""
+  bundled_root <- system.file("rules", "ct", package = "herald")
+  inst_root    <- file.path("inst", "rules", "ct")
+  is_bundled <- (nzchar(bundled_root) &&
+                 startsWith(normalizePath(src_path, winslash = "/", mustWork = FALSE),
+                            normalizePath(bundled_root, winslash = "/", mustWork = FALSE))) ||
+                startsWith(src_path, inst_root)
+
   new_dict_provider(
     name         = prov_name,
     version      = attr(ct, "version")      %||% NA_character_,
-    source       = if (grepl("inst/rules/ct", attr(ct, "source_path") %||% ""))
-                     "bundled" else "cache",
+    source       = if (is_bundled) "bundled" else "cache",
     license      = "CC-BY-4.0",
     license_note = "CDISC NCI Thesaurus CT (NCI EVS, public domain)",
     size_rows    = n_terms,
