@@ -15,9 +15,11 @@ scope:
 variable: ASPER
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both ASPER and ASPERC are both populated
+  operator: is_not_unique_relationship
+  name: ASPERC
+  value:
+    related_name: ASPER
+    group_by: APERIOD
 outcome:
   message: Within a value of APERIOD, there is more than one value of ASPER for a
     given value of ASPERC, considering only those rows on which both variables are
@@ -33,5 +35,4 @@ provenance:
     APERIOD value changes)."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

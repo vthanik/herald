@@ -13,9 +13,12 @@ scope:
 variable: TOXGGRyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both TOXGGRyN and TOXGGRy are both populated.
+  expand: 'y'
+  all:
+  - name: TOXGGRy
+    operator: is_not_unique_relationship
+    value:
+      related_name: TOXGGRyN
 outcome:
   message: There is more than one value of TOXGGRyN for a given value of TOXGGRy,
     considering only those rows on which both variables are populated
@@ -32,5 +35,4 @@ provenance:
     OCCDS v1.1, Section 3.2.8, Table 3.2.8.1: CDISC Notes for TOXGGRyN state: "Code TOXGGRy to numeric".
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

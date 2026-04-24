@@ -10,9 +10,12 @@ scope:
 variable: TRTxxAN where xx is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: xx
+  all:
+  - name: TRTxxA
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTxxAN
 outcome:
   message: There is more than one value of TRTxxAN for a given value of TRTxxA, where
     xx is an integer [01-99, zero-padded]
@@ -25,4 +28,4 @@ provenance:
     variable for TRTxxA. One-to-one map to TRTxxA.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

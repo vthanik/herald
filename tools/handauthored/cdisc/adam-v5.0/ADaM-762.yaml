@@ -13,9 +13,12 @@ scope:
 variable: TRTPGy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where TRTPGy and TRTPGyN are both populated
+  expand: 'y'
+  all:
+  - name: TRTPGyN
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTPGy
 outcome:
   message: There is more than one value of TRTPGy for a given value of TRTPGyN, where
     y is an integer [1-99, not zero-padded], considering only those rows on which
@@ -29,5 +32,4 @@ provenance:
     code for TRTPGy. One-to-one mapping within a study to TRTPGy.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

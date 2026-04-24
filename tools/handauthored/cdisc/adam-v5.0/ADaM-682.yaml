@@ -10,9 +10,12 @@ scope:
 variable: MODELGyN where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both MODELGyN and MODELGy are both populated.
+  expand: 'y'
+  all:
+  - name: MODELGy
+    operator: is_not_unique_relationship
+    value:
+      related_name: MODELGyN
 outcome:
   message: There is more than one value of MODELGyN for a given value of MODELGy,
     considering only those rows on which both variables are populated
@@ -26,5 +29,4 @@ provenance:
     between MODELGyN and MODELGy within a study. '
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

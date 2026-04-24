@@ -1,0 +1,5 @@
+"rule_id","cond_var","cond_vals","target_var","target_vals","expand"
+"647","TREMxxFL","Y","TRTEMFL","Y","xx"
+"648","TRTEMwFL","Y","TRTEMFL","Y","w"
+"649","ONTRxxFL","Y","ONTRTFL","Y","xx"
+"650","ONTRTwFL","Y","ONTRTFL","Y","w"

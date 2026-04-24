@@ -13,9 +13,12 @@ scope:
 variable: TRCMPGy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both TRCMPGy and TRCMPGyN are both populated.
+  expand: 'y'
+  all:
+  - name: TRCMPGyN
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRCMPGy
 outcome:
   message: There is more than one value of TRCMPGy for a given value of TRCMPGyN,
     where y is an integer [1-99, not zero-padded], considering only those rows on
@@ -29,5 +32,4 @@ provenance:
     mapping to TRCMPGy.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -14,9 +14,14 @@ scope:
 variable: ''
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRxxPGy and TRTxxA are present
+  expand: xx,y
+  all:
+  - name: TRxxPGy
+    operator: exists
+  - name: TRTxxA
+    operator: exists
+  - name: TRxxAGy
+    operator: not_exists
 outcome:
   message: TRxxAGy is not present and both TRxxPGy and TRTxxA are present
   severity: Medium
@@ -28,4 +33,4 @@ provenance:
     present and TRTxxA is present.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

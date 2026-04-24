@@ -14,9 +14,14 @@ scope:
 variable: TRTEMFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTEMwFL is equal to Y
+  expand: w
+  all:
+  - operator: is_contained_by
+    name: TRTEMwFL
+    value: 'Y'
+  - operator: is_not_contained_by
+    name: TRTEMFL
+    value: 'Y'
 outcome:
   message: TRTEMwFL is Y but TRTEMFL is not Y
   severity: Medium
@@ -29,4 +34,4 @@ provenance:
     flag."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

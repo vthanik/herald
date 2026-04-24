@@ -14,9 +14,12 @@ scope:
 variable: ONTRTwFL where w is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ONTRTwFL is present
+  expand: w
+  all:
+  - name: ONTRTwFL
+    operator: exists
+  - name: ONTRTFL
+    operator: not_exists
 outcome:
   message: ONTRTwFL is present but ONTRTFL is not present
   severity: Medium
@@ -29,4 +32,4 @@ provenance:
     flag."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

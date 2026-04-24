@@ -14,9 +14,12 @@ scope:
 variable: SMQzzSC where zz is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: SMQzzCD is populated
+  expand: zz
+  all:
+  - operator: non_empty
+    name: SMQzzCD
+  - operator: empty
+    name: SMQzzSC
 outcome:
   message: SMQzzCD is populated and SMQzzSC is not populated
   severity: Medium
@@ -30,4 +33,4 @@ provenance:
     OCCDS v1.1, Section 3.2.9, Table 3.2.9.1: CDISC Notes state: "Conditional on whether SMQ analysis is done."
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

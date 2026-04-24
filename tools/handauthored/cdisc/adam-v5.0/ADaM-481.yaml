@@ -12,9 +12,12 @@ scope:
 variable: STRATwVN where w is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both STRATwVN and STRATwV are both populated.
+  expand: w
+  all:
+  - name: STRATwV
+    operator: is_not_unique_relationship
+    value:
+      related_name: STRATwVN
 outcome:
   message: There is more than one value of STRATwVN for a given value of STRATwV,
     considering only those rows on which both variables are populated
@@ -28,5 +31,4 @@ provenance:
     STRATwVN cannot be present unless STRATwV is also present. When STRATwV and STRATwVN are present, then on a given record, either both must be populated or both must be null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

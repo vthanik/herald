@@ -14,9 +14,12 @@ scope:
 variable: CRITy where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: CRITyFL is populated
+  expand: 'y'
+  all:
+  - operator: non_empty
+    name: CRITyFL
+  - operator: empty
+    name: CRITy
 outcome:
   message: CRITyFL is populated and CRITy is not populated
   severity: Medium
@@ -28,4 +31,4 @@ provenance:
     of whether the criterion defined in CRITy was met.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

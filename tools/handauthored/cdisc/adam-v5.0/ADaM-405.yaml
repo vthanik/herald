@@ -12,9 +12,11 @@ scope:
 variable: ATOXDSCH
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both ATOXDSCH and PARAM are both populated
+  operator: is_not_unique_relationship
+  name: PARAM
+  value:
+    related_name: ATOXDSCH
+    group_by: USUBJID
 outcome:
   message: Within a subject, there is more than one value of ATOXDSCH for a given
     value of PARAM, considering only those rows on which both variables are populated
@@ -29,5 +31,4 @@ provenance:
     The ADaM Team acknowledges that this cited guidance contains a typographical error in the referenced variable name; however, we recognize the intent of the relationship between ATOXDSCH and PARAM and the one-to-one relationshup that they must have.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

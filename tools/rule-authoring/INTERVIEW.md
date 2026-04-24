@@ -12,7 +12,7 @@ Use Ctrl-F on rule_id to find the decision that covers a rule.
 
 ### Shipped
 
-**Rule corpus:** 852 / 1814 predicate (47.0%). No regressions. (Q14 added 66 in 2026-04-24 session.)
+**Rule corpus:** 960 / 1814 predicate (52.9%). No regressions. (Q21 added 72 in 2026-04-24 session; Q14 added 66 earlier.)
 
 **Engine / infrastructure:**
 - Dictionary Provider Protocol (full 6-phase plan complete).
@@ -62,7 +62,7 @@ under `R CMD check` (one pre-existing failure noted below).
 | Q12 | baseline-consistency compound | 11 | `op_base_not_equal_abl_row` |
 | Q13 | FDA SRS / UNII | 6 | `op_value_in_srs_table` wired to `srs_provider` |
 | ~~Q14~~ | ~~long-tail small clusters~~ | ~~66~~ | **DONE** 6 new patterns + op_max_n_records_per_group_matching |
-| Q21 | indexed compound-var family | ~50 | 2 patterns, existing `expand:` |
+| ~~Q21~~ | ~~indexed compound-var family~~ | ~~72~~ | **DONE** 2 new patterns + 4 .ids expansions |
 | Q22 | prefix+suffix compound templates | 8 | compound-template-pair pattern |
 | Q23 | TS-domain parametric | 30 | 1 parametric pattern driven by CSV |
 | Q24 | ISO 8601 conformance | 10 | `op_value_not_iso8601` |
@@ -919,7 +919,36 @@ Covers ~40 of the 50 rules. Remaining ~10 absorb into Q10
 **(b)** One monolithic pattern with a `check_type: value | pair`
 switch. Harder to read.
 
-**User answer:** _(pending)_
+**User answer:** (a). Executed in 2026-04-24 session. Six tracks:
+- Track 1: ~50 rows added to `uniqueness-grouped.ids` (all indexed
+  "more than one value of A for B" pairs with the op already
+  handling both-populated filtering via NA exclusion).
+- Track 2: 4 rows to `uniqueness-grouped-nested.ids` (outer-grouped
+  rules: APERIOD/ASPERC/ASPER; USUBJID/PARAM/ATOXDSCL,ATOXDSCH).
+- Track 3: 7 rows to `value-conditional-populated-required.ids`
+  (SMQzz cross-population triad + CRITyFL->CRITy with expand=y).
+- Track 4: 4 rows to `presence-pair.ids`
+  (CRITyFL/CRITy, ONTRxxFL/ONTRTFL, ONTRTwFL/ONTRTFL).
+- Track 5: New `value-conditional-value-in-set` pattern -- fires
+  when cond_var IS in cond_vals AND target_var NOT in target_vals.
+  Covers 4 rules: 647, 648, 649, 650 (FLAG=Y implies PARENT=Y).
+- Track 6: New `triple-presence-guard` pattern -- fires when two
+  guard columns exist AND a third does not. Covers 3 rules:
+  239, 764, 368.
+
+**Decisions locked:**
+- All "more than one value of A for B" rules (indexed or not)
+  map to `uniqueness-grouped` pattern; the op's NA-exclusion
+  naturally handles "considering only those rows on which both
+  variables are populated" -- no separate filtered pattern needed.
+- Outer-grouped rules ("within a value of X") use
+  `uniqueness-grouped-nested` with the X column as `group_by`.
+- FLAG=Y implies PARENT=Y rules use new `value-conditional-value-in-set`
+  pattern (all:[is_contained_by(cond_var, vals), is_not_contained_by(target, vals)]).
+- 3-way metadata presence (guard1 exists AND guard2 exists AND target not_exists)
+  uses new `triple-presence-guard` pattern.
+
+**Delivered:** _(delivered)_
 
 ---
 

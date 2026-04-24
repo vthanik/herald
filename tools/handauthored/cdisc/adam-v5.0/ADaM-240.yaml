@@ -10,9 +10,12 @@ scope:
 variable: TRTAGy where y is an integer [1-9, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ''
+  expand: 'y'
+  all:
+  - name: TRTAGyN
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTAGy
 outcome:
   message: There is more than one value of TRTAGy for a given value of TRTAGyN, where
     y is a single-digit integer [1-9]
@@ -25,4 +28,4 @@ provenance:
     code for TRTAGy. One-to-one map to TRTAGy.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

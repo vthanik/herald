@@ -27,3 +27,7 @@
 "756","TRTxxP","TRxxPGy","","xx,y"
 "759","TRTxxA","TRxxAGy","","xx,y"
 "791","ATPTN","ATPT","PARAMCD",""
+"325","ASPERC","ASPER","APERIOD",""
+"326","ASPER","ASPERC","APERIOD",""
+"403","PARAM","ATOXDSCL","USUBJID",""
+"405","PARAM","ATOXDSCH","USUBJID",""

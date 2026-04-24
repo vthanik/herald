@@ -14,9 +14,12 @@ scope:
 variable: ONTRxxFL where xx is an integer [01-99, zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ONTRxxFL is present
+  expand: xx
+  all:
+  - name: ONTRxxFL
+    operator: exists
+  - name: ONTRTFL
+    operator: not_exists
 outcome:
   message: ONTRxxFL is present but ONTRTFL is not present
   severity: Medium
@@ -29,4 +32,4 @@ provenance:
     flag."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

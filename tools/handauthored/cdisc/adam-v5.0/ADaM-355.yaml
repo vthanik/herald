@@ -13,9 +13,12 @@ scope:
 variable: REGIONy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both REGIONy and REGIONyN are both populated.
+  expand: 'y'
+  all:
+  - name: REGIONyN
+    operator: is_not_unique_relationship
+    value:
+      related_name: REGIONy
 outcome:
   message: There is more than one value of REGIONy for a given value of REGIONyN,
     considering only those rows on which both variables are populated
@@ -28,5 +31,4 @@ provenance:
     state: "One-to-one mapping to REGIONy within a study."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -13,9 +13,14 @@ scope:
 variable: TRTPGy where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: TRTA is present
+  expand: 'y'
+  all:
+  - name: TRTPGy
+    operator: exists
+  - name: TRTA
+    operator: exists
+  - name: TRTAGy
+    operator: not_exists
 outcome:
   message: TRTPGy is present and TRTA is present but TRTAGy is not present, where
     y is an integer [1-99, not zero-padded]
@@ -30,5 +35,4 @@ provenance:
     Required when TRTPGy is present and TRTA is present.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

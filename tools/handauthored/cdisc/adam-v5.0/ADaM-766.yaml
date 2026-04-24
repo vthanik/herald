@@ -13,9 +13,12 @@ scope:
 variable: TRTAGyN where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where TRTAGyN and TRTAGy are both populated
+  expand: 'y'
+  all:
+  - name: TRTAGy
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRTAGyN
 outcome:
   message: There is more than one value of TRTAGyN for a given value of TRTAGy, where
     y is an integer [1-99, not zero-padded], considering only those rows on which
@@ -29,5 +32,4 @@ provenance:
     code for TRTAGy. One-to-one mapping within a study to TRTAGy.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

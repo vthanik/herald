@@ -14,9 +14,12 @@ variable: TRxxAGy where xx is an integer [01-99, zero-padded] and y is an intege
   [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where TRxxAGy and TRxxAGyN are both populated
+  expand: xx,y
+  all:
+  - name: TRxxAGyN
+    operator: is_not_unique_relationship
+    value:
+      related_name: TRxxAGy
 outcome:
   message: There is more than one value of TRxxAGy for a given value of TRxxAGyN,
     where xx is an integer [01-99, zero-padded] and y is a single-digit integer [1-9],
@@ -30,5 +33,4 @@ provenance:
     for TRxxAGy. One-to-one mapping to TRxxAGy within a study.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

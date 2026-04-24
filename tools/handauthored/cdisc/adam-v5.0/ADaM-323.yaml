@@ -15,9 +15,12 @@ scope:
 variable: APHASEN
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both APHASEN and APHASE are both populated
+  expand: ''
+  all:
+  - name: APHASE
+    operator: is_not_unique_relationship
+    value:
+      related_name: APHASEN
 outcome:
   message: Within a study, there is more than one value of APHASEN for a given value
     of APHASE, considering only those rows on which both variables are populated
@@ -30,5 +33,4 @@ provenance:
     state: "Within a study, there is a one-to-one mapping between APHASE and APHASEN."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

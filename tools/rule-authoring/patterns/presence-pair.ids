@@ -93,3 +93,7 @@
 "565","BCHGCAyN","BCHGCATy","y"
 "566","PBCHGCyN","PBCHGCAy","y"
 "567","CRITyFN","CRITyFL","y"
+"156","CRITyFL","CRITy","y"
+"157","CRITy","CRITyFL","y"
+"651","ONTRxxFL","ONTRTFL","xx"
+"652","ONTRTwFL","ONTRTFL","w"

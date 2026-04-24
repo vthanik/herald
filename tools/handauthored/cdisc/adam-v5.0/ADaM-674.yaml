@@ -10,9 +10,12 @@ scope:
 variable: DEVGRyN where y is an integer [1-99, not zero-padded]
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: On rows where both DEVGRyN and DEVGRy are both populated.
+  expand: 'y'
+  all:
+  - name: DEVGRy
+    operator: is_not_unique_relationship
+    value:
+      related_name: DEVGRyN
 outcome:
   message: There is more than one value of DEVGRyN for a given value of DEVGRy, considering
     only those rows on which both variables are populated
@@ -26,5 +29,4 @@ provenance:
     DEVGRyN and DEVGRy within a study.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

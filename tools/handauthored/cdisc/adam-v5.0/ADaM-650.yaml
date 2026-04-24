@@ -14,9 +14,14 @@ scope:
 variable: ONTRTFL
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: ONTRTwFL is equal to Y
+  expand: w
+  all:
+  - operator: is_contained_by
+    name: ONTRTwFL
+    value: 'Y'
+  - operator: is_not_contained_by
+    name: ONTRTFL
+    value: 'Y'
 outcome:
   message: ONTRTwFL is Y but ONTRTFL is not Y
   severity: Medium
@@ -29,4 +34,4 @@ provenance:
     flag."'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
