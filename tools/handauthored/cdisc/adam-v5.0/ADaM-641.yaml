@@ -16,9 +16,11 @@ scope:
 variable: AE.AESTDY
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: AE.AESTDY is present
+  all:
+  - name: AE.AESTDY
+    operator: exists
+  - name: AESTDY
+    operator: not_exists
 outcome:
   message: AE.AESTDY is present but AESTDY is not present
   severity: Medium
@@ -31,4 +33,4 @@ provenance:
     AE dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

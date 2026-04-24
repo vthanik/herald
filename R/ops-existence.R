@@ -38,6 +38,16 @@
 
 op_exists <- function(data, ctx, name) {
   n <- nrow(data)
+  # "exists(DS.VAR)" -- cross-dataset column presence.
+  # If name contains exactly one ".", split into (ds, col) and check
+  # whether col exists in the reference dataset.
+  if (is.character(name) && length(name) == 1L && grepl("^[A-Z][A-Z0-9]{1,3}\\.[A-Z][A-Z0-9_]*$", name)) {
+    parts <- strsplit(name, ".", fixed = TRUE)[[1L]]
+    ref_ds <- .ref_ds(ctx, parts[[1L]])
+    if (is.null(ref_ds)) return(.dataset_level_mask(FALSE, n))
+    return(.dataset_level_mask(
+      isTRUE(toupper(parts[[2L]]) %in% toupper(names(ref_ds))), n))
+  }
   if (.is_dataset_ref(name, data, ctx)) {
     # "exists(<DS>)" in a check_tree fires when the dataset IS present.
     return(.dataset_level_mask(.ds_present(name, ctx), n))

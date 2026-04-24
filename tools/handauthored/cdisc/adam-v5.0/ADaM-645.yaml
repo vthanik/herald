@@ -16,9 +16,11 @@ scope:
 variable: AE.AETOXGR
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: AE.AETOXGR is present
+  all:
+  - name: AE.AETOXGR
+    operator: exists
+  - name: AETOXGR
+    operator: not_exists
 outcome:
   message: AE.AETOXGR is present but AETOXGR is not present
   severity: Medium
@@ -31,4 +33,4 @@ provenance:
     AE dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

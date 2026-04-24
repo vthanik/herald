@@ -434,7 +434,7 @@ already handles dataset-qualified names via the crossrefs table
 - 5 .ids rows: ADaM-641..645 against AE source.
 - No new op.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** _(delivered)_
 
 ---
 

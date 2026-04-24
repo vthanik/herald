@@ -211,11 +211,11 @@
 "619","CDISC","ADaM-IG","1.0,1.1","Medium","LVOTFL is not equal to Y or null",NA,NA,"narrative",NA,NA,NA
 "622","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AEOCCUR is present",NA,NA,"narrative",NA,NA,NA
 "640","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","SUPPAE.QNAM=AETRTEM is present but AETRTEM is not present",NA,NA,"narrative",NA,NA,NA
-"641","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AESTDY is present but AESTDY is not present",NA,NA,"narrative",NA,NA,NA
-"642","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AEENDY is present but AEENDY is not present",NA,NA,"narrative",NA,NA,NA
-"643","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AEDUR is present but AEDUR is not present",NA,NA,"narrative",NA,NA,NA
-"644","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AESEV is present but AESEV is not present",NA,NA,"narrative",NA,NA,NA
-"645","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AETOXGR is present but AETOXGR is not present",NA,NA,"narrative",NA,NA,NA
+"641","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AESTDY is present but AESTDY is not present","cross-dataset-presence-pair","all: - name: AE.AESTDY operator: exists - name: AESTDY operator: not_exists","predicate","2026-04-24T09:31:06Z",NA,NA
+"642","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AEENDY is present but AEENDY is not present","cross-dataset-presence-pair","all: - name: AE.AEENDY operator: exists - name: AEENDY operator: not_exists","predicate","2026-04-24T09:31:06Z",NA,NA
+"643","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AEDUR is present but AEDUR is not present","cross-dataset-presence-pair","all: - name: AE.AEDUR operator: exists - name: AEDUR operator: not_exists","predicate","2026-04-24T09:31:06Z",NA,NA
+"644","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AESEV is present but AESEV is not present","cross-dataset-presence-pair","all: - name: AE.AESEV operator: exists - name: AESEV operator: not_exists","predicate","2026-04-24T09:31:06Z",NA,NA
+"645","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AETOXGR is present but AETOXGR is not present","cross-dataset-presence-pair","all: - name: AE.AETOXGR operator: exists - name: AETOXGR operator: not_exists","predicate","2026-04-24T09:31:06Z",NA,NA
 "646","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","AE.AEACN is present and populated on at least one record but AEACN is not present",NA,NA,"narrative",NA,NA,NA
 "647","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TREMxxFL is Y but TRTEMFL is not Y",NA,NA,"narrative",NA,NA,NA
 "648","CDISC","ADaM-IG","1.0,1.1,1.2,1.3","Medium","TRTEMwFL is Y but TRTEMFL is not Y",NA,NA,"narrative",NA,NA,NA

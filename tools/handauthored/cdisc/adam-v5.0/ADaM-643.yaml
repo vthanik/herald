@@ -16,9 +16,11 @@ scope:
 variable: AE.AEDUR
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: AE.AEDUR is present
+  all:
+  - name: AE.AEDUR
+    operator: exists
+  - name: AEDUR
+    operator: not_exists
 outcome:
   message: AE.AEDUR is present but AEDUR is not present
   severity: Medium
@@ -31,4 +33,4 @@ provenance:
     dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

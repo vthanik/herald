@@ -1,0 +1,28 @@
+{
+  "rule_id": "__pattern-cross-dataset-presence-pair__",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADAE": {
+      "USUBJID": ["STUDY-001", "STUDY-002"],
+      "AEDECOD": ["HEADACHE", "NAUSEA"]
+    },
+    "AE": {
+      "USUBJID": ["STUDY-001", "STUDY-002"],
+      "AEDECOD": ["HEADACHE", "NAUSEA"],
+      "AESTDY": [1, 3],
+      "AEENDY": [5, 7],
+      "AEDUR": ["P4D", "P4D"],
+      "AESEV": ["MILD", "MODERATE"],
+      "AETOXGR": ["1", "2"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "notes": "ADAE lacks AESTDY/AEENDY/AEDUR/AESEV/AETOXGR; AE has all five -- all 5 rules fire"
+  },
+  "spec": {
+    "class_map": {
+      "ADAE": "OCCURRENCE DATA STRUCTURE"
+    }
+  }
+}

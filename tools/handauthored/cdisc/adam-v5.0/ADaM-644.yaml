@@ -16,9 +16,11 @@ scope:
 variable: AE.AESEV
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: AE.AESEV is present
+  all:
+  - name: AE.AESEV
+    operator: exists
+  - name: AESEV
+    operator: not_exists
 outcome:
   message: AE.AESEV is present but AESEV is not present
   severity: Medium
@@ -31,4 +33,4 @@ provenance:
     dataset.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
