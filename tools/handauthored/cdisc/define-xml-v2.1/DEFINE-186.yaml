@@ -1,22 +1,24 @@
 id: DEFINE-186
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: Attribute def:ExtendedValue must be provided for the EnumeratedItem element
-    when the CodedValue is an extended value.
+  all:
+  - name: extended_value
+    operator: non_empty
 outcome:
   message: Attribute def:ExtendedValue is missing for element EnumeratedItem[@CodedValue]
     in CodeList[@Name].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 186
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -24,3 +26,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/CodeList/EnumeratedItem
   element: EnumeratedItem
   attribute: def:ExtendedValue
+  builder_dataset: Define_Codelist_Metadata

@@ -13,7 +13,7 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0089
-  executability: reference
+  executability: blocker:requires-op:arm_name_unique
   license: MIT
-notes: |
-  Blocked on `arm_name_unique` operator (arm:ResultDisplay Name must be unique). See HANDOFF section 4i.
+notes: Blocked on `arm_name_unique` operator (arm:ResultDisplay Name must be unique).
+  See HANDOFF section 4i.

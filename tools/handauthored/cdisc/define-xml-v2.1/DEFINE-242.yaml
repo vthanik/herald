@@ -1,23 +1,24 @@
 id: DEFINE-242
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: The def:CommentOID attribute must be provided for an ItemDef when its
-    ItemOID is referenced in an ItemRef that has the def:HasNoData  attribute  value
-    'Yes'.
+  all:
+  - name: comment_oid
+    operator: non_empty
 outcome:
   message: ItemDef[@OID]/@def:CommentOID is not provided  when ItemGroupDef[@OID]/ItemRef[@ItemOID]
     has def:HasNoData attribute set to  'Yes'.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 242
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -25,3 +26,4 @@ provenance:
   xpaths: "/ODM/Study/MetaDataVersion/ItemDef\r\r\n/ODM/Study/MetaDataVersion/ItemRef"
   element: ItemDef
   attribute: def:CommentOID
+  builder_dataset: Define_Variable_Metadata

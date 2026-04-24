@@ -8,19 +8,23 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: No more than one ExternalCodeList element may be provided for a CodeList
-    element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: CodeLists may have only one ExternalCodeList. CodeList[@OID]  has count(Codelist/ExternalCodeList)
     ExternalCodeList child elements.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 250
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Schema
   xpaths: /ODM/Study/MetaDataVersion/CodeList/ExternalCodeList
   element: CodeList ExternalCodeList
+  builder_dataset: Define_Codelist_Metadata

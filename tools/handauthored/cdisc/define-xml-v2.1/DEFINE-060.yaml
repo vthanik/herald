@@ -8,17 +8,22 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Study_Metadata
 check:
-  narrative: Child element TranslatedText must be provided for the Description element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Child element TranslatedText is missing for element $ParentElement[@OID]/Description.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 60
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Schema
   xpaths: "/ODM/Study/MetaDataVersion/def:ValueListDef/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/ItemGroupDef/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/ItemDef/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/ItemDef/def:Origin/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/CodeList/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/CodeList/CodeListItem/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/CodeList/EnumeratedItem/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/MethodDef/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/def:CommentDef/Description/TranslatedText"
   element: Description/TranslatedText
+  builder_dataset: Define_Study_Metadata

@@ -1,25 +1,28 @@
 id: DEFINE-093
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: Child element ItemGroupDef must be provided for the MetaDataVersion element
-    in the context of a submission.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Child element ItemGroupDef is missing for element MetaDataVersion  when
     @def:Context='Submission'.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 93
   license: CC-BY-4.0
   applicable_versions: 2.1 only
   source_type: Specification
   xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
   element: ItemGroupDef
+  builder_dataset: Define_Dataset_Metadata

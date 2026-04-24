@@ -1,22 +1,24 @@
 id: DEFINE-153
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: Attribute def:IsNonStandard must be provided for a CodeList element where
-    CDISC Controlled Terminology is required and there is no Alias provided.
+  all:
+  - name: is_non_standard
+    operator: non_empty
 outcome:
   message: Attribute def:IsNonStandard is missing and Alias[@Context="nci:ExtCodeID"]
     is not provided for a variable with required controlled terminology.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 153
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -24,3 +26,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/CodeList
   element: CodeList
   attribute: def:IsNonStandard
+  builder_dataset: Define_Codelist_Metadata

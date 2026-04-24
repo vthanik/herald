@@ -8,15 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Study_Metadata
 check:
-  narrative: The value of the ODMVersion attribute must be "1.3.2"
+  all:
+  - name: def_version
+    operator: non_empty
 outcome:
   message: The value of ODMVersion[@ODMVersion] is not "1.3.2" for the ODM element
     .
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 7
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -24,3 +28,4 @@ provenance:
   xpaths: /ODM
   element: ODM
   attribute: ODMVersion
+  builder_dataset: Define_Study_Metadata

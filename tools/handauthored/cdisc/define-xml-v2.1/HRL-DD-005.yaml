@@ -16,7 +16,8 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0149
-  executability: reference
+  executability: blocker:requires-op:iso8601_data_type_match
   license: MIT
-notes: |
-  Blocked on `iso8601_data_type_match` operator (--DTC/--DUR variables must declare a datetime/date/time/partialDate/partialDatetime/incompleteDatetime/durationDatetime Data Type). See HANDOFF section 4g.
+notes: Blocked on `iso8601_data_type_match` operator (--DTC/--DUR variables must declare
+  a datetime/date/time/partialDate/partialDatetime/incompleteDatetime/durationDatetime
+  Data Type). See HANDOFF section 4g.

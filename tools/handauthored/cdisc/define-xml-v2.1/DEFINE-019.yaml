@@ -8,18 +8,22 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Study_Metadata
 check:
-  narrative: No more than one child element StudyName must be provided for the GlobalVariables
-    element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Child element StudyName is provided more than once for element GlobalVariables.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 19
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Schema
   xpaths: /ODM/Study/GlobalVariables/StudyName
   element: StudyName
+  builder_dataset: Define_Study_Metadata

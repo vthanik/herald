@@ -13,7 +13,7 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0147
-  executability: reference
+  executability: blocker:requires-op:valid_codelist_term
   license: MIT
-notes: |
-  Blocked on `valid_codelist_term` operator (VLM Assigned Value must be a term in the linked codelist). See HANDOFF section 4g.
+notes: Blocked on `valid_codelist_term` operator (VLM Assigned Value must be a term
+  in the linked codelist). See HANDOFF section 4g.

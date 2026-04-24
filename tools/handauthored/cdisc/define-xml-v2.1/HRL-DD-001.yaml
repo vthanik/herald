@@ -13,7 +13,7 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0086
-  executability: reference
+  executability: blocker:requires-op:define_attribute_length_le
   license: MIT
-notes: |
-  Blocked on `define_attribute_length_le` operator (walks all text attributes in define.xml, flags any > 1000 chars). See HANDOFF section 4g.
+notes: Blocked on `define_attribute_length_le` operator (walks all text attributes
+  in define.xml, flags any > 1000 chars). See HANDOFF section 4g.

@@ -8,15 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: RangeCheck must reference an existing ItemDef element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: There is no ItemDef/@OID present that is referenced by RangeCheck within
     WhereClauseDef[@OID].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 91
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -24,3 +28,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/def:WhereClauseDef/RangeCheck
   element: RangeCheck
   attribute: def:ItemOID
+  builder_dataset: Define_Variable_Metadata

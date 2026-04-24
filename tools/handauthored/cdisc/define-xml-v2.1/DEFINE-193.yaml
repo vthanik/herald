@@ -8,15 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: The value of attribute Rank must be an integer number.
+  all:
+  - name: rank
+    operator: non_empty
 outcome:
   message: The value of attribute Rank[@Rank] is not an integer number for CodeListItem[@CodedValue]
     in CodeList[@Name]
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 193
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -24,3 +28,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/CodeList/CodeListItem
   element: CodeListItem
   attribute: Rank
+  builder_dataset: Define_Codelist_Metadata

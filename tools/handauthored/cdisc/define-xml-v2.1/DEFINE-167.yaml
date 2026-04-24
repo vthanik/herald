@@ -1,20 +1,23 @@
 id: DEFINE-167
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: The value of the def:IsNonStandard attribute must be "Yes".
+  all:
+  - name: is_non_standard
+    operator: non_empty
 outcome:
   message: The value of def:IsNonStandard[@def:IsNonStandard] is not "Yes" for CodeList[@Name].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 167
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -22,3 +25,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/CodeList
   element: CodeList
   attribute: def:IsNonStandard
+  builder_dataset: Define_Codelist_Metadata

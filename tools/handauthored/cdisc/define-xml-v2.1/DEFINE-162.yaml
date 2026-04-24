@@ -8,18 +8,22 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_ValueLevel_Metadata
 check:
-  narrative: No more than one child element def:ValueListRef must be provided for
-    the ItemDef element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Child element def:ValueListRef is provided more than once for element ItemDef[@Name].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 162
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Schema
   xpaths: /ODM/Study/MetaDataVersion/ItemDef/def:ValueListRef
   element: def:ValueListRef
+  builder_dataset: Define_ValueLevel_Metadata

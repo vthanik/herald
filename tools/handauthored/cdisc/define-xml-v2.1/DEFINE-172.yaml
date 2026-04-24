@@ -1,20 +1,23 @@
 id: DEFINE-172
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: Name attribute value must be unique within the set of Codelist elements.
+  all:
+  - name: codelist_name
+    operator: non_empty
 outcome:
   message: There is more than one Codelist with Name [@Name].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 172
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -22,3 +25,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/CodeList
   element: CodeList
   attribute: Name
+  builder_dataset: Define_Codelist_Metadata

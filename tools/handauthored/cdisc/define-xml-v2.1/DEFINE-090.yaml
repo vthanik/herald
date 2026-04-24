@@ -8,14 +8,18 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: Attribute def:ItemOID must be provided for the RangeCheck element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Attribute def:ItemOID is missing for def:WhereClauseDef[@OID]/RangeCheck.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 90
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -23,3 +27,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/def:WhereClauseDef/RangeCheck
   element: RangeCheck
   attribute: def:ItemOID
+  builder_dataset: Define_Variable_Metadata

@@ -1,22 +1,24 @@
 id: DEFINE-161
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: The value of the Source attribute must be one of "Investigator", "Sponsor",
-    "Subject", "Vendor".
+  all:
+  - name: origin_source
+    operator: non_empty
 outcome:
   message: The value of Source[@Source] is not one of "Investigator", "Sponsor", "Subject",
     "Vendor" for ItemDef[@Name].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 161
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -24,3 +26,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemDef/def:Origin
   element: def:Origin
   attribute: Source
+  builder_dataset: Define_Variable_Metadata

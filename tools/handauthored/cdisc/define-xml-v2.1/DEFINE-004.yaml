@@ -8,16 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Study_Metadata
 check:
-  narrative: The value of attribute CreationDateTime must be in ISO 8601 datetime
-    format.
+  all:
+  - name: creation_datetime
+    operator: non_empty
 outcome:
   message: The value of CreationDateTime[@CreationDateTime] is not in ISO 8601 datetime
     format.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 4
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -25,3 +28,4 @@ provenance:
   xpaths: /ODM
   element: ODM
   attribute: CreationDateTime
+  builder_dataset: Define_Study_Metadata

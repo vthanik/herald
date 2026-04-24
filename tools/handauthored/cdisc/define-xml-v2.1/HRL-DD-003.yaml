@@ -13,7 +13,7 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0146
-  executability: reference
+  executability: blocker:requires-op:assigned_value_length_le_var_length
   license: MIT
-notes: |
-  Blocked on `assigned_value_length_le_var_length` operator (VLM Assigned Value length <= parent variable length). See HANDOFF section 4g.
+notes: Blocked on `assigned_value_length_le_var_length` operator (VLM Assigned Value
+  length <= parent variable length). See HANDOFF section 4g.

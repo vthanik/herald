@@ -8,17 +8,22 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Study_Metadata
 check:
-  narrative: Child element Description must be provided for the MethodDef element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Child element Description is missing for element MethodDef[@OID].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 210
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Schema
   xpaths: /ODM/Study/MetaDataVersion/MethodDef/Description
   element: MethodDef/Description
+  builder_dataset: Define_Study_Metadata

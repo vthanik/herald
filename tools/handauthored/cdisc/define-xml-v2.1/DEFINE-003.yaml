@@ -8,17 +8,22 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Study_Metadata
 check:
-  narrative: No more than one ODM element may be provided in the Define-XML document.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Element ODM is provided more than once in the Define-XML document.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 3
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Specification
   xpaths: /ODM
   element: ODM
+  builder_dataset: Define_Study_Metadata

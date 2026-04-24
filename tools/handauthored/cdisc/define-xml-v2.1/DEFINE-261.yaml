@@ -1,22 +1,24 @@
 id: DEFINE-261
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Standards_Metadata
 check:
-  narrative: Value of the Name attribute in the def:SubClass must be one of the values
-    from the CDISC/NCI subclass codelists.
+  all:
+  - name: name
+    operator: non_empty
 outcome:
   message: The value of SubClass Name [@Name] for dataset [$ParentItemGroupDef/@Name]
     is not in the CDISC/NCI subclass codelists.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 261
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -24,3 +26,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef/def:Class/def:SubClass
   element: def:SubClass
   attribute: Name
+  builder_dataset: Define_Standards_Metadata

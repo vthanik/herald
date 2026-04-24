@@ -8,14 +8,18 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: The ItemDef element must have the DataType attribute present.
+  all:
+  - name: data_type
+    operator: non_empty
 outcome:
   message: DataType attribute must be present for ItemDef[@OID] within $ParentElementType[@OID].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 139
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -23,3 +27,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemDef
   element: ItemDef
   attribute: DataType
+  builder_dataset: Define_Variable_Metadata

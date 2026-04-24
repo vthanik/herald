@@ -13,7 +13,7 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0087
-  executability: reference
+  executability: blocker:requires-op:arm_absent_in_non_adam_define
   license: MIT
-notes: |
-  Blocked on `arm_absent_in_non_adam_define` operator (SDTM/SEND define.xml must not contain arm:AnalysisResultDisplays). See HANDOFF section 4i.
+notes: Blocked on `arm_absent_in_non_adam_define` operator (SDTM/SEND define.xml must
+  not contain arm:AnalysisResultDisplays). See HANDOFF section 4i.

@@ -81,9 +81,22 @@ validate <- function(path = NULL,
   # ---- assemble dataset map ------------------------------------------------
   if (!is.null(files)) {
     files    <- .infer_file_names(files, files_exp, call)
+    # Lift out any Define-XML entry (path or herald_define object) from files.
+    define   <- define %||% .extract_define_from_files(files, call)
+    files    <- .drop_define_entries(files)
     datasets <- .assemble_from_files(files, call)
   } else {
     datasets <- .assemble_from_path(path, call)
+  }
+
+  # Inject Define-XML virtual datasets when a herald_define is available.
+  # Builders produce flat data.frames keyed by virtual names such as
+  # "Define_Dataset_Metadata" that DEFINE rules reference in their scope.
+  if (!is.null(define) && inherits(define, "herald_define")) {
+    define_frames <- .build_define_datasets(define)
+    for (nm in names(define_frames)) {
+      if (!nm %in% names(datasets)) datasets[[nm]] <- define_frames[[nm]]
+    }
   }
 
   if (length(datasets) == 0L) {
@@ -497,8 +510,36 @@ validate <- function(path = NULL,
   files
 }
 
+.extract_define_from_files <- function(files, call) {
+  if (!is.list(files)) return(NULL)
+  for (nm in names(files)) {
+    v <- files[[nm]]
+    if (inherits(v, "herald_define")) return(v)
+    if (is.character(v) && length(v) == 1L && grepl("[.]xml$", v, ignore.case = TRUE)) {
+      return(tryCatch(read_define_xml(v, call = call), error = function(e) NULL))
+    }
+  }
+  NULL
+}
+
+.drop_define_entries <- function(files) {
+  if (!is.list(files)) return(files)
+  keep <- vapply(files, function(v) {
+    !inherits(v, "herald_define") &&
+      !(is.character(v) && length(v) == 1L && grepl("[.]xml$", v, ignore.case = TRUE))
+  }, logical(1L))
+  files[keep]
+}
+
 .assemble_from_files <- function(files, call) {
-  if (!is.list(files) || is.null(names(files))) {
+  if (!is.list(files)) {
+    cli::cli_abort(
+      "{.arg files} must be a named list of data frames.",
+      call = call
+    )
+  }
+  if (length(files) == 0L) return(list())
+  if (is.null(names(files))) {
     cli::cli_abort(
       "{.arg files} must be a named list of data frames.",
       call = call

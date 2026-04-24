@@ -1,21 +1,24 @@
 id: DEFINE-077
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: The value of the def:HasNoData attribute must be "Yes".
+  all:
+  - name: has_no_data
+    operator: non_empty
 outcome:
   message: The value of def:HasNoData[@def:HasNoData] is not "Yes" for ItemGroupDef[@Name]/ItemRef[@ItemOID]
     ( or def:ValueListDef[@OID]/ItemRef[@ItemOID]).
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 77
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -23,3 +26,4 @@ provenance:
   xpaths: "/ODM/Study/MetaDataVersion/ItemGroupDef/ItemRef\r\r\n/ODM/Study/MetaDataVersion/def:ValueListDef/ItemRef"
   element: ItemRef
   attribute: def:HasNoData
+  builder_dataset: Define_Dataset_Metadata

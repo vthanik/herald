@@ -8,14 +8,18 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Study_Metadata
 check:
-  narrative: Attribute Name must be provided.
+  all:
+  - name: mdv_name
+    operator: non_empty
 outcome:
   message: Attribute Name is missing for element MethodDef[@OID].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 207
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -23,3 +27,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/MethodDef
   element: MethodDef
   attribute: Name
+  builder_dataset: Define_Study_Metadata

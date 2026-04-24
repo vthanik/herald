@@ -155,7 +155,10 @@ read_define_xml <- function(path, call = rlang::caller_env()) {
       arm_displays  = arm$displays,
       arm_results   = arm$results,
       key_vars      = key_vars,
-      loinc_version = loinc_ver
+      loinc_version = loinc_ver,
+      xml_doc       = doc,
+      xml_mdv       = mdv,
+      xml_ns        = ns
     ),
     class = c("herald_define", "list")
   )

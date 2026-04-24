@@ -8,15 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: Value of the SAS dataset name must match the ItemGroupDef name
+  all:
+  - name: sas_dataset_name
+    operator: non_empty
 outcome:
   message: The value of SASDatasetName[@SASDatasetName] is different from the value
     of Name[@Name].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 110
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -24,3 +28,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
   element: ItemGroupDef
   attribute: SASDatasetName
+  builder_dataset: Define_Dataset_Metadata

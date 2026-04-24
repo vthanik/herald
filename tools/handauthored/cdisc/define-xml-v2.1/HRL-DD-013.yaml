@@ -13,7 +13,7 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0092
-  executability: reference
+  executability: blocker:requires-op:arm_parameter_oid_required_when_bds
   license: MIT
-notes: |
-  Blocked on `arm_parameter_oid_required_when_bds` operator (ParameterOID required when arm:AnalysisResult references BDS datasets). See HANDOFF section 4i.
+notes: Blocked on `arm_parameter_oid_required_when_bds` operator (ParameterOID required
+  when arm:AnalysisResult references BDS datasets). See HANDOFF section 4i.

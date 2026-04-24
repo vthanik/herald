@@ -1,22 +1,24 @@
 id: DEFINE-124
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: The def:StandardOID attribute on the ItemGroupDef element must reference
-    an existing def:Standard element with Type="IG".
+  all:
+  - name: standard_oid
+    operator: non_empty
 outcome:
   message: There is no def:Standard of type 'IG' with an OID attribute that matches
     itemGroupDef[@Name]/def:StandardOID.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 124
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -24,3 +26,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
   element: ItemGroupDef
   attribute: def:StandardOID
+  builder_dataset: Define_Dataset_Metadata

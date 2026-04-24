@@ -1,22 +1,24 @@
 id: DEFINE-105
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: Attribute Domain must be provided for the ItemGroupDef element that references
-    the SDTM or SEND implementation guides.
+  all:
+  - name: domain
+    operator: non_empty
 outcome:
   message: Attribute Domain is missing for ItemGroupDef[@Name] that references an
     SDTM or SEND implementation guide.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 105
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -24,3 +26,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
   element: ItemGroupDef
   attribute: Domain
+  builder_dataset: Define_Dataset_Metadata

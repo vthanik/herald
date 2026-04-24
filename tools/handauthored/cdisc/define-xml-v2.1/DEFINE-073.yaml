@@ -8,16 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: The MethodOID attribute must be provided on the  ItemRef element when
-    the Origin Type attribute on the corresponding ItemDef element is "Derived".
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: ItemRef[@ItemOID] is missing the MethodOID when ItemDef[@OID]/@Name variable
     has def:Origin/@Type  = "Derived".
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 73
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -25,3 +28,4 @@ provenance:
   xpaths: "/ODM/Study/MetaDataVersion/ItemGroupDef/ItemRef\r\r\n/ODM/Study/MetaDataVersion/def:ValueListDef/ItemRef"
   element: ItemRef
   attribute: MethodOID
+  builder_dataset: Define_Dataset_Metadata

@@ -8,18 +8,22 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: The def:WhereClauseDef child element for  ItemRef is permitted only for
-    def:ValueListDef/[@OID]/ItemRef.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: ItemGroupDef[@OID]/ItemRef[@ItemOID] has a def:WhereClauseDef child element.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 79
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Specification
   xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef/ItemRef
   element: ItemRef
+  builder_dataset: Define_Dataset_Metadata

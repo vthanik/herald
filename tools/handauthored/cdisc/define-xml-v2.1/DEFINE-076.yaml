@@ -1,22 +1,24 @@
 id: DEFINE-076
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: Attribute def:HasNoData must be provided for the ItemRef element when
-    the dataset variable or value defined in the associated ItemDef has no data values
+  all:
+  - name: has_no_data
+    operator: non_empty
 outcome:
   message: Attribute def:HasNoData is missing for element ItemRef when associated
     ItemDef[@Name] has no data values
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 76
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -24,3 +26,4 @@ provenance:
   xpaths: "/ODM/Study/MetaDataVersion/ItemGroupDef/ItemRef\r\r\n/ODM/Study/MetaDataVersion/def:ValueListDef/ItemRef"
   element: ItemRef
   attribute: def:HasNoData
+  builder_dataset: Define_Dataset_Metadata

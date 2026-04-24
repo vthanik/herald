@@ -1,22 +1,24 @@
 id: DEFINE-147
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: The SASFieldName attribute must be provided for the ItemDef element when
-    the Context is 'Submission' and the associated dataset is provided as SAS v5 XPT.
+  all:
+  - name: sas_field_name
+    operator: non_empty
 outcome:
   message: The SASFieldName attribute for the ItemDef[@Name] must be provided when
     ODM/@Context is 'Submission'.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 147
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -24,3 +26,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemDef
   element: ItemDef
   attribute: SASFieldName
+  builder_dataset: Define_Variable_Metadata

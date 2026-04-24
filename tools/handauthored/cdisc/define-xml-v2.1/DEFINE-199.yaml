@@ -8,17 +8,22 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: Child element Decode must be provided for the CodeListItem element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Child element Decode is missing for element CodeList[@Name]/CodeListItem[@CodedValue].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 199
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Schema
   xpaths: /ODM/Study/MetaDataVersion/CodeList/CodeListItem/Decode
   element: Decode
+  builder_dataset: Define_Codelist_Metadata

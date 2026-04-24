@@ -8,15 +8,18 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: The ItemOID attribute on the ItemRef element must reference an existing
-    ItemDef element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: There is no ItemDef with an OID attribute that matches $ParentElement[@OID]/ItemRef/ItemOID.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 65
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -24,3 +27,4 @@ provenance:
   xpaths: "/ODM/Study/MetaDataVersion/ItemGroupDef/ItemRef\r\r\n/ODM/Study/MetaDataVersion/def:ValueListDef/ItemRef"
   element: ItemRef
   attribute: ItemOID
+  builder_dataset: Define_Dataset_Metadata

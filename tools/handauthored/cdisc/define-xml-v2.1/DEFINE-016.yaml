@@ -1,20 +1,23 @@
 id: DEFINE-016
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Study_Metadata
 check:
-  narrative: Attribute def:Context must be provided for the ODM element.
+  all:
+  - name: context
+    operator: non_empty
 outcome:
   message: Attribute def:Context is missing for element ODM.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 16
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -22,3 +25,4 @@ provenance:
   xpaths: /ODM
   element: ODM
   attribute: def:Context
+  builder_dataset: Define_Study_Metadata

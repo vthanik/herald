@@ -8,14 +8,18 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: Attribute OID must be provided for the ItemGroupDef element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Attribute OID is missing for ItemGroupDef[@Name].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 94
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -23,3 +27,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
   element: ItemGroupDef
   attribute: OID
+  builder_dataset: Define_Dataset_Metadata

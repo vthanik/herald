@@ -1,25 +1,28 @@
 id: DEFINE-245
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: No more than one Description child element may be provided for an EnumeratedItem
-    element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: CodeList[@OID]/EnumeratedItem[@CodedValue] has count(CodeList[@OID]/EnumeratedItem[@CodedValue]/Description)
     child elements. Only 1 is permitted.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 245
   license: CC-BY-4.0
   applicable_versions: 2.1 only
   source_type: Schema
   xpaths: /ODM/Study/MetaDataVersion/CodeListItem/EnumeratedItem/Description
   element: EnumeratedItem Description
+  builder_dataset: Define_Codelist_Metadata

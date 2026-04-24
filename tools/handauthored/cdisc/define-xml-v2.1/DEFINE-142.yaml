@@ -8,17 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: For any ItemDef element referenced by a def:ValueListDef/ItemRef, the
-    value of attribute Length must be less than or equal to the value of attribute
-    Length in the ItemDef element that references the value list.
+  all:
+  - name: length
+    operator: non_empty
 outcome:
   message: Length for value definition in ItemDef element  ItemDef[ @OID='../def:ValueListRef[ValueListOID=def:ValueListDef/@OID]/ItemRef/@ItemOID']/@OID
     is greater than the Length for variable definition in ItemDef element $Parent/def:ValueListRef[@ValueListOID='def:ValueListDef/@OID']/@OID.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 142
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -26,3 +28,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/def:ValueListDef/ItemRef
   element: ItemDef
   attribute: Length
+  builder_dataset: Define_Variable_Metadata

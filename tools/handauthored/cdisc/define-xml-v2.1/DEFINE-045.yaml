@@ -8,15 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: The value of the Type attribute must be one of "PhysicalRef", "NamedDestination".
+  all:
+  - name: origin_type
+    operator: non_empty
 outcome:
   message: The value of Type[@Type] is not one of "PhysicalRef", "NamedDestination"
     for def:DocumentRef[@leafID]/def:PDFPageRef.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 45
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -24,3 +28,4 @@ provenance:
   xpaths: "/ODM/Study/MetaDataVersion/ItemDef/def:Origin/def:DocumentRef/def:PDFPageRef\r\r\n/ODM/Study/MetaDataVersion/MethodDef/def:DocumentRef/def:PDFPageRef\r\r\n/ODM/Study/MetaDataVersion/def:CommentDef/def:DocumentRef/def:PDFPageRef"
   element: def:PDFPageRef
   attribute: Type
+  builder_dataset: Define_Variable_Metadata

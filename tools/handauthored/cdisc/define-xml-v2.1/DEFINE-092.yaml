@@ -8,17 +8,22 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_ValueLevel_Metadata
 check:
-  narrative: Child element CheckValue must be provided for the RangeCheck element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Child element CheckValue is missing for element $ParentWhereClause[OID]/RangeCheck.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 92
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Schema
   xpaths: /ODM/Study/MetaDataVersion/def:WhereClauseDef/RangeCheck/CheckValue
   element: CheckValue
+  builder_dataset: Define_ValueLevel_Metadata

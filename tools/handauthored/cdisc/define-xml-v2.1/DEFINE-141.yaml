@@ -8,16 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: The ItemDef element must have the Length attribute present when the DataType
-    attribute has the value text, integer or float.
+  all:
+  - name: length
+    operator: non_empty
 outcome:
   message: Length attribute must be present for ItemDef[@OID] within $ParentElementType[@OID]
     when (ItemDef[@DataType]) is one of 'text', 'integer' or 'float'.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 141
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -25,3 +28,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemDef
   element: ItemDef
   attribute: Length
+  builder_dataset: Define_Variable_Metadata

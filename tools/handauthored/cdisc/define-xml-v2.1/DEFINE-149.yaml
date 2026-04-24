@@ -1,25 +1,28 @@
 id: DEFINE-149
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: A variable defined in a standard with a Controlled Terminology requirement
-    must have a CodeListRef element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: ItemDef[@Name] for Standard [def:Standard/@Name], Version [def:Standard/@Version]
     requires Controlled Terminology and is missing the CodeListRef child element.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 149
   license: CC-BY-4.0
   applicable_versions: 2.1 only
   source_type: Specification
   xpaths: /ODM/Study/MetaDataVersion/ItemDef/CodeListRef
   element: CodeListRef
+  builder_dataset: Define_Codelist_Metadata

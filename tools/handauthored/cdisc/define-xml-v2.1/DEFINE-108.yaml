@@ -1,21 +1,24 @@
 id: DEFINE-108
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: SASDatasetName must be provided in the context of a submission.
+  all:
+  - name: sas_dataset_name
+    operator: non_empty
 outcome:
   message: ItemGroupDef[@Name] must have a SASDatasetName attribute when @Context
     is Submission.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 108
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -23,3 +26,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
   element: ItemGroupDef
   attribute: SASDatasetName
+  builder_dataset: Define_Dataset_Metadata

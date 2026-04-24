@@ -1,22 +1,24 @@
 id: DEFINE-239
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: The value of the IsReferenceData attribute must be "Yes" when the ItemGroupDef
-    references a Trial Design dataset.
+  all:
+  - name: is_referencedata
+    operator: non_empty
 outcome:
   message: The value of IsReferenceData[@IsReferenceData] is not "Yes" for ItemGroupDef[@Name]/ItemRef[@ItemOID]
     when ItemGroupDef/def:Class/@Name="TRIAL DESIGN".
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 239
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -24,3 +26,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
   element: ItemGroupDef
   attribute: IsReferenceData
+  builder_dataset: Define_Dataset_Metadata

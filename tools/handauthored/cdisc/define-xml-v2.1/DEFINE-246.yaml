@@ -1,24 +1,28 @@
 id: DEFINE-246
 authority: CDISC
 standard: Define-XML
-standard_versions:
-- '2.1'
+standard_versions: '2.1'
 severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: No more than one //CodeListItem/Description may be provided.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: CodeList[@OID/CodeListItem[@CodedValue] has count(CodeList[@OID]/CodeListItem[@CodedValue]/Description)
     Description child elements. Only 1 is permitted.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 246
   license: CC-BY-4.0
   applicable_versions: 2.1 only
   source_type: Schema
   xpaths: /ODM/Study/MetaDataVersion/CodeList/CodelistItem/Description
   element: CodeListItem Description
+  builder_dataset: Define_Codelist_Metadata

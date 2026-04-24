@@ -8,18 +8,22 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Study_Metadata
 check:
-  narrative: No more than one child element def:title maybe provided for the def:leaf
-    element.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Child element def:title is provided more than once for element def:leaf[@ID].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 219
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Schema
   xpaths: "/ODM/Study/MetaDataVersion/def:leaf/def:title\r\r\n/ODM/Study/MetaDataVersion/ItemGroupDef/def:leaf/def:title"
   element: def:title
+  builder_dataset: Define_Study_Metadata

@@ -13,7 +13,7 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0090
-  executability: reference
+  executability: blocker:requires-op:arm_description_required
   license: MIT
-notes: |
-  Blocked on `arm_description_required` operator (each arm:ResultDisplay must have a Description child). See HANDOFF section 4i.
+notes: Blocked on `arm_description_required` operator (each arm:ResultDisplay must
+  have a Description child). See HANDOFF section 4i.

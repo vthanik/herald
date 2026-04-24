@@ -8,10 +8,12 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Dataset_Metadata
 check:
-  narrative: Attribute OrderNumber must be provided for the ItemRef element when there
-    is at least one OrderNumber attribute value provided for the same parent def:ValueListDef
-    or def:ItemGroupDef.
+  all:
+  - name: oid
+    operator: non_empty
 outcome:
   message: Attribute OrderNumber is missing for element ItemRef[@ItemOID] in $Parent[@OID]/ItemRef[@ItemOID].
     The  OrderNumber attribute must be provided for all or none of the ItemRef elements
@@ -19,7 +21,7 @@ outcome:
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 238
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -27,3 +29,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/def:ValueListDef/ItemRef
   element: ItemRef
   attribute: OrderNumber
+  builder_dataset: Define_Dataset_Metadata

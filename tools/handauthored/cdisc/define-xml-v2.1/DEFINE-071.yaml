@@ -15,7 +15,7 @@ outcome:
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: blocker:unmapped-attribute:KeySequence
   define_rule_id: 71
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1

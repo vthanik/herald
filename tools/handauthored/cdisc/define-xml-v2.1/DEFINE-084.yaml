@@ -8,16 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_ValueLevel_Metadata
 check:
-  narrative: Comment must be provided for a where clause when two or more datasets
-    are referenced in where clause conditions.
+  all:
+  - name: comment_oid
+    operator: non_empty
 outcome:
   message: Comment is not provided for WhereClauseDef which references more than one
     dataset.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: narrative
+  executability: predicate
   define_rule_id: 84
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -25,3 +28,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/def:WhereClauseDef
   element: def:WhereClauseDef
   attribute: def:CommentOID
+  builder_dataset: Define_ValueLevel_Metadata

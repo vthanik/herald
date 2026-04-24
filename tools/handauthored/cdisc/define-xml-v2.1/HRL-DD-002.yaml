@@ -13,7 +13,7 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0145
-  executability: reference
+  executability: blocker:requires-op:assigned_value_matches_data_type
   license: MIT
-notes: |
-  Blocked on `assigned_value_matches_data_type` operator (VLM Assigned Value must parse as declared Data Type). See HANDOFF section 4g.
+notes: Blocked on `assigned_value_matches_data_type` operator (VLM Assigned Value
+  must parse as declared Data Type). See HANDOFF section 4g.
