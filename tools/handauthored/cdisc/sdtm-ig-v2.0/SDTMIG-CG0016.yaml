@@ -10,10 +10,12 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: variable_name
 check:
-  narrative: Variable present in dataset
-  condition: Variable Core Status = Expected
+  all:
+  - name: variable_name
+    operator: not_contains_all
+    value: $expected_variables
 outcome:
   message: Variable present in dataset
   severity: Medium
@@ -26,5 +28,10 @@ provenance:
     in the define.xml to state that data was not collected.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000334
+operations:
+- id: $expected_variables
+  operator: expected_variables
+- id: $dataset_variables
+  operator: get_column_order_from_dataset

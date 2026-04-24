@@ -10,10 +10,18 @@ scope:
   classes: SPC
   domains: DM
   exclude_domains: []
-variable: RFICDTC
+variable: DSTERM
 check:
-  narrative: RFICDTC = earliest DS.DSSTDTC
-  condition: DS.DSTERM indicates informed consent obtained
+  all:
+  - name: DSTERM
+    operator: contains
+    value: INFORMED CONSENT
+  - name: RFICDTC
+    operator: date_not_equal_to
+    value: $min_ds_dsstdtc
+  - name: $min_ds_dsstdtc
+    operator: equal_to
+    value: DSSTDTC
 outcome:
   message: RFICDTC = earliest DS.DSSTDTC
   severity: Medium
@@ -28,5 +36,11 @@ provenance:
     there are multiple informed consents, this will be the date of the first one.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000370
+operations:
+- domain: DS
+  group: USUBJID
+  id: $min_ds_dsstdtc
+  name: DSSTDTC
+  operator: min_date

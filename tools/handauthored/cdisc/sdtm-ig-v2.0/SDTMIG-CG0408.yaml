@@ -10,10 +10,12 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: $records_in_dataset
 check:
-  narrative: Dataset > 0 records
-  condition: Dataset planned for submission
+  all:
+  - name: $records_in_dataset
+    operator: equal_to
+    value: 0
 outcome:
   message: Dataset > 0 records
   severity: Medium
@@ -26,5 +28,8 @@ provenance:
     not be submitted and should not be described in the define.xml document.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000579
+operations:
+- id: $records_in_dataset
+  operator: record_count

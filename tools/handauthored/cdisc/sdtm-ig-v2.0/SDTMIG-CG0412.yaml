@@ -7,10 +7,18 @@ scope:
   classes: EVT
   domains: DS
   exclude_domains: []
-variable: GEN
+variable: ACTARMCD
 check:
-  narrative: Subject records > 0
-  condition: DM.ACTARMCD not in ('SCRNFAIL', 'NOTASSGN', 'NOTTRT')
+  all:
+  - name: ACTARMCD
+    operator: is_not_contained_by
+    value:
+    - SCRNFAIL
+    - NOTASSGN
+    - NOTTRT
+  - name: USUBJID
+    operator: is_not_contained_by
+    value: $ds_usubjid
 outcome:
   message: Subject records > 0
   severity: Medium
@@ -25,5 +33,10 @@ provenance:
     follow-up.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000515
+operations:
+- domain: DS
+  id: $ds_usubjid
+  name: USUBJID
+  operator: distinct

@@ -10,10 +10,12 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: variable_name
 check:
-  narrative: Variable present in dataset and ^= null
-  condition: Variable Core Status = Required
+  all:
+  - name: variable_name
+    operator: not_contains_all
+    value: $required_variables
 outcome:
   message: Variable present in dataset and ^= null
   severity: Medium
@@ -25,5 +27,10 @@ provenance:
     be null for any record.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000355
+operations:
+- id: $required_variables
+  operator: required_variables
+- id: $dataset_variables
+  operator: get_column_order_from_dataset

@@ -9,12 +9,12 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: $column_order_from_dataset
 check:
-  narrative: 'Variables are ordered with Identifiers first, followed by the Topic,
-    Qualifier, and Timing variables. Within each role, variables are ordered as shown
-    in SDTM: Tables 2.2.1, 2.2.2, 2.2.3, 2.2.3.1, 2.2.4, and 2.2.5'
-  condition: ''
+  all:
+  - name: $column_order_from_dataset
+    operator: is_not_ordered_subset_of
+    value: $column_order_from_library
 outcome:
   message: 'Variables are ordered with Identifiers first, followed by the Topic, Qualifier,
     and Timing variables. Within each role, variables are ordered as shown in SDTM:
@@ -30,5 +30,10 @@ provenance:
     2.2.3; 2.2.3.1; 2.2.4; and 2.2.5'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000852
+operations:
+- id: $column_order_from_library
+  operator: get_column_order_from_library
+- id: $column_order_from_dataset
+  operator: get_column_order_from_dataset

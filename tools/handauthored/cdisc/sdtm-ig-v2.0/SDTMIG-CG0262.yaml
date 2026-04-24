@@ -10,10 +10,11 @@ scope:
   classes: TDM
   domains: TS
   exclude_domains: []
-variable: TSVALn
+variable: --VAL
 check:
-  narrative: TSVALn ^= null
-  condition: TSVAL(n+1) ^= null
+  all:
+  - name: --VAL
+    operator: inconsistent_enumerated_columns
 outcome:
   message: TSVALn ^= null
   severity: Medium
@@ -24,5 +25,5 @@ provenance:
   cited_guidance: Text over 200 characters can be added to additional columns TSVAL1-TSVALn.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000582

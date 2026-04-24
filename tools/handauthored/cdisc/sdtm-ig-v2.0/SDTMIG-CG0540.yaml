@@ -9,10 +9,14 @@ scope:
   classes: EVT
   domains: DS
   exclude_domains: []
-variable: GEN
+variable: ACTARMCD
 check:
-  narrative: DS records present for subject
-  condition: DM.ACTARMCD not null
+  all:
+  - name: ACTARMCD
+    operator: non_empty
+  - name: USUBJID
+    operator: is_not_contained_by
+    value: $ds_usubjid
 outcome:
   message: DS records present for subject
   severity: Medium
@@ -27,5 +31,10 @@ provenance:
     follow-up.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000296
+operations:
+- domain: DS
+  id: $ds_usubjid
+  name: USUBJID
+  operator: distinct

@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: MHCAT
 check:
-  narrative: MHCAT ^= the same value for all records
-  condition: MHCAT ^= null
+  all:
+  - name: MHCAT
+    operator: non_empty
+  - name: MHCAT
+    operator: has_same_values
 outcome:
   message: MHCAT ^= the same value for all records
   severity: Medium
@@ -27,5 +30,5 @@ provenance:
     can be applied, then it is not necessary to include or populate this variable.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000365

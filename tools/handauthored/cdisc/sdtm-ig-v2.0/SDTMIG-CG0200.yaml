@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: RELID
 check:
-  narrative: Within a subject each unique RELID is present on multiple RELREC records
-  condition: ''
+  all:
+  - name: RELID
+    operator: not_present_on_multiple_rows_within
+    within: USUBJID
 outcome:
   message: Within a subject each unique RELID is present on multiple RELREC records
   severity: Medium
@@ -25,5 +27,5 @@ provenance:
     "related/associated."
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000484

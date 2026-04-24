@@ -12,10 +12,16 @@ scope:
   exclude_domains: []
 variable: --DY
 check:
-  narrative: --DY calculated as per the study day algorithm as a non-zero integer
-    value
-  condition: Date portion of --DTC is complete and date portion of RFSTDTC is a complete
-    date AND --DY is ^= null
+  all:
+  - name: --DY
+    operator: non_empty
+  - name: --DTC
+    operator: is_complete_date
+  - name: RFSTDTC
+    operator: is_complete_date
+  - name: --DY
+    operator: not_equal_to
+    value: $val_dy
 outcome:
   message: --DY calculated as per the study day algorithm as a non-zero integer value
   severity: Medium
@@ -32,5 +38,9 @@ provenance:
     RFSTDTC This algorithm should be used across all domains.]'
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000529
+operations:
+- id: $val_dy
+  name: --DTC
+  operator: dy

@@ -9,10 +9,14 @@ scope:
   classes: SPC
   domains: SUPPDM
   exclude_domains: []
-variable: ''
+variable: $multiple_race
 check:
-  narrative: Multiple SUPPDM.QNAM records exist for the subject
-  condition: RACE = MULTIPLE
+  all:
+  - name: $multiple_race
+    operator: greater_than_or_equal_to
+    value: 1
+  - name: SUPPDM
+    operator: not_exists
 outcome:
   message: Multiple SUPPDM.QNAM records exist for the subject
   severity: Medium
@@ -25,5 +29,12 @@ provenance:
     Qualifiers dataset.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000844
+operations:
+- domain: DM
+  filter:
+    RACE: MULTIPLE
+  id: $multiple_race
+  name: RACE
+  operator: record_count

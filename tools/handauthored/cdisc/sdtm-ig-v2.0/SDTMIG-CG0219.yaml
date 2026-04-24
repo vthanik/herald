@@ -15,10 +15,12 @@ scope:
   - NOT(IE
   - SC)
   exclude_domains: []
-variable: GEN
+variable: $dataset_variables
 check:
-  narrative: At least one timing variable present in dataset
-  condition: ''
+  all:
+  - name: $dataset_variables
+    operator: shares_no_elements_with
+    value: $timing_variables
 outcome:
   message: At least one timing variable present in dataset
   severity: Medium
@@ -33,5 +35,12 @@ provenance:
     at least one Timing variable must be used.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000575
+operations:
+- id: $dataset_variables
+  operator: get_column_order_from_dataset
+- id: $timing_variables
+  key_name: role
+  key_value: Timing
+  operator: get_model_filtered_variables

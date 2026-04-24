@@ -11,8 +11,16 @@ scope:
   exclude_domains: []
 variable: MIDSTYPE
 check:
-  narrative: MIDSTYPE is unique per subject
-  condition: MIDSTYPE = TM.MIDSTYPE and TM.TMRPT = 'N'
+  all:
+  - name: MIDSTYPE
+    operator: is_contained_by
+    value: $tm_midstype
+  - name: TMRPT
+    operator: equal_to
+    value: 'N'
+  - name: MIDSTYPE
+    operator: is_not_unique_set
+    value: USUBJID
 outcome:
   message: MIDSTYPE is unique per subject
   severity: Medium
@@ -24,5 +32,10 @@ provenance:
     value of MIDS may be the value in MIDSTYPE or may an abbreviated version.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000216
+operations:
+- domain: TM
+  id: $tm_midstype
+  name: MIDSTYPE
+  operator: distinct

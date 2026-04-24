@@ -10,10 +10,18 @@ scope:
   classes: SPC
   domains: DM
   exclude_domains: []
-variable: RFXENDTC
+variable: USUBJID
 check:
-  narrative: RFXENDTC = latest value of EX.EXSTDTC or EX.EXENDTC
-  condition: ''
+  all:
+  - name: USUBJID
+    operator: is_contained_by
+    value: $ex_usubjid
+  - name: RFXENDTC
+    operator: not_equal_to
+    value: $max_ex_exstdtc
+  - name: RFXENDTC
+    operator: not_equal_to
+    value: $max_ex_exendtc
 outcome:
   message: RFXENDTC = latest value of EX.EXSTDTC or EX.EXENDTC
   severity: Medium
@@ -25,4 +33,20 @@ provenance:
     if EXENDTC was not collected or is missing).
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
+  core_crosswalk: CORE-000238
+operations:
+- domain: EX
+  id: $ex_usubjid
+  name: USUBJID
+  operator: distinct
+- domain: EX
+  group: USUBJID
+  id: $max_ex_exstdtc
+  name: EXSTDTC
+  operator: max_date
+- domain: EX
+  group: USUBJID
+  id: $max_ex_exendtc
+  name: EXENDTC
+  operator: max_date

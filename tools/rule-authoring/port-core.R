@@ -1,19 +1,21 @@
 #!/usr/bin/env Rscript
 # tools/rule-authoring/port-core.R
 # ---------------------------------------------------------------------------
-# Port CORE-library Check: trees into the paired narrative CG YAML files.
+# Port CORE-library Check: (+ Operations:) trees into the paired CG YAMLs.
 #
 # Eligibility criteria (enforced inline):
 #   1. catalog.csv row has overlap_type = "core-is-better" and
 #      status = "narrative" (and bucket = "sdtm-ig-v2.0")
-#   2. The paired CORE YAML has no Operations: block (no $-ref computed values)
-#   3. All operator names used in the Check: tree are registered in herald's
-#      ops registry (extracted from R/ops-*.R)
+#   2. All operator names in the Check: tree are registered in herald's
+#      check-side ops registry (extracted from .register_op calls).
+#   3. All operator names in the Operations: block are registered in herald's
+#      Operations registry (extracted from .register_operation calls).
 #
 # Ineligible rules are logged and left as narrative (non-fatal).
 #
 # Each CG YAML gets:
-#   check:     <lowercased check tree from CORE>
+#   operations: <Operations block from CORE, if present>
+#   check:      <lowercased check tree from CORE>
 #   provenance.executability: predicate
 #   provenance.core_crosswalk: CORE-NNNNNN
 #
@@ -22,6 +24,7 @@
 # Run from the package root.
 
 suppressPackageStartupMessages(library(yaml))
+`%||%` <- function(a, b) if (!is.null(a)) a else b
 
 args    <- commandArgs(trailingOnly = TRUE)
 dry_run <- "--dry-run" %in% args
@@ -39,11 +42,11 @@ stopifnot(file.exists(catalog_csv))
 
 # ---- extract known operator names -------------------------------------------
 
-.known_ops <- local({
+.extract_op_names <- function(pattern) {
   op_files <- list.files(file.path(project_root, "R"), pattern = "^ops-.*[.]R$",
                          full.names = TRUE)
   all_lines <- unlist(lapply(op_files, readLines))
-  idx <- grep("[.]register_op[(]", all_lines, perl = TRUE)
+  idx <- grep(pattern, all_lines, perl = TRUE)
   ops <- character(0)
   for (i in idx) {
     for (j in i:(min(i + 2L, length(all_lines)))) {
@@ -52,8 +55,12 @@ stopifnot(file.exists(catalog_csv))
     }
   }
   unique(ops)
-})
-cat(sprintf("Known operators: %d\n", length(.known_ops)))
+}
+
+.known_ops     <- .extract_op_names("[.]register_op[(]")
+.known_op_ops  <- .extract_op_names("[.]register_operation[(]")
+cat(sprintf("Known check-side operators: %d\n", length(.known_ops)))
+cat(sprintf("Known Operations operators: %d\n",  length(.known_op_ops)))
 
 # ---- helpers ----------------------------------------------------------------
 
@@ -68,11 +75,6 @@ cat(sprintf("Known operators: %d\n", length(.known_ops)))
   ops
 }
 
-.has_dollar_refs <- function(ct) {
-  if (is.null(ct)) return(FALSE)
-  txt <- yaml::as.yaml(ct)
-  grepl("[$][a-zA-Z_]", txt, perl = TRUE)
-}
 
 .find_cg_yaml <- function(rule_id) {
   candidates <- c(
@@ -131,22 +133,25 @@ for (i in seq_len(nrow(cib))) {
     next
   }
 
-  ct <- core_yml$Check
+  ct   <- core_yml$Check
+  ops  <- core_yml$Operations  # may be NULL
 
   # Eligibility checks
-  if (!is.null(core_yml$Operations) && length(core_yml$Operations) > 0L) {
-    skipped <- c(skipped, sprintf("%s (CORE has Operations: block)", rule_id))
+  unknown_check_ops <- setdiff(.extract_ops(ct), .known_ops)
+  if (length(unknown_check_ops) > 0L) {
+    skipped <- c(skipped, sprintf("%s (unknown check ops: %s)",
+                                  rule_id, paste(unknown_check_ops, collapse = ", ")))
     next
   }
-  if (.has_dollar_refs(ct)) {
-    skipped <- c(skipped, sprintf("%s (CORE check has $-refs)", rule_id))
-    next
-  }
-  unknown_ops <- setdiff(.extract_ops(ct), .known_ops)
-  if (length(unknown_ops) > 0L) {
-    skipped <- c(skipped, sprintf("%s (unknown ops: %s)",
-                                  rule_id, paste(unknown_ops, collapse = ", ")))
-    next
+  if (!is.null(ops) && length(ops) > 0L) {
+    ops_names <- unique(vapply(ops, function(e) e$Operator %||% e$operator %||% "",
+                               character(1L)))
+    unknown_op_ops <- setdiff(ops_names[nzchar(ops_names)], .known_op_ops)
+    if (length(unknown_op_ops) > 0L) {
+      skipped <- c(skipped, sprintf("%s (unknown Operations ops: %s)",
+                                    rule_id, paste(unknown_op_ops, collapse = ", ")))
+      next
+    }
   }
   if (is.null(ct) || length(ct) == 0L) {
     skipped <- c(skipped, sprintf("%s (CORE has empty Check:)", rule_id))
@@ -161,14 +166,30 @@ for (i in seq_len(nrow(cib))) {
 
   if (dry_run) {
     cat(sprintf("[dry] %s (%s) -> %s\n", rule_id, core_id, basename(cg_path)))
+    if (!is.null(ops) && length(ops) > 0L) {
+      cat("  operations:\n")
+      cat(gsub("^", "    ", yaml::as.yaml(ops)), "\n")
+    }
     cat("  check:\n")
     cat(gsub("^", "    ", yaml::as.yaml(ct)), "\n")
     converted <- c(converted, rule_id)
     next
   }
 
+  # Lowercase the Operations: keys to match herald's conventions
+  .lc_ops <- function(o) {
+    if (is.null(o)) return(NULL)
+    lapply(o, function(e) {
+      if (!is.list(e)) return(e)
+      out <- list()
+      for (k in names(e)) out[[tolower(k)]] <- e[[k]]
+      out
+    })
+  }
+
   tryCatch({
     cg_yml <- yaml::read_yaml(cg_path)
+    if (!is.null(ops) && length(ops) > 0L) cg_yml$operations <- .lc_ops(ops)
     cg_yml$check <- ct
     if (is.null(cg_yml$provenance)) cg_yml$provenance <- list()
     cg_yml$provenance$executability  <- "predicate"

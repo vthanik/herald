@@ -9,11 +9,19 @@ scope:
   classes: TDM
   domains: TS
   exclude_domains: []
-variable: TSPARMCD
+variable: $trt_count
 check:
-  narrative: TSPARMCD = RANDQT record is present
-  condition: At least one observation where TSPARMCD = TRT and there is only one investigational
-    treatment
+  any:
+  - name: $trt_count
+    operator: equal_to
+    value: 0
+  - all:
+    - name: $trt_count
+      operator: equal_to
+      value: 1
+    - name: $randqt_count
+      operator: less_than
+      value: 1
 outcome:
   message: TSPARMCD = RANDQT record is present
   severity: Medium
@@ -29,5 +37,18 @@ provenance:
     all subjects are exposed to investigational therapy).]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000733
+operations:
+- domain: TS
+  filter:
+    TSPARMCD: TRT
+  id: $trt_count
+  name: TSPARMCD
+  operator: record_count
+- domain: TS
+  filter:
+    TSPARMCD: RANDQT
+  id: $randqt_count
+  name: TSPARMCD
+  operator: record_count

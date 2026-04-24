@@ -12,8 +12,11 @@ scope:
   exclude_domains: []
 variable: RDOMAIN
 check:
-  narrative: Value of RDOMAIN equals characters 5 and 6 of the dataset name
-  condition: Dataset name begins with 'SUPP'
+  all:
+  - name: RDOMAIN
+    operator: does_not_equal_string_part
+    regex: .{4}(..).*
+    value: $dataset_name
 outcome:
   message: Value of RDOMAIN equals characters 5 and 6 of the dataset name
   severity: Medium
@@ -27,5 +30,9 @@ provenance:
     in the SUPP-- datasets would be the two-character domain code (e.g., QS; FA).
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000538
+operations:
+- id: $dataset_name
+  name: dataset_name
+  operator: extract_metadata

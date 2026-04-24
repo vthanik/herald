@@ -12,9 +12,10 @@ scope:
   exclude_domains: []
 variable: QNAM
 check:
-  narrative: Value of SUPP--.QNAM ^= any variable name defined in the corresponding
-    SDTM version
-  condition: SUPP--.QNAM present in dataset
+  all:
+  - name: QNAM
+    operator: is_contained_by
+    value: $model_variables
 outcome:
   message: Value of SUPP--.QNAM ^= any variable name defined in the corresponding
     SDTM version
@@ -28,5 +29,8 @@ provenance:
     in Section 8: 8.4, Relating Non-Standard Variables Values To A Parent Domain.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000783
+operations:
+- id: $model_variables
+  operator: get_parent_model_column_order

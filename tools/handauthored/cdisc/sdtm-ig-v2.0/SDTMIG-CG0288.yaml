@@ -10,10 +10,18 @@ scope:
   classes: TDM
   domains: TS
   exclude_domains: []
-variable: TSVALCD
+variable: TSVCDREF
 check:
-  narrative: TSVALCD = valid code in the version identified in TSVCDVER
-  condition: TSVCDREF = 'CDISC'
+  all:
+  - name: TSVCDREF
+    operator: prefix_equal_to
+    prefix: 5
+    value: CDISC
+  - name: $VALID_TERM_CODES
+    operator: non_empty
+  - name: TSVALCD
+    operator: is_not_contained_by
+    value: $VALID_TERM_CODES
 outcome:
   message: TSVALCD = valid code in the version identified in TSVCDVER
   severity: Medium
@@ -24,5 +32,11 @@ provenance:
   cited_guidance: The version number of the Reference Terminology, if applicable.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-001080
+operations:
+- ct_attribute: Term CCODE
+  id: $VALID_TERM_CODES
+  name: TSVCDREF
+  operator: get_codelist_attributes
+  version: TSVCDVER

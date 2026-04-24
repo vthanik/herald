@@ -13,8 +13,14 @@ scope:
   exclude_domains: []
 variable: --SEQ
 check:
-  narrative: --SEQ is in a consistent chronological order
-  condition: ''
+  all:
+  - name: --SEQ
+    operator: target_is_not_sorted_by
+    value:
+    - name: --STDTC
+      null_position: last
+      sort_order: asc
+    within: USUBJID
 outcome:
   message: --SEQ is in a consistent chronological order
   severity: Medium
@@ -28,5 +34,5 @@ provenance:
     Should be assigned to be consistent chronological order.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000535

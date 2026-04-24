@@ -10,10 +10,15 @@ scope:
   classes: SPC
   domains: DM
   exclude_domains: []
-variable: RFXSTDTC
+variable: USUBJID
 check:
-  narrative: RFXSTDTC = earliest EX.EXSTDTC
-  condition: ''
+  all:
+  - name: USUBJID
+    operator: is_contained_by
+    value: $ex_usubjid
+  - name: RFXSTDTC
+    operator: not_equal_to
+    value: $min_ex_exstdtc
 outcome:
   message: RFXSTDTC = earliest EX.EXSTDTC
   severity: Medium
@@ -25,4 +30,15 @@ provenance:
     equal to the earliest value of EXSTDTC.
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
+  core_crosswalk: CORE-000239
+operations:
+- domain: EX
+  id: $ex_usubjid
+  name: USUBJID
+  operator: distinct
+- domain: EX
+  group: USUBJID
+  id: $min_ex_exstdtc
+  name: EXSTDTC
+  operator: min_date

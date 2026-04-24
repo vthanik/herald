@@ -10,10 +10,16 @@ scope:
   classes: FND
   domains: SS
   exclude_domains: []
-variable: SSDTC
+variable: SSSTRESC
 check:
-  narrative: SSDTC >= all DS.DSSTDTC
-  condition: SSSTRESC = 'DEAD'
+  all:
+  - name: SSSTRESC
+    operator: equal_to
+    value: DEAD
+    value_is_literal: yes
+  - name: SSDTC
+    operator: date_less_than
+    value: $max_ds_dsstdtc
 outcome:
   message: SSDTC >= all DS.DSSTDTC
   severity: Medium
@@ -29,5 +35,11 @@ provenance:
     collection date, the status question and the status response are stored in SS.
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000178
+operations:
+- domain: DS
+  group: USUBJID
+  id: $max_ds_dsstdtc
+  name: DSSTDTC
+  operator: max_date

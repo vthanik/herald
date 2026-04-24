@@ -9,11 +9,22 @@ scope:
   classes: TDM
   domains: TS
   exclude_domains: []
-variable: TSVAL
+variable: TSPARMCD
 check:
-  narrative: TSVAL = null or 'HEALTHY SUBJECTS'
-  condition: TSPARMCD = 'TDIGRP' and record exists where TSPARMCD = 'HLTSUBJI' and
-    TSVAL = 'Y'
+  all:
+  - name: TSPARMCD
+    operator: equal_to
+    value: TDIGRP
+  - name: $HLTSUBJI_Y
+    operator: greater_than_or_equal_to
+    value: 1
+  - all:
+    - name: TSVAL
+      operator: not_equal_to
+      value: HEALTHY SUBJECTS
+      value_is_literal: yes
+    - name: TSVAL
+      operator: non_empty
 outcome:
   message: TSVAL = null or 'HEALTHY SUBJECTS'
   severity: Medium
@@ -30,5 +41,12 @@ provenance:
     TDIGRP must be present and not null]
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000473
+operations:
+- filter:
+    TSPARMCD: HLTSUBJI
+    TSVAL: 'Y'
+  group: TSGRPID
+  id: $HLTSUBJI_Y
+  operator: record_count

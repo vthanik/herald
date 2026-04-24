@@ -15,8 +15,12 @@ scope:
   exclude_domains: []
 variable: RDOMAIN
 check:
-  narrative: RDOMAIN is dataset in study
-  condition: RDOMAIN ^= null
+  all:
+  - name: RDOMAIN
+    operator: non_empty
+  - name: RDOMAIN
+    operator: is_not_contained_by
+    value: $study_domains
 outcome:
   message: RDOMAIN is dataset in study
   severity: Medium
@@ -27,5 +31,8 @@ provenance:
   cited_guidance: Domain Abbreviation of the parent record(s).
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000502
+operations:
+- id: $study_domains
+  operator: study_domains

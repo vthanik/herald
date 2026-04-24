@@ -10,10 +10,14 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: VISITDY
+variable: VISITNUM
 check:
-  narrative: VISITDY = null
-  condition: VISITNUM is NOT in TV.VISITNUM
+  all:
+  - name: VISITNUM
+    operator: is_not_contained_by
+    value: $tv_visitnum
+  - name: VISITDY
+    operator: non_empty
 outcome:
   message: VISITDY = null
   severity: Medium
@@ -26,5 +30,10 @@ provenance:
     day of an unplanned visit belongs in a --DY variable.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000140
+operations:
+- domain: TV
+  id: $tv_visitnum
+  name: VISITNUM
+  operator: distinct

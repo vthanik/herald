@@ -13,11 +13,42 @@ scope:
   - EVT
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: $domain_is_custom
 check:
-  narrative: First 2 characters of the Variable Name = the 2-character domain code
-  condition: Custom domain and variable name is not STUDYID, DOMAIN, USUBJID, POOLID,
-    SPDEVID, VISIT, VISITNUM, VISITDY, ELEMENT, TAETORD, EPOCH.
+  all:
+  - name: $domain_is_custom
+    operator: equal_to
+    value: yes
+  - name: variable_name
+    operator: is_not_contained_by
+    value:
+    - STUDYID
+    - DOMAIN
+    - USUBJID
+    - POOLID
+    - SPDEVID
+    - VISIT
+    - VISITNUM
+    - VISITDY
+    - ELEMENT
+    - TAETORD
+    - EPOCH
+    - NHOID
+    - FOCID
+    - SPTOBID
+    - STOCONID
+    - IGDCMPID
+    - MIDS
+    - RELMIDS
+    - MIDSDTC
+    - RSUBJID
+    - RDEVID
+    - SREL
+    - APID
+  - name: variable_name
+    operator: prefix_is_not_contained_by
+    prefix: 2
+    value: $domain_list
 outcome:
   message: First 2 characters of the Variable Name = the 2-character domain code
   severity: Medium
@@ -34,5 +65,11 @@ provenance:
     SUPPQUAL; and some variables in Comments and Trial Design datasets.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000376
+operations:
+- id: $domain_list
+  name: DOMAIN
+  operator: distinct
+- id: $domain_is_custom
+  operator: domain_is_custom

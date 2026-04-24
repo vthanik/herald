@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: --CAT
 check:
-  narrative: --CAT ^= Domain Name
-  condition: ''
+  all:
+  - name: --CAT
+    operator: equal_to_case_insensitive
+    value: $domain_label
 outcome:
   message: --CAT ^= Domain Name
   severity: Medium
@@ -25,5 +27,8 @@ provenance:
     name or dictionary classification provided by --DECOD and --BODSYS.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000272
+operations:
+- id: $domain_label
+  operator: domain_label

@@ -10,11 +10,12 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: variable_name
 check:
-  narrative: Variables not in Model List of Allowed Variables for Observation Class
-    are in SUPPQUAL
-  condition: ''
+  all:
+  - name: variable_name
+    operator: is_not_contained_by
+    value: $allowed_variables
 outcome:
   message: Variables not in Model List of Allowed Variables for Observation Class
     are in SUPPQUAL
@@ -26,5 +27,8 @@ provenance:
   cited_guidance: Using SDTM-specified standard variable names
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000550
+operations:
+- id: $allowed_variables
+  operator: get_model_column_order

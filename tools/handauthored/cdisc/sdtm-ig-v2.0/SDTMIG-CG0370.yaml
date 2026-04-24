@@ -13,10 +13,16 @@ scope:
   - SUPP--
   - RELREC
   exclude_domains: []
-variable: IDVAR
+variable: RDOMAIN
 check:
-  narrative: IDVAR is variable in domain = RDOMAIN
-  condition: IDVAR ^= null
+  all:
+  - name: RDOMAIN
+    operator: exists
+  - name: IDVAR
+    operator: non_empty
+  - name: IDVAR
+    operator: is_not_contained_by
+    value: $rdomain_variables
 outcome:
   message: IDVAR is variable in domain = RDOMAIN
   severity: Medium
@@ -28,5 +34,11 @@ provenance:
     to which the comment applies.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000712
+operations:
+- domain: SUPP--
+  id: $rdomain_variables
+  name: IDVAR
+  operator: distinct
+  value_is_reference: yes

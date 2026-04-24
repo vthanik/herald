@@ -9,8 +9,16 @@ scope:
   exclude_domains: []
 variable: ACTARMCD
 check:
-  narrative: DM.ACTARMCD in ('SCRNFAIL', 'NOTASSGN', 'NOTTRT')
-  condition: No records in EX for Subject
+  all:
+  - name: ACTARMCD
+    operator: is_not_contained_by_case_insensitive
+    value:
+    - SCRNFAIL
+    - NOTASSGN
+    - NOTTRT
+  - name: USUBJID
+    operator: is_not_contained_by
+    value: $usubjids_in_ex
 outcome:
   message: DM.ACTARMCD in ('SCRNFAIL', 'NOTASSGN', 'NOTTRT')
   severity: Medium
@@ -28,5 +36,10 @@ provenance:
     who were randomized but not treated (ACTARMCD=NOTTRT), RFSTDTC will be null.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000366
+operations:
+- domain: EX
+  id: $usubjids_in_ex
+  name: USUBJID
+  operator: distinct

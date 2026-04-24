@@ -9,10 +9,14 @@ scope:
   classes: SPC
   domains: SV
   exclude_domains: []
-variable: VISITNUM
+variable: SVUPDES
 check:
-  narrative: VISITNUM not in TV.VISITNUM
-  condition: SVUPDES ^= null
+  all:
+  - name: SVUPDES
+    operator: non_empty
+  - name: VISITNUM
+    operator: is_contained_by
+    value: $visitnum_in_tv
 outcome:
   message: VISITNUM not in TV.VISITNUM
   severity: Medium
@@ -34,5 +38,10 @@ provenance:
     visits.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000843
+operations:
+- domain: TV
+  id: $visitnum_in_tv
+  name: VISITNUM
+  operator: distinct
