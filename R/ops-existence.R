@@ -559,3 +559,129 @@ op_any_var_name_not_matching_regex <- function(data, ctx, value) {
     returns_na_ok = FALSE
   )
 )
+
+# --- var_present_in_any_other_dataset (Q26) -----------------------------------
+# Metadata-level: returns TRUE (present) when the named column exists in at
+# least one OTHER dataset in the submission (all ctx$datasets except the one
+# currently being validated). Returns FALSE when the column is absent from
+# every other dataset in the submission.
+#
+# Used in combination with `not:` to detect linking-variable isolation:
+#   CG0022: --LNKGRP present in current domain but absent from every other domain
+#   CG0024: --LNKID  present in current domain but absent from every other domain
+#
+# Args:
+#   name                     -- column name to look for (e.g. "AELNKGRP")
+#   exclude_current          -- default TRUE; exclude the current dataset from
+#                               the search. Set to FALSE if the caller wants to
+#                               include the current dataset in the scan.
+#   required_dataset_classes -- character vector of class codes; when non-NULL
+#                               only datasets whose class matches are searched.
+#                               NULL (default) = search all other datasets.
+#
+# P21 parity: P21 does not encode CG0022/0024 as predicates. The conformance
+# check is described in SDTMIG 3.2 s.6.1. Herald implements it as a cross-
+# submission metadata scan: if the column exists in the current dataset and in
+# at least one other loaded dataset the rule passes; if the column is isolated
+# to the current dataset the rule fires (via NOT wrapper in the check_tree).
+#
+# Missing ctx$datasets (no submission context): returns NA (advisory) --
+# cannot determine cross-dataset presence without a submission-level context.
+
+op_var_present_in_any_other_dataset <- function(data, ctx,
+                                                 name,
+                                                 exclude_current     = TRUE,
+                                                 required_dataset_classes = NULL) {
+  n <- nrow(data)
+  col <- as.character(name %||% "")
+  if (!nzchar(col)) return(.dataset_level_mask(FALSE, n))
+
+  if (is.null(ctx) || is.null(ctx$datasets) || length(ctx$datasets) == 0L) {
+    # No submission context: advisory
+    return(c(NA, rep(FALSE, max(0L, n - 1L))))
+  }
+
+  current_name <- toupper(as.character(ctx$current_dataset %||% ""))
+  col_up <- toupper(col)
+
+  # When the column name arrived as a domain-expanded wildcard (e.g. `AELNKGRP`
+  # from `--LNKGRP`), we need to match the SUFFIX across other domains (e.g.
+  # `MHLNKGRP`, `CMLNKGRP`). Detect this by checking whether the column name
+  # is present in the current dataset but we also know the raw op arg came
+  # through wildcard expansion (3+ chars, ending not domain-specific).
+  #
+  # Strategy: if the column name looks like a domain-expanded --VAR
+  # (2-uppercase-char prefix + remainder that is not present literally in
+  # ctx$datasets), look for the SUFFIX (everything after the first 2 chars)
+  # in other datasets. This mirrors how P21 scans for the concept.
+  #
+  # If the column name is an exact literal (no domain context / wildcard),
+  # fall through to exact matching below.
+  suffix_to_match <- NULL
+  if (nzchar(col_up) && nchar(col_up) >= 3L) {
+    prefix_2 <- substr(col_up, 1L, 2L)
+    if (grepl("^[A-Z]{2}$", prefix_2)) {
+      sfx <- substr(col_up, 3L, nchar(col_up))
+      if (nzchar(sfx)) suffix_to_match <- sfx
+    }
+  }
+
+  # Filter: other datasets (and optionally filter by class)
+  ds_names <- names(ctx$datasets)
+  if (isTRUE(exclude_current) && nzchar(current_name)) {
+    ds_names <- ds_names[toupper(ds_names) != current_name]
+  }
+
+  # Class filter: when required_dataset_classes is supplied, only search
+  # datasets whose class attribute matches one of the requested classes.
+  if (!is.null(required_dataset_classes) && length(required_dataset_classes) > 0L) {
+    classes <- as.character(required_dataset_classes)
+    ds_names <- Filter(function(nm) {
+      ds <- ctx$datasets[[nm]]
+      cls <- attr(ds, "class_label") %||% attr(ds, "herald_class") %||% NA_character_
+      if (is.null(cls) || is.na(cls) || !nzchar(cls)) return(FALSE)
+      toupper(cls) %in% toupper(classes)
+    }, ds_names)
+  }
+
+  if (length(ds_names) == 0L) {
+    # No other datasets to search: treat as advisory (no evidence either way)
+    return(c(NA, rep(FALSE, max(0L, n - 1L))))
+  }
+
+  present_in_any <- FALSE
+  for (nm in ds_names) {
+    ds <- ctx$datasets[[nm]]
+    if (is.null(ds)) next
+    other_cols <- toupper(names(ds))
+    if (!is.null(suffix_to_match)) {
+      # Suffix-based match: any column in the other dataset ending with the
+      # same suffix (case-insensitive). This handles --LNKGRP across domains
+      # (AE -> AELNKGRP, MH -> MHLNKGRP, etc.).
+      if (any(endsWith(other_cols, suffix_to_match))) {
+        present_in_any <- TRUE; break
+      }
+    }
+    # Exact match as well (non-domain-expanded columns or explicit names)
+    if (col_up %in% other_cols) {
+      present_in_any <- TRUE; break
+    }
+  }
+  .dataset_level_mask(isTRUE(present_in_any), n)
+}
+.register_op(
+  "var_present_in_any_other_dataset",
+  op_var_present_in_any_other_dataset,
+  meta = list(
+    kind    = "cross",
+    summary = "TRUE when the named column exists in at least one other dataset in the submission (metadata-level)",
+    arg_schema = list(
+      name                     = list(type = "string",  required = TRUE),
+      exclude_current          = list(type = "boolean", default  = TRUE),
+      required_dataset_classes = list(type = "array",   default  = NULL)
+    ),
+    cost_hint     = "O(1)",
+    column_arg    = "name",
+    returns_na_ok = TRUE
+  )
+)

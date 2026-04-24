@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: --LNKID
 check:
-  narrative: --LNKID present in another domain
-  condition: --LNKID present in a domain
+  all:
+  - operator: exists
+    name: --LNKID
+  - not:
+      operator: var_present_in_any_other_dataset
+      name: --LNKID
 outcome:
   message: --LNKID present in another domain
   severity: Medium
@@ -24,5 +28,4 @@ provenance:
   cited_guidance: Identifier used to link related records across domains.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

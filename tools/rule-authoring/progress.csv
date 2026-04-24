@@ -379,8 +379,8 @@
 "CG0019","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Each record is unique per sponsor defined key variables as documented in the define.xml",NA,NA,"narrative",NA,NA,NA
 "CG0020","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Value in associated codelist or 'MULTIPLE'",NA,NA,"narrative",NA,NA,NA
 "CG0021","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Value in associated codelist or 'OTHER'",NA,NA,"narrative",NA,NA,NA
-"CG0022","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LNKGRP present in another domain",NA,NA,"narrative",NA,NA,NA
-"CG0024","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LNKID present in another domain",NA,NA,"narrative",NA,NA,NA
+"CG0022","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LNKGRP present in another domain","var-linked-across-submission","all: - operator: exists name: %var% - not: operator: var_present_in_any_other_dataset name: %var%","predicate","2026-04-24T14:28:29Z",NA,NA
+"CG0024","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LNKID present in another domain","var-linked-across-submission","all: - operator: exists name: %var% - not: operator: var_present_in_any_other_dataset name: %var%","predicate","2026-04-24T14:28:29Z",NA,NA
 "CG0028","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SEQ is a unique number per USUBJID per domain, or a unique number per POOLID per domain, including when the domain is split into multiple files",NA,NA,"narrative",NA,NA,NA
 "CG0032","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","VISITDY = TV.VISITDY","value-equals-cross-dataset-col","all: - operator: differs_by_key name: ""VISITDY"" reference_dataset: ""TV"" reference_column: ""VISITDY"" key: ""[STUDYID, VISITNUM]""","predicate","2026-04-24T09:20:55Z",NA,NA
 "CG0037","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SOCCD = --BDSYCD",NA,NA,"narrative",NA,NA,NA

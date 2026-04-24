@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: --LNKGRP
 check:
-  narrative: --LNKGRP present in another domain
-  condition: --LNKGRP present in a domain
+  all:
+  - operator: exists
+    name: --LNKGRP
+  - not:
+      operator: var_present_in_any_other_dataset
+      name: --LNKGRP
 outcome:
   message: --LNKGRP present in another domain
   severity: Medium
@@ -24,5 +28,4 @@ provenance:
   cited_guidance: Identifier used to link related, grouped records across domains.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
