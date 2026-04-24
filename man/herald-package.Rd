@@ -13,9 +13,9 @@ rules, controlled terminology, and Define-XML 2.1 specifications.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/about-vignesh/herald}
-  \item \url{https://about-vignesh.github.io/herald/}
-  \item Report bugs at \url{https://github.com/about-vignesh/herald/issues}
+  \item \url{https://github.com/vthanik/herald}
+  \item \url{https://vthanik.github.io/herald/}
+  \item Report bugs at \url{https://github.com/vthanik/herald/issues}
 }
 
 }

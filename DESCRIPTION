@@ -15,9 +15,9 @@ Description: Pure-R conformance validation for CDISC clinical data
     a 'CRAN'-clean, R-native alternative to Java-based desktop
     validators.
 License: MIT + file LICENSE
-URL: https://github.com/about-vignesh/herald,
-    https://about-vignesh.github.io/herald/
-BugReports: https://github.com/about-vignesh/herald/issues
+URL: https://github.com/vthanik/herald,
+    https://vthanik.github.io/herald/
+BugReports: https://github.com/vthanik/herald/issues
 Encoding: UTF-8
 Language: en-US
 Depends: R (>= 4.1.0)
