@@ -6,6 +6,8 @@ description: The value provided in Assigned Value must match the Data Type of th
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 outcome:
   message: Data Type/Assigned Value mismatch
   severity: Error
@@ -13,7 +15,12 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0145
-  executability: blocker:requires-op:assigned_value_matches_data_type
+  executability: predicate
   license: MIT
+  builder_dataset: Define_Variable_Metadata
 notes: Blocked on `assigned_value_matches_data_type` operator (VLM Assigned Value
   must parse as declared Data Type). See HANDOFF section 4g.
+check:
+  all:
+  - name: assigned_value
+    operator: assigned_value_matches_data_type

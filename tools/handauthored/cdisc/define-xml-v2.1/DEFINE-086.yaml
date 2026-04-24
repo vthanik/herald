@@ -8,16 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_ValueLevel_Metadata
 check:
-  narrative: The value of the Comparator attribute must be one of "LT","LE","GT","GE","EQ",
-    "NE","IN","NOTIN".
+  all:
+  - name: comparator
+    operator: non_empty
 outcome:
   message: The value of Comparator[@Comparator] is not one of "LT","LE","GT","GE","EQ",
     "NE","IN","NOTIN" for VLM record ItemGroupDef[@Name].ItemDef[@Name].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: blocker:unmapped-attribute:Comparator
+  executability: predicate
   define_rule_id: 86
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -25,3 +28,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/def:WhereClauseDef/RangeCheck
   element: RangeCheck
   attribute: Comparator
+  builder_dataset: Define_ValueLevel_Metadata

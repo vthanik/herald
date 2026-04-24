@@ -8,14 +8,18 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: Attribute ValueListOID must be provided for the def:ValueListRef element.
+  all:
+  - name: valuelist_oid
+    operator: non_empty
 outcome:
   message: Attribute ValueListOID is missing for element def:ValueListRef in ItemDef[@Name].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: blocker:unmapped-attribute:ValueListOID
+  executability: predicate
   define_rule_id: 164
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -23,3 +27,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemDef/def:ValueListRef
   element: def:ValueListRef
   attribute: ValueListOID
+  builder_dataset: Define_Variable_Metadata

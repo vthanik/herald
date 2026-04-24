@@ -8,14 +8,18 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_MethodDef_Metadata
 check:
-  narrative: Each MethodDef element must have a Type attribute.
+  all:
+  - name: method_type
+    operator: non_empty
 outcome:
   message: '@Type is Required for MethodDEF[@OID].'
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: blocker:unmapped-attribute:Type
+  executability: predicate
   define_rule_id: 208
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -23,3 +27,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/MethodDef
   element: MethodDef
   attribute: Type
+  builder_dataset: Define_MethodDef_Metadata

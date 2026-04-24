@@ -55,9 +55,9 @@ stopifnot(dir.exists(define_root), file.exists(catalog_csv))
   "StudyDescription" = "Define_Study_Metadata",
   "ProtocolName"     = "Define_Study_Metadata",
   "ItemGroupDef"     = "Define_Dataset_Metadata",
-  "ItemRef"          = "Define_Dataset_Metadata",
+  "ItemRef"          = "Define_Variable_Metadata",
   "ItemDef"          = "Define_Variable_Metadata",
-  "RangeCheck"       = "Define_Variable_Metadata",
+  "RangeCheck"       = "Define_ValueLevel_Metadata",
   "def:Origin"       = "Define_Variable_Metadata",
   "def:PDFPageRef"   = "Define_Variable_Metadata",
   "CodeList"         = "Define_Codelist_Metadata",
@@ -70,8 +70,8 @@ stopifnot(dir.exists(define_root), file.exists(catalog_csv))
   "def:SubClass"     = "Define_Standards_Metadata",
   "def:Class"        = "Define_Standards_Metadata",
   "def:WhereClauseDef" = "Define_ValueLevel_Metadata",
-  "def:ValueListRef" = "Define_ValueLevel_Metadata",
-  "MethodDef"              = "Define_Study_Metadata",
+  "def:ValueListRef" = "Define_Variable_Metadata",
+  "MethodDef"              = "Define_MethodDef_Metadata",
   "ExternalCodeList"       = "Define_Codelist_Metadata",
   "CheckValue"             = "Define_ValueLevel_Metadata",
   "def:WhereClauseRef"     = "Define_Dataset_Metadata",
@@ -114,7 +114,8 @@ stopifnot(dir.exists(define_root), file.exists(catalog_csv))
     "ProtocolName"     = "protocol_name",
     "Name"             = "mdv_name",
     "DefineVersion"    = "def_version",
-    "def:DefineVersion" = "def_version"
+    "def:DefineVersion" = "def_version",
+    "def:CommentOID"   = "mdv_comment_oid"
   ),
   "Define_Dataset_Metadata" = list(
     "OID"             = "oid",
@@ -134,7 +135,9 @@ stopifnot(dir.exists(define_root), file.exists(catalog_csv))
     "MethodOID"       = "oid",
     "def:HasNoData"   = "has_no_data",
     "def:StandardOID" = "standard_oid",
-    "WhereClauseOID"  = "where_clause_oid"
+    "WhereClauseOID"  = "where_clause_oid",
+    "def:IsNonStandard" = "is_non_standard",
+    "IsNonStandard"   = "is_non_standard"
   ),
   "Define_Variable_Metadata" = list(
     "OID"              = "oid",
@@ -147,19 +150,24 @@ stopifnot(dir.exists(define_root), file.exists(catalog_csv))
     "def:CommentOID"   = "comment_oid",
     "Mandatory"        = "mandatory",
     "OrderNumber"      = "order",
+    "KeySequence"      = "key_sequence",
     "def:MethodOID"    = "method_oid",
     "MethodOID"        = "method_oid",
     "Description"      = "has_description",
     "Origin"           = "origin_type",
     "Type"             = "origin_type",
     "Source"           = "origin_source",
+    "def:AssignedValue" = "assigned_value",
+    "AssignedValue"    = "assigned_value",
     "CodeListOID"      = "codelist_oid",
     "def:ValueListOID" = "valuelist_oid",
     "ValueListOID"     = "valuelist_oid",
     "FirstPage"        = "order",
     "LastPage"         = "order",
     "def:ItemOID"      = "oid",
-    "def:StandardOID"  = "standard_oid"
+    "def:StandardOID"  = "standard_oid",
+    "def:IsNonStandard" = "is_non_standard_itemref",
+    "IsNonStandard"    = "is_non_standard_itemref"
   ),
   "Define_Codelist_Metadata" = list(
     "OID"           = "codelist_oid",
@@ -167,6 +175,8 @@ stopifnot(dir.exists(define_root), file.exists(catalog_csv))
     "DataType"      = "data_type",
     "SASFormatName" = "sas_format",
     "def:CommentOID"    = "comment_oid",
+    "def:StandardOID"   = "standard_oid",
+    "StandardOID"       = "standard_oid",
     "CodedValue"        = "coded_value",
     "ExtendedValue"     = "extended_value",
     "def:ExtendedValue" = "extended_value",
@@ -192,13 +202,28 @@ stopifnot(dir.exists(define_root), file.exists(catalog_csv))
     "def:StandardOID" = "oid"
   ),
   "Define_ValueLevel_Metadata" = list(
-    "OID"          = "oid",
+    "OID"            = "oid",
     "def:CommentOID" = "comment_oid",
-    "def:ItemOID"  = "check_var",
-    "Comparator"   = "comparator",
-    "SoftHard"     = "comparator",
-    "KeySequence"  = "oid",
-    "CheckValue"   = "comparator"
+    "def:ItemOID"    = "check_var",
+    "ItemOID"        = "check_var",
+    "Comparator"     = "comparator",
+    "SoftHard"       = "soft_hard",
+    "CheckValue"     = "check_value"
+  ),
+  "Define_MethodDef_Metadata" = list(
+    "OID"            = "oid",
+    "Name"           = "method_name",
+    "Type"           = "method_type",
+    "Description"    = "has_description",
+    "def:CommentOID" = "comment_oid"
+  ),
+  "Define_ARM_Metadata" = list(
+    "OID"  = "display_oid",
+    "Name" = "display_name"
+  ),
+  "Define_ARM_Result_Metadata" = list(
+    "OID"          = "result_oid",
+    "ParameterOID" = "parameter_oid"
   )
 )
 

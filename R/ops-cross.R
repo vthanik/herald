@@ -2087,3 +2087,161 @@ op_base_not_equal_abl_row <- function(data, ctx, b_var, a_var,
   }
   unique(out)
 }
+
+# ---- has_same_values (was ops-has-same-values.R) -------------------------------
+# Returns TRUE for every row when ALL records in the dataset have the same
+# value for the named column. This fires when a classification variable like
+# --CAT or MHCAT groups ALL records into one bucket (which indicates overuse).
+# Unlocks: CG0077 (MHCAT must not group all records into a single category).
+
+op_has_same_values <- function(data, ctx, name, ...) {
+  col <- name
+  if (!col %in% names(data)) return(rep(NA, nrow(data)))
+  vals <- as.character(data[[col]])
+  vals <- vals[!is.na(vals) & nzchar(vals)]
+  if (length(vals) == 0L) return(rep(NA, nrow(data)))
+  rep(length(unique(vals)) == 1L, nrow(data))
+}
+
+.register_op(
+  "has_same_values",
+  op_has_same_values,
+  meta = list(
+    kind       = "existence",
+    summary    = "TRUE when all non-NA rows share the same value (over-grouping check).",
+    arg_schema = list(name = list(type = "string", required = TRUE)),
+    cost_hint     = "O(n)",
+    column_arg    = "name",
+    returns_na_ok = TRUE
+  )
+)
+
+# ---- not_present_on_multiple_rows_within (was ops-not-present-on-multiple-rows.R)
+# Returns TRUE for RELID values that appear on FEWER THAN 2 rows within the
+# USUBJID group. The RELREC rule requires that each RELID appear on at least 2
+# rows (to form the relationship pair). Fires when a RELID has only 1 row.
+# Unlocks: CG0484 / CORE-000484.
+
+op_not_present_on_multiple_rows_within <- function(data, ctx, name,
+                                                    within = "USUBJID", ...) {
+  col     <- name
+  grp_col <- as.character(unlist(within, use.names = FALSE))[[1L]]
+  n       <- nrow(data)
+  if (!col %in% names(data)) return(rep(NA, n))
+  vals <- as.character(data[[col]])
+  grp  <- if (grp_col %in% names(data)) as.character(data[[grp_col]]) else rep("", n)
+  key  <- paste(grp, vals, sep = "\x1F")
+  counts <- table(key)
+  out <- vapply(key, function(k) {
+    if (is.na(vals[match(k, key)])) return(NA)
+    counts[[k]] < 2L
+  }, logical(1L), USE.NAMES = FALSE)
+  out
+}
+
+.register_op(
+  "not_present_on_multiple_rows_within",
+  op_not_present_on_multiple_rows_within,
+  meta = list(
+    kind       = "existence",
+    summary    = "TRUE when the value appears on fewer than 2 rows within each group.",
+    arg_schema = list(
+      name   = list(type = "string", required = TRUE),
+      within = list(type = "string", default  = "USUBJID")
+    ),
+    cost_hint     = "O(n)",
+    column_arg    = "name",
+    returns_na_ok = TRUE
+  )
+)
+
+# ---- inconsistent_enumerated_columns (was ops-inconsistent-enumerated-columns.R)
+# For enumerated columns like TSVAL, TSVAL1..TSVALn: returns TRUE on rows
+# where TSVALn+1 is non-null while TSVALn is null (gap in sequence).
+# Detected by scanning column names matching the pattern + base name.
+# Unlocks: CG0582 (CORE-000582) -- TSVAL enumerated column gaps.
+#
+# params: name (base column name, e.g. "TSVAL").
+
+op_inconsistent_enumerated_columns <- function(data, ctx, name, ...) {
+  base <- name
+  n    <- nrow(data)
+  # Find enumerated columns: <base>1, <base>2, ... (case-insensitive)
+  pattern  <- paste0("^", toupper(base), "[0-9]+$")
+  cols_idx <- grep(pattern, toupper(names(data)))
+  if (length(cols_idx) == 0L) return(rep(FALSE, n))
+
+  # Sort by numeric suffix
+  nums <- as.integer(gsub(paste0("^", toupper(base)), "", toupper(names(data)[cols_idx])))
+  ord  <- order(nums)
+  cols_sorted <- names(data)[cols_idx[ord]]
+
+  out <- rep(FALSE, n)
+  for (i in seq_along(cols_sorted)[-1L]) {
+    prev_col <- cols_sorted[[i - 1L]]
+    curr_col <- cols_sorted[[i]]
+    prev_val <- as.character(data[[prev_col]])
+    curr_val <- as.character(data[[curr_col]])
+    gap <- is.na(prev_val) & !is.na(curr_val) & nzchar(curr_val)
+    out <- out | gap
+  }
+  out
+}
+
+.register_op(
+  "inconsistent_enumerated_columns",
+  op_inconsistent_enumerated_columns,
+  meta = list(
+    kind       = "existence",
+    summary    = "TRUE when an enumerated column gap exists (n+1 non-null while n null).",
+    arg_schema = list(name = list(type = "string", required = TRUE)),
+    cost_hint     = "O(n*m)",
+    column_arg    = "name",
+    returns_na_ok = FALSE
+  )
+)
+
+# ---- target_is_not_sorted_by (was ops-target-is-not-sorted-by.R) ---------------
+# Returns TRUE for rows where the column is NOT in ascending order within
+# the grouping key(s). Used to check that --SEQ is non-decreasing within
+# USUBJID (or similar grouping).
+# Unlocks: CG0662, CG0620 (--SEQ must be in chronological/numeric order).
+#
+# params: name (column to check), order_by (grouping column(s), typically USUBJID).
+
+op_target_is_not_sorted_by <- function(data, ctx, name,
+                                        order_by = "USUBJID", ...) {
+  col     <- name
+  grp_col <- as.character(unlist(order_by, use.names = FALSE))[[1L]]
+  n       <- nrow(data)
+  if (!col %in% names(data)) return(rep(NA, n))
+  # Group by grp_col; within each group check ascending order of col.
+  vals <- suppressWarnings(as.numeric(as.character(data[[col]])))
+  grp  <- if (grp_col %in% names(data)) as.character(data[[grp_col]]) else rep("", n)
+  out  <- rep(FALSE, n)
+  for (g in unique(grp[!is.na(grp)])) {
+    idx <- which(grp == g)
+    v   <- vals[idx]
+    not_sorted <- c(FALSE, diff(v) < 0L)
+    prev_na    <- c(FALSE, is.na(v[-length(v)]))
+    not_sorted[is.na(v) | prev_na] <- NA
+    out[idx] <- not_sorted
+  }
+  out
+}
+
+.register_op(
+  "target_is_not_sorted_by",
+  op_target_is_not_sorted_by,
+  meta = list(
+    kind       = "compare",
+    summary    = "TRUE on rows where the column breaks ascending order within each group.",
+    arg_schema = list(
+      name     = list(type = "string", required = TRUE),
+      order_by = list(type = "string", default  = "USUBJID")
+    ),
+    cost_hint     = "O(n log n)",
+    column_arg    = "name",
+    returns_na_ok = TRUE
+  )
+)

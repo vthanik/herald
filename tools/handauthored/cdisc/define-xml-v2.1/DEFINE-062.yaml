@@ -8,17 +8,23 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Codelist_Metadata
 check:
-  narrative: Each Decode element must have at least one TranslatedText child element.
+  all:
+  - name: decoded_value
+    operator: non_empty
 outcome:
   message: Codelist/CodeListItem/Decode/TranslatedText not found.
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: blocker:requires-parent-element-context
+  executability: predicate
   define_rule_id: 62
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Schema
   xpaths: /ODM/Study/MetaDataVersion/CodeList/CodeListItem/Decode/TranslatedText
-  element: TranslatedText
+  element: CodeListItem
+  attribute: Decode
+  builder_dataset: Define_Codelist_Metadata

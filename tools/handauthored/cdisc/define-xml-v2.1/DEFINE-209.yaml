@@ -8,15 +8,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_MethodDef_Metadata
 check:
-  narrative: The value of the Type attribute must be one of "Computation", "Imputation".
+  all:
+  - name: method_type
+    operator: non_empty
 outcome:
   message: The value of MethodDef[@Type] is not one of "Computation", "Imputation"
     for MethodDef[@Name].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: blocker:unmapped-attribute:Type
+  executability: predicate
   define_rule_id: 209
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -24,3 +28,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/MethodDef
   element: MethodDef
   attribute: Type
+  builder_dataset: Define_MethodDef_Metadata

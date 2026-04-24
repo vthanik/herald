@@ -111,6 +111,13 @@ scoped_datasets <- function(rule, ctx) {
   scope <- rule[["scope"]]
   if (is.null(scope) || length(scope) == 0L) return(TRUE)
 
+  # scope.datasets: explicit virtual dataset names (e.g. Define_Variable_Metadata).
+  # When set, the rule only runs against those exact dataset names.
+  datasets_scope <- scope[["datasets"]]
+  if (!is.null(datasets_scope) && length(datasets_scope) > 0L) {
+    return(ds_name %in% as.character(unlist(datasets_scope)))
+  }
+
   ds_up <- toupper(ds_name)
 
   # Exclude-domains: if the dataset is listed here, rule does NOT apply.

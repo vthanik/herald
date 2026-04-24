@@ -6,6 +6,8 @@ description: A value found in a Where Clause is not found in the defined Codelis
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_ValueLevel_Metadata
 outcome:
   message: Check Value not found in Codelist
   severity: Error
@@ -13,7 +15,12 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0151
-  executability: blocker:requires-op:where_clause_value_in_codelist
+  executability: predicate
   license: MIT
+  builder_dataset: Define_ValueLevel_Metadata
 notes: Blocked on `where_clause_value_in_codelist` operator (Where Clause value must
   be a term in the referenced codelist). See HANDOFF section 4g.
+check:
+  all:
+  - name: check_value
+    operator: where_clause_value_in_codelist

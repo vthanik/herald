@@ -8,15 +8,18 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: The ValueListOID attribute on the def:ValueListRef element must reference
-    an existing def:ValueListDef element.
+  all:
+  - name: valuelist_oid
+    operator: non_empty
 outcome:
   message: There is no def:ValueListDef with an OID attribute that matches ItemDef[@Name]/def:ValueListRef/[@ValueListOID].
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: blocker:unmapped-attribute:ValueListOID
+  executability: predicate
   define_rule_id: 163
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
@@ -24,3 +27,4 @@ provenance:
   xpaths: /ODM/Study/MetaDataVersion/ItemDef/def:ValueListRef
   element: def:ValueListRef
   attribute: ValueListOID
+  builder_dataset: Define_Variable_Metadata

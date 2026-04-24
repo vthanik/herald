@@ -6,15 +6,19 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 check:
-  narrative: The value of the def:IsNonStandard attribute must be "Yes".
+  all:
+  - name: is_non_standard_itemref
+    operator: non_empty
 outcome:
   message: The value of def:IsNonStandard[@def:IsNonStandard] is not "Yes" for ItemGroupDef[@Name]/ItemRef[@ItemOID]
     ( or def:ValueListDef[@OID]/ItemRef[@ItemOID]).
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: blocker:unmapped-attribute:def:IsNonStandard
+  executability: predicate
   define_rule_id: 75
   license: CC-BY-4.0
   applicable_versions: 2.1 only
@@ -22,3 +26,4 @@ provenance:
   xpaths: "/ODM/Study/MetaDataVersion/ItemGroupDef/ItemRef\r\r\n/ODM/Study/MetaDataVersion/def:ValueListDef/ItemRef"
   element: ItemRef
   attribute: def:IsNonStandard
+  builder_dataset: Define_Variable_Metadata

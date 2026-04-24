@@ -178,6 +178,10 @@ row_from_core_yaml <- function(yml, path) {
   if (!is.null(sub_flag) && length(sub_flag) == 1L) {
     out$submission <- isTRUE(as.logical(sub_flag))
   }
+  # Preserve explicit dataset-name list (virtual/builder datasets).
+  ds_flag <- as.character(unlist(sc$datasets %||% character(0)))
+  ds_flag <- ds_flag[nzchar(ds_flag) & !is.na(ds_flag)]
+  if (length(ds_flag) > 0L) out$datasets <- ds_flag
   out
 }
 

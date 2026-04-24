@@ -8,17 +8,23 @@ severity: Medium
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_MethodDef_Metadata
 check:
-  narrative: A description must be provided for each method.
+  all:
+  - name: has_description
+    operator: non_empty
 outcome:
   message: A description is missing for MethodDef[@Name]
   severity: Medium
 provenance:
   source_document: CDISC Define-XML v2.1 Conformance Rules
-  executability: blocker:requires-parent-element-context
+  executability: predicate
   define_rule_id: 56
   license: CC-BY-4.0
   applicable_versions: Both 2.0 and 2.1
   source_type: Schema
   xpaths: /ODM/Study/MetaDataVersion/MethodDef/Description
-  element: Description
+  element: MethodDef
+  attribute: Description
+  builder_dataset: Define_MethodDef_Metadata

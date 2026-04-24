@@ -6,6 +6,8 @@ description: When a variable or value level record is subject to controlled term
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Variable_Metadata
 outcome:
   message: Assigned value not found in codelist
   severity: Error
@@ -13,7 +15,12 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0147
-  executability: blocker:requires-op:valid_codelist_term
+  executability: predicate
   license: MIT
+  builder_dataset: Define_Variable_Metadata
 notes: Blocked on `valid_codelist_term` operator (VLM Assigned Value must be a term
   in the linked codelist). See HANDOFF section 4g.
+check:
+  all:
+  - name: assigned_value
+    operator: valid_codelist_term

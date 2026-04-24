@@ -5,6 +5,8 @@ description: The def:DefineVersion should have a value of '2.0.0' for Define-XML
 scope:
   classes: []
   domains: []
+  datasets:
+  - Define_Study_Metadata
 outcome:
   message: Invalid def:DefineVersion value
   severity: Error
@@ -12,8 +14,13 @@ provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
   authority: Herald
   p21_id_equivalent: DD0020A
-  executability: blocker:requires-op:define_version_matches_schema
+  executability: predicate
   license: MIT
+  builder_dataset: Define_Study_Metadata
 notes: Blocked on `define_version_matches_schema` operator (def:DefineVersion must
   be '2.0.0' for Define-XML v2.0 and '2.1.0' for v2.1; today's `in` operator would
   need a schema-version pre-condition). See HANDOFF section 4g.
+check:
+  all:
+  - name: def_version
+    operator: define_version_matches_schema
