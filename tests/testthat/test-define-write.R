@@ -557,13 +557,13 @@ test_that("OID normalisation adds missing prefix: bare name gets prefixed", {
 
 # -- Stylesheet processing instruction ----------------------------------------
 
-test_that("stylesheet = TRUE adds PI before root ODM element", {
+test_that("write_define_xml always adds PI before root ODM element", {
   skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
 
-  write_define_xml(spec, tmp, stylesheet = TRUE, validate = FALSE)
+  write_define_xml(spec, tmp, validate = FALSE)
   lines   <- readLines(tmp, warn = FALSE)
   pi_idx  <- grep("xml-stylesheet", lines, fixed = TRUE)
   odm_idx <- grep("<ODM", lines, fixed = TRUE)[1L]
@@ -574,7 +574,7 @@ test_that("stylesheet = TRUE adds PI before root ODM element", {
   expect_true(grepl('href="define2-1.xsl"', lines[pi_idx], fixed = TRUE))
 })
 
-test_that("stylesheet = FALSE omits the xml-stylesheet PI", {
+test_that("stylesheet = FALSE still emits the xml-stylesheet PI (param ignored)", {
   skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
@@ -583,7 +583,8 @@ test_that("stylesheet = FALSE omits the xml-stylesheet PI", {
   write_define_xml(spec, tmp, stylesheet = FALSE, validate = FALSE)
   lines  <- readLines(tmp, warn = FALSE)
   pi_idx <- grep("xml-stylesheet", lines, fixed = TRUE)
-  expect_length(pi_idx, 0L)
+  # stylesheet param is ignored -- PI is always emitted
+  expect_length(pi_idx, 1L)
 })
 
 test_that("stylesheet PI output is still valid parseable XML", {
@@ -592,21 +593,10 @@ test_that("stylesheet PI output is still valid parseable XML", {
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
 
-  write_define_xml(spec, tmp, stylesheet = TRUE, validate = FALSE)
+  write_define_xml(spec, tmp, validate = FALSE)
   expect_no_error(xml2::read_xml(tmp))
   doc <- xml2::read_xml(tmp)
   expect_equal(xml2::xml_name(doc), "ODM")
-})
-
-test_that("stylesheet = FALSE does not copy define2-1.xsl", {
-  skip_if_not_installed("xml2")
-  spec   <- .make_minimal_spec()
-  outdir <- withr::local_tempdir()
-  tmp    <- file.path(outdir, "define.xml")
-
-  write_define_xml(spec, tmp, stylesheet = FALSE, validate = FALSE)
-  xsl <- file.path(outdir, "define2-1.xsl")
-  expect_false(file.exists(xsl))
 })
 
 test_that("write_define_xml skips XSL copy when define2-1.xsl already exists", {
@@ -1030,5 +1020,136 @@ test_that("write_define_xml with value_spec creates ValueListDef elements", {
   withr::defer(unlink(tmp))
 
   expect_no_error(write_define_xml(spec, tmp, validate = FALSE))
+  expect_true(file.exists(tmp))
+})
+
+# -- Triplet output: define.xml + define.html + define2-1.xsl ----------------
+
+test_that("write_define_xml always produces all three triplet files", {
+  skip_if_not_installed("xml2")
+  spec   <- .make_full_spec()
+  outdir <- withr::local_tempdir()
+  tmp    <- file.path(outdir, "define.xml")
+
+  suppressWarnings(write_define_xml(spec, tmp, validate = FALSE))
+
+  expect_true(file.exists(file.path(outdir, "define.xml")))
+  expect_true(file.exists(file.path(outdir, "define.html")))
+  expect_true(file.exists(file.path(outdir, "define2-1.xsl")))
+})
+
+test_that("triplet define.html contains study name from spec", {
+  skip_if_not_installed("xml2")
+  spec   <- .make_full_spec()
+  outdir <- withr::local_tempdir()
+  tmp    <- file.path(outdir, "define.xml")
+
+  suppressWarnings(write_define_xml(spec, tmp, validate = FALSE))
+  html <- paste(readLines(file.path(outdir, "define.html"), warn = FALSE), collapse = "\n")
+
+  expect_true(grepl("TEST-001", html, fixed = TRUE))
+})
+
+test_that("triplet define.html contains dataset names from spec", {
+  skip_if_not_installed("xml2")
+  spec   <- .make_full_spec()
+  outdir <- withr::local_tempdir()
+  tmp    <- file.path(outdir, "define.xml")
+
+  suppressWarnings(write_define_xml(spec, tmp, validate = FALSE))
+  html <- paste(readLines(file.path(outdir, "define.html"), warn = FALSE), collapse = "\n")
+
+  expect_true(grepl("DM",             html, fixed = TRUE))
+  expect_true(grepl("AE",             html, fixed = TRUE))
+  expect_true(grepl("Demographics",   html, fixed = TRUE))
+  expect_true(grepl("Adverse Events", html, fixed = TRUE))
+})
+
+test_that("write_define_xml skips define2-1.xsl copy when already exists", {
+  skip_if_not_installed("xml2")
+  spec   <- herald_spec(
+    ds_spec  = data.frame(dataset = "DM", label = "Demo",
+                          stringsAsFactors = FALSE),
+    var_spec = data.frame(dataset = "DM", variable = "STUDYID",
+                          label = "Study ID", data_type = "text",
+                          stringsAsFactors = FALSE)
+  )
+  outdir <- withr::local_tempdir()
+  tmp    <- file.path(outdir, "define.xml")
+  xsl    <- file.path(outdir, "define2-1.xsl")
+
+  writeLines("<!-- existing xsl -->", xsl)
+  existing_mtime <- file.mtime(xsl)
+
+  suppressWarnings(write_define_xml(spec, tmp, validate = FALSE))
+  expect_equal(file.mtime(xsl), existing_mtime)
+})
+
+# -- write_define_html standalone --------------------------------------------
+
+test_that("write_define_html is exported and returns path invisibly", {
+  spec <- .make_full_spec()
+  tmp  <- tempfile(fileext = ".html")
+  withr::defer(unlink(tmp))
+
+  result <- write_define_html(spec, tmp)
+  expect_equal(result, tmp)
+  expect_true(file.exists(tmp))
+})
+
+test_that("write_define_html errors on non-spec input", {
+  expect_error(
+    write_define_html("not_a_spec", "out.html"),
+    class = "herald_error_input"
+  )
+})
+
+test_that("write_define_html errors on non-character path", {
+  spec <- .make_minimal_spec()
+  expect_error(
+    write_define_html(spec, 42L),
+    class = "herald_error_input"
+  )
+})
+
+test_that("write_define_html output is valid HTML with DOCTYPE", {
+  spec <- .make_full_spec()
+  tmp  <- tempfile(fileext = ".html")
+  withr::defer(unlink(tmp))
+
+  write_define_html(spec, tmp)
+  html <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("<!DOCTYPE", html, fixed = TRUE))
+  expect_true(grepl("<html", html, fixed = TRUE))
+})
+
+test_that("write_define_html contains variable names", {
+  spec <- .make_full_spec()
+  tmp  <- tempfile(fileext = ".html")
+  withr::defer(unlink(tmp))
+
+  write_define_html(spec, tmp)
+  html <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("STUDYID", html, fixed = TRUE))
+  expect_true(grepl("AETERM",  html, fixed = TRUE))
+})
+
+test_that("write_define_html contains codelist terms when spec has codelist", {
+  spec <- .make_full_spec()
+  tmp  <- tempfile(fileext = ".html")
+  withr::defer(unlink(tmp))
+
+  write_define_html(spec, tmp)
+  html <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("Male",   html, fixed = TRUE))
+  expect_true(grepl("Female", html, fixed = TRUE))
+})
+
+test_that("write_define_html works with minimal spec (no study metadata)", {
+  spec <- .make_minimal_spec()
+  tmp  <- tempfile(fileext = ".html")
+  withr::defer(unlink(tmp))
+
+  expect_no_error(write_define_html(spec, tmp))
   expect_true(file.exists(tmp))
 })

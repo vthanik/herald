@@ -21,15 +21,16 @@
 #' @param spec A \code{herald_spec} object. At minimum, \code{ds_spec} and
 #'   \code{var_spec} must be populated.
 #' @param path File path for the output XML. Should end in \code{.xml}.
-#' @param stylesheet Logical. Include an XSL stylesheet processing instruction
-#'   in the output XML and copy \code{define2-1.xsl} alongside the output file?
-#'   Default \code{TRUE}.
+#' @param stylesheet Logical. Kept for backwards compatibility; ignored.
+#'   A stylesheet processing instruction and \code{define2-1.xsl} are always
+#'   copied alongside the output file.
 #' @param validate Logical. Run DD0001--DD0085 Define-XML rules against the
 #'   spec before writing? Default \code{TRUE}. Findings are reported as
 #'   warnings; generation is never blocked.
 #'
 #' @return The output path, invisibly. The validation result (if run) is
-#'   attached as the \code{"validation"} attribute.
+#'   attached as the \code{"validation"} attribute. \code{define.html} and
+#'   \code{define2-1.xsl} are always written to the same directory.
 #'
 #' @examples
 #' spec <- as_herald_spec(
@@ -113,48 +114,44 @@ write_define_xml <- function(spec, path, stylesheet = TRUE, validate = TRUE) {
 
   doc <- .build_define_xml(spec)
 
-  if (isTRUE(stylesheet)) {
-    # Serialise the document, then inject the stylesheet PI before the root
-    # element. xml2 does not expose a first-class API for pre-root PIs, so we
-    # use the standard pattern: obtain the XML declaration line separately and
-    # insert the PI immediately after it.
-    xml_str <- as.character(doc)
+  # Always inject the stylesheet PI -- stylesheet param is kept for backwards
+  # compat but its value is ignored. The PI must appear before the root element.
+  xml_str <- as.character(doc)
 
-    pi <- '<?xml-stylesheet type="text/xsl" href="define2-1.xsl"?>'
+  pi <- '<?xml-stylesheet type="text/xsl" href="define2-1.xsl"?>'
 
-    # xml2::as.character() may or may not emit the XML declaration.
-    # Detect and handle both forms so the PI always ends up before <ODM>.
-    if (grepl("^<\\?xml", xml_str)) {
-      # Replace first newline after the XML declaration with PI + newline
-      xml_str <- sub(
-        "(^<\\?xml[^>]*\\?>)(\\n?)",
-        paste0("\\1\n", pi, "\n"),
-        xml_str
-      )
-    } else {
-      xml_str <- paste0(
-        '<?xml version="1.0" encoding="UTF-8"?>',
-        "\n",
-        pi,
-        "\n",
-        xml_str
-      )
-    }
-
-    writeLines(xml_str, path, useBytes = FALSE)
+  # xml2::as.character() may or may not emit the XML declaration.
+  # Detect and handle both forms so the PI always ends up before <ODM>.
+  if (grepl("^<\\?xml", xml_str)) {
+    xml_str <- sub(
+      "(^<\\?xml[^>]*\\?>)(\\n?)",
+      paste0("\\1\n", pi, "\n"),
+      xml_str
+    )
   } else {
-    xml2::write_xml(doc, path)
+    xml_str <- paste0(
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      "\n",
+      pi,
+      "\n",
+      xml_str
+    )
   }
 
-  if (isTRUE(stylesheet)) {
-    xsl_dest <- file.path(dirname(path), "define2-1.xsl")
-    if (!file.exists(xsl_dest)) {
-      xsl_src <- system.file("extdata", "define2-1.xsl", package = "herald")
-      if (nzchar(xsl_src) && file.exists(xsl_src)) {
-        file.copy(xsl_src, xsl_dest)
-      }
+  writeLines(xml_str, path, useBytes = FALSE)
+
+  # Always copy define2-1.xsl alongside the XML (skip if already present).
+  xsl_dest <- file.path(dirname(path), "define2-1.xsl")
+  if (!file.exists(xsl_dest)) {
+    xsl_src <- system.file("extdata", "define2-1.xsl", package = "herald")
+    if (nzchar(xsl_src) && file.exists(xsl_src)) {
+      file.copy(xsl_src, xsl_dest)
     }
   }
+
+  # Always co-produce define.html in the same directory.
+  html_path <- file.path(dirname(path), "define.html")
+  write_define_html(spec, html_path)
 
   result <- path
   if (!is.null(val_result)) {
@@ -1323,3 +1320,480 @@ write_define_xml <- function(spec, path, stylesheet = TRUE, validate = TRUE) {
   }
   as.character(val)
 }
+
+# --------------------------------------------------------------------------
+# write_define_html -- HTML companion for the define triplet
+# --------------------------------------------------------------------------
+
+#' Write a Define-XML 2.1 HTML rendering
+#'
+#' @description
+#' Generates a self-contained HTML file from a \code{herald_spec} object
+#' that mirrors the CDISC Define-XML browser view. This is the
+#' \code{define.html} file that is always co-produced alongside
+#' \code{define.xml} by \code{\link{write_define_xml}}, but it can also
+#' be written independently.
+#'
+#' @param spec A \code{herald_spec} object.
+#' @param path File path for the output HTML.
+#' @param define_xml Ignored. Kept for backwards compatibility.
+#'
+#' @return The output path, invisibly.
+#'
+#' @family spec
+#' @export
+write_define_html <- function(spec, path, define_xml = NULL) {
+  call <- rlang::caller_env()
+  check_herald_spec(spec, call = call)
+  check_scalar_chr(path, call = call)
+
+  # Generate self-contained HTML directly from spec.
+  # The reference CDISC define.html ships pre-rendered and fully standalone.
+  # We produce the same structure without any XSLT dependency.
+  html <- .build_define_html(spec)
+  writeLines(html, path)
+  invisible(path)
+}
+
+#' Build Define-XML HTML directly from herald_spec
+#' @noRd
+.build_define_html <- function(spec) {
+  ds_spec  <- spec$ds_spec
+  var_spec <- spec$var_spec
+  study    <- spec$study
+  codelist <- spec$codelist
+  methods  <- spec$methods
+
+  # -- Study metadata ----------------------------------------------------------
+  study_name <- study_desc <- protocol_name <- ""
+  if (
+    is.data.frame(study) && nrow(study) > 0L && "attribute" %in% names(study)
+  ) {
+    .sv <- function(attr) {
+      r <- study[study$attribute == attr, ]
+      if (nrow(r) > 0L) r$value[1L] else ""
+    }
+    study_name    <- .sv("StudyName")
+    study_desc    <- .sv("StudyDescription")
+    protocol_name <- .sv("ProtocolName")
+  }
+
+  std_label <- ""
+  if ("standard" %in% names(ds_spec)) {
+    stds <- unique(stats::na.omit(ds_spec$standard))
+    if (length(stds) > 0L) std_label <- stds[1L]
+  }
+
+  title <- if (nzchar(study_name) && nzchar(std_label)) {
+    paste0(study_name, ": ", std_label)
+  } else if (nzchar(study_name)) {
+    study_name
+  } else {
+    paste0("Define-XML 2.1", if (nzchar(std_label)) paste0(": ", std_label))
+  }
+
+  # -- Left nav menu -----------------------------------------------------------
+  ds_nav_items <- vapply(
+    seq_len(nrow(ds_spec)),
+    function(i) {
+      ds  <- ds_spec$dataset[i]
+      lbl <- .na2empty(
+        if ("label" %in% names(ds_spec)) ds_spec$label[i] else ""
+      )
+      sprintf(
+        '<li class="hmenu-item"><span class="hmenu-bullet"></span><a class="tocItem" href="#IG.IG.%s">%s (%s)</a></li>',
+        .h(ds),
+        .h(lbl),
+        .h(ds)
+      )
+    },
+    character(1)
+  )
+
+  has_cl   <- !is.null(codelist) && is.data.frame(codelist) && nrow(codelist) > 0L
+  has_meth <- !is.null(methods)  && is.data.frame(methods)  && nrow(methods)  > 0L
+  cl_lookup <- if (has_cl) split(codelist, codelist$codelist_id) else list()
+
+  menu_nav <- paste0(
+    '<li class="hmenu-submenu">',
+    '<span class="hmenu-bullet" onclick="toggle_submenu(this);">&#x25BC;</span>',
+    '<a class="tocItem" href="#datasets">Datasets</a>',
+    '<ul>',
+    paste(ds_nav_items, collapse = ""),
+    '</ul>',
+    '</li>'
+  )
+  if (has_cl) {
+    cl_ids   <- names(cl_lookup)
+    cl_items <- vapply(
+      cl_ids,
+      function(id) {
+        cl_name    <- ""
+        cl_rows_nav <- cl_lookup[[id]]
+        if ("name" %in% names(cl_rows_nav)) {
+          nm <- cl_rows_nav$name[1L]
+          if (!is.na(nm)) cl_name <- nm
+        }
+        lbl <- if (nzchar(cl_name)) {
+          sprintf("%s (%s)", .h(cl_name), .h(id))
+        } else {
+          .h(id)
+        }
+        sprintf(
+          '<li class="hmenu-item"><span class="hmenu-bullet"></span><a class="tocItem" href="#CL.%s">%s</a></li>',
+          .h(id),
+          lbl
+        )
+      },
+      character(1)
+    )
+    menu_nav <- paste0(
+      menu_nav,
+      '<li class="hmenu-submenu">',
+      '<span class="hmenu-bullet" onclick="toggle_submenu(this);">&#x25BC;</span>',
+      '<a class="tocItem" href="#codelists">Controlled Terms</a>',
+      '<ul>',
+      paste(cl_items, collapse = ""),
+      '</ul>',
+      '</li>'
+    )
+  }
+  if (has_meth) {
+    menu_nav <- paste0(
+      menu_nav,
+      '<li class="hmenu-item"><span class="hmenu-bullet"></span>',
+      '<a class="tocItem" href="#methods">Methods</a></li>'
+    )
+  }
+
+  # -- Study metadata section --------------------------------------------------
+  study_metadata_html <- ""
+  if (nzchar(study_name) || nzchar(study_desc) || nzchar(protocol_name)) {
+    dl_items <- character(0L)
+    if (nzchar(study_name)) {
+      dl_items <- c(
+        dl_items,
+        sprintf("<dt>Study Name</dt><dd>%s</dd>", .h(study_name))
+      )
+    }
+    if (nzchar(study_desc)) {
+      dl_items <- c(
+        dl_items,
+        sprintf("<dt>Study Description</dt><dd>%s</dd>", .h(study_desc))
+      )
+    }
+    if (nzchar(protocol_name)) {
+      dl_items <- c(
+        dl_items,
+        sprintf("<dt>Protocol Name</dt><dd>%s</dd>", .h(protocol_name))
+      )
+    }
+    study_metadata_html <- paste0(
+      '<div class="study-metadata">',
+      '<dl class="study-metadata">',
+      paste(dl_items, collapse = ""),
+      '</dl>',
+      '</div>'
+    )
+  }
+
+  # -- Datasets overview table -------------------------------------------------
+  std_ref <- if (nzchar(std_label)) {
+    sprintf('<span class="standard-refeference">[%s]</span>', .h(std_label))
+  } else {
+    ""
+  }
+
+  ds_overview_rows <- vapply(
+    seq_len(nrow(ds_spec)),
+    function(i) {
+      ds        <- ds_spec$dataset[i]
+      lbl       <- .na2empty(if ("label"     %in% names(ds_spec)) ds_spec$label[i]     else "")
+      cls       <- .na2empty(if ("class"     %in% names(ds_spec)) ds_spec$class[i]     else "")
+      structure <- .na2empty(if ("structure" %in% names(ds_spec)) ds_spec$structure[i] else "")
+      keys      <- .na2empty(if ("keys"      %in% names(ds_spec)) ds_spec$keys[i]      else "")
+      purpose   <- .na2empty(if ("purpose"   %in% names(ds_spec)) ds_spec$purpose[i]   else "")
+      row_class <- .row_class(i)
+      xpt_file  <- paste0(tolower(ds), ".xpt")
+      sprintf(
+        '<tr class="%s" id="IG.%s"><td><a href="#IG.IG.%s">%s</a>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td></td><td><a class="external" href="%s">%s</a><span class="external-link-gif"></span></td></tr>',
+        row_class,
+        .h(ds), .h(ds), .h(ds), std_ref,
+        .h(lbl), .h(cls), .h(structure), .h(purpose), .h(keys),
+        .h(xpt_file), .h(xpt_file)
+      )
+    },
+    character(1)
+  )
+
+  datasets_overview <- paste0(
+    '<br><a id="datasets"></a><h1 class="invisible">Datasets</h1>',
+    '<div class="containerbox">',
+    '<table summary="Data Definition Tables">',
+    '<caption class="header">Datasets</caption>',
+    '<tr class="header">',
+    '<th scope="col">Dataset</th><th scope="col">Description</th>',
+    '<th scope="col">Class</th><th scope="col">Structure</th>',
+    '<th scope="col">Purpose</th><th scope="col">Keys</th>',
+    '<th scope="col">Documentation</th><th scope="col">Location</th>',
+    '</tr>',
+    paste(ds_overview_rows, collapse = ""),
+    '</table></div>'
+  )
+
+  # -- Per-dataset variable detail tables --------------------------------------
+  ds_detail_parts <- vapply(
+    seq_len(nrow(ds_spec)),
+    function(i) {
+      ds       <- ds_spec$dataset[i]
+      lbl      <- .na2empty(if ("label" %in% names(ds_spec)) ds_spec$label[i] else "")
+      xpt_file <- paste0(tolower(ds), ".xpt")
+
+      ds_vars  <- var_spec[var_spec$dataset == ds, , drop = FALSE]
+
+      var_rows <- vapply(
+        seq_len(nrow(ds_vars)),
+        function(j) {
+          v      <- ds_vars$variable[j]
+          vlbl   <- .na2empty(if ("label"       %in% names(ds_vars)) ds_vars$label[j]       else "")
+          dtype  <- .na2empty(if ("data_type"   %in% names(ds_vars)) ds_vars$data_type[j]   else "")
+          vlen   <- .na2empty(if ("length"      %in% names(ds_vars)) ds_vars$length[j]      else "")
+          origin <- .na2empty(if ("origin"      %in% names(ds_vars)) ds_vars$origin[j]      else "")
+          cl_id  <- .na2empty(if ("codelist_id" %in% names(ds_vars)) ds_vars$codelist_id[j] else "")
+          meth   <- .na2empty(if ("method_id"   %in% names(ds_vars)) ds_vars$method_id[j]   else "")
+
+          row_class <- .row_class(j)
+          anchor_id <- sprintf("IG.%s.IT.%s", ds, v)
+
+          # Controlled terms cell: inline codelist if available
+          ct_cell <- ""
+          if (nzchar(cl_id) && !is.null(cl_lookup[[cl_id]])) {
+            cl_rows  <- cl_lookup[[cl_id]]
+            cl_name  <- ""
+            if ("name" %in% names(cl_rows)) {
+              nm <- cl_rows$name[1L]
+              if (!is.na(nm)) cl_name <- nm
+            }
+            terms_html <- vapply(
+              seq_len(nrow(cl_rows)),
+              function(k) {
+                term    <- .na2empty(if ("term"          %in% names(cl_rows)) cl_rows$term[k]          else "")
+                decoded <- .na2empty(if ("decoded_value" %in% names(cl_rows)) cl_rows$decoded_value[k] else "")
+                if (nzchar(decoded)) {
+                  sprintf(
+                    '<li class="codelist-item">&bull;&nbsp;&quot;%s&quot; = &quot;%s&quot;</li>',
+                    .h(term), .h(decoded)
+                  )
+                } else {
+                  sprintf(
+                    '<li class="codelist-item">&bull;&nbsp;&quot;%s&quot;</li>',
+                    .h(term)
+                  )
+                }
+              },
+              character(1)
+            )
+            ct_cell <- paste0(
+              sprintf(
+                '<span class="linebreakcell"><a href="#CL.%s">%s</a></span>',
+                .h(cl_id),
+                .h(if (nzchar(cl_name)) cl_name else cl_id)
+              ),
+              '<ul class="codelist">',
+              paste(terms_html, collapse = ""),
+              '</ul>'
+            )
+          } else if (nzchar(cl_id)) {
+            ct_cell <- sprintf('<a href="#CL.%s">%s</a>', .h(cl_id), .h(cl_id))
+          }
+
+          # Origin / method cell
+          origin_cell <- ""
+          if (nzchar(origin) || nzchar(meth)) {
+            parts <- character(0L)
+            if (nzchar(origin)) {
+              parts <- c(parts, sprintf('<div class="linebreakcell">%s</div>', .h(origin)))
+            }
+            if (nzchar(meth)) {
+              parts <- c(parts, sprintf('<div class="method-code">%s</div>', .h(meth)))
+            }
+            origin_cell <- paste(parts, collapse = "")
+          }
+
+          sprintf(
+            '<tr class="%s"><td><a id="%s"></a>%s</td><td></td><td>%s</td><td class="datatype">%s</td><td class="number">%s</td><td>%s</td><td>%s</td></tr>',
+            row_class, .h(anchor_id), .h(v), .h(vlbl),
+            .h(dtype), .h(vlen), ct_cell, origin_cell
+          )
+        },
+        character(1)
+      )
+
+      paste0(
+        sprintf('<a id="IG.IG.%s"></a>', .h(ds)),
+        sprintf(
+          '<div class="containerbox"><h1 class="invisible">%s (%s)</h1>',
+          .h(lbl), .h(ds)
+        ),
+        sprintf('<table summary="ItemGroup IG.IG.%s">', .h(ds)),
+        sprintf(
+          '<caption><span>%s (%s) %s<span class="dataset">Location: <a class="external" href="%s">%s</a><span class="external-link-gif"></span></span></span></caption>',
+          .h(ds), .h(lbl), std_ref, .h(xpt_file), .h(xpt_file)
+        ),
+        '<tr class="header">',
+        '<th scope="col">Variable</th>',
+        '<th scope="col">Where Condition</th>',
+        '<th scope="col">Label / Description</th>',
+        '<th scope="col">Type</th>',
+        '<th scope="col" class="length">Length or Display Format</th>',
+        '<th scope="col">Controlled Terms or ISO Format</th>',
+        '<th scope="col">Origin / Source / Method / Comment</th>',
+        '</tr>',
+        paste(var_rows, collapse = ""),
+        '</table>',
+        '<p class="linktop"><a href="#top">Back to Top</a></p>',
+        '</div>'
+      )
+    },
+    character(1)
+  )
+
+  datasets_detail <- paste(ds_detail_parts, collapse = "")
+
+  # -- Codelists section -------------------------------------------------------
+  codelists_section <- ""
+  if (has_cl) {
+    cl_ids   <- names(cl_lookup)
+    cl_blocks <- vapply(
+      cl_ids,
+      function(id) {
+        cl_rows   <- cl_lookup[[id]]
+        cl_name   <- id
+        if ("name" %in% names(cl_rows)) {
+          nm <- cl_rows$name[1L]
+          if (!is.na(nm) && nzchar(nm)) cl_name <- nm
+        }
+        data_type <- ""
+        if ("data_type" %in% names(cl_rows)) {
+          dt <- cl_rows$data_type[1L]
+          if (!is.na(dt)) data_type <- dt
+        }
+        term_rows <- vapply(
+          seq_len(nrow(cl_rows)),
+          function(k) {
+            term    <- .na2empty(if ("term"          %in% names(cl_rows)) cl_rows$term[k]          else "")
+            decoded <- .na2empty(if ("decoded_value" %in% names(cl_rows)) cl_rows$decoded_value[k] else "")
+            row_class <- .row_class(k)
+            if (nzchar(decoded)) {
+              sprintf(
+                '<tr class="%s"><td>%s</td><td class="codelist-item-decode">%s</td></tr>',
+                row_class, .h(term), .h(decoded)
+              )
+            } else {
+              sprintf('<tr class="%s"><td>%s</td><td></td></tr>', row_class, .h(term))
+            }
+          },
+          character(1)
+        )
+        paste0(
+          sprintf('<a id="CL.%s"></a>', .h(id)),
+          '<div class="containerbox">',
+          sprintf('<table summary="CodeList CL.%s">', .h(id)),
+          sprintf(
+            '<caption><span>%s (%s)</span> <span class="dataset">Data Type: %s</span></caption>',
+            .h(cl_name), .h(id), .h(data_type)
+          ),
+          '<tr class="header"><th scope="col" class="codedvalue">Coded Value</th><th scope="col">Decode</th></tr>',
+          paste(term_rows, collapse = ""),
+          '</table>',
+          '<p class="linktop"><a href="#top">Back to Top</a></p>',
+          '</div>'
+        )
+      },
+      character(1)
+    )
+    codelists_section <- paste0(
+      '<br><a id="codelists"></a><h1 class="invisible">Controlled Terms</h1>',
+      paste(cl_blocks, collapse = "")
+    )
+  }
+
+  # -- Methods section ---------------------------------------------------------
+  methods_section <- ""
+  if (has_meth) {
+    meth_rows <- vapply(
+      seq_len(nrow(methods)),
+      function(i) {
+        mid   <- .na2empty(if ("method_id"   %in% names(methods)) methods$method_id[i]   else "")
+        mname <- .na2empty(if ("name"        %in% names(methods)) methods$name[i]        else "")
+        mtype <- .na2empty(if ("type"        %in% names(methods)) methods$type[i]        else "")
+        mdesc <- .na2empty(if ("description" %in% names(methods)) methods$description[i] else "")
+        row_class <- .row_class(i)
+        sprintf(
+          '<tr class="%s"><td><a id="MT.%s"></a>%s</td><td>%s</td><td>%s</td><td><div class="method-code">%s</div></td></tr>',
+          row_class, .h(mid), .h(mid), .h(mname), .h(mtype), .h(mdesc)
+        )
+      },
+      character(1)
+    )
+    methods_section <- paste0(
+      '<br><a id="methods"></a><h1 class="invisible">Methods</h1>',
+      '<div class="containerbox">',
+      '<table summary="Methods">',
+      '<caption class="header">Methods</caption>',
+      '<tr class="header"><th scope="col">OID</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Description</th></tr>',
+      paste(meth_rows, collapse = ""),
+      '</table>',
+      '<p class="linktop"><a href="#top">Back to Top</a></p>',
+      '</div>'
+    )
+  }
+
+  # -- Assemble from template --------------------------------------------------
+  html_tmpl_path <- system.file("extdata", "define.html", package = "herald")
+  css_path       <- system.file("extdata", "define.css",  package = "herald")
+
+  # Fallback for devtools::load_all() when system.file returns ""
+  if (!nzchar(html_tmpl_path) || !file.exists(html_tmpl_path)) {
+    html_tmpl_path <- file.path("inst", "extdata", "define.html")
+  }
+  if (!nzchar(css_path) || !file.exists(css_path)) {
+    css_path <- file.path("inst", "extdata", "define.css")
+  }
+
+  html_tmpl <- paste(readLines(html_tmpl_path, warn = FALSE), collapse = "\n")
+  css        <- paste(readLines(css_path,       warn = FALSE), collapse = "\n")
+
+  # Substitute {{PLACEHOLDER}} tokens
+  subs <- list(
+    "{{TITLE}}"            = .h(title),
+    "{{CSS}}"              = css,
+    "{{STUDY_NAME}}"       = .h(study_name),
+    "{{HERALD_VERSION}}"   = as.character(utils::packageVersion("herald")),
+    "{{TIMESTAMP}}"        = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
+    "{{MENU_NAV}}"         = menu_nav,
+    "{{STUDY_METADATA}}"   = study_metadata_html,
+    "{{DATASETS_OVERVIEW}}" = datasets_overview,
+    "{{DATASETS_DETAIL}}"  = datasets_detail,
+    "{{CODELISTS_SECTION}}" = codelists_section,
+    "{{METHODS_SECTION}}"  = methods_section
+  )
+  for (nm in names(subs)) {
+    html_tmpl <- gsub(nm, subs[[nm]], html_tmpl, fixed = TRUE)
+  }
+  html_tmpl
+}
+
+#' Coerce NA/empty to empty string
+#' @noRd
+.na2empty <- function(x) {
+  if (length(x) == 0L || is.na(x)) "" else as.character(x)
+}
+
+#' HTML-escape a string (NA/empty-safe)
+#' @noRd
+.h <- function(x) htmlesc(.na2empty(x))
+
+#' Alternating table row class
+#' @noRd
+.row_class <- function(i) if (i %% 2L == 0L) "tableroweven" else "tablerowodd"

@@ -12,9 +12,9 @@ write_define_xml(spec, path, stylesheet = TRUE, validate = TRUE)
 
 \item{path}{File path for the output XML. Should end in \code{.xml}.}
 
-\item{stylesheet}{Logical. Include an XSL stylesheet processing instruction
-in the output XML and copy \code{define2-1.xsl} alongside the output file?
-Default \code{TRUE}.}
+\item{stylesheet}{Logical. Kept for backwards compatibility; ignored.
+A stylesheet processing instruction and \code{define2-1.xsl} are always
+copied alongside the output file.}
 
 \item{validate}{Logical. Run DD0001--DD0085 Define-XML rules against the
 spec before writing? Default \code{TRUE}. Findings are reported as
@@ -22,7 +22,8 @@ warnings; generation is never blocked.}
 }
 \value{
 The output path, invisibly. The validation result (if run) is
-attached as the \code{"validation"} attribute.
+attached as the \code{"validation"} attribute. \code{define.html} and
+\code{define2-1.xsl} are always written to the same directory.
 }
 \description{
 Generates a valid Define-XML 2.1 document from a \code{herald_spec} object
@@ -56,6 +57,7 @@ Other spec:
 \code{\link{as_herald_spec}()},
 \code{\link{herald_spec}()},
 \code{\link{is_herald_spec}()},
-\code{\link{read_define_xml}()}
+\code{\link{read_define_xml}()},
+\code{\link{write_define_html}()}
 }
 \concept{spec}
