@@ -407,11 +407,11 @@
 "CG0183","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRHI = null",NA,NA,"narrative",NA,NA,NA
 "CG0184","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRC = null",NA,NA,"narrative",NA,NA,NA
 "CG0185","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBTOXGR is a numeric value",NA,NA,"narrative",NA,NA,NA
-"CG0186","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBORNRLO is expressed using the units in LBORRESU",NA,NA,"narrative",NA,NA,NA
-"CG0187","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBORNRHI is expressed using the units in LBORRESU",NA,NA,"narrative",NA,NA,NA
-"CG0188","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRLO  is expressed using the units in LBSTRESU",NA,NA,"narrative",NA,NA,NA
-"CG0189","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRHI is expressed using the units in LBSTRESU",NA,NA,"narrative",NA,NA,NA
-"CG0190","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRC  is expressed using the units in LBSTRESU",NA,NA,"narrative",NA,NA,NA
+"CG0186","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBORNRLO is expressed using the units in LBORRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: LBORNRLO - operator: matches_regex name: LBORNRLO value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: LBORRESU","predicate","2026-04-24T09:34:59Z",NA,NA
+"CG0187","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBORNRHI is expressed using the units in LBORRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: LBORNRHI - operator: matches_regex name: LBORNRHI value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: LBORRESU","predicate","2026-04-24T09:34:59Z",NA,NA
+"CG0188","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRLO  is expressed using the units in LBSTRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: LBSTNRLO - operator: matches_regex name: LBSTNRLO value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: LBSTRESU","predicate","2026-04-24T09:34:59Z",NA,NA
+"CG0189","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRHI is expressed using the units in LBSTRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: LBSTNRHI - operator: matches_regex name: LBSTNRHI value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: LBSTRESU","predicate","2026-04-24T09:34:59Z",NA,NA
+"CG0190","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRC  is expressed using the units in LBSTRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: LBSTNRC - operator: matches_regex name: LBSTNRC value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: LBSTRESU","predicate","2026-04-24T09:34:59Z",NA,NA
 "CG0191","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","MB dataset present in study",NA,NA,"narrative",NA,NA,NA
 "CG0192","CDISC","SDTM-IG","3.2","Medium","MBTESTCD = 'ORGANISM'",NA,NA,"blocker:no-machine-checkable-condition","2026-04-24T04:31:01Z",NA,"Q4 triage: condition not machine-checkable against SDTM columns."
 "CG0196","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","PEORRES = 'NORMAL'",NA,NA,"blocker:no-machine-checkable-condition","2026-04-24T04:31:01Z",NA,"Q4 triage: condition not machine-checkable against SDTM columns."
@@ -523,7 +523,7 @@
 "CG0395","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--SMIE in ('Y','N')",NA,NA,"narrative",NA,NA,NA
 "CG0396","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--CONTRT in ('Y','N')",NA,NA,"narrative",NA,NA,NA
 "CG0398","CDISC","SDTM-IG","3.2","Medium","At most one record per subject per epoch",NA,NA,"narrative",NA,NA,NA
-"CG0399","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--ULOQ is expressed using the units in --STRESU",NA,NA,"narrative",NA,NA,NA
+"CG0399","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--ULOQ is expressed using the units in --STRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: --ULOQ - operator: matches_regex name: --ULOQ value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: --STRESU","predicate","2026-04-24T09:34:59Z",NA,NA
 "CG0400","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LOINC = valid code in the version of the LOINC dictionary specified in define.xml",NA,NA,"narrative",NA,NA,NA
 "CG0404","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STAT present in dataset",NA,NA,"narrative",NA,NA,NA
 "CG0406","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TEST length <= 40",NA,NA,"narrative",NA,NA,NA
@@ -560,7 +560,7 @@
 "CG0461","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--HLGT on path to MedDRA primary system organ class",NA,NA,"narrative",NA,NA,NA
 "CG0463","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TRT present in custom interventions dataset",NA,NA,"narrative",NA,NA,NA
 "CG0464","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TERM present in custom events dataset",NA,NA,"narrative",NA,NA,NA
-"CG0466","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLOQ is expressed using the units in --STRESU",NA,NA,"narrative",NA,NA,NA
+"CG0466","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLOQ is expressed using the units in --STRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: --LLOQ - operator: matches_regex name: --LLOQ value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: --STRESU","predicate","2026-04-24T09:34:59Z",NA,NA
 "CG0467","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STDTC not present",NA,NA,"narrative",NA,NA,NA
 "CG0501","CDISC","SDTM-IG","3.3,3.4","Medium","TM dataset present in study",NA,NA,"narrative",NA,NA,NA
 "CG0502","CDISC","SDTM-IG","3.3,3.4","Medium","TM dataset present in study",NA,NA,"narrative",NA,NA,NA

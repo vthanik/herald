@@ -491,7 +491,7 @@ group), SD1353 (ORRES == STRESC when units match).
   always numeric by definition. When we later author CG0425
   (`--ORRESU` / `--ORRES`), extend to the full P21 guard list.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** _(delivered)_
 
 ---
 

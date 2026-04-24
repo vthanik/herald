@@ -12,8 +12,14 @@ scope:
   exclude_domains: []
 variable: LBSTNRLO
 check:
-  narrative: LBSTNRLO  is expressed using the units in LBSTRESU
-  condition: ''
+  all:
+  - operator: non_empty
+    name: LBSTNRLO
+  - operator: matches_regex
+    name: LBSTNRLO
+    value: ^[-+]?[0-9]*\.?[0-9]+$
+  - operator: empty
+    name: LBSTRESU
 outcome:
   message: LBSTNRLO  is expressed using the units in LBSTRESU
   severity: Medium
@@ -25,5 +31,4 @@ provenance:
     in standardized units.
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

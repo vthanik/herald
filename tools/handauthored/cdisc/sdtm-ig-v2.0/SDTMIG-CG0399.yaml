@@ -12,8 +12,14 @@ scope:
   exclude_domains: []
 variable: --ULOQ
 check:
-  narrative: --ULOQ is expressed using the units in --STRESU
-  condition: --ULOQ present in dataset
+  all:
+  - operator: non_empty
+    name: --ULOQ
+  - operator: matches_regex
+    name: --ULOQ
+    value: ^[-+]?[0-9]*\.?[0-9]+$
+  - operator: empty
+    name: --STRESU
 outcome:
   message: --ULOQ is expressed using the units in --STRESU
   severity: Medium
@@ -25,5 +31,4 @@ provenance:
     be those used for --STRESU.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
