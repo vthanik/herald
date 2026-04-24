@@ -12,8 +12,15 @@ scope:
   exclude_domains: []
 variable: RACE
 check:
-  narrative: RACE = 'MULTIPLE'
-  condition: Multiple records in SUPPDM where RACE captured
+  all:
+  - operator: supp_row_count_exceeds
+    name: USUBJID
+    ref_dataset: SUPPDM
+    qnam_pattern: ^RACE
+    threshold: 1
+  - operator: not_equal_to
+    name: RACE
+    value: MULTIPLE
 outcome:
   message: RACE = 'MULTIPLE'
   severity: Medium
@@ -26,4 +33,4 @@ provenance:
     Qualifiers dataset.
   source_version: '1'
   license: CC-BY-4.0
-  executability: blocker:requires-supp-qnam-rowcount-op
+  executability: predicate

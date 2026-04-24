@@ -382,7 +382,7 @@
 "CG0128","CDISC","SDTM-IG","3.2","Medium","ARMCD in ('SCRNFAIL', 'NOTASSGN')","value-cross-dataset-not-in-cond-in-set","all: - operator: missing_in_ref name: ARMCD reference_dataset: TA reference_key: ARMCD - operator: is_not_contained_by name: ARMCD value: ['SCRNFAIL', 'NOTASSGN']","predicate","2026-04-24T04:13:14Z",NA,NA
 "CG0133","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DTHFL = 'Y'","dm-dd-subject-dthfl","all: - operator: has_next_corresponding_record name: USUBJID value: reference_dataset: DD by: USUBJID - operator: not_equal_to name: DTHFL value: 'Y'","predicate","2026-04-24T04:30:31Z",NA,NA
 "CG0138","CDISC","SDTM-IG","3.2","Medium","Population flags in SUPPDM",NA,NA,"narrative",NA,NA,NA
-"CG0140","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RACE = 'MULTIPLE'",NA,NA,"blocker:requires-supp-qnam-rowcount-op","2026-04-24T04:31:01Z",NA,"Q4 triage: condition not machine-checkable against SDTM columns."
+"CG0140","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RACE = 'MULTIPLE'","dm-race-multiple-supp","all: - operator: supp_row_count_exceeds name: USUBJID ref_dataset: SUPPDM qnam_pattern: '^RACE' threshold: 1 - operator: not_equal_to name: RACE value: 'MULTIPLE'","predicate","2026-04-24T08:10:15Z",NA,"Predicate via supp_row_count_exceeds (SUPPDM QNAM ^RACE rowcount)."
 "CG0141","CDISC","SDTM-IG","3.2","Medium","RFENDTC = null",NA,NA,"narrative",NA,NA,NA
 "CG0143","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RFICDTC = earliest DS.DSSTDTC",NA,NA,"narrative",NA,NA,NA
 "CG0145","CDISC","SDTM-IG","3.2","Medium","RFSTDTC = null",NA,NA,"narrative",NA,NA,NA
@@ -573,7 +573,7 @@
 "CG0524","CDISC","SDTM-IG","3.3,3.4","Medium","ACTARMCD = null",NA,NA,"narrative",NA,NA,NA
 "CG0525","CDISC","SDTM-IG","3.3,3.4","Medium","RACE = 'OTHER' or RACE = 'MULTIPLE'",NA,NA,"blocker:requires-sponsor-intent-metadata","2026-04-24T04:31:01Z",NA,"Q4 triage: condition not machine-checkable against SDTM columns."
 "CG0526","CDISC","SDTM-IG","3.3,3.4","Medium","RACE = 'UNKNOWN'",NA,NA,"blocker:requires-subject-intent-metadata","2026-04-24T04:31:01Z",NA,"Q4 triage: condition not machine-checkable against SDTM columns."
-"CG0527","CDISC","SDTM-IG","3.3,3.4","Medium","RACE = 'MULTIPLE'",NA,NA,"blocker:requires-supp-qnam-rowcount-op","2026-04-24T04:31:01Z",NA,"Q4 triage: condition not machine-checkable against SDTM columns."
+"CG0527","CDISC","SDTM-IG","3.3,3.4","Medium","RACE = 'MULTIPLE'","dm-race-multiple-supp","all: - operator: supp_row_count_exceeds name: USUBJID ref_dataset: SUPPDM qnam_pattern: '^RACE' threshold: 1 - operator: not_equal_to name: RACE value: 'MULTIPLE'","predicate","2026-04-24T08:10:15Z",NA,"Predicate via supp_row_count_exceeds (SUPPDM QNAM ^RACE rowcount)."
 "CG0528","CDISC","SDTM-IG","3.3,3.4","Medium","ADSL Population flags not in SUPPDM",NA,NA,"narrative",NA,NA,NA
 "CG0531","CDISC","SDTM-IG","3.3,3.4","Medium","Multiple SUPPDM.QNAM records exist for the subject",NA,NA,"narrative",NA,NA,NA
 "CG0534","CDISC","SDTM-IG","3.3,3.4","Medium","RFSTDTC = null",NA,NA,"narrative",NA,NA,NA
