@@ -7,12 +7,16 @@ scope:
   classes: FND
   domains: FA
   exclude_domains: []
-variable: --OBJ
+variable: --DECOD
 check:
-  narrative: |+
-    --OBJ = --TRT
-
-  condition: Interventions parent record exists and DECOD = null
+  all:
+  - name: --DECOD
+    operator: empty
+  - name: RELREC.FAOBJ
+    operator: non_empty
+  - name: --TRT
+    operator: not_equal_to
+    value: RELREC.FAOBJ
 outcome:
   message: |+
     --OBJ = --TRT
@@ -28,5 +32,5 @@ provenance:
     and whether the "Other, specify" value was coded.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000757

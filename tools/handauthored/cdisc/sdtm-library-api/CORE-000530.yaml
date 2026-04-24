@@ -1,32 +1,32 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Values should be "Screen Failure" for screen failures
-                  and "Not Assigned" for subjects not assigned to treatment.
-                Document: IG v3.2
-                Item: Specification
-                Section: '5'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0119
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Values should be "Screen Failure" for screen failures and
+          "Not Assigned" for subjects not assigned to treatment.
+        Document: IG v3.2
+        Item: Specification
+        Section: '5'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0119
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
 Check:
   all:
-    - name: ACTARM
-      operator: is_contained_by
-      value:
-        - Screen Failure
-        - Not Assigned
-        - SCREEN FAILURE
-        - NOT ASSIGNED
-    - name: ACTARM
-      operator: not_equal_to
-      value: ARM
+  - name: ACTARM
+    operator: is_contained_by
+    value:
+    - Screen Failure
+    - Not Assigned
+    - SCREEN FAILURE
+    - NOT ASSIGNED
+  - name: ACTARM
+    operator: not_equal_to
+    value: ARM
 Core:
   Id: CORE-000530
   Status: Published
@@ -37,20 +37,18 @@ Executability: Fully Executable
 Outcome:
   Message: ACTARM should be equal to ARM when ACTARM is Screen Failure or Not Assigned.
   Output_Variables:
-    - ACTARM
-    - ARM
+  - ACTARM
+  - ARM
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - SPECIAL PURPOSE
+    Include: SPECIAL PURPOSE
   Domains:
-    Include:
-      - DM
+    Include: DM
 Sensitivity: Record
 herald:
   source: CDISC Library API
-  catalogs:
-    - SDTMIG 3.2
+  catalogs: SDTMIG 3.2
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0119

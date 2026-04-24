@@ -12,9 +12,10 @@ scope:
   exclude_domains: []
 variable: QNAM
 check:
-  narrative: QNAM value length <=8 and cannot start with a number and cannot contain
-    characters other than letters in upper case, numbers, or underscores
-  condition: ''
+  all:
+  - name: QNAM
+    operator: not_matches_regex
+    value: ^[A-Z_][A-Z0-9_]{0,7}$
 outcome:
   message: QNAM value length <=8 and cannot start with a number and cannot contain
     characters other than letters in upper case, numbers, or underscores
@@ -28,5 +29,5 @@ provenance:
     letters; numbers; or underscores.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000221

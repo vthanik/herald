@@ -9,10 +9,20 @@ scope:
   classes: TDM
   domains: TS
   exclude_domains: []
-variable: TSVAL
+variable: TSPARMCD
 check:
-  narrative: TSVAL > 0 and TSVAL <= 1
-  condition: TSPARMCD = 'RANDQT' and TSVAL ^= null
+  all:
+  - name: TSPARMCD
+    operator: equal_to
+    value: RANDQT
+  - name: TSVAL
+    operator: non_empty
+  - name: TSVAL
+    operator: not_matches_regex
+    value: ^(0.[0-9]+?)$
+  - name: TSVAL
+    operator: not_matches_regex
+    value: ^[1]$
 outcome:
   message: TSVAL > 0 and TSVAL <= 1
   severity: Medium
@@ -28,5 +38,5 @@ provenance:
     all subjects are exposed to investigational therapy).]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000335

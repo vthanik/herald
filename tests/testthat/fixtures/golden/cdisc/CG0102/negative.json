@@ -1,5 +1,5 @@
 {
-  "rule_id": "CORE-000005",
+  "rule_id": "CG0102",
   "fixture_type": "negative",
   "datasets": {
     "EX": {

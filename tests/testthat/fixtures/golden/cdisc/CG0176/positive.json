@@ -1,20 +1,21 @@
 {
-  "rule_id": "CORE-000003",
+  "rule_id": "CG0176",
   "fixture_type": "positive",
   "datasets": {
-    "TR": {
-      "TRLOC": "value"
+    "IE": {
+      "IECAT": "INCLUSION",
+      "IEORRES": "OTHER"
     }
   },
   "expected": {
     "fires": true,
     "rows": 1
   },
-  "notes": "auto-seeded; 1 leaf op(s): exists",
+  "notes": "auto-seeded; 2 leaf op(s): equal_to,not_equal_to",
   "authored": "auto-seed@4",
   "spec": {
     "class_map": {
-      "TR": "FINDINGS"
+      "IE": "FINDINGS"
     }
   }
 }

@@ -1,76 +1,76 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The intent of the domain model is to collect responses
-                  to only those criteria that the subject did not meet, and not the
-                  responses to all criteria.
-                Document: SDTM v3.4
-                Section: 6.3.4
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0176
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The intent of the domain model is to collect response
-                  to only those criteria that the subject did not meet, and not the
-                  responses to all criteria.
-                Document: IG v3.2
-                Item: Assumption 2
-                Section: '6.3'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0176
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The intent of the domain model is to collect response
-                  to only those criteria that the subject did not meet, and not the
-                  responses to all criteria.
-                Document: IG v3.3
-                Item: Assumption 1
-                Section: 6.3.4
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0176
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: The intent of the domain model is to collect responses
-                  to only those criteria that the subject did not meet, and not the
-                  responses to all criteria.
-                Document: TIG 1.0
-                Item: Assumption 1
-                Section: 2.8.10.13
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0405
-              Version: '1'
-            Version: '1.0'
-        Substandard: SDTM
-        Version: '1.0'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The intent of the domain model is to collect responses to
+          only those criteria that the subject did not meet, and not the responses
+          to all criteria.
+        Document: SDTM v3.4
+        Section: 6.3.4
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0176
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The intent of the domain model is to collect response to only
+          those criteria that the subject did not meet, and not the responses to all
+          criteria.
+        Document: IG v3.2
+        Item: Assumption 2
+        Section: '6.3'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0176
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The intent of the domain model is to collect response to only
+          those criteria that the subject did not meet, and not the responses to all
+          criteria.
+        Document: IG v3.3
+        Item: Assumption 1
+        Section: 6.3.4
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0176
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: The intent of the domain model is to collect responses to
+          only those criteria that the subject did not meet, and not the responses
+          to all criteria.
+        Document: TIG 1.0
+        Item: Assumption 1
+        Section: 2.8.10.13
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0405
+        Version: '1'
+      Version: '1.0'
+    Substandard: SDTM
+    Version: '1.0'
 Check:
   all:
-    - name: IECAT
-      operator: equal_to
-      value: INCLUSION
-      value_is_literal: yes
-    - name: IEORRES
-      operator: not_equal_to
-      value: 'N'
-      value_is_literal: yes
+  - name: IECAT
+    operator: equal_to
+    value: INCLUSION
+    value_is_literal: yes
+  - name: IEORRES
+    operator: not_equal_to
+    value: 'N'
+    value_is_literal: yes
 Core:
   Id: CORE-000001
   Status: Published
@@ -83,18 +83,17 @@ Outcome:
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - FINDINGS
+    Include: FINDINGS
   Domains:
-    Include:
-      - IE
+    Include: IE
   Use_Case: INDH
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0176

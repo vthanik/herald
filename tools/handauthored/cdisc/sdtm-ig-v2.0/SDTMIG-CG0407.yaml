@@ -10,10 +10,11 @@ scope:
   classes: INT
   domains: EX
   exclude_domains: []
-variable: GEN
+variable: EX
 check:
-  narrative: EX present in study
-  condition: Study includes protocol-specified study treatment
+  all:
+  - name: EX
+    operator: not_exists
 outcome:
   message: EX present in study
   severity: Medium
@@ -25,5 +26,5 @@ provenance:
     study treatment.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000739

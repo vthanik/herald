@@ -1,42 +1,42 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The temporal relationship of the observation to the
-                  Disease Milestone Instance Name in MIDS.
-                Document: Model v2.0
-                Item: RELMIDS
-                Section: Timing
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0502
-              Version: '2'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: 'The temporal relationship of the observation to the
-                  Disease Milestone Instance Name in MIDS. Examples: "IMMEDIATELY
-                  BEFORE", "AT TIME OF", "AFTER".'
-                Document: Model v1.7
-                Item: RELMIDS
-                Section: 2.2.5
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0502
-              Version: '2'
-            Version: '2.0'
-        Version: '3.3'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The temporal relationship of the observation to the Disease
+          Milestone Instance Name in MIDS.
+        Document: Model v2.0
+        Item: RELMIDS
+        Section: Timing
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0502
+        Version: '2'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: 'The temporal relationship of the observation to the Disease
+          Milestone Instance Name in MIDS. Examples: "IMMEDIATELY BEFORE", "AT TIME
+          OF", "AFTER".'
+        Document: Model v1.7
+        Item: RELMIDS
+        Section: 2.2.5
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0502
+        Version: '2'
+      Version: '2.0'
+    Version: '3.3'
 Check:
   all:
-    - name: $RELMIDS_EXISTS
-      operator: equal_to
-      value: yes
-    - name: TM
-      operator: not_exists
+  - name: $RELMIDS_EXISTS
+    operator: equal_to
+    value: yes
+  - name: TM
+    operator: not_exists
 Core:
   Id: CORE-000777
   Status: Published
@@ -45,24 +45,23 @@ Description: Raise an error when variable RELMIDS is present in any of the datas
   and TM dataset is missing in a study.
 Executability: Fully Executable
 Operations:
-  - id: $RELMIDS_EXISTS
-    name: RELMIDS
-    operator: variable_exists
+- id: $RELMIDS_EXISTS
+  name: RELMIDS
+  operator: variable_exists
 Outcome:
   Message: TM dataset is missing when RELMIDS variable is present in any of the dataset.
 Rule_Type: Domain Presence Check
 Scope:
   Classes:
-    Include:
-      - ALL
+    Include: ALL
   Domains:
-    Include:
-      - ALL
+    Include: ALL
 Sensitivity: Dataset
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:51Z'
-
+status: superseded
+superseded_by: CG0502

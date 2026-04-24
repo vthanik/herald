@@ -9,8 +9,15 @@ scope:
   exclude_domains: []
 variable: QNAM
 check:
-  narrative: Population flags in SUPPDM
-  condition: Population flags included in submission
+  all:
+  - name: QNAM
+    operator: is_contained_by_case_insensitive
+    value:
+    - COMPLT
+    - FULLSET
+    - ITT
+    - PPROT
+    - SAFETY
 outcome:
   message: Population flags in SUPPDM
   severity: Medium
@@ -25,5 +32,5 @@ provenance:
     PPROT) are listed in Appendix C2 - Supplemental Qualifier Name Codes.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000533

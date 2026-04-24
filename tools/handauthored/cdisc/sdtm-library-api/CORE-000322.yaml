@@ -1,30 +1,29 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: d. When DSCAT='PROTOCOL MILESTONE', DSTERM and DSDECOD
-                  will contain the same value drawn from the sponsor's controlled
-                  terminology.
-                Document: IG v3.2
-                Item: Assumption 3d
-                Section: '6.2'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0066
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: d. When DSCAT='PROTOCOL MILESTONE', DSTERM and DSDECOD will
+          contain the same value drawn from the sponsor's controlled terminology.
+        Document: IG v3.2
+        Item: Assumption 3d
+        Section: '6.2'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0066
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
 Check:
   all:
-    - name: DSCAT
-      operator: equal_to
-      value: PROTOCOL MILESTONE
-      value_is_literal: yes
-    - name: DSTERM
-      operator: not_equal_to
-      value: DSDECOD
+  - name: DSCAT
+    operator: equal_to
+    value: PROTOCOL MILESTONE
+    value_is_literal: yes
+  - name: DSTERM
+    operator: not_equal_to
+    value: DSDECOD
 Core:
   Id: CORE-000322
   Status: Published
@@ -35,20 +34,18 @@ Executability: Fully Executable
 Outcome:
   Message: DSCAT equals PROTOCOL MILESTONE but DSTERM is not equal to DSDECOD
   Output_Variables:
-    - DSTERM
-    - DSDECOD
+  - DSTERM
+  - DSDECOD
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - EVENTS
+    Include: EVENTS
   Domains:
-    Include:
-      - DS
+    Include: DS
 Sensitivity: Record
 herald:
   source: CDISC Library API
-  catalogs:
-    - SDTMIG 3.2
+  catalogs: SDTMIG 3.2
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0066

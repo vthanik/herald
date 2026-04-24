@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: --TESTCD
 check:
-  narrative: --TESTCD ^= 'OTHER'
-  condition: ''
+  all:
+  - name: --TESTCD
+    operator: equal_to
+    value: OTHER
 outcome:
   message: --TESTCD ^= 'OTHER'
   severity: Medium
@@ -29,5 +31,5 @@ provenance:
     --TEST values are controlled terminology and are not free text.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000159

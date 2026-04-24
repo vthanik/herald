@@ -10,10 +10,16 @@ scope:
   classes: FND
   domains: LB
   exclude_domains: []
-variable: LBSTNRHI
+variable: LBORRES
 check:
-  narrative: LBSTNRHI = null
-  condition: LBORRES ^= continuous measurement
+  all:
+  - name: LBORRES
+    operator: not_matches_regex
+    value: ^-?(\d+(\.\d+)?$)|(\.\d+$)
+  - name: LBSTNRHI
+    operator: non_empty
+  - name: LBORRES
+    operator: non_empty
 outcome:
   message: LBSTNRHI = null
   severity: Medium
@@ -25,5 +31,5 @@ provenance:
     units. Should be populated only for continuous results.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000299

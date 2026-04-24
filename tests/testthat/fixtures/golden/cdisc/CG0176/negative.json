@@ -1,5 +1,5 @@
 {
-  "rule_id": "CORE-000001",
+  "rule_id": "CG0176",
   "fixture_type": "negative",
   "datasets": {
     "IE": {

@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: --TERM
 check:
-  narrative: --TERM ^= 'MULTIPLE'
-  condition: ''
+  all:
+  - name: --TERM
+    operator: equal_to
+    value: MULTIPLE
 outcome:
   message: --TERM ^= 'MULTIPLE'
   severity: Medium
@@ -28,5 +30,5 @@ provenance:
     the sponsor's standard data management procedures.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000164

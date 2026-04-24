@@ -12,8 +12,9 @@ scope:
   exclude_domains: []
 variable: --STDTC
 check:
-  narrative: --STDTC not present
-  condition: ''
+  all:
+  - name: --STDTC
+    operator: exists
 outcome:
   message: --STDTC not present
   severity: Medium
@@ -46,5 +47,5 @@ provenance:
     following table.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000207

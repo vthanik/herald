@@ -1,73 +1,73 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Variable Qualifier of AGE or AGETXT.
-                Document: Model v2.0
-                Item: AGEU
-                Section: Demographics
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0434
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Units associated with AGE or AGETXT.
-                Document: Model v1.4
-                Section: 2.2.6
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0434
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Units associated with AGE or AGETXT.
-                Document: Model v1.7
-                Section: Table 2.2.6.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0434
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: Variable Qualifier of AGE or AGETXT.
-                Document: SDTM v2.1
-                Item: AGEU
-                Section: 3.2.1 Demographics
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0586
-              Version: '1'
-            Version: '1.0'
-        Substandard: SDTM
-        Version: '1.0'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Variable Qualifier of AGE or AGETXT.
+        Document: Model v2.0
+        Item: AGEU
+        Section: Demographics
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0434
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Units associated with AGE or AGETXT.
+        Document: Model v1.4
+        Section: 2.2.6
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0434
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Units associated with AGE or AGETXT.
+        Document: Model v1.7
+        Section: Table 2.2.6.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0434
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: Variable Qualifier of AGE or AGETXT.
+        Document: SDTM v2.1
+        Item: AGEU
+        Section: 3.2.1 Demographics
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0586
+        Version: '1'
+      Version: '1.0'
+    Substandard: SDTM
+    Version: '1.0'
 Check:
   any:
-    - all:
-        - name: AGEU
-          operator: non_empty
-        - name: AGE
-          operator: empty
-        - name: AGETXT
-          operator: empty
-    - all:
-        - name: AGEU
-          operator: non_empty
-        - name: AGE
-          operator: empty
-        - name: AGETXT
-          operator: not_exists
+  - all:
+    - name: AGEU
+      operator: non_empty
+    - name: AGE
+      operator: empty
+    - name: AGETXT
+      operator: empty
+  - all:
+    - name: AGEU
+      operator: non_empty
+    - name: AGE
+      operator: empty
+    - name: AGETXT
+      operator: not_exists
 Core:
   Id: CORE-000122
   Status: Published
@@ -78,24 +78,23 @@ Executability: Fully Executable
 Outcome:
   Message: AGEU is completed, but both AGE and AGETXT are not completed.
   Output_Variables:
-    - AGE
-    - AGEU
-    - AGETXT
+  - AGE
+  - AGEU
+  - AGETXT
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - SPECIAL PURPOSE
+    Include: SPECIAL PURPOSE
   Domains:
-    Include:
-      - DM
+    Include: DM
   Use_Case: INDH
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0434

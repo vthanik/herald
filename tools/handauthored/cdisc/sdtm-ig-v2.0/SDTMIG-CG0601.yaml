@@ -7,10 +7,14 @@ scope:
   classes: FND
   domains: FA
   exclude_domains: []
-variable: --OBJ
+variable: --DECOD
 check:
-  narrative: --OBJ = --TERM
-  condition: Events parent record exists and DECOD = null
+  all:
+  - name: --DECOD
+    operator: empty
+  - name: --TERM
+    operator: not_equal_to
+    value: RELREC.FAOBJ
 outcome:
   message: --OBJ = --TERM
   severity: Medium
@@ -24,5 +28,5 @@ provenance:
     and whether the "Other, specify" value was coded.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000766

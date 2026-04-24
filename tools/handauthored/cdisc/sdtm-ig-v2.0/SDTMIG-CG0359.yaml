@@ -10,10 +10,12 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: variable_label
 check:
-  narrative: Variable labels are in title case
-  condition: ''
+  all:
+  - name: variable_label
+    operator: not_matches_regex
+    value: ^\s*[A-Z]\S*\s*((a|an|the|as|and|per|to|but|or|for|in|is|of|on|with|and\/or|is|within|from|([A-Z]\S*))\s*)*$
 outcome:
   message: Variable labels are in title case
   severity: Medium
@@ -25,5 +27,5 @@ provenance:
     first letter of every word except for articles; prepositions; and conjunctions).
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000594

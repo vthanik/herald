@@ -9,11 +9,19 @@ scope:
   classes: EVT
   domains: DS
   exclude_domains: []
-variable: GEN
+variable: DSCAT
 check:
-  narrative: DSSCAT must be present
-  condition: Subject has more than one record per Epoch with DSCAT = 'DISPOSITION
-    EVENT'
+  all:
+  - name: DSCAT
+    operator: is_not_unique_set
+    value:
+    - USUBJID
+    - EPOCH
+  - name: DSCAT
+    operator: equal_to
+    value: DISPOSITION EVENT
+  - name: DSSCAT
+    operator: not_exists
 outcome:
   message: DSSCAT must be present
   severity: High
@@ -25,5 +33,5 @@ provenance:
     study treatment(s) are to be represented, then DSSCAT provides this distinction.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000212

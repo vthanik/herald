@@ -1,54 +1,51 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The version number of the Reference Terminology, if
-                  applicable.
-                Document: IG v3.4
-                Item: Specification
-                Section: 7.4.2
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0266
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The version number of the Reference Terminology, if
-                  applicable.
-                Document: IG v3.2
-                Item: Specification
-                Section: '7.4'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0266
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The version number of the Reference Terminology, if
-                  applicable.
-                Document: IG v3.3
-                Item: Specification
-                Section: 7.4.2
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0266
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The version number of the Reference Terminology, if applicable.
+        Document: IG v3.4
+        Item: Specification
+        Section: 7.4.2
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0266
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The version number of the Reference Terminology, if applicable.
+        Document: IG v3.2
+        Item: Specification
+        Section: '7.4'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0266
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The version number of the Reference Terminology, if applicable.
+        Document: IG v3.3
+        Item: Specification
+        Section: 7.4.2
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0266
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
 Check:
   all:
-    - name: TSVCDVER
-      operator: non_empty
-    - name: TSVCDREF
-      operator: empty
+  - name: TSVCDVER
+    operator: non_empty
+  - name: TSVCDREF
+    operator: empty
 Core:
   Id: CORE-000153
   Status: Published
@@ -58,22 +55,21 @@ Executability: Fully Executable
 Outcome:
   Message: TSVCDREF is null when TSVCDVER is populated
   Output_Variables:
-    - TSVCDVER
-    - TSVCDREF
+  - TSVCDVER
+  - TSVCDREF
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - TRIAL DESIGN
+    Include: TRIAL DESIGN
   Domains:
-    Include:
-      - TS
+    Include: TS
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0266

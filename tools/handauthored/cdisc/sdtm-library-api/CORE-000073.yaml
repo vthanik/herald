@@ -1,34 +1,34 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Not in clinical trials.
-                Document: Model v2.0
-                Section: Demographics
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0533
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Not to be used with human clinical trials.
-                Document: Model v1.7
-                Section: Table 2.2.6.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0533
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Not in clinical trials.
+        Document: Model v2.0
+        Section: Demographics
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0533
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Not to be used with human clinical trials.
+        Document: Model v1.7
+        Section: Table 2.2.6.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0533
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
 Check:
   all:
-    - name: RPATHCD
-      operator: exists
+  - name: RPATHCD
+    operator: exists
 Core:
   Id: CORE-000073
   Status: Published
@@ -37,21 +37,19 @@ Description: Raise an error when RPATHCD is present.
 Executability: Fully Executable
 Outcome:
   Message: RPATHCD is present.
-  Output_Variables:
-    - RPATHCD
+  Output_Variables: RPATHCD
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - SPECIAL PURPOSE
+    Include: SPECIAL PURPOSE
   Domains:
-    Include:
-      - DM
+    Include: DM
 Sensitivity: Dataset
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:51Z'
-
+status: superseded
+superseded_by: CG0533

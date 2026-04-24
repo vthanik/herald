@@ -14,9 +14,10 @@ scope:
   exclude_domains: []
 variable: --TESTCD
 check:
-  narrative: --TESTCD <= 8 chars and contains only letters, numbers, and underscores
-    and can not start with a number
-  condition: ''
+  any:
+  - name: --TESTCD
+    operator: not_matches_regex
+    value: ^[a-zA-Z_][a-zA-Z0-9_]{0,7}$
 outcome:
   message: --TESTCD <= 8 chars and contains only letters, numbers, and underscores
     and can not start with a number
@@ -32,5 +33,5 @@ provenance:
     contain characters other than letters; numbers; or underscores.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000220

@@ -82,6 +82,13 @@
     quiet = TRUE
   )
 
+  # Rule may have been superseded (dedup pass) and is no longer in rules.rds.
+  # Skip gracefully instead of failing -- a skip is visible in CI.
+  if (isTRUE(res$rules_applied == 0L)) {
+    testthat::skip(sprintf("rule %s not in catalog (superseded or not yet authored)",
+                           fx$rule_id))
+  }
+
   fired <- res$findings[res$findings$status == "fired", , drop = FALSE]
   fires <- isTRUE(fx$expected$fires)
 

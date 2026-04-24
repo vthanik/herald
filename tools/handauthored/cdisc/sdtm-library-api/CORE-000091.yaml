@@ -1,57 +1,57 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Variable Qualifier of --VAMT.
-                Document: Model v2.0
-                Item: --VAMTU
-                Section: Interventions
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0108
-              Version: '2'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: '--TRTV:Vehicle for administration of treatment, such
-                  as a liquid in which the treatment drug is dissolved. Example: SALINE.
-                  --VAMT: Amount of the prepared product (treatment + vehicle) administered
-                  or given. Note: should not be diluent amount alone. --VAMTU: Units
-                  for the prepared product (treatment + vehicle). Examples: mL, mg.'
-                Document: Model v1.4
-                Section: 2.2.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0108
-              Version: '2'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: '--TRTV:Vehicle for administration of treatment, such
-                  as a liquid in which the treatment drug is dissolved. Example: SALINE.
-                  --VAMT: Amount of the prepared product (treatment + vehicle) administered
-                  or given. Note: should not be diluent amount alone. --VAMTU: Units
-                  for the prepared product (treatment + vehicle). Examples: mL, mg.'
-                Document: Model v1.7
-                Section: 2.2.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0108
-              Version: '2'
-            Version: '2.0'
-        Version: '3.3'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Variable Qualifier of --VAMT.
+        Document: Model v2.0
+        Item: --VAMTU
+        Section: Interventions
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0108
+        Version: '2'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: '--TRTV:Vehicle for administration of treatment, such as a
+          liquid in which the treatment drug is dissolved. Example: SALINE. --VAMT:
+          Amount of the prepared product (treatment + vehicle) administered or given.
+          Note: should not be diluent amount alone. --VAMTU: Units for the prepared
+          product (treatment + vehicle). Examples: mL, mg.'
+        Document: Model v1.4
+        Section: 2.2.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0108
+        Version: '2'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: '--TRTV:Vehicle for administration of treatment, such as a
+          liquid in which the treatment drug is dissolved. Example: SALINE. --VAMT:
+          Amount of the prepared product (treatment + vehicle) administered or given.
+          Note: should not be diluent amount alone. --VAMTU: Units for the prepared
+          product (treatment + vehicle). Examples: mL, mg.'
+        Document: Model v1.7
+        Section: 2.2.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0108
+        Version: '2'
+      Version: '2.0'
+    Version: '3.3'
 Check:
   all:
-    - name: --TRTV
-      operator: empty
-    - name: --VAMTU
-      operator: non_empty
+  - name: --TRTV
+    operator: empty
+  - name: --VAMTU
+    operator: non_empty
 Core:
   Id: CORE-000091
   Status: Published
@@ -61,22 +61,21 @@ Executability: Fully Executable
 Outcome:
   Message: Value for --VAMTU is populated, when --TRTV is NULL.
   Output_Variables:
-    - --TRTV
-    - --VAMTU
+  - --TRTV
+  - --VAMTU
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - INTERVENTIONS
+    Include: INTERVENTIONS
   Domains:
-    Include:
-      - ALL
+    Include: ALL
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0108

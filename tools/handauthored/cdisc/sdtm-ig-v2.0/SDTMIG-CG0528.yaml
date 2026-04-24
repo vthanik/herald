@@ -9,10 +9,15 @@ scope:
   classes: SPC
   domains: DM
   exclude_domains: []
-variable: QNAM
+variable: RDOMAIN
 check:
-  narrative: ADSL Population flags not in SUPPDM
-  condition: ''
+  all:
+  - name: RDOMAIN
+    operator: equal_to_case_insensitive
+    value: DM
+  - name: QNAM
+    operator: matches_regex
+    value: (ENRFL|SAFFL|EFFFL|ITTFL|PPROTFL|COMPLFL|COMPLT|FULLSET|ITT|PPROT|SAFETY)
 outcome:
   message: ADSL Population flags not in SUPPDM
   severity: Medium
@@ -28,5 +33,5 @@ provenance:
     about these variables.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000211

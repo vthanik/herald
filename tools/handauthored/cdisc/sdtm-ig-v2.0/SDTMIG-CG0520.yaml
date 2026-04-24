@@ -9,10 +9,15 @@ scope:
   classes: SPC
   domains: DM
   exclude_domains: []
-variable: ARMNRS
+variable: ARMCD
 check:
-  narrative: ARMNRS = null
-  condition: ARMCD ^=null and ACTARMCD ^=null
+  all:
+  - name: ARMCD
+    operator: non_empty
+  - name: ACTARMCD
+    operator: non_empty
+  - name: ARMNRS
+    operator: non_empty
 outcome:
   message: ARMNRS = null
   severity: Medium
@@ -25,5 +30,5 @@ provenance:
     may not be populated if both ARMCD and ACTARMCD are populated]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000121

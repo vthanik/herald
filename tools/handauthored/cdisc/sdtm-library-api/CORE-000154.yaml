@@ -1,185 +1,181 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Sequence number given to ensure uniqueness within
-                  a dataset. Allows inclusion of multiple records for the same TSPARMCD.
-                Document: IG v3.4
-                Item: Specification
-                Section: 7.4.2
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0268
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: TSSEQ has a different value for each record for the
-                  same parameter.
-                Document: IG v3.2
-                Item: Assumption 5
-                Section: '7.4'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0268
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: TSSEQ has a different value for each record for the
-                  same parameter.
-                Document: IG v3.3
-                Item: Assumption 5
-                Section: 7.4.2
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0268
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
-      - Name: SENDIG
-        References:
-          - Citations:
-              - Cited_Guidance: The TSSEQ variable is a unique identifier for each
-                  record and is Required to identify each record as unique in cases
-                  where the same TSPARMCD is used within the dataset. The TSSEQ variable
-                  must be populated for all records within the TS dataset.
-                Document: IG v3.0
-                Item: Assumption 7
-                Section: 7.6.1.1
-            Origin: SEND Conformance Rules
-            Rule_Identifier:
-              Id: SEND246
-              Version: '1'
-            Version: '5.0'
-        Version: '3.0'
-      - Name: SENDIG
-        References:
-          - Citations:
-              - Cited_Guidance: The TSSEQ variable is a unique identifier for each
-                  record and is Required to identify each record as unique in cases
-                  where the same TSPARMCD is used within the dataset. The TSSEQ variable
-                  must be populated for all records within the TS dataset.
-                Document: IG v3.1
-                Item: Assumption 7
-                Section: 7.6.1.1
-            Origin: SEND Conformance Rules
-            Rule_Identifier:
-              Id: SEND246
-              Version: '1'
-            Version: '5.0'
-        Version: '3.1'
-      - Name: SENDIG
-        References:
-          - Citations:
-              - Cited_Guidance: The TSSEQ variable is a unique identifier for each
-                  record and is Required to identify each record as unique in cases
-                  where the same TSPARMCD is used within the dataset. The TSSEQ variable
-                  must be populated for all records within the TS dataset.
-                Document: IG v3.1.1
-                Item: Assumption 7
-                Section: 7.6.1.1
-            Origin: SEND Conformance Rules
-            Rule_Identifier:
-              Id: SEND246
-              Version: '1'
-            Version: '5.0'
-        Version: 3.1.1
-      - Name: SENDIG-DART
-        References:
-          - Citations:
-              - Cited_Guidance: The TSSEQ variable is a unique identifier for each
-                  record and is Required to identify each record as unique in cases
-                  where the same TSPARMCD is used within the dataset. The TSSEQ variable
-                  must be populated for all records within the TS dataset.
-                Document: IG v3.1
-                Item: Assumption 7
-                Section: 7.6.1.1
-            Origin: SEND Conformance Rules
-            Rule_Identifier:
-              Id: SEND246
-              Version: '1'
-            Version: '5.0'
-        Version: '1.1'
-      - Name: SENDIG-DART
-        References:
-          - Citations:
-              - Cited_Guidance: The TSSEQ variable is a unique identifier for each
-                  record and is Required to identify each record as unique in cases
-                  where the same TSPARMCD is used within the dataset. The TSSEQ variable
-                  must be populated for all records within the TS dataset.
-                Document: IG v3.1.1
-                Item: Assumption 7
-                Section: 7.6.1.1
-            Origin: SEND Conformance Rules
-            Rule_Identifier:
-              Id: SEND246
-              Version: '1'
-            Version: '5.0'
-        Version: '1.2'
-      - Name: SENDIG-GENETOX
-        References:
-          - Citations:
-              - Cited_Guidance: The TSSEQ variable is a unique identifier for each
-                  record and is Required to identify each record as unique in cases
-                  where the same TSPARMCD is used within the dataset. The TSSEQ variable
-                  must be populated for all records within the TS dataset.
-                Document: IG v3.1.1
-                Item: Assumption 7
-                Section: 7.6.1.1
-            Origin: SEND Conformance Rules
-            Rule_Identifier:
-              Id: SEND246
-              Version: '1'
-            Version: '5.0'
-        Version: '1.0'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: The TSSEQ variable is required to identify each record
-                  as unique, in cases where the same TSPARMCD is used within the dataset.
-                  The TSSEQ variable must be populated for all records within the
-                  TS dataset.
-                Document: TIG v1.0
-                Item: Assumption 7
-                Section: 2.8.9.32
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0167
-              Version: '1'
-            Version: '1.0'
-        Substandard: SEND
-        Version: '1.0'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: Sequence number given to ensure uniqueness within
-                  a dataset. Allows inclusion of multiple records for the same TSPARMCD.
-                Document: TIG 1.0
-                Item: Specification
-                Section: 2.8.10.30
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0470
-              Version: '1'
-            Version: '1.0'
-        Substandard: SDTM
-        Version: '1.0'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Sequence number given to ensure uniqueness within a dataset.
+          Allows inclusion of multiple records for the same TSPARMCD.
+        Document: IG v3.4
+        Item: Specification
+        Section: 7.4.2
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0268
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: TSSEQ has a different value for each record for the same parameter.
+        Document: IG v3.2
+        Item: Assumption 5
+        Section: '7.4'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0268
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: TSSEQ has a different value for each record for the same parameter.
+        Document: IG v3.3
+        Item: Assumption 5
+        Section: 7.4.2
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0268
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
+  - Name: SENDIG
+    References:
+    - Citations:
+      - Cited_Guidance: The TSSEQ variable is a unique identifier for each record
+          and is Required to identify each record as unique in cases where the same
+          TSPARMCD is used within the dataset. The TSSEQ variable must be populated
+          for all records within the TS dataset.
+        Document: IG v3.0
+        Item: Assumption 7
+        Section: 7.6.1.1
+      Origin: SEND Conformance Rules
+      Rule_Identifier:
+        Id: SEND246
+        Version: '1'
+      Version: '5.0'
+    Version: '3.0'
+  - Name: SENDIG
+    References:
+    - Citations:
+      - Cited_Guidance: The TSSEQ variable is a unique identifier for each record
+          and is Required to identify each record as unique in cases where the same
+          TSPARMCD is used within the dataset. The TSSEQ variable must be populated
+          for all records within the TS dataset.
+        Document: IG v3.1
+        Item: Assumption 7
+        Section: 7.6.1.1
+      Origin: SEND Conformance Rules
+      Rule_Identifier:
+        Id: SEND246
+        Version: '1'
+      Version: '5.0'
+    Version: '3.1'
+  - Name: SENDIG
+    References:
+    - Citations:
+      - Cited_Guidance: The TSSEQ variable is a unique identifier for each record
+          and is Required to identify each record as unique in cases where the same
+          TSPARMCD is used within the dataset. The TSSEQ variable must be populated
+          for all records within the TS dataset.
+        Document: IG v3.1.1
+        Item: Assumption 7
+        Section: 7.6.1.1
+      Origin: SEND Conformance Rules
+      Rule_Identifier:
+        Id: SEND246
+        Version: '1'
+      Version: '5.0'
+    Version: 3.1.1
+  - Name: SENDIG-DART
+    References:
+    - Citations:
+      - Cited_Guidance: The TSSEQ variable is a unique identifier for each record
+          and is Required to identify each record as unique in cases where the same
+          TSPARMCD is used within the dataset. The TSSEQ variable must be populated
+          for all records within the TS dataset.
+        Document: IG v3.1
+        Item: Assumption 7
+        Section: 7.6.1.1
+      Origin: SEND Conformance Rules
+      Rule_Identifier:
+        Id: SEND246
+        Version: '1'
+      Version: '5.0'
+    Version: '1.1'
+  - Name: SENDIG-DART
+    References:
+    - Citations:
+      - Cited_Guidance: The TSSEQ variable is a unique identifier for each record
+          and is Required to identify each record as unique in cases where the same
+          TSPARMCD is used within the dataset. The TSSEQ variable must be populated
+          for all records within the TS dataset.
+        Document: IG v3.1.1
+        Item: Assumption 7
+        Section: 7.6.1.1
+      Origin: SEND Conformance Rules
+      Rule_Identifier:
+        Id: SEND246
+        Version: '1'
+      Version: '5.0'
+    Version: '1.2'
+  - Name: SENDIG-GENETOX
+    References:
+    - Citations:
+      - Cited_Guidance: The TSSEQ variable is a unique identifier for each record
+          and is Required to identify each record as unique in cases where the same
+          TSPARMCD is used within the dataset. The TSSEQ variable must be populated
+          for all records within the TS dataset.
+        Document: IG v3.1.1
+        Item: Assumption 7
+        Section: 7.6.1.1
+      Origin: SEND Conformance Rules
+      Rule_Identifier:
+        Id: SEND246
+        Version: '1'
+      Version: '5.0'
+    Version: '1.0'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: The TSSEQ variable is required to identify each record as
+          unique, in cases where the same TSPARMCD is used within the dataset. The
+          TSSEQ variable must be populated for all records within the TS dataset.
+        Document: TIG v1.0
+        Item: Assumption 7
+        Section: 2.8.9.32
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0167
+        Version: '1'
+      Version: '1.0'
+    Substandard: SEND
+    Version: '1.0'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: Sequence number given to ensure uniqueness within a dataset.
+          Allows inclusion of multiple records for the same TSPARMCD.
+        Document: TIG 1.0
+        Item: Specification
+        Section: 2.8.10.30
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0470
+        Version: '1'
+      Version: '1.0'
+    Substandard: SDTM
+    Version: '1.0'
 Check:
   all:
-    - name: TSPARMCD
-      operator: is_not_unique_set
-      value:
-        - DOMAIN
-    - name: TSSEQ
-      operator: is_not_unique_set
-      value: TSPARMCD
+  - name: TSPARMCD
+    operator: is_not_unique_set
+    value: DOMAIN
+  - name: TSSEQ
+    operator: is_not_unique_set
+    value: TSPARMCD
 Core:
   Id: CORE-000154
   Status: Published
@@ -189,23 +185,22 @@ Executability: Fully Executable
 Outcome:
   Message: TSSEQ is not unique within TSPARMCD
   Output_Variables:
-    - TSSEQ
-    - TSPARMCD
+  - TSSEQ
+  - TSPARMCD
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - TRIAL DESIGN
+    Include: TRIAL DESIGN
   Domains:
-    Include:
-      - TS
+    Include: TS
   Use_Case: INDH, NONCLIN
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:51Z'
-
+status: superseded
+superseded_by: CG0268

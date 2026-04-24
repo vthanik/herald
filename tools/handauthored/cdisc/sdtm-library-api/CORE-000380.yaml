@@ -1,32 +1,32 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Required for all randomized subjects.
-                Document: IG v3.2
-                Item: Specification
-                Section: '5'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0146
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Required for all randomized subjects.
+        Document: IG v3.2
+        Item: Specification
+        Section: '5'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0146
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
 Check:
   all:
-    - name: ACTARM
-      operator: is_not_contained_by
-      value:
-        - Screen Failure
-        - Not Assigned
-        - Not Treated
-        - SCREEN FAILURE
-        - NOT ASSIGNED
-        - NOT TREATED
-    - name: RFSTDTC
-      operator: empty
+  - name: ACTARM
+    operator: is_not_contained_by
+    value:
+    - Screen Failure
+    - Not Assigned
+    - Not Treated
+    - SCREEN FAILURE
+    - NOT ASSIGNED
+    - NOT TREATED
+  - name: RFSTDTC
+    operator: empty
 Core:
   Id: CORE-000380
   Status: Published
@@ -40,15 +40,13 @@ Outcome:
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - SPECIAL PURPOSE
+    Include: SPECIAL PURPOSE
   Domains:
-    Include:
-      - DM
+    Include: DM
 Sensitivity: Record
 herald:
   source: CDISC Library API
-  catalogs:
-    - SDTMIG 3.2
+  catalogs: SDTMIG 3.2
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0146

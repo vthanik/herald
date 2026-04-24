@@ -1,50 +1,50 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Each domain dataset is distinguished by a unique,
-                  two-character code
-                Document: IG v3.4
-                Section: '2.2'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0309
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Each domain dataset is distinguished by a unique,
-                  two-character code
-                Document: IG v3.2
-                Section: '2.2'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0309
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Each domain dataset is distinguished by a unique,
-                  two-character code
-                Document: IG v3.3
-                Section: '2.2'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0309
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Each domain dataset is distinguished by a unique, two-character
+          code
+        Document: IG v3.4
+        Section: '2.2'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0309
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Each domain dataset is distinguished by a unique, two-character
+          code
+        Document: IG v3.2
+        Section: '2.2'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0309
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Each domain dataset is distinguished by a unique, two-character
+          code
+        Document: IG v3.3
+        Section: '2.2'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0309
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
 Check:
   all:
-    - name: DOMAIN
-      operator: has_not_equal_length
-      value: 4
+  - name: DOMAIN
+    operator: has_not_equal_length
+    value: 4
 Core:
   Id: CORE-000181
   Status: Published
@@ -56,17 +56,16 @@ Outcome:
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - ALL
+    Include: ALL
   Domains:
-    Include:
-      - AP--
+    Include: AP--
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0309

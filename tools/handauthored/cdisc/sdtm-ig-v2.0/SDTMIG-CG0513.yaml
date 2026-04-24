@@ -9,10 +9,13 @@ scope:
   classes: SPC
   domains: DM
   exclude_domains: []
-variable: ARMNRS
+variable: ACTARMCD
 check:
-  narrative: ARMNRS^=null
-  condition: ACTARMCD = null
+  all:
+  - name: ACTARMCD
+    operator: empty
+  - name: ARMNRS
+    operator: empty
 outcome:
   message: ARMNRS^=null
   severity: Medium
@@ -26,5 +29,5 @@ provenance:
     and ARMNRS is populated.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000223

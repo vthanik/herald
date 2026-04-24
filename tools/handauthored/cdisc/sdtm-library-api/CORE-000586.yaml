@@ -1,36 +1,35 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: 'ICH E3: Section 10.1 indicates that ''the specific
-                  reason for discontinuation'' should be presented; and that summaries
-                  should be ''grouped by treatment and by major reason.'' The CDISC
-                  SDS Team interprets this guidance as requiring one standardized
-                  disposition term (DSDECOD) per disposition event. If multiple reasons
-                  are reported; the sponsor should identify a primary reason and use
-                  that to populate DSTERM and DSDECOD. Additional reasons should be
-                  submitted in SUPPDS.'
-                Document: IG v3.2
-                Item: Assumption 5.a
-                Section: 6.2 DS
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0398
-              Version: '2'
-            Version: '2.0'
-        Version: '3.2'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: 'ICH E3: Section 10.1 indicates that ''the specific reason
+          for discontinuation'' should be presented; and that summaries should be
+          ''grouped by treatment and by major reason.'' The CDISC SDS Team interprets
+          this guidance as requiring one standardized disposition term (DSDECOD) per
+          disposition event. If multiple reasons are reported; the sponsor should
+          identify a primary reason and use that to populate DSTERM and DSDECOD. Additional
+          reasons should be submitted in SUPPDS.'
+        Document: IG v3.2
+        Item: Assumption 5.a
+        Section: 6.2 DS
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0398
+        Version: '2'
+      Version: '2.0'
+    Version: '3.2'
 Check:
   all:
-    - name: DSCAT
-      operator: equal_to
-      value: DISPOSITION EVENT
-    - name: DSCAT
-      operator: is_not_unique_set
-      value:
-        - USUBJID
-        - EPOCH
+  - name: DSCAT
+    operator: equal_to
+    value: DISPOSITION EVENT
+  - name: DSCAT
+    operator: is_not_unique_set
+    value:
+    - USUBJID
+    - EPOCH
 Core:
   Id: CORE-000586
   Status: Published
@@ -42,20 +41,18 @@ Outcome:
   Message: Multiple records exist within the same EPOCH for a subject when DSCAT =
     DISPOSITION EVENT
   Output_Variables:
-    - DSCAT
-    - EPOCH
+  - DSCAT
+  - EPOCH
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - EVENTS
+    Include: EVENTS
   Domains:
-    Include:
-      - DS
+    Include: DS
 Sensitivity: Record
 herald:
   source: CDISC Library API
-  catalogs:
-    - SDTMIG 3.2
+  catalogs: SDTMIG 3.2
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0398

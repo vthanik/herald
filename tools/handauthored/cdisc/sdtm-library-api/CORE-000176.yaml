@@ -1,60 +1,60 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: |-
-                  The following variables can be used for non-clinical studies (SEND) but must NEVER be used in the Demographics domain for human clinical trials. However, the use of these variables is currently  being evaluated in Findings general observation class domains being developed for use in the  tabulations of virology data:
-                    SPECIES (Demographics)
-                    STRAIN (Demographics)
-                    SBSTRAIN (Demographics)
-                Document: IG 3.4
-                Section: '2.7'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0358
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: 'The following variables can be used for non-clinical
-                  studies (SEND) but must NEVER be used in the Demographics domain
-                  for human clinical trials. However; the use of these variables is
-                  currently being evaluated in Findings general observation class
-                  domains being developed for use in the tabulations of virology data:
-                  SPECIES (Demographics) STRAIN (Demographics) SBSTRAIN (Demographics)'
-                Document: IG v3.2
-                Section: '2.7'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0358
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The following variables can be used for non-clinical
-                  studies (SEND) but must NEVER be used in the Demographics domain
-                  for human clinical trials; where all subjects are human. See Section
-                  9.2; Non-host Organism Identifiers (OI); for information about representing
-                  taxonomic information for non-host organisms such as bacteria and
-                  viruses. SPECIES (Demographics) STRAIN (Demographics) SBSTRAIN (Demographics)
-                Document: IG v3.3
-                Section: '2.7'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0358
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: |-
+          The following variables can be used for non-clinical studies (SEND) but must NEVER be used in the Demographics domain for human clinical trials. However, the use of these variables is currently  being evaluated in Findings general observation class domains being developed for use in the  tabulations of virology data:
+            SPECIES (Demographics)
+            STRAIN (Demographics)
+            SBSTRAIN (Demographics)
+        Document: IG 3.4
+        Section: '2.7'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0358
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: 'The following variables can be used for non-clinical studies
+          (SEND) but must NEVER be used in the Demographics domain for human clinical
+          trials. However; the use of these variables is currently being evaluated
+          in Findings general observation class domains being developed for use in
+          the tabulations of virology data: SPECIES (Demographics) STRAIN (Demographics)
+          SBSTRAIN (Demographics)'
+        Document: IG v3.2
+        Section: '2.7'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0358
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The following variables can be used for non-clinical studies
+          (SEND) but must NEVER be used in the Demographics domain for human clinical
+          trials; where all subjects are human. See Section 9.2; Non-host Organism
+          Identifiers (OI); for information about representing taxonomic information
+          for non-host organisms such as bacteria and viruses. SPECIES (Demographics)
+          STRAIN (Demographics) SBSTRAIN (Demographics)
+        Document: IG v3.3
+        Section: '2.7'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0358
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
 Check:
   all:
-    - name: SBSTRAIN
-      operator: exists
+  - name: SBSTRAIN
+    operator: exists
 Core:
   Id: CORE-000176
   Status: Published
@@ -63,22 +63,20 @@ Description: Verify variable SBSTRAIN does not exist in DM dataset
 Executability: Fully Executable
 Outcome:
   Message: SBSTRAIN is present in DM dataset.
-  Output_Variables:
-    - SBSTRAIN
+  Output_Variables: SBSTRAIN
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - SPECIAL PURPOSE
+    Include: SPECIAL PURPOSE
   Domains:
-    Include:
-      - DM
+    Include: DM
 Sensitivity: Dataset
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0358

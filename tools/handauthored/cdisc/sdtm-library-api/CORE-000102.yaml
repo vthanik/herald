@@ -1,72 +1,72 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Variable Qualifier of --TOXGR
-                Document: Model v2.0
-                Item: --TOX
-                Section: Events|Findings
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0428
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: 'Description of toxicity quantified by --TOXGR such
-                  as NCI CTCAE Short Name. Examples: HYPERCALCEMIA; HYPOCALCEMIA.
-                  Sponsor should specify which scale and version is used in the Sponsor
-                  Comments column of the Define-XML document.'
-                Document: Model v1.4
-                Item: --TOX
-                Section: 2.2.2|2.2.3
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0428
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: 'Description of toxicity quantified by --TOXGR such
-                  as NCI CTCAE Short Name. Examples: HYPERCALCEMIA; HYPOCALCEMIA.
-                  Sponsor should specify which scale and version is used in the Sponsor
-                  Comments column of the Define-XML document.'
-                Document: Model v1.7
-                Item: --TOX
-                Section: 2.2.2|2.2.3
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0428
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: Variable Qualifier of --TOXGR
-                Document: SDTM v2.1
-                Item: --TOX
-                Section: Section 3.1.2 The Events Observation Class Section|3.1.3
-                  The Findings Observation Class
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0582
-              Version: '1'
-            Version: '1.0'
-        Substandard: SDTM
-        Version: '1.0'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Variable Qualifier of --TOXGR
+        Document: Model v2.0
+        Item: --TOX
+        Section: Events|Findings
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0428
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: 'Description of toxicity quantified by --TOXGR such as NCI
+          CTCAE Short Name. Examples: HYPERCALCEMIA; HYPOCALCEMIA. Sponsor should
+          specify which scale and version is used in the Sponsor Comments column of
+          the Define-XML document.'
+        Document: Model v1.4
+        Item: --TOX
+        Section: 2.2.2|2.2.3
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0428
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: 'Description of toxicity quantified by --TOXGR such as NCI
+          CTCAE Short Name. Examples: HYPERCALCEMIA; HYPOCALCEMIA. Sponsor should
+          specify which scale and version is used in the Sponsor Comments column of
+          the Define-XML document.'
+        Document: Model v1.7
+        Item: --TOX
+        Section: 2.2.2|2.2.3
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0428
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: Variable Qualifier of --TOXGR
+        Document: SDTM v2.1
+        Item: --TOX
+        Section: Section 3.1.2 The Events Observation Class Section|3.1.3 The Findings
+          Observation Class
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0582
+        Version: '1'
+      Version: '1.0'
+    Substandard: SDTM
+    Version: '1.0'
 Check:
   all:
-    - name: --TOX
-      operator: non_empty
-    - name: --TOXGR
-      operator: empty
+  - name: --TOX
+    operator: non_empty
+  - name: --TOXGR
+    operator: empty
 Core:
   Id: CORE-000102
   Status: Published
@@ -76,30 +76,31 @@ Executability: Fully Executable
 Outcome:
   Message: --TOXGR should not be null when --TOX is populated.
   Output_Variables:
-    - --TOX
-    - --TOXGR
+  - --TOX
+  - --TOXGR
 Rule_Type: Record Data
 Scope:
   Classes:
     Include:
-      - EVENTS
-      - FINDINGS
+    - EVENTS
+    - FINDINGS
   Domains:
     Include:
-      - AE
-      - MH
-      - CE
-      - EG
-      - LB
-      - PC
-      - PP
+    - AE
+    - MH
+    - CE
+    - EG
+    - LB
+    - PC
+    - PP
   Use_Case: INDH
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0428

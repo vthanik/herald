@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: MHENDTC
 check:
-  narrative: MHENDTC < DM.RFSTDTC
-  condition: MHENDTC ^= null
+  all:
+  - name: MHENDTC
+    operator: non_empty
+  - name: MHENDTC
+    operator: date_greater_than_or_equal_to
+    value: RFSTDTC
 outcome:
   message: MHENDTC < DM.RFSTDTC
   severity: Medium
@@ -36,5 +40,5 @@ provenance:
     conditions at the start of the trial.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000250

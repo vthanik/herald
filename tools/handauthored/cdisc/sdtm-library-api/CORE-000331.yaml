@@ -1,51 +1,49 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Code of actual Arm. When an Arm is not planned (not
-                  in Trial Arms), ACTARMCD will be UNPLAN. Randomized subjects who
-                  were not treated will be given a value of NOTTRT. Values should
-                  be "SCRNFAIL" for screen failures and "NOTASSGN" for subjects not
-                  assigned to treatment. Restricted to values in Trial Arms in all
-                  other cases
-                Document: IG v3.2
-                Item: Specification
-                Section: '5'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0124
-              Version: '1'
-            Version: '2.0'
-          - Citations:
-              - Cited_Guidance: Code of actual Arm. When an Arm is not planned (not
-                  in Trial Arms), ACTARMCD will be UNPLAN. Randomized subjects who
-                  were not treated will be given a value of NOTTRT. Values should
-                  be "SCRNFAIL" for screen failures and "NOTASSGN" for subjects not
-                  assigned to treatment. Restricted to values in Trial Arms in all
-                  other cases
-                Document: IG v3.2
-                Item: Specification
-                Section: '5'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0125
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Code of actual Arm. When an Arm is not planned (not in Trial
+          Arms), ACTARMCD will be UNPLAN. Randomized subjects who were not treated
+          will be given a value of NOTTRT. Values should be "SCRNFAIL" for screen
+          failures and "NOTASSGN" for subjects not assigned to treatment. Restricted
+          to values in Trial Arms in all other cases
+        Document: IG v3.2
+        Item: Specification
+        Section: '5'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0124
+        Version: '1'
+      Version: '2.0'
+    - Citations:
+      - Cited_Guidance: Code of actual Arm. When an Arm is not planned (not in Trial
+          Arms), ACTARMCD will be UNPLAN. Randomized subjects who were not treated
+          will be given a value of NOTTRT. Values should be "SCRNFAIL" for screen
+          failures and "NOTASSGN" for subjects not assigned to treatment. Restricted
+          to values in Trial Arms in all other cases
+        Document: IG v3.2
+        Item: Specification
+        Section: '5'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0125
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
 Check:
   all:
-    - name: ACTARMCD
-      operator: is_not_contained_by
-      value:
-        - SCRNFAIL
-        - NOTASSGN
-        - NOTTRT
-        - UNPLAN
-    - name: ACTARMCD
-      operator: is_not_contained_by
-      value: $armcd_list
+  - name: ACTARMCD
+    operator: is_not_contained_by
+    value:
+    - SCRNFAIL
+    - NOTASSGN
+    - NOTTRT
+    - UNPLAN
+  - name: ACTARMCD
+    operator: is_not_contained_by
+    value: $armcd_list
 Core:
   Id: CORE-000331
   Status: Published
@@ -54,27 +52,24 @@ Description: ACTARMCD values in Demographics are restricted to ARMCD values in T
   Arms when ACTARMCD is not equal to "SCRNFAIL", "NOTASSGN", "NOTTRT", or "UNPLAN"
 Executability: Fully Executable
 Operations:
-  - domain: TA
-    id: $armcd_list
-    name: ARMCD
-    operator: distinct
+- domain: TA
+  id: $armcd_list
+  name: ARMCD
+  operator: distinct
 Outcome:
   Message: DM.ACTARMCD must equal SCRNFAIL, NOTASSGN, NOTTRT, or UNPLAN if the value
     is not present in TA.ARMCD
-  Output_Variables:
-    - ACTARMCD
+  Output_Variables: ACTARMCD
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - SPECIAL PURPOSE
+    Include: SPECIAL PURPOSE
   Domains:
-    Include:
-      - DM
+    Include: DM
 Sensitivity: Record
 herald:
   source: CDISC Library API
-  catalogs:
-    - SDTMIG 3.2
+  catalogs: SDTMIG 3.2
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0124

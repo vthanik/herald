@@ -9,11 +9,24 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: --TPT
+variable: VISITNUM
 check:
-  narrative: --TPT and --TPTNUM have a one-to-one relationship per unique values of
-    --TPTREF
-  condition: VISITNUM not present in dataset and --TPTREF present in dataset
+  all:
+  - name: VISITNUM
+    operator: not_exists
+  - name: --TPTREF
+    operator: exists
+  - any:
+    - name: --TPT
+      operator: is_inconsistent_across_dataset
+      value:
+      - --TPTNUM
+      - --TPTREF
+    - name: --TPTNUM
+      operator: is_inconsistent_across_dataset
+      value:
+      - --TPT
+      - --TPTREF
 outcome:
   message: --TPT and --TPTNUM have a one-to-one relationship per unique values of
     --TPTREF
@@ -30,5 +43,5 @@ provenance:
     may not have different time point descriptions in --TPT.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000686

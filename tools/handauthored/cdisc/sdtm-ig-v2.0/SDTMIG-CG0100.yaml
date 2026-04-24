@@ -10,10 +10,57 @@ scope:
   classes: INT
   domains: EC
   exclude_domains: []
-variable: ECDOSE
+variable: ECOCCUR
 check:
-  narrative: ECDOSE > 0
-  condition: ECOCCUR ^= 'N' and ECSTAT = null and ECDOSTXT = null
+  any:
+  - all:
+    - name: ECOCCUR
+      operator: not_equal_to
+      value: 'N'
+      value_is_literal: yes
+    - name: ECSTAT
+      operator: empty
+    - name: ECDOSTXT
+      operator: empty
+    - name: ECDOSE
+      operator: less_than_or_equal_to
+      value: 0
+  - all:
+    - name: ECOCCUR
+      operator: not_equal_to
+      value: 'N'
+      value_is_literal: yes
+    - name: ECSTAT
+      operator: not_exists
+    - name: ECDOSTXT
+      operator: empty
+    - name: ECDOSE
+      operator: less_than_or_equal_to
+      value: 0
+  - all:
+    - name: ECOCCUR
+      operator: not_equal_to
+      value: 'N'
+      value_is_literal: yes
+    - name: ECSTAT
+      operator: empty
+    - name: ECDOSTXT
+      operator: not_exists
+    - name: ECDOSE
+      operator: less_than_or_equal_to
+      value: 0
+  - all:
+    - name: ECOCCUR
+      operator: not_equal_to
+      value: 'N'
+      value_is_literal: yes
+    - name: ECSTAT
+      operator: not_exists
+    - name: ECDOSTXT
+      operator: not_exists
+    - name: ECDOSE
+      operator: less_than_or_equal_to
+      value: 0
 outcome:
   message: ECDOSE > 0
   severity: Medium
@@ -32,5 +79,5 @@ provenance:
     missed.]
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000137

@@ -12,8 +12,13 @@ scope:
   exclude_domains: []
 variable: LBTOXGR
 check:
-  narrative: LBTOXGR is a numeric value
-  condition: Numeric scale used
+  all:
+  - name: LBTOXGR
+    operator: matches_regex
+    value: .*[a-zA-Z].*
+  - name: LBTOXGR
+    operator: matches_regex
+    value: .*[0-9].*
 outcome:
   message: LBTOXGR is a numeric value
   severity: Medium
@@ -25,5 +30,5 @@ provenance:
     "2" and not "Grade 2").
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000169

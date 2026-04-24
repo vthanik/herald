@@ -10,10 +10,15 @@ scope:
   classes: AP
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: dataset_name
 check:
-  narrative: Split dataset names length > 4 and <= 6
-  condition: Non-Supplemental Qualifier datasets
+  any:
+  - name: dataset_name
+    operator: longer_than
+    value: 6
+  - name: dataset_name
+    operator: shorter_than
+    value: 4
 outcome:
   message: Split dataset names length > 4 and <= 6
   severity: Medium
@@ -28,5 +33,5 @@ provenance:
     for SF-36).]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000778

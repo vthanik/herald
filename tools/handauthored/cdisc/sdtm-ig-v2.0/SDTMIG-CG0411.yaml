@@ -10,10 +10,28 @@ scope:
   classes: ALL
   domains: SUPP--
   exclude_domains: []
-variable: GEN
+variable: RDOMAIN
 check:
-  narrative: IDVAR, IDVARVAL, and QNAM a unique combination per parent subject record
-  condition: ''
+  any:
+  - all:
+    - name: RDOMAIN
+      operator: equal_to
+      value: DM
+      value_is_literal: yes
+    - name: USUBJID
+      operator: is_not_unique_set
+      value: QNAM
+  - all:
+    - name: RDOMAIN
+      operator: not_equal_to
+      value: DM
+      value_is_literal: yes
+    - name: USUBJID
+      operator: is_not_unique_set
+      value:
+      - IDVAR
+      - IDVARVAL
+      - QNAM
 outcome:
   message: IDVAR, IDVARVAL, and QNAM a unique combination per parent subject record
   severity: Medium
@@ -24,5 +42,5 @@ provenance:
   cited_guidance: One record per IDVAR, IDVARVAL, and QNAM value per subject
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000203

@@ -10,10 +10,16 @@ scope:
   classes: EVT
   domains: AE
   exclude_domains: []
-variable: --SDTH
+variable: AESDTH
 check:
-  narrative: --SDTH in ('Y','N')
-  condition: --SDTH ^= null
+  all:
+  - name: AESDTH
+    operator: non_empty
+  - name: AESDTH
+    operator: is_not_contained_by
+    value:
+    - 'Y'
+    - 'N'
 outcome:
   message: --SDTH in ('Y','N')
   severity: Medium
@@ -24,5 +30,5 @@ provenance:
   cited_guidance: Did the event result in death? Valid values are 'Y' and 'N'.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000126

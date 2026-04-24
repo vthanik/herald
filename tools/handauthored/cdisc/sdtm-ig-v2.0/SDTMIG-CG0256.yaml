@@ -10,10 +10,14 @@ scope:
   classes: TDM
   domains: TI
   exclude_domains: []
-variable: IETESTCD
+variable: TIVERS
 check:
-  narrative: IETESTCD unique in dataset
-  condition: TIVERS not present in dataset
+  all:
+  - name: TIVERS
+    operator: not_exists
+  - name: IETESTCD
+    operator: is_not_unique_set
+    value: DOMAIN
 outcome:
   message: IETESTCD unique in dataset
   severity: Medium
@@ -27,5 +31,5 @@ provenance:
     a new criterion, with a new value for IETESTCD.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000146

@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: --TRT
 check:
-  narrative: --TRT ^= 'MULTIPLE'
-  condition: ''
+  all:
+  - name: --TRT
+    operator: equal_to
+    value: MULTIPLE
 outcome:
   message: --TRT ^= 'MULTIPLE'
   severity: Medium
@@ -28,5 +30,5 @@ provenance:
     procedures.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000163

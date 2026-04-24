@@ -12,8 +12,12 @@ scope:
   exclude_domains: []
 variable: --DOSTXT
 check:
-  narrative: --DOSTXT value is non-numeric
-  condition: ''
+  all:
+  - name: --DOSTXT
+    operator: matches_regex
+    value: ^\d*\.?\d*$
+  - name: --DOSTXT
+    operator: non_empty
 outcome:
   message: --DOSTXT value is non-numeric
   severity: Medium
@@ -25,5 +29,5 @@ provenance:
     200-400. Not populated when --DOSE is populated.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000094

@@ -1,35 +1,35 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Data for screen failure subjects, if submitted, should
-                  be included in the Demographics dataset, with ARMCD = "SCRNFAIL'
-                  and ARM = "Screen Failure". Subjects withdrawn from a trial before
-                  assignment to an Arm, if they are not screen failures, should have
-                  ARMCD ='NOTASSGN' and ARM = 'Not Assigned'.
-                Document: IG v3.2
-                Item: Assumption 4
-                Section: '5'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0122
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Data for screen failure subjects, if submitted, should be
+          included in the Demographics dataset, with ARMCD = "SCRNFAIL' and ARM =
+          "Screen Failure". Subjects withdrawn from a trial before assignment to an
+          Arm, if they are not screen failures, should have ARMCD ='NOTASSGN' and
+          ARM = 'Not Assigned'.
+        Document: IG v3.2
+        Item: Assumption 4
+        Section: '5'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0122
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
 Check:
   all:
-    - name: ARM
-      operator: is_contained_by
-      value:
-        - Screen Failure
-        - Not Assigned
-        - SCREEN FAILURE
-        - NOT ASSIGNED
-    - name: ARM
-      operator: not_equal_to
-      value: ACTARM
+  - name: ARM
+    operator: is_contained_by
+    value:
+    - Screen Failure
+    - Not Assigned
+    - SCREEN FAILURE
+    - NOT ASSIGNED
+  - name: ARM
+    operator: not_equal_to
+    value: ACTARM
 Core:
   Id: CORE-000330
   Status: Published
@@ -40,20 +40,18 @@ Executability: Fully Executable
 Outcome:
   Message: ARM should be equal to ACTARM when ARM is Screen Failure or Not Assigned.
   Output_Variables:
-    - ARM
-    - ACTARM
+  - ARM
+  - ACTARM
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - SPECIAL PURPOSE
+    Include: SPECIAL PURPOSE
   Domains:
-    Include:
-      - DM
+    Include: DM
 Sensitivity: Record
 herald:
   source: CDISC Library API
-  catalogs:
-    - SDTMIG 3.2
+  catalogs: SDTMIG 3.2
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0122

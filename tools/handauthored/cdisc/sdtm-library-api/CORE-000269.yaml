@@ -1,84 +1,84 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: For planned visits, values of VISIT, VISITNUM, and
-                  VISITDY must be those  defined in the Trial Visits (TV) dataset
-                  (Section 7.3.1, Trial Visits).
-                Document: IG v3.4
-                Item: ''
-                Section: 4.4.5
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0031
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: For planned visits, values of VISIT, VISITNUM, and
-                  VISITDY must be those defined in    the Trial Visits dataset,
-                Document: IG v3.3
-                Item: ''
-                Section: 4.4.5
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0031
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: For planned visits, values of VISIT, VISITNUM, and
-                  VISITDY must be those defined in the Trial Visits dataset,
-                Document: IG v3.2
-                Item: ''
-                Section: 4.1.4.5
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0031
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: The values of VISITNUM in the TV dataset are the valid
-                  values of VISITNUM for planned visits. Any values of VISITNUM that
-                  appear in subject-level datasets that are not in the TV dataset
-                  are assumed to correspond to unplanned visits. There will be a one-to-one
-                  relationship between values of VISIT and VISITNUM in TV. If a subject-level
-                  dataset includes both VISITNUM and VISIT, then records that include
-                  values of VISITNUM that appear in the TV dataset should also include
-                  the corresponding values of VISIT from the TV dataset.
-                Document: TIG 1.0
-                Item: 2.8.10.31 Assumption 6
-                Section: 2.8.7.5
-              - Cited_Guidance: Specification VISITDY Planned study day of VISIT.
-                Document: TIG 1.0
-                Item: Specification VISITDY
-                Section: 2.8.10.31
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0312
-              Version: '1'
-            Version: '1.0'
-        Substandard: SDTM
-        Version: '1.0'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: For planned visits, values of VISIT, VISITNUM, and VISITDY
+          must be those  defined in the Trial Visits (TV) dataset (Section 7.3.1,
+          Trial Visits).
+        Document: IG v3.4
+        Item: ''
+        Section: 4.4.5
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0031
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: For planned visits, values of VISIT, VISITNUM, and VISITDY
+          must be those defined in    the Trial Visits dataset,
+        Document: IG v3.3
+        Item: ''
+        Section: 4.4.5
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0031
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: For planned visits, values of VISIT, VISITNUM, and VISITDY
+          must be those defined in the Trial Visits dataset,
+        Document: IG v3.2
+        Item: ''
+        Section: 4.1.4.5
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0031
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: The values of VISITNUM in the TV dataset are the valid values
+          of VISITNUM for planned visits. Any values of VISITNUM that appear in subject-level
+          datasets that are not in the TV dataset are assumed to correspond to unplanned
+          visits. There will be a one-to-one relationship between values of VISIT
+          and VISITNUM in TV. If a subject-level dataset includes both VISITNUM and
+          VISIT, then records that include values of VISITNUM that appear in the TV
+          dataset should also include the corresponding values of VISIT from the TV
+          dataset.
+        Document: TIG 1.0
+        Item: 2.8.10.31 Assumption 6
+        Section: 2.8.7.5
+      - Cited_Guidance: Specification VISITDY Planned study day of VISIT.
+        Document: TIG 1.0
+        Item: Specification VISITDY
+        Section: 2.8.10.31
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0312
+        Version: '1'
+      Version: '1.0'
+    Substandard: SDTM
+    Version: '1.0'
 Check:
   all:
-    - name: VISIT
-      operator: non_empty
-    - name: SVPRESP
-      operator: equal_to
-      value: 'Y'
-    - name: VISIT
-      operator: is_not_contained_by
-      value: $tv_visit
+  - name: VISIT
+    operator: non_empty
+  - name: SVPRESP
+    operator: equal_to
+    value: 'Y'
+  - name: VISIT
+    operator: is_not_contained_by
+    value: $tv_visit
 Core:
   Id: CORE-000269
   Status: Published
@@ -87,36 +87,35 @@ Description: Verify when VISIT is not null in any given domain and VISIT is plan
   (SVPRESP = 'Y'), then VISIT should be among TV.VISIT.
 Executability: Fully Executable
 Match_Datasets:
-  - Keys:
-      - USUBJID
-      - VISIT
-    Name: SV
+- Keys:
+  - USUBJID
+  - VISIT
+  Name: SV
 Operations:
-  - domain: TV
-    id: $tv_visit
-    name: VISIT
-    operator: distinct
+- domain: TV
+  id: $tv_visit
+  name: VISIT
+  operator: distinct
 Outcome:
   Message: For a planned visit (SVPRESP = 'Y'), non-missing VISIT value must be among
     those present in TV.VISIT.
   Output_Variables:
-    - VISIT
-    - VISITNUM
+  - VISIT
+  - VISITNUM
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - ALL
+    Include: ALL
   Domains:
-    Exclude:
-      - TV
+    Exclude: TV
   Use_Case: INDH
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0031

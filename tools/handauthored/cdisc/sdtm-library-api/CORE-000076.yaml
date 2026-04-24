@@ -1,61 +1,59 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The TR domain does not include anatomical location
-                  information on each measurement/assessment record, because this
-                  would be a duplication of information already represented in TU.
-                  The multi-domain approach to representing oncology assessment data
-                  was developed largely to reduce duplication of stored information.
-                Document: IG v3.4
-                Item: TR Description/Overview
-                Section: 6.3.12.2
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0302
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The TR domain does not include anatomical location
-                  information on each measurement record because this would be a duplication
-                  of information already represented in TU. This duplication of data
-                  was a deciding factor in multi-domain approach to representing this
-                  data.
-                Document: IG v3.2
-                Item: Specification
-                Section: '6.3'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0302
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The TR domain does not include anatomical location
-                  information on each measurement record because this would be a duplication
-                  of information already represented in TU. This duplication of data
-                  was a deciding factor in multi-domain approach to representing this
-                  data.
-                Document: IG v3.3
-                Item: Specification
-                Section: 6.3.16.2
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0302
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The TR domain does not include anatomical location information
+          on each measurement/assessment record, because this would be a duplication
+          of information already represented in TU. The multi-domain approach to representing
+          oncology assessment data was developed largely to reduce duplication of
+          stored information.
+        Document: IG v3.4
+        Item: TR Description/Overview
+        Section: 6.3.12.2
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0302
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The TR domain does not include anatomical location information
+          on each measurement record because this would be a duplication of information
+          already represented in TU. This duplication of data was a deciding factor
+          in multi-domain approach to representing this data.
+        Document: IG v3.2
+        Item: Specification
+        Section: '6.3'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0302
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The TR domain does not include anatomical location information
+          on each measurement record because this would be a duplication of information
+          already represented in TU. This duplication of data was a deciding factor
+          in multi-domain approach to representing this data.
+        Document: IG v3.3
+        Item: Specification
+        Section: 6.3.16.2
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0302
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
 Check:
   all:
-    - name: TRPORTOT
-      operator: exists
+  - name: TRPORTOT
+    operator: exists
 Core:
   Id: CORE-000076
   Status: Published
@@ -67,17 +65,16 @@ Outcome:
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - FINDINGS
+    Include: FINDINGS
   Domains:
-    Include:
-      - TR
+    Include: TR
 Sensitivity: Dataset
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0302

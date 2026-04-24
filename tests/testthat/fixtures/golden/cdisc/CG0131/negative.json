@@ -1,20 +1,20 @@
 {
-  "rule_id": "CORE-000003",
+  "rule_id": "CG0131",
   "fixture_type": "negative",
   "datasets": {
-    "TR": {
-      "_placeholder_": "x"
+    "DM": {
+      "DTHFL": "Y"
     }
   },
   "expected": {
     "fires": false,
     "rows": []
   },
-  "notes": "auto-seeded; 1 leaf op(s): exists (should not fire)",
+  "notes": "auto-seeded; 2 leaf op(s): not_equal_to,non_empty (should not fire)",
   "authored": "auto-seed@4",
   "spec": {
     "class_map": {
-      "TR": "FINDINGS"
+      "DM": "SPECIAL PURPOSE"
     }
   }
 }

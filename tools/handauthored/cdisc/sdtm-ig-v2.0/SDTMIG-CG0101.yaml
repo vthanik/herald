@@ -10,10 +10,15 @@ scope:
   classes: INT
   domains: EC
   exclude_domains: []
-variable: ECDOSE
+variable: ECOCCUR
 check:
-  narrative: ECDOSE = null or > 0
-  condition: ECOCCUR = 'N'
+  all:
+  - name: ECOCCUR
+    operator: equal_to
+    value: 'N'
+  - name: ECDOSE
+    operator: less_than_or_equal_to
+    value: 0
 outcome:
   message: ECDOSE = null or > 0
   severity: Medium
@@ -32,5 +37,5 @@ provenance:
     missed.]
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000004

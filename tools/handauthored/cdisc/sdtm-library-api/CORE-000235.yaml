@@ -1,67 +1,64 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Identifier for a related study subject or pool of
-                  study subjects. The subject(s) may be human or animal. RSUBJID will
-                  be populated with the USUBJID of the related subject or the POOLID
-                  of the related pool. RSUBJID will be null for data about associated
-                  persons who are related to the study but not to any of the study
-                  subjects.
-                Document: Model v2.0
-                Item: RSUBJID
-                Section: Associated Persons
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0367
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Identifier for a related study subject or pool of
-                  study subjects. The subject(s) may be human or animal. RSUBJID will
-                  be populated with the USUBJID of the related subject or the POOLID
-                  of the related pool. RSUBJID will be null for data about associated
-                  persons who are related to the study but not to any of the study
-                  subjects.
-                Document: Model v1.4
-                Section: 5.1.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0367
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Identifier for a related subject or pool of subjects.
-                  RSUBJID may be populated with the USUBJID of the related subject
-                  or the POOLID of the related pool.  RSUBJID will be null for data
-                  about associated persons who are related to the study but not to
-                  any study subjects
-                Document: Model v1.7
-                Section: 6.1.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0367
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Identifier for a related study subject or pool of study subjects.
+          The subject(s) may be human or animal. RSUBJID will be populated with the
+          USUBJID of the related subject or the POOLID of the related pool. RSUBJID
+          will be null for data about associated persons who are related to the study
+          but not to any of the study subjects.
+        Document: Model v2.0
+        Item: RSUBJID
+        Section: Associated Persons
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0367
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Identifier for a related study subject or pool of study subjects.
+          The subject(s) may be human or animal. RSUBJID will be populated with the
+          USUBJID of the related subject or the POOLID of the related pool. RSUBJID
+          will be null for data about associated persons who are related to the study
+          but not to any of the study subjects.
+        Document: Model v1.4
+        Section: 5.1.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0367
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Identifier for a related subject or pool of subjects. RSUBJID
+          may be populated with the USUBJID of the related subject or the POOLID of
+          the related pool.  RSUBJID will be null for data about associated persons
+          who are related to the study but not to any study subjects
+        Document: Model v1.7
+        Section: 6.1.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0367
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
 Check:
   all:
-    - name: RSUBJID
-      operator: non_empty
-    - name: RSUBJID
-      operator: not_equal_to
-      value: POOLID
-    - name: RSUBJID
-      operator: is_not_contained_by
-      value: $dm_usubjid
+  - name: RSUBJID
+    operator: non_empty
+  - name: RSUBJID
+    operator: not_equal_to
+    value: POOLID
+  - name: RSUBJID
+    operator: is_not_contained_by
+    value: $dm_usubjid
 Core:
   Id: CORE-000235
   Status: Published
@@ -70,31 +67,30 @@ Description: Verify that RSUBJID=DM.USUBJID when RSUBJID is populated and RSUBJI
   is not equal to POOLID
 Executability: Fully Executable
 Operations:
-  - domain: DM
-    id: $dm_usubjid
-    name: USUBJID
-    operator: distinct
+- domain: DM
+  id: $dm_usubjid
+  name: USUBJID
+  operator: distinct
 Outcome:
   Message: RSUBJID must equal DM.USUBJID when RSUBJID is populated and RSUBJID does
     not equal POOLID
   Output_Variables:
-    - USUBJID
-    - RSUBJID
-    - POOLID
+  - USUBJID
+  - RSUBJID
+  - POOLID
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - ALL
+    Include: ALL
   Domains:
-    Include:
-      - AP--
+    Include: AP--
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0367

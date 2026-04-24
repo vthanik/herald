@@ -7,10 +7,11 @@ scope:
   classes: TDM
   domains: TJ
   exclude_domains: []
-variable: ''
+variable: TT
 check:
-  narrative: TJ dataset not present
-  condition: ''
+  any:
+  - name: TT
+    operator: exists
 outcome:
   message: TJ dataset not present
   severity: Medium
@@ -21,5 +22,5 @@ provenance:
   cited_guidance: Not in human clinical trials.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000042

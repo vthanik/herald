@@ -10,10 +10,16 @@ scope:
   classes: EVT
   domains: AE
   exclude_domains: []
-variable: --SER
+variable: AESER
 check:
-  narrative: --SER in ('Y','N')
-  condition: --SER ^= null
+  all:
+  - name: AESER
+    operator: non_empty
+  - name: AESER
+    operator: is_not_contained_by
+    value:
+    - 'Y'
+    - 'N'
 outcome:
   message: --SER in ('Y','N')
   severity: Medium
@@ -24,5 +30,5 @@ provenance:
   cited_guidance: Is this is a serious event? Valid values are 'Y' and 'N'.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000087

@@ -10,10 +10,13 @@ scope:
   classes: AP
   domains: ALL
   exclude_domains: []
-variable: RSUBJID
+variable: RDEVID
 check:
-  narrative: RSUBJID = null
-  condition: RDEVID ^= null
+  all:
+  - name: RDEVID
+    operator: non_empty
+  - name: RSUBJID
+    operator: non_empty
 outcome:
   message: RSUBJID = null
   severity: Medium
@@ -25,4 +28,5 @@ provenance:
     study; a particular study subject or a device used in the study.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
+  core_crosswalk: CORE-000234

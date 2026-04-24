@@ -9,8 +9,14 @@ scope:
   exclude_domains: []
 variable: --SPCUFL
 check:
-  narrative: --SPCUFL = 'N' or null
-  condition: ''
+  all:
+  - name: --SPCUFL
+    operator: exists
+  - name: --SPCUFL
+    operator: not_equal_to
+    value: 'N'
+  - name: --SPCUFL
+    operator: non_empty
 outcome:
   message: --SPCUFL = 'N' or null
   severity: Medium
@@ -22,5 +28,5 @@ provenance:
     the specimen is usable.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000116

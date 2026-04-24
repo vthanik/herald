@@ -81,23 +81,23 @@ test_that("substitute_crossrefs expands a resolvable value in place", {
   expect_setequal(out$args$value, c("S1", "S2"))
 })
 
-test_that("end-to-end: CORE-000201 fires exactly on AE rows not in DM", {
+test_that("end-to-end: CG0029 fires exactly on AE rows not in DM", {
   dm <- data.frame(USUBJID = c("S1-001", "S1-002"), stringsAsFactors = FALSE)
   ae <- data.frame(USUBJID = c("S1-001", "S1-XXX", "S1-002"),
                    stringsAsFactors = FALSE)
   r <- validate(files = list(dm, ae),
-                rules = "CORE-000201", quiet = TRUE)
+                rules = "CG0029", quiet = TRUE)
   fired <- r$findings[r$findings$status == "fired", , drop = FALSE]
   # Only AE row 2 should fire; DM rows and AE rows 1 + 3 are all in DM.USUBJID.
   expect_true(all(fired$dataset == "AE"))
   expect_equal(fired$row, 2L)
 })
 
-test_that("end-to-end: CORE-000201 without the ref target -> advisory only", {
+test_that("end-to-end: CG0029 without the ref target -> advisory only", {
   # DM missing entirely -> $dm_usubjid unresolved -> leaf NA -> advisory.
   ae <- data.frame(USUBJID = c("S1-001"), stringsAsFactors = FALSE)
   r <- validate(files = list(ae),
-                rules = "CORE-000201", quiet = TRUE)
+                rules = "CG0029", quiet = TRUE)
   expect_true(nrow(r$findings[r$findings$status == "fired", ]) == 0L)
   # Some advisory emission expected on the unresolved ref.
   expect_true(nrow(r$findings[r$findings$status == "advisory", ]) >= 1L)

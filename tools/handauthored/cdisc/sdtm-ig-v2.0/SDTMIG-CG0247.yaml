@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: TAETORD
 check:
-  narrative: TAETORD is unique within an ARM
-  condition: ''
+  all:
+  - name: TAETORD
+    operator: is_not_unique_set
+    value: ARM
 outcome:
   message: TAETORD is unique within an ARM
   severity: Medium
@@ -24,5 +26,5 @@ provenance:
   cited_guidance: Number that gives the order of the Element within the Arm.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000144

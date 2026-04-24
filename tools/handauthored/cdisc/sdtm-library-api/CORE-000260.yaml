@@ -1,78 +1,78 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Events[--PRESP][Value is "Y" for prespecified events,
-                  null for spontaneously reported events.] Interventions[--PRESP][Values
-                  should be "Y" or null.]
-                Document: Model v2.0
-                Item: --PRESP
-                Section: Events|Interventions
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0085
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Model v1.7[2.2.1 (Interventions )][--PRESP; Values
-                  should be "Y" or null.] | Model v1.7[2.2.2 (Events)][--PRESP; Values
-                  should be "Y" or null.]
-                Document: Model v1.7
-                Item: ''
-                Section: Model v1.7[2.2.1 (Interventions)]|Model v1.7[2.2.2 (Events)]
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0085
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Model v1.4[2.2.1 (Interventions )][--PRESP; Values
-                  should be "Y" or null.] |Model v1.4[2.2.2 (Events)][--PRESP; Values
-                  should be "Y" or null.]
-                Document: Model v1.4
-                Item: ''
-                Section: Model v1.4[2.2.1 (Interventions)]|Model v1.4[2.2.2 (Events)]
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0085
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: Events[--PRESP][Value is "Y" for prespecified events,
-                  null for spontaneously reported events.]
-                Document: SDTM v2.1
-                Item: --PRESP
-                Section: Section 3.1.2 The Events Observation Class
-              - Cited_Guidance: Interventions[--PRESP][Values should be "Y" or null.]
-                Document: SDTM v2.1
-                Item: --PRESP
-                Section: Section 3.1.1 The Interventions Observation Class
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0350
-              Version: '1'
-            Version: '1.0'
-        Substandard: SDTM
-        Version: '1.0'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Events[--PRESP][Value is "Y" for prespecified events, null
+          for spontaneously reported events.] Interventions[--PRESP][Values should
+          be "Y" or null.]
+        Document: Model v2.0
+        Item: --PRESP
+        Section: Events|Interventions
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0085
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Model v1.7[2.2.1 (Interventions )][--PRESP; Values should
+          be "Y" or null.] | Model v1.7[2.2.2 (Events)][--PRESP; Values should be
+          "Y" or null.]
+        Document: Model v1.7
+        Item: ''
+        Section: Model v1.7[2.2.1 (Interventions)]|Model v1.7[2.2.2 (Events)]
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0085
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Model v1.4[2.2.1 (Interventions )][--PRESP; Values should
+          be "Y" or null.] |Model v1.4[2.2.2 (Events)][--PRESP; Values should be "Y"
+          or null.]
+        Document: Model v1.4
+        Item: ''
+        Section: Model v1.4[2.2.1 (Interventions)]|Model v1.4[2.2.2 (Events)]
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0085
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: Events[--PRESP][Value is "Y" for prespecified events, null
+          for spontaneously reported events.]
+        Document: SDTM v2.1
+        Item: --PRESP
+        Section: Section 3.1.2 The Events Observation Class
+      - Cited_Guidance: Interventions[--PRESP][Values should be "Y" or null.]
+        Document: SDTM v2.1
+        Item: --PRESP
+        Section: Section 3.1.1 The Interventions Observation Class
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0350
+        Version: '1'
+      Version: '1.0'
+    Substandard: SDTM
+    Version: '1.0'
 Check:
   all:
-    - name: --PRESP
-      operator: non_empty
-    - name: --PRESP
-      operator: not_equal_to
-      value: 'Y'
-      value_is_literal: yes
+  - name: --PRESP
+    operator: non_empty
+  - name: --PRESP
+    operator: not_equal_to
+    value: 'Y'
+    value_is_literal: yes
 Core:
   Id: CORE-000260
   Status: Published
@@ -81,26 +81,26 @@ Description: Raise an error when --PRESP does not equal 'Y' or is not empty.
 Executability: Fully Executable
 Outcome:
   Message: --PRESP does not equal 'Y' or is not empty.
-  Output_Variables:
-    - --PRESP
+  Output_Variables: --PRESP
 Rule_Type: Record Data
 Scope:
   Classes:
     Include:
-      - EVENTS
-      - INTERVENTIONS
+    - EVENTS
+    - INTERVENTIONS
   Domains:
     Exclude:
-      - DS
-      - DV
-      - EX
+    - DS
+    - DV
+    - EX
   Use_Case: INDH
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0085

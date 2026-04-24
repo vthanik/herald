@@ -13,10 +13,18 @@ scope:
   - SUPP--
   - RELREC
   exclude_domains: []
-variable: IDVARVAL
+variable: IDVAR
 check:
-  narrative: IDVARVAL = value of variable = IDVAR in domain = RDOMAIN
-  condition: IDVAR ^= null
+  all:
+  - name: IDVAR
+    operator: non_empty
+  - name: IDVARVAL
+    operator: non_empty
+  - name: IDVARVAL
+    operator: not_equal_to
+    type_insensitive: yes
+    value: IDVAR
+    value_is_reference: yes
 outcome:
   message: IDVARVAL = value of variable = IDVAR in domain = RDOMAIN
   severity: Medium
@@ -27,5 +35,5 @@ provenance:
   cited_guidance: Value of identifying variable of the parent record(s).
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000206

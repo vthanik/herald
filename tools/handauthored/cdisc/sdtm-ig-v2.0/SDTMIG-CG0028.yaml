@@ -12,9 +12,27 @@ scope:
   exclude_domains: []
 variable: --SEQ
 check:
-  narrative: --SEQ is a unique number per USUBJID per domain, or a unique number per
-    POOLID per domain, including when the domain is split into multiple files
-  condition: Variable is not TS.TSSEQ
+  any:
+  - all:
+    - name: --SEQ
+      operator: exists
+    - name: USUBJID
+      operator: non_empty
+    - name: --SEQ
+      operator: is_not_unique_set
+      value:
+      - DOMAIN
+      - USUBJID
+  - all:
+    - name: --SEQ
+      operator: exists
+    - name: POOLID
+      operator: non_empty
+    - name: --SEQ
+      operator: is_not_unique_set
+      value:
+      - DOMAIN
+      - POOLID
 outcome:
   message: --SEQ is a unique number per USUBJID per domain, or a unique number per
     POOLID per domain, including when the domain is split into multiple files
@@ -28,5 +46,5 @@ provenance:
     May be any valid number (including decimals) and does not have to start at 1.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000544

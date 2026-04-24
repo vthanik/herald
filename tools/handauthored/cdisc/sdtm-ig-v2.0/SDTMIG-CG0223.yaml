@@ -10,11 +10,19 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: --ENDY
+variable: --ENDTC
 check:
-  narrative: --ENDY = null
-  condition: --ENDTC or DM.RFSTDTC does not contain complete values in their date
-    portion
+  any:
+  - all:
+    - name: --ENDTC
+      operator: is_incomplete_date
+    - name: --ENDY
+      operator: non_empty
+  - all:
+    - name: RFSTDTC
+      operator: is_incomplete_date
+    - name: --ENDY
+      operator: non_empty
 outcome:
   message: --ENDY = null
   severity: Medium
@@ -33,5 +41,5 @@ provenance:
     should be used across all domains.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000139

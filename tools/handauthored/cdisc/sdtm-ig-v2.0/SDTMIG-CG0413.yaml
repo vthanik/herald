@@ -10,10 +10,13 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: DOMAIN
+variable: dataset_name
 check:
-  narrative: Dataset name begins with DOMAIN value
-  condition: ''
+  all:
+  - name: dataset_name
+    operator: prefix_not_equal_to
+    prefix: 2
+    value: DOMAIN
 outcome:
   message: Dataset name begins with DOMAIN value
   severity: Medium
@@ -27,5 +30,5 @@ provenance:
     the RDOMAIN variable in relationship tables.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000598

@@ -10,11 +10,12 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: define_variable_role
 check:
-  narrative: Metadata attribute of Variable Role = IG Role for domains in IG, Metadata
-    attribute of Variable Role = Model Role for custom domains
-  condition: ''
+  all:
+  - name: define_variable_role
+    operator: not_equal_to
+    value: library_variable_role
 outcome:
   message: Metadata attribute of Variable Role = IG Role for domains in IG, Metadata
     attribute of Variable Role = Model Role for custom domains
@@ -28,5 +29,5 @@ provenance:
     can be classified according to its Role]
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-001081

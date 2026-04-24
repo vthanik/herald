@@ -1,30 +1,30 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Values should be "SCRNFAIL" for screen failures and
-                  "NOTASSGN" for subjects not assigned to treatment.
-                Document: IG v3.2
-                Item: Specification
-                Section: '5'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0129
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Values should be "SCRNFAIL" for screen failures and "NOTASSGN"
+          for subjects not assigned to treatment.
+        Document: IG v3.2
+        Item: Specification
+        Section: '5'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0129
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
 Check:
   all:
-    - name: ARMCD
-      operator: is_contained_by
-      value:
-        - SCRNFAIL
-        - NOTASSGN
-    - name: ARMCD
-      operator: not_equal_to
-      value: ACTARMCD
+  - name: ARMCD
+    operator: is_contained_by
+    value:
+    - SCRNFAIL
+    - NOTASSGN
+  - name: ARMCD
+    operator: not_equal_to
+    value: ACTARMCD
 Core:
   Id: CORE-000377
   Status: Published
@@ -38,15 +38,13 @@ Outcome:
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - SPECIAL PURPOSE
+    Include: SPECIAL PURPOSE
   Domains:
-    Include:
-      - DM
+    Include: DM
 Sensitivity: Record
 herald:
   source: CDISC Library API
-  catalogs:
-    - SDTMIG 3.2
+  catalogs: SDTMIG 3.2
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0129

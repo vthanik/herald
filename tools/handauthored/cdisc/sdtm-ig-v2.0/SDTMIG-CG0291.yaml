@@ -10,11 +10,16 @@ scope:
   classes: TDM
   domains: TS
   exclude_domains: []
-variable: TSVAL
+variable: TSVALNF
 check:
-  narrative: TSVAL not populated with values or synonyms of values in the ISO 21090
-    null flavor codelist (or other terms that can be represented as null flavors)
-  condition: TSVALNF = null
+  all:
+  - name: TSVALNF
+    operator: empty
+  - name: TSVAL
+    operator: matches_regex
+    value: (?i:^(NI|No information|INV|Invalid|OTH|Other|PINF|Positive infinity|NINF|Negative
+      infinity|UNC|Unencoded|DER|Derived|UNK|Unknown|ASKU|Asked but unknown|NAV|Temporarily
+      unavailable|NASK|Not asked|TRC|Trace|MSK|Masked|QS|Sufficient Quantity)$)
 outcome:
   message: TSVAL not populated with values or synonyms of values in the ISO 21090
     null flavor codelist (or other terms that can be represented as null flavors)
@@ -30,5 +35,5 @@ provenance:
     would be a better solution.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000787

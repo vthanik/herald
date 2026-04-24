@@ -9,11 +9,17 @@ scope:
   classes: SPC
   domains: DM
   exclude_domains: []
-variable: RFSTDTC
+variable: ARMNRS
 check:
-  narrative: RFSTDTC = null
-  condition: Milestone associated with RFSTDTC is start of treatment and ARMNRS ^=null
-    and ARMNRS ^='UNPLANNED TREATMENT'.
+  all:
+  - name: ARMNRS
+    operator: non_empty
+  - name: ARMNRS
+    operator: not_equal_to
+    value: UNPLANNED TREATMENT
+    value_is_literal: yes
+  - name: RFSTDTC
+    operator: non_empty
 outcome:
   message: RFSTDTC = null
   severity: Medium
@@ -42,5 +48,5 @@ provenance:
     randomization and treatment.]"
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000758

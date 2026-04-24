@@ -10,10 +10,16 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: --TPT
+variable: VISITNUM
 check:
-  narrative: --TPT and --TPTNUM have a one-to-one relationship
-  condition: VISITNUM and --TPTREF are not present in dataset
+  all:
+  - name: VISITNUM
+    operator: not_exists
+  - name: --TPTREF
+    operator: not_exists
+  - name: --TPT
+    operator: is_not_unique_relationship
+    value: --TPTNUM
 outcome:
   message: --TPT and --TPTNUM have a one-to-one relationship
   severity: Medium
@@ -29,5 +35,5 @@ provenance:
     may not have different time point descriptions in --TPT.
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000141

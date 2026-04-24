@@ -1,110 +1,110 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Events[--BODSYSCD][Variable Qualifier of BODSYS]
-                Document: Model v2.0
-                Item: --BODSYS
-                Section: Events
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0083
-              Version: '2'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Variable Qualifier of --BODSYS
-                Document: Model v1.7
-                Section: 2.2.2
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0083
-              Version: '2'
-            Version: '2.0'
-        Version: '3.3'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Variable Qualifier of --BODSYS
-                Document: Model v1.4
-                Section: 2.2.2
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0083
-              Version: '2'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: Events[--BODSYSCD][Variable Qualifier of BODSYS]
-                Document: SDTM v2.1
-                Item: --BODSYS
-                Section: 3.1.2 The Events Observation Class
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0348
-              Version: '1'
-            Version: '1.0'
-        Substandard: SDTM
-        Version: '1.0'
-  - Organization: FDA
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: All paired variables should have a one-to-one relationship.
-                  Examples include short name and name of test; parameter name and
-                  parameter code or number; variable name and variable label, etc.
-                Document: FDA
-                Section: FDAB009
-            Origin: FDA Business Rules
-            Rule_Identifier:
-              Id: FB0910
-              Version: '1'
-            Version: '1.5'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: All paired variables should have a one-to-one relationship.
-                  Examples include short name and name of test; parameter name and
-                  parameter code or number; variable name and variable label, etc.
-                Document: FDA
-                Section: FDAB009
-            Origin: FDA Business Rules
-            Rule_Identifier:
-              Id: FB0910
-              Version: '1'
-            Version: '1.5'
-        Version: '3.3'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: All paired variables should have a one-to-one relationship.
-                  Examples include short name and name of test; parameter name and
-                  parameter code or number; variable name and variable label, etc.
-                Document: FDA
-                Section: FDAB009
-            Origin: FDA Business Rules
-            Rule_Identifier:
-              Id: FB0910
-              Version: '1'
-            Version: '1.5'
-        Version: '3.4'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Events[--BODSYSCD][Variable Qualifier of BODSYS]
+        Document: Model v2.0
+        Item: --BODSYS
+        Section: Events
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0083
+        Version: '2'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Variable Qualifier of --BODSYS
+        Document: Model v1.7
+        Section: 2.2.2
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0083
+        Version: '2'
+      Version: '2.0'
+    Version: '3.3'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Variable Qualifier of --BODSYS
+        Document: Model v1.4
+        Section: 2.2.2
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0083
+        Version: '2'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: Events[--BODSYSCD][Variable Qualifier of BODSYS]
+        Document: SDTM v2.1
+        Item: --BODSYS
+        Section: 3.1.2 The Events Observation Class
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0348
+        Version: '1'
+      Version: '1.0'
+    Substandard: SDTM
+    Version: '1.0'
+- Organization: FDA
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: All paired variables should have a one-to-one relationship.
+          Examples include short name and name of test; parameter name and parameter
+          code or number; variable name and variable label, etc.
+        Document: FDA
+        Section: FDAB009
+      Origin: FDA Business Rules
+      Rule_Identifier:
+        Id: FB0910
+        Version: '1'
+      Version: '1.5'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: All paired variables should have a one-to-one relationship.
+          Examples include short name and name of test; parameter name and parameter
+          code or number; variable name and variable label, etc.
+        Document: FDA
+        Section: FDAB009
+      Origin: FDA Business Rules
+      Rule_Identifier:
+        Id: FB0910
+        Version: '1'
+      Version: '1.5'
+    Version: '3.3'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: All paired variables should have a one-to-one relationship.
+          Examples include short name and name of test; parameter name and parameter
+          code or number; variable name and variable label, etc.
+        Document: FDA
+        Section: FDAB009
+      Origin: FDA Business Rules
+      Rule_Identifier:
+        Id: FB0910
+        Version: '1'
+      Version: '1.5'
+    Version: '3.4'
 Check:
   all:
-    - name: --BDSYCD
-      operator: exists
-    - name: --BODSYS
-      operator: exists
-    - name: --BDSYCD
-      operator: is_not_unique_relationship
-      value: --BODSYS
+  - name: --BDSYCD
+    operator: exists
+  - name: --BODSYS
+    operator: exists
+  - name: --BDSYCD
+    operator: is_not_unique_relationship
+    value: --BODSYS
 Core:
   Id: CORE-000184
   Status: Published
@@ -114,23 +114,22 @@ Executability: Fully Executable
 Outcome:
   Message: --BODSYS and --BDSYCD do not have a one-to-one relationship.
   Output_Variables:
-    - --BODSYS
-    - --BDSYCD
+  - --BODSYS
+  - --BDSYCD
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - EVENTS
+    Include: EVENTS
   Domains:
-    Include:
-      - ALL
+    Include: ALL
   Use_Case: INDH
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0083

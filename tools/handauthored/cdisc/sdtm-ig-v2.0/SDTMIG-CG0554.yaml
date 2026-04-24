@@ -9,11 +9,35 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: DOMAIN
 check:
-  narrative: STUDYID, DOMAIN, and --SEQ exist and at least one of USUBJID, APID, SPDEVID,
-    or POOLID
-  condition: ''
+  any:
+  - all:
+    - name: DOMAIN
+      operator: prefix_matches_regex
+      prefix: 2
+      value: (AP|ap)
+    - name: APID
+      operator: not_exists
+  - all:
+    - name: DOMAIN
+      operator: not_prefix_matches_regex
+      prefix: 2
+      value: (AP|ap)
+    - name: STUDYID
+      operator: exists
+    - name: --SEQ
+      operator: exists
+    - name: USUBJID
+      operator: not_exists
+    - name: SPDEVID
+      operator: not_exists
+    - name: POOLID
+      operator: not_exists
+    - name: SPTOBID
+      operator: not_exists
+    - name: STOCONID
+      operator: not_exists
 outcome:
   message: STUDYID, DOMAIN, and --SEQ exist and at least one of USUBJID, APID, SPDEVID,
     or POOLID
@@ -28,5 +52,5 @@ provenance:
     or POOLID.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000107

@@ -7,11 +7,20 @@ scope:
   classes: SPC
   domains: DM
   exclude_domains: []
-variable: RFENDTC
+variable: ACTARM
 check:
-  narrative: RFENDTC = null
-  condition: Milestone associated with RFENDTC is end of treatment and ACTARM in ('Screen
-    Failure', 'Not Assigned', 'Not Treated')
+  all:
+  - name: ACTARM
+    operator: is_contained_by
+    value:
+    - Screen Failure
+    - Not Assigned
+    - Not Treated
+    - SCREEN FAILURE
+    - NOT ASSIGNED
+    - NOT TREATED
+  - name: RFENDTC
+    operator: non_empty
 outcome:
   message: RFENDTC = null
   severity: Medium
@@ -32,5 +41,5 @@ provenance:
     not treated (ACTARMCD=NOTTRT), RFSTDTC will be null.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000369

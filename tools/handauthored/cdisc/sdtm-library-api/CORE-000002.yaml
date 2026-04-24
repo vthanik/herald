@@ -1,69 +1,69 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Note that SESTDTC is required, although --STDTC is
-                  not required in any other subject-level dataset. The purpose of
-                  the dataset is to record the Elements a subject actually passed
-                  through. We assume that if it is known that a subject passed through
-                  a particular Element, then there must be some information on when
-                  it started, even if that information is imprecise. Thus, SESTDTC
-                  may not be null, although some records may not have all the components
-                  (e.g., year, month, day, hour, minute) of the date/time value collected.
-                Document: SDTM v1.4
-                Section: '5.3'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0208
-              Version: '3'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Note that SESTDTC is required, although --STDTC is
-                  not required in any other subject-level dataset. The purpose of
-                  the dataset is to record the Elements a subject actually passed
-                  through. We assume that if it is known that a subject passed through
-                  a particular Element, then there must be some information on when
-                  it started, even if that information is imprecise. Thus, SESTDTC
-                  may not be null, although some records may not have all the components
-                  (e.g., year, month, day, hour, minute) of the date/time value collected.
-                Document: IG v3.2
-                Item: Assumption 11
-                Section: 5 SE
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0208
-              Version: '3'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: Note that SESTDTC is required, although --STDTC is
-                  not required in any other subject-level dataset. The purpose of
-                  the dataset is to record the Elements a subject actually passed
-                  through. We assume that if it is known that a subject passed through
-                  a particular Element, then there must be some information on when
-                  it started, even if that information is imprecise. Thus, SESTDTC
-                  may not be null, although some records may not have all the components
-                  (e.g., year, month, day, hour, minute) of the date/time value collected.
-                Document: IG v3.3
-                Item: Assumption 9
-                Section: '5.3'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0208
-              Version: '3'
-            Version: '2.0'
-        Version: '3.3'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Note that SESTDTC is required, although --STDTC is not required
+          in any other subject-level dataset. The purpose of the dataset is to record
+          the Elements a subject actually passed through. We assume that if it is
+          known that a subject passed through a particular Element, then there must
+          be some information on when it started, even if that information is imprecise.
+          Thus, SESTDTC may not be null, although some records may not have all the
+          components (e.g., year, month, day, hour, minute) of the date/time value
+          collected.
+        Document: SDTM v1.4
+        Section: '5.3'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0208
+        Version: '3'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Note that SESTDTC is required, although --STDTC is not required
+          in any other subject-level dataset. The purpose of the dataset is to record
+          the Elements a subject actually passed through. We assume that if it is
+          known that a subject passed through a particular Element, then there must
+          be some information on when it started, even if that information is imprecise.
+          Thus, SESTDTC may not be null, although some records may not have all the
+          components (e.g., year, month, day, hour, minute) of the date/time value
+          collected.
+        Document: IG v3.2
+        Item: Assumption 11
+        Section: 5 SE
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0208
+        Version: '3'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: Note that SESTDTC is required, although --STDTC is not required
+          in any other subject-level dataset. The purpose of the dataset is to record
+          the Elements a subject actually passed through. We assume that if it is
+          known that a subject passed through a particular Element, then there must
+          be some information on when it started, even if that information is imprecise.
+          Thus, SESTDTC may not be null, although some records may not have all the
+          components (e.g., year, month, day, hour, minute) of the date/time value
+          collected.
+        Document: IG v3.3
+        Item: Assumption 9
+        Section: '5.3'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0208
+        Version: '3'
+      Version: '2.0'
+    Version: '3.3'
 Check:
   all:
-    - name: SESTDTC
-      operator: empty
+  - name: SESTDTC
+    operator: empty
 Core:
   Id: CORE-000002
   Status: Published
@@ -75,17 +75,16 @@ Outcome:
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - SPECIAL PURPOSE
+    Include: SPECIAL PURPOSE
   Domains:
-    Include:
-      - SE
+    Include: SE
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0208

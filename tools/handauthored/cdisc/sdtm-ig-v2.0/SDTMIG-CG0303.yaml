@@ -7,10 +7,17 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: variable_name
 check:
-  narrative: Variable Label = IG Label
-  condition: ''
+  all:
+  - name: variable_name
+    operator: equal_to
+    value: library_variable_name
+  - name: library_variable_label
+    operator: non_empty
+  - name: variable_label
+    operator: not_equal_to
+    value: library_variable_label
 outcome:
   message: Variable Label = IG Label
   severity: Medium
@@ -21,5 +28,5 @@ provenance:
   cited_guidance: Using SDTM-specified variable labels for all standard domains
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000398

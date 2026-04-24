@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: --TRT
 check:
-  narrative: --TRT ^= 'OTHER'
-  condition: ''
+  all:
+  - name: --TRT
+    operator: equal_to
+    value: OTHER
 outcome:
   message: --TRT ^= 'OTHER'
   severity: Medium
@@ -26,5 +28,5 @@ provenance:
     found in the specified text.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000160

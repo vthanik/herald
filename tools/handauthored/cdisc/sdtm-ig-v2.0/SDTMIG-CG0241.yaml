@@ -10,11 +10,22 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: --ELTM
+variable: --TPT
 check:
-  narrative: --ELTM is the same value across records with the same values of DOMAIN,
-    VISITNUM, --TPTREF, and --TPTNUM
-  condition: --TPT ^= null and --TPTNUM ^= null and --ELTM ^= null
+  all:
+  - name: --TPT
+    operator: non_empty
+  - name: --TPTNUM
+    operator: non_empty
+  - name: --ELTM
+    operator: non_empty
+  - name: --ELTM
+    operator: is_inconsistent_across_dataset
+    value:
+    - DOMAIN
+    - VISITNUM
+    - --TPTREF
+    - --TPTNUM
 outcome:
   message: --ELTM is the same value across records with the same values of DOMAIN,
     VISITNUM, --TPTREF, and --TPTNUM
@@ -34,5 +45,5 @@ provenance:
     have different values in --ELTM.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000142

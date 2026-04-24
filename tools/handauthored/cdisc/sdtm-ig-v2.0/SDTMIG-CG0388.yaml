@@ -10,10 +10,16 @@ scope:
   classes: EVT
   domains: AE
   exclude_domains: []
-variable: --SCAN
+variable: AESCAN
 check:
-  narrative: --SCAN in ('Y','N')
-  condition: --SCAN ^= null
+  all:
+  - name: AESCAN
+    operator: non_empty
+  - name: AESCAN
+    operator: is_not_contained_by
+    value:
+    - 'Y'
+    - 'N'
 outcome:
   message: --SCAN in ('Y','N')
   severity: Medium
@@ -25,5 +31,5 @@ provenance:
     are 'Y' and 'N'.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000123

@@ -262,6 +262,8 @@ parse_one <- function(path) {
     }
   )
   if (is.null(yml)) return(NULL)
+  # Skip CORE rules tagged as superseded by a CG predicate rule.
+  if (identical(yml$status, "superseded")) return(NULL)
   if (is_core_schema(yml)) row_from_core_yaml(yml, path)
   else                      row_from_herald_yaml(yml, path)
 }

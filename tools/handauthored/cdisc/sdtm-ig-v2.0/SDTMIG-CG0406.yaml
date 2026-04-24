@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: --TEST
 check:
-  narrative: --TEST length <= 40
-  condition: ''
+  all:
+  - name: --TEST
+    operator: longer_than
+    value: 40
 outcome:
   message: --TEST length <= 40
   severity: Medium
@@ -28,5 +30,5 @@ provenance:
     to a column labels.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000199

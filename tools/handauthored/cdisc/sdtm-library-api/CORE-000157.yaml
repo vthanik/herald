@@ -1,68 +1,68 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: ARMCD is limited to 20 characters and does not have
-                  special character restrictions.
-                Document: IG v3.4
-                Item: Specification
-                Section: 7.3.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0297
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: ARMCD is limited to 20 characters and does not have
-                  special character restrictions.
-                Document: IG v3.2
-                Item: Specification
-                Section: '7'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0297
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: ARMCD is limited to 20 characters and does not have
-                  special character restrictions.
-                Document: IG v3.3
-                Item: Specification
-                Section: 7.3.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0297
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: ARMCD is limited to 20 characters and does not have
-                  special character restrictions.
-                Document: TIG 1.0
-                Item: Specification:ARMCD
-                Section: 2.8.10.31
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0479
-              Version: '1'
-            Version: '1.0'
-        Substandard: SDTM
-        Version: '1.0'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: ARMCD is limited to 20 characters and does not have special
+          character restrictions.
+        Document: IG v3.4
+        Item: Specification
+        Section: 7.3.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0297
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: ARMCD is limited to 20 characters and does not have special
+          character restrictions.
+        Document: IG v3.2
+        Item: Specification
+        Section: '7'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0297
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: ARMCD is limited to 20 characters and does not have special
+          character restrictions.
+        Document: IG v3.3
+        Item: Specification
+        Section: 7.3.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0297
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: ARMCD is limited to 20 characters and does not have special
+          character restrictions.
+        Document: TIG 1.0
+        Item: Specification:ARMCD
+        Section: 2.8.10.31
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0479
+        Version: '1'
+      Version: '1.0'
+    Substandard: SDTM
+    Version: '1.0'
 Check:
   all:
-    - name: ARMCD
-      operator: longer_than
-      value: 20
+  - name: ARMCD
+    operator: longer_than
+    value: 20
 Core:
   Id: CORE-000157
   Status: Published
@@ -71,23 +71,21 @@ Description: The length of ARMCD is limited to 20 characters.
 Executability: Fully Executable
 Outcome:
   Message: Length of ARMCD is greater than 20
-  Output_Variables:
-    - ARMCD
+  Output_Variables: ARMCD
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - TRIAL DESIGN
+    Include: TRIAL DESIGN
   Domains:
-    Include:
-      - TV
+    Include: TV
   Use_Case: INDH
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0297

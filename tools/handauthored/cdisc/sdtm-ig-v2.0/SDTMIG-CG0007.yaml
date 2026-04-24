@@ -12,9 +12,14 @@ scope:
   exclude_domains: []
 variable: --DY
 check:
-  narrative: --DY = null
-  condition: The date portion of --DTC ^= complete date or the date portion of DM.RFSTDTC
-    ^= complete date
+  all:
+  - name: --DY
+    operator: non_empty
+  - any:
+    - name: --DTC
+      operator: is_incomplete_date
+    - name: RFSTDTC
+      operator: is_incomplete_date
 outcome:
   message: --DY = null
   severity: Medium
@@ -28,5 +33,5 @@ provenance:
     Date (RFSTDTC from the Demographics domain).
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000354

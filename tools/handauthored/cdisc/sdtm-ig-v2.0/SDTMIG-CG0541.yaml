@@ -11,8 +11,12 @@ scope:
   exclude_domains: []
 variable: --LOBXFL
 check:
-  narrative: Value must be 'Y' or null
-  condition: ''
+  all:
+  - name: --LOBXFL
+    operator: not_equal_to
+    value: 'Y'
+  - name: --LOBXFL
+    operator: non_empty
 outcome:
   message: Value must be 'Y' or null
   severity: High
@@ -23,5 +27,5 @@ provenance:
   cited_guidance: The value should be "Y" or null.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000170

@@ -1,80 +1,80 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: When a description of Other Medically Important Serious
-                  Adverse Events category is collected on a CRF, sponsors should place
-                  the description in the SUPPAE dataset using the standard supplemental
-                  qualifier name code AESOSP.
-                Document: IG v3.4
-                Item: Asumtpion 6c
-                Section: 6.2.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0043
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: When a description of Other Medically Important Serious
-                  Adverse Events category is collected on a CRF, sponsors should place
-                  the description in the SUPPAE dataset using the standard supplemental
-                  qualifier name code AESOSP.
-                Document: IG v3.2
-                Item: Assumption 6c
-                Section: '6.2'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0043
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: When a description of Other Medically Important Serious
-                  Adverse Events category is collected on a CRF, sponsors should place
-                  the description in the SUPPAE dataset using the standard supplemental
-                  qualifier name code AESOSP.
-                Document: IG v3.3
-                Item: Assumption 6c
-                Section: 6.2.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0043
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: When a description of "Other Medically Important Serious
-                  Adverse Events" category is collected on a CRF, applicants should
-                  place the description in the SUPPAE dataset using the standard supplemental
-                  qualifier name code AESOSP.
-                Document: TIG 1.0
-                Item: Assumption 7c
-                Section: 2.8.10.1
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0322
-              Version: '1'
-            Version: '1.0'
-        Substandard: SDTM
-        Version: '1.0'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: When a description of Other Medically Important Serious Adverse
+          Events category is collected on a CRF, sponsors should place the description
+          in the SUPPAE dataset using the standard supplemental qualifier name code
+          AESOSP.
+        Document: IG v3.4
+        Item: Asumtpion 6c
+        Section: 6.2.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0043
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: When a description of Other Medically Important Serious Adverse
+          Events category is collected on a CRF, sponsors should place the description
+          in the SUPPAE dataset using the standard supplemental qualifier name code
+          AESOSP.
+        Document: IG v3.2
+        Item: Assumption 6c
+        Section: '6.2'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0043
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: When a description of Other Medically Important Serious Adverse
+          Events category is collected on a CRF, sponsors should place the description
+          in the SUPPAE dataset using the standard supplemental qualifier name code
+          AESOSP.
+        Document: IG v3.3
+        Item: Assumption 6c
+        Section: 6.2.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0043
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: When a description of "Other Medically Important Serious Adverse
+          Events" category is collected on a CRF, applicants should place the description
+          in the SUPPAE dataset using the standard supplemental qualifier name code
+          AESOSP.
+        Document: TIG 1.0
+        Item: Assumption 7c
+        Section: 2.8.10.1
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0322
+        Version: '1'
+      Version: '1.0'
+    Substandard: SDTM
+    Version: '1.0'
 Check:
   all:
-    - name: QNAM
-      operator: equal_to
-      value: AESOSP
-      value_is_literal: yes
-    - name: AESMIE
-      operator: not_equal_to
-      value: 'Y'
+  - name: QNAM
+    operator: equal_to
+    value: AESOSP
+    value_is_literal: yes
+  - name: AESMIE
+    operator: not_equal_to
+    value: 'Y'
 Core:
   Id: CORE-000597
   Status: Published
@@ -83,29 +83,27 @@ Description: When SUPPAE.QNAM=AESOSP is present, a record with AESMIE=Y should b
   present
 Executability: Fully Executable
 Match_Datasets:
-  - Keys:
-      - USUBJID
-    Name: SUPPAE
+- Keys: USUBJID
+  Name: SUPPAE
 Outcome:
   Message: Missing AESMIE=Y where SUPPAE.QNAM=AESOSP
   Output_Variables:
-    - QNAM
-    - AESMIE
+  - QNAM
+  - AESMIE
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - EVENTS
+    Include: EVENTS
   Domains:
-    Include:
-      - AE
+    Include: AE
   Use_Case: INDH
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0043

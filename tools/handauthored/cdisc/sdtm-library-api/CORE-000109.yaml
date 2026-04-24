@@ -1,41 +1,39 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The start date/time of the Disease Milestone is the
-                  critical date/time, and must be populated. If the Disease Milestone
-                  is an event, then the meaning of “start date” for the event may
-                  need to be defined.
-                Document: SDTMIG v3.4
-                Section: '5.4'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0547
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The start date/time of the Disease Milestone is the
-                  critical date/time, and must be populated. If the Disease Milestone
-                  is an event, then the meaning of 'start date' for the event may
-                  need to be defined
-                Document: IG v3.3
-                Item: Assumption 3.a
-                Section: '5.5'
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0547
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The start date/time of the Disease Milestone is the critical
+          date/time, and must be populated. If the Disease Milestone is an event,
+          then the meaning of “start date” for the event may need to be defined.
+        Document: SDTMIG v3.4
+        Section: '5.4'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0547
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The start date/time of the Disease Milestone is the critical
+          date/time, and must be populated. If the Disease Milestone is an event,
+          then the meaning of 'start date' for the event may need to be defined
+        Document: IG v3.3
+        Item: Assumption 3.a
+        Section: '5.5'
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0547
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
 Check:
   all:
-    - name: SMSTDTC
-      operator: empty
+  - name: SMSTDTC
+    operator: empty
 Core:
   Id: CORE-000109
   Status: Published
@@ -47,16 +45,15 @@ Outcome:
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - SPECIAL PURPOSE
+    Include: SPECIAL PURPOSE
   Domains:
-    Include:
-      - SM
+    Include: SM
 Sensitivity: Record
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:51Z'
-
+status: superseded
+superseded_by: CG0547

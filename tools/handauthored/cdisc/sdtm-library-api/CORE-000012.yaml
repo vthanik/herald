@@ -1,79 +1,75 @@
 Authorities:
-  - Organization: CDISC
-    Standards:
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The following Qualifiers would not be used in AE;
-                  --OCCUR, --STAT, and --REASND. They are the only Qualifiers from
-                  the SDTM Events Class not in the AE domain. They are not permitted
-                  because the AE domain contains only records for adverse events that
-                  actually occurred.
-                Document: SDTMIG v3.4
-                Item: Assumption 9
-                Section: 6.2.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0040
-              Version: '1'
-            Version: '2.0'
-        Version: '3.4'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The following Qualifiers would not be used in AE;
-                  --OCCUR, --STAT, and--REASND. They are the only Qualifiers from
-                  the SDTM Events Class not in the AE domain. They are not permitted
-                  because the AE domain contains only records for adverse events that
-                  actually occurred.
-                Document: SDTMIG v3.3
-                Item: Assumption 9
-                Section: 6.2.1
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0040
-              Version: '1'
-            Version: '2.0'
-        Version: '3.3'
-      - Name: SDTMIG
-        References:
-          - Citations:
-              - Cited_Guidance: The following Qualifiers would not be used in AE;
-                  --OCCUR, --STAT, and--REASND. They are the only Qualifiers from
-                  the SDTM Events Class not in the AE domain. They are not permitted
-                  because the AE domain contains only records for adverse events that
-                  actually occurred.
-                Document: SDTMIG v3.2
-                Item: Assumption 8
-                Section: 6.2.
-            Origin: SDTM and SDTMIG Conformance Rules
-            Rule_Identifier:
-              Id: CG0040
-              Version: '1'
-            Version: '2.0'
-        Version: '3.2'
-      - Name: TIG
-        References:
-          - Citations:
-              - Cited_Guidance: 'The following qualifiers would not be used in AE:
-                  --OCCUR, --STAT, and--REASND. They are the only qualifiers from
-                  the SDTM Events class not in the AE domain. They are not permitted
-                  because the AE domain contains only records for adverse events that
-                  actually occurred.'''
-                Document: TIG 1.0
-                Item: Assumption 10
-                Section: 2.8.10.1
-            Origin: TIG Conformance Rules
-            Rule_Identifier:
-              Id: TIG0319
-              Version: '1'
-            Version: '1.0'
-        Substandard: SDTM
-        Version: '1.0'
+- Organization: CDISC
+  Standards:
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The following Qualifiers would not be used in AE; --OCCUR,
+          --STAT, and --REASND. They are the only Qualifiers from the SDTM Events
+          Class not in the AE domain. They are not permitted because the AE domain
+          contains only records for adverse events that actually occurred.
+        Document: SDTMIG v3.4
+        Item: Assumption 9
+        Section: 6.2.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0040
+        Version: '1'
+      Version: '2.0'
+    Version: '3.4'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The following Qualifiers would not be used in AE; --OCCUR,
+          --STAT, and--REASND. They are the only Qualifiers from the SDTM Events Class
+          not in the AE domain. They are not permitted because the AE domain contains
+          only records for adverse events that actually occurred.
+        Document: SDTMIG v3.3
+        Item: Assumption 9
+        Section: 6.2.1
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0040
+        Version: '1'
+      Version: '2.0'
+    Version: '3.3'
+  - Name: SDTMIG
+    References:
+    - Citations:
+      - Cited_Guidance: The following Qualifiers would not be used in AE; --OCCUR,
+          --STAT, and--REASND. They are the only Qualifiers from the SDTM Events Class
+          not in the AE domain. They are not permitted because the AE domain contains
+          only records for adverse events that actually occurred.
+        Document: SDTMIG v3.2
+        Item: Assumption 8
+        Section: 6.2.
+      Origin: SDTM and SDTMIG Conformance Rules
+      Rule_Identifier:
+        Id: CG0040
+        Version: '1'
+      Version: '2.0'
+    Version: '3.2'
+  - Name: TIG
+    References:
+    - Citations:
+      - Cited_Guidance: 'The following qualifiers would not be used in AE: --OCCUR,
+          --STAT, and--REASND. They are the only qualifiers from the SDTM Events class
+          not in the AE domain. They are not permitted because the AE domain contains
+          only records for adverse events that actually occurred.'''
+        Document: TIG 1.0
+        Item: Assumption 10
+        Section: 2.8.10.1
+      Origin: TIG Conformance Rules
+      Rule_Identifier:
+        Id: TIG0319
+        Version: '1'
+      Version: '1.0'
+    Substandard: SDTM
+    Version: '1.0'
 Check:
   all:
-    - name: AEOCCUR
-      operator: exists
+  - name: AEOCCUR
+    operator: exists
 Core:
   Id: CORE-000012
   Status: Published
@@ -82,23 +78,21 @@ Description: Raise an error when AEOCCUR exists in AE dataset.
 Executability: Fully Executable
 Outcome:
   Message: AEOCCUR is present in AE dataset.
-  Output_Variables:
-    - AEOCCUR
+  Output_Variables: AEOCCUR
 Rule_Type: Record Data
 Scope:
   Classes:
-    Include:
-      - EVENTS
+    Include: EVENTS
   Domains:
-    Include:
-      - AE
+    Include: AE
   Use_Case: INDH
 Sensitivity: Dataset
 herald:
   source: CDISC Library API
   catalogs:
-    - SDTMIG 3.2
-    - SDTMIG 3.3
-    - SDTMIG 3.4
+  - SDTMIG 3.2
+  - SDTMIG 3.3
+  - SDTMIG 3.4
   fetched: '2026-04-20T13:03:50Z'
-
+status: superseded
+superseded_by: CG0040

@@ -12,8 +12,10 @@ scope:
   exclude_domains: []
 variable: --TERM
 check:
-  narrative: --TERM ^= 'OTHER'
-  condition: ''
+  all:
+  - name: --TERM
+    operator: equal_to
+    value: OTHER
 outcome:
   message: --TERM ^= 'OTHER'
   severity: Medium
@@ -27,5 +29,5 @@ provenance:
     and free text responses.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000161

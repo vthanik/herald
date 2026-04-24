@@ -7,10 +7,21 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
-variable: GEN
+variable: STUDYID
 check:
-  narrative: STUDYID, USUBJID or POOLID, DOMAIN, and --SEQ exist
-  condition: ''
+  any:
+  - any:
+    - name: STUDYID
+      operator: not_exists
+    - name: --SEQ
+      operator: not_exists
+    - name: DOMAIN
+      operator: not_exists
+  - all:
+    - name: USUBJID
+      operator: not_exists
+    - name: POOLID
+      operator: not_exists
 outcome:
   message: STUDYID, USUBJID or POOLID, DOMAIN, and --SEQ exist
   severity: Medium
@@ -22,5 +33,5 @@ provenance:
     all domains based on one of the three general observation classes.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000585

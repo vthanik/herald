@@ -10,10 +10,16 @@ scope:
   classes: EVT
   domains: AE
   exclude_domains: []
-variable: --SOD
+variable: AESOD
 check:
-  narrative: --SOD in ('Y','N')
-  condition: --SOD ^= null
+  all:
+  - name: AESOD
+    operator: non_empty
+  - name: AESOD
+    operator: is_not_contained_by
+    value:
+    - 'Y'
+    - 'N'
 outcome:
   message: --SOD in ('Y','N')
   severity: Medium
@@ -24,5 +30,5 @@ provenance:
   cited_guidance: Did the event occur with an overdose? Valid values are 'Y' and 'N'.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000129

@@ -10,10 +10,16 @@ scope:
   classes: EVT
   domains: AE
   exclude_domains: []
-variable: --SCONG
+variable: AESCONG
 check:
-  narrative: --SCONG in ('Y','N')
-  condition: --SCONG ^= null
+  all:
+  - name: AESCONG
+    operator: non_empty
+  - name: AESCONG
+    operator: is_not_contained_by
+    value:
+    - 'Y'
+    - 'N'
 outcome:
   message: --SCONG in ('Y','N')
   severity: Medium
@@ -25,5 +31,5 @@ provenance:
     Valid values are 'Y' and 'N'.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000124

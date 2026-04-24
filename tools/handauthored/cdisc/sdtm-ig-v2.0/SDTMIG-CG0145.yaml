@@ -7,11 +7,20 @@ scope:
   classes: SPC
   domains: DM
   exclude_domains: []
-variable: RFSTDTC
+variable: ACTARM
 check:
-  narrative: RFSTDTC = null
-  condition: Milestone associated with RFSTDTC is start of treatment and ACTARM in
-    ('Screen Failure' 'Not Assigned' 'Not Treated')
+  all:
+  - name: ACTARM
+    operator: is_contained_by
+    value:
+    - Screen Failure
+    - Not Assigned
+    - Not Treated
+    - SCREEN FAILURE
+    - NOT ASSIGNED
+    - NOT TREATED
+  - name: RFSTDTC
+    operator: non_empty
 outcome:
   message: RFSTDTC = null
   severity: Medium
@@ -22,5 +31,5 @@ provenance:
   cited_guidance: Null for screen failures or unassigned subjects.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000379

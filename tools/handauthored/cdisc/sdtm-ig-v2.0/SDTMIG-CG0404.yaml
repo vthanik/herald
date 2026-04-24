@@ -15,10 +15,16 @@ scope:
   - DV
   - EX)
   exclude_domains: []
-variable: --STAT
+variable: --PRESP
 check:
-  narrative: --STAT present in dataset
-  condition: --PRESP = 'Y' and --OCCUR = null
+  all:
+  - name: --PRESP
+    operator: equal_to
+    value: 'Y'
+  - name: --OCCUR
+    operator: empty
+  - name: --STAT
+    operator: not_exists
 outcome:
   message: --STAT present in dataset
   severity: Medium
@@ -41,5 +47,5 @@ provenance:
     be null or have a value of NOT DONE]'
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000118

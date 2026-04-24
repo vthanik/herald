@@ -9,11 +9,39 @@ scope:
   classes: TDM
   domains: TS
   exclude_domains: []
-variable: GEN
+variable: TSPARMCD
 check:
-  narrative: A set of records exist with at least one record with TSPARMCD equal to
-    each of the required values in the list of Trial Summary Codes in Appendix C1
-  condition: ''
+  all:
+  - name: TSPARMCD
+    operator: not_contains_all
+    value:
+    - ADDON
+    - AGEMAX
+    - AGEMIN
+    - LENGTH
+    - PLANSUB
+    - RANDOM
+    - SEXPOP
+    - STOPRULE
+    - TBLIND
+    - TCNTRL
+    - TITLE
+    - TPHASE
+    - TTYPE
+    - OBJPRIM
+    - SPONSOR
+    - REGID
+    - OUTMSPRI
+    - FCNTRY
+    - ADAPT
+    - DCUTDTC
+    - DCUTDESC
+    - NARMS
+    - STYPE
+    - SSTDTC
+    - SENDTC
+    - ACTSUB
+    - HLTSUBJI
 outcome:
   message: A set of records exist with at least one record with TSPARMCD equal to
     each of the required values in the list of Trial Summary Codes in Appendix C1
@@ -26,5 +54,5 @@ provenance:
     1. TSVAL may have controlled terminology depending on the value of TSPARMCD
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
+  core_crosswalk: CORE-000740
