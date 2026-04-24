@@ -80,15 +80,15 @@ under `R CMD check` (one pre-existing failure noted below).
 - A. `op_matches_regex` full-match default (Q4 / Q11 / Q24).
 - B. `equal_to_ci` / `not_equal_to_ci` sugar ops (Q15 / Q4).
 - D. `when:` guard three-state return (Q1 / Q4 / Q9).
-- G. `paste` NA-sentinel fix (Q3 / Q10 / Q12 / Q29).
-- N. `severity_map` nested-list domain form (Q18).
+- ~~G. `paste` NA-sentinel fix (Q3 / Q10 / Q12 / Q29).~~ **DONE** `\x01<NA>\x01` sentinel in ops-cross.R + ops-set.R.
+- ~~N. `severity_map` nested-list domain form (Q18).~~ **DONE** domain-keyed list form shipped with Q18.
 
 **Follow-on features (queued):**
 - Q15 condition-primitive grammar (`ends_with`,
   `less_than_literal` / `greater_than_literal`).
 - Q16 fixture convention (pos/neg Dataset-JSON per pattern).
 - Q17 `variable:` prose normalisation on `apply-pattern.R`.
-- Q18 `severity_map` arg on `validate()`.
+- ~~Q18 `severity_map` arg on `validate()`.~~ **DONE** three-tier match + domain-keyed list + severity_override column.
 - Q19 HEADER_META expanded provenance (CT versions + IG
   versions) -- `result$environment` spec captured; renderer
   not yet updated.
@@ -1626,7 +1626,9 @@ severity is hardcoded in the rule YAML's `outcome.severity`.
 - Documented in the `validate()` manpage with a worked example
   covering all three match modes.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** commit 84b67f4. Three-tier matching (exact rule_id ->
+regex -> severity category). Domain-keyed list form for P21-N parity.
+`severity_override` column in findings tibble. 10 tests green.
 
 ---
 
