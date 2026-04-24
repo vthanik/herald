@@ -1,0 +1,35 @@
+{
+  "rule_id": "__pattern-epoch-unique-per-conceptual-period__",
+  "fixture_type": "positive",
+  "datasets": {
+    "TA": {
+      "STUDYID":  ["STUDY-1", "STUDY-1", "STUDY-1"],
+      "ARMCD":    ["ARM-A", "ARM-A", "ARM-B"],
+      "ARM":      ["Arm A", "Arm A", "Arm B"],
+      "TAETORD":  [1, 2, 1],
+      "ETCD":     ["SCR", "TRT", "SCR"],
+      "ELEMENT":  ["Screening", "Treatment", "Screening"],
+      "EPOCH":    ["SCREENING", "SCREENING", "SCREENING"],
+      "TABRANCH": ["", "", ""],
+      "TATRANS":  ["", "", ""]
+    },
+    "TE": {
+      "STUDYID":  ["STUDY-1", "STUDY-1"],
+      "ETCD":     ["SCR", "SCR"],
+      "ELEMENT":  ["Screening Phase", "Screening"],
+      "TESTRL":   [">=P0D", ">=P0D"],
+      "TEENRL":   ["<P30D", "<P30D"],
+      "TEDUR":    ["P30D", "P28D"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "notes": "CG0250 (TA): EPOCH=SCREENING maps to TAETORD=1 (ARM-A row 1) and TAETORD=2 (ARM-A row 2) -- two different TAETORD values for same EPOCH -> fires rows 1 and 2. CG0325 (TE): ETCD=SCR has ELEMENT='Screening Phase' in row 1 and ELEMENT='Screening' in row 2 -> fires both rows."
+  },
+  "spec": {
+    "class_map": {
+      "TA": "TDM",
+      "TE": "TDM"
+    }
+  }
+}

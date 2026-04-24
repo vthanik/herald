@@ -12,9 +12,10 @@ scope:
   exclude_domains: []
 variable: ETCD
 check:
-  narrative: The combination of ELEMENT, TESTRL, TEENRL, and TEDUR is unique for each
-    ETCD
-  condition: ''
+  operator: is_not_unique_relationship
+  name: ETCD
+  value:
+    related_name: ELEMENT
 outcome:
   message: The combination of ELEMENT, TESTRL, TEENRL, and TEDUR is unique for each
     ETCD
@@ -29,5 +30,4 @@ provenance:
     values of ELEMENT and ETCD.]
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -12,9 +12,10 @@ scope:
   exclude_domains: []
 variable: EPOCH
 check:
-  narrative: Each value of EPOCH is not associated with more than one conceptual trial
-    period
-  condition: ''
+  operator: is_not_unique_relationship
+  name: EPOCH
+  value:
+    related_name: TAETORD
 outcome:
   message: Each value of EPOCH is not associated with more than one conceptual trial
     period
@@ -26,5 +27,4 @@ provenance:
   cited_guidance: '... values of EPOCH must be different for different epochs.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate
