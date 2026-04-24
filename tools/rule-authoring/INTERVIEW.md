@@ -52,7 +52,7 @@ under `R CMD check` (one pre-existing failure noted below).
 | block | cluster | rules | plan |
 |---|---|---:|---|
 | Q4  | conditional literal-assertion (VAR = LIT / VAR in (...)) | 21 | two patterns, existing ops |
-| Q5  | ADSL <-> DM consistency | 8 | adsl-dm-consistency pattern |
+| ~~Q5~~  | ~~ADSL <-> DM consistency~~ | ~~8~~ | **DONE** adsl-dm-consistency pattern |
 | Q6  | cross-dataset equality / membership | 10 | two patterns |
 | Q7  | cross-dataset presence pair | 5 | combinator pattern |
 | Q8  | unit-consistency | 7 | pattern w/ numeric guard |
@@ -360,7 +360,8 @@ exact join-by-USUBJID-and-compare shape. No new op needed.
 - CDISC rule-ID granularity preserved -- one finding per
   mismatching variable (matches P21).
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** 2026-04-24. Pattern `adsl-dm-consistency` (8 rules:
+ADaM-204..210, ADaM-367). All 8 converted to `predicate`.
 
 ---
 

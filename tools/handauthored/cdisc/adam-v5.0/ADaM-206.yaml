@@ -14,9 +14,12 @@ scope:
 variable: SEX
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: The value of ADSL.USUBJID is equal to the value of DM.USUBJID
+  all:
+  - operator: differs_by_key
+    name: SEX
+    reference_dataset: DM
+    reference_column: SEX
+    key: USUBJID
 outcome:
   message: The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.SEX
     is not equal to DM.SEX
@@ -29,4 +32,4 @@ provenance:
     copy of DM.SEX, then an additional differently named variable must be added.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

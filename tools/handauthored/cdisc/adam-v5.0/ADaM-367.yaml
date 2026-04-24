@@ -13,9 +13,12 @@ scope:
 variable: ACTARM
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: The value of ADSL.USUBJID is equal to the value of DM.USUBJID
+  all:
+  - operator: differs_by_key
+    name: ACTARM
+    reference_dataset: DM
+    reference_column: ACTARM
+    key: USUBJID
 outcome:
   message: The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.ACTARM
     is not equal to DM.ACTARM
@@ -27,5 +30,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.1, Section 3.2, Table 3.2.4: DM.ARM'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

@@ -1,0 +1,39 @@
+{
+  "rule_id": "__pattern-adsl-dm-consistency__",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "USUBJID": ["STUDY-001", "STUDY-002"],
+      "AGE": [45, 99],
+      "SEX": ["M", "F"],
+      "RACE": ["WHITE", "ASIAN"],
+      "SUBJID": ["001", "002"],
+      "SITEID": ["01", "02"],
+      "ARM": ["DRUG A", "PLACEBO"],
+      "ACTARM": ["DRUG A", "PLACEBO"],
+      "AGEU": ["YEARS", "YEARS"]
+    },
+    "DM": {
+      "USUBJID": ["STUDY-001", "STUDY-002"],
+      "AGE": [45, 60],
+      "SEX": ["M", "F"],
+      "RACE": ["WHITE", "ASIAN"],
+      "SUBJID": ["001", "002"],
+      "SITEID": ["01", "02"],
+      "ARM": ["DRUG A", "PLACEBO"],
+      "ACTARM": ["DRUG A", "PLACEBO"],
+      "AGEU": ["YEARS", "YEARS"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "ADSL.AGE differs from DM.AGE for STUDY-002 (99 vs 60); STUDY-001 matches",
+  "authored": "pattern-fixture@1",
+  "spec": {
+    "class_map": {
+      "ADSL": "SUBJECT LEVEL ANALYSIS DATASET"
+    }
+  }
+}

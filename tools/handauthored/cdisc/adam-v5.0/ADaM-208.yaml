@@ -14,9 +14,12 @@ scope:
 variable: SUBJID
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: The value of ADSL.USUBJID is equal to the value of DM.USUBJID
+  all:
+  - operator: differs_by_key
+    name: SUBJID
+    reference_dataset: DM
+    reference_column: SUBJID
+    key: USUBJID
 outcome:
   message: The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.SUBJID
     is not equal to DM.SUBJID
@@ -29,4 +32,4 @@ provenance:
     SDTM variables DM.STUDYID, DM.USUBJID, DM.SUBJID and DM.SITEID.'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate

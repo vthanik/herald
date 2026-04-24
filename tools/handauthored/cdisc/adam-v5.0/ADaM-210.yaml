@@ -14,9 +14,12 @@ scope:
 variable: ARM
 define_element: ''
 check:
-  narrative: ''
-  condition_success: ''
-  condition_failure: The value of ADSL.USUBJID is equal to the value of DM.USUBJID
+  all:
+  - operator: differs_by_key
+    name: ARM
+    reference_dataset: DM
+    reference_column: ARM
+    key: USUBJID
 outcome:
   message: The value of ADSL.USUBJID is equal to the value of DM.USUBJID and ADSL.ARM
     is not equal to DM.ARM
@@ -28,4 +31,4 @@ provenance:
   cited_guidance: 'ADaMIG v1.0, Section 3.1, Table 3.1.1: DM.ARM'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
+  executability: predicate
