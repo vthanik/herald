@@ -160,8 +160,9 @@
   NA_character_
 }
 
-#' Expand a column pattern: `--<STEM>` becomes `<DOM2><STEM>` using the
-#' first two chars of `ds_name`; otherwise the pattern is returned as-is.
+#' @param pat column pattern string; `--<STEM>` triggers domain-prefix expansion.
+#' @param ds_name dataset name used to derive the two-character domain prefix.
+#' @noRd
 .expand_col_pattern <- function(pat, ds_name) {
   if (startsWith(pat, "--")) {
     stem <- sub("^--", "", pat)
