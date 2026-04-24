@@ -376,7 +376,7 @@
 "CG0016","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Variable present in dataset",NA,NA,"narrative",NA,NA,NA
 "CG0017","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Split dataset names length > 2 and <= 4","split-dataset-name-length","operator: dataset_name_length_not_in_range min_len: 3 max_len: 4","predicate","2026-04-24T14:00:38Z",NA,NA
 "CG0018","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Split dataset names length <= 8","split-dataset-name-length","operator: dataset_name_length_not_in_range min_len: ~ max_len: 8","predicate","2026-04-24T14:00:38Z",NA,NA
-"CG0019","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Each record is unique per sponsor defined key variables as documented in the define.xml",NA,NA,"narrative",NA,NA,NA
+"CG0019","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Each record is unique per sponsor defined key variables as documented in the define.xml","define-xml-key-uniqueness","operator: key_not_unique_per_define","predicate","2026-04-24T00:00:00Z",NA,NA
 "CG0020","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Value in associated codelist or 'MULTIPLE'",NA,NA,"narrative",NA,NA,"Q27: stays narrative; requires variable-to-codelist map not yet built"
 "CG0021","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Value in associated codelist or 'OTHER'",NA,NA,"narrative",NA,NA,"Q27: stays narrative; requires variable-to-codelist map not yet built"
 "CG0022","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LNKGRP present in another domain","var-linked-across-submission","all: - operator: exists name: %var% - not: operator: var_present_in_any_other_dataset name: %var%","predicate","2026-04-24T14:28:29Z",NA,NA
@@ -552,7 +552,7 @@
 "CG0398","CDISC","SDTM-IG","3.2","Medium","At most one record per subject per epoch","uniqueness-filtered-composite-key","all: - operator: is_contained_by name: DSCAT value: ['DISPOSITION EVENT'] - operator: is_not_unique_set name:   - USUBJID
   - EPOCH","predicate","2026-04-24T12:23:59Z",NA,NA
 "CG0399","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--ULOQ is expressed using the units in --STRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: --ULOQ - operator: matches_regex name: --ULOQ value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: --STRESU","predicate","2026-04-24T09:34:59Z",NA,NA
-"CG0400","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LOINC = valid code in the version of the LOINC dictionary specified in define.xml",NA,NA,"narrative",NA,NA,NA
+"CG0400","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LOINC = valid code in the version of the LOINC dictionary specified in define.xml","loinc-code-valid","operator: value_in_dictionary name: --LOINC dict_name: loinc field: loinc_num","predicate","2026-04-24T00:00:00Z",NA,NA
 "CG0404","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STAT present in dataset",NA,NA,"narrative",NA,NA,NA
 "CG0406","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TEST length <= 40",NA,NA,"narrative",NA,NA,NA
 "CG0407","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","EX present in study",NA,NA,"narrative",NA,NA,NA

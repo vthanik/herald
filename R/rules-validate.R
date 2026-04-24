@@ -28,6 +28,10 @@
 #'   collected in this study, e.g. `c("MB", "PC")`). When `NULL` (default),
 #'   rules that depend on study metadata return NA (advisory) rather than
 #'   firing a definitive finding.
+#' @param define Optional `herald_define` object (from `read_define_xml()`)
+#'   carrying sponsor-defined key variables and dictionary version metadata.
+#'   When supplied, rules that depend on Define-XML (e.g. CG0019, CG0400)
+#'   evaluate against the parsed metadata; otherwise they return NA advisory.
 #' @param quiet Suppress progress output. Default FALSE.
 #'
 #' @return A `herald_result` S3 object.
@@ -48,6 +52,7 @@ validate <- function(path = NULL,
                      standards = NULL,
                      dictionaries = NULL,
                      study_metadata = NULL,
+                     define = NULL,
                      quiet = FALSE) {
   t0 <- Sys.time()
   call      <- rlang::caller_env()
@@ -104,6 +109,7 @@ validate <- function(path = NULL,
   ctx$datasets       <- datasets
   ctx$spec           <- spec
   ctx$study_metadata <- study_metadata
+  ctx$define         <- define
   ctx$crossrefs      <- build_crossrefs(datasets, spec)
   # Per-run CT cache. op_value_in_codelist lazy-loads on first use.
   ctx$ct           <- list()

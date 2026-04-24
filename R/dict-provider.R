@@ -289,9 +289,10 @@ print.herald_dict_provider <- function(x, ...) {
 .record_missing_ref <- function(ctx, rule_id, kind, name) {
   if (is.null(ctx)) return(invisible(NULL))
   if (is.null(ctx$missing_refs)) .init_missing_refs(ctx)
-  kind <- match.arg(kind, c("dataset", "dictionary"))
-  slot <- switch(kind, "dataset" = "datasets",
-                       "dictionary" = "dictionaries")
+  kind <- match.arg(kind, c("dataset", "dictionary", "define"))
+  slot <- switch(kind, "dataset"    = "datasets",
+                       "dictionary" = "dictionaries",
+                       "define"     = "dictionaries")
   nm <- as.character(name)
   rid <- as.character(rule_id %||% NA_character_)
   prev <- ctx$missing_refs[[slot]][[nm]]
@@ -321,6 +322,10 @@ print.herald_dict_provider <- function(x, ...) {
         ),
         "whodrug" = sprintf(
           "Register with `register_dictionary(\"whodrug\", whodrug_provider(\"<path>\"))`."
+        ),
+        "define.xml" = paste0(
+          "Provide define.xml via `validate(..., define = read_define_xml(\"define.xml\"))`",
+          " to enable sponsor key-uniqueness checks."
         ),
         sprintf(
           "Register the %s dictionary via `register_dictionary(\"%s\", <provider>)`.",

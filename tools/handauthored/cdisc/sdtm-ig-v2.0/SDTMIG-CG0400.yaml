@@ -12,20 +12,22 @@ scope:
   exclude_domains: []
 variable: --LOINC
 check:
-  narrative: --LOINC = valid code in the version of the LOINC dictionary specified
-    in define.xml
-  condition: ''
+  operator: value_in_dictionary
+  name: "--LOINC"
+  dict_name: loinc
+  field: loinc_num
 outcome:
-  message: --LOINC = valid code in the version of the LOINC dictionary specified in
-    define.xml
+  message: "--LOINC = valid code in the version of the LOINC dictionary specified in\
+    \ define.xml"
   severity: Medium
 provenance:
   source_document: CDISC SDTM and SDTMIG Conformance Rules v2.0
   source_document_section: Model v1.4 2.2.3
   source_url: https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0
   cited_guidance: Logical Observation Identifiers Names and Codes (LOINC) code for
-    the topic variable such as a lab test.
+    the topic variable such as a lab test. The specific version of LOINC to validate
+    against is declared in define.xml (MetaDataVersion/def:Standard[@Name="LOINC"]).
+    Register the correct LOINC version via loinc_provider() before calling validate().
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: Fully Executable

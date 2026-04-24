@@ -12,9 +12,7 @@ scope:
   exclude_domains: []
 variable: GEN
 check:
-  narrative: Each record is unique per sponsor defined key variables as documented
-    in the define.xml
-  condition: ''
+  operator: key_not_unique_per_define
 outcome:
   message: Each record is unique per sponsor defined key variables as documented in
     the define.xml
@@ -31,5 +29,4 @@ provenance:
     and may define a record sort order.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: Fully Executable

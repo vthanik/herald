@@ -1,0 +1,19 @@
+{
+  "rule_id": "CG0019",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "STUDYID": ["STUDY-001", "STUDY-001"],
+      "USUBJID": ["STUDY-001-001", "STUDY-001-001"],
+      "SUBJID": ["001", "001"]
+    }
+  },
+  "define_key_vars": {
+    "DM": ["STUDYID", "USUBJID"]
+  },
+  "expected": {
+    "fires": true,
+    "notes": "Both rows share the same (STUDYID, USUBJID) composite key as declared in define.xml. Both rows fire. Without a define object, the op returns NA advisory."
+  },
+  "authored": "pattern-fixture@1"
+}

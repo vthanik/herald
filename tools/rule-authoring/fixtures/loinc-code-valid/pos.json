@@ -1,0 +1,21 @@
+{
+  "rule_id": "CG0400",
+  "fixture_type": "positive",
+  "datasets": {
+    "LB": {
+      "USUBJID": ["STUDY-001", "STUDY-001"],
+      "LBTESTCD": ["ALT", "GLUC"],
+      "LBLOINC": ["1742-6", "NOT-A-LOINC-CODE"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "notes": "Row 2 has LBLOINC=NOT-A-LOINC-CODE which is not a valid LOINC code. Rule fires for row 2 when a loinc dictionary is registered. Without a registered loinc provider, op returns NA advisory."
+  },
+  "authored": "pattern-fixture@1",
+  "spec": {
+    "class_map": {
+      "LB": "FINDINGS"
+    }
+  }
+}

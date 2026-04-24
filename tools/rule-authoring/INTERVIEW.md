@@ -12,7 +12,7 @@ Use Ctrl-F on rule_id to find the decision that covers a rule.
 
 ### Shipped
 
-**Rule corpus:** 960 / 1814 predicate (52.9%). No regressions. (Q21 added 72 in 2026-04-24 session; Q14 added 66 earlier.)
+**Rule corpus:** 962 / 1814 predicate (53.0%). No regressions. (Q31 added 2 in 2026-04-24 session; Q21 added 72 earlier.)
 
 **Engine / infrastructure:**
 - Dictionary Provider Protocol (full 6-phase plan complete).
@@ -72,7 +72,7 @@ under `R CMD check` (one pre-existing failure noted below).
 | Q28 | RELREC / associated-person | 5 | combinator pattern |
 | Q29 | ELEMENT / EPOCH / TE-SE | 7 | 3 patterns + `op_next_row_not_equal` |
 | Q30 | IG-defined treatment-var | 3 | reuses Q2 op |
-| Q31 | Define.xml / sponsor keys | 2 | new `R/define-read.R` reader |
+| ~~Q31~~ | ~~Define.xml / sponsor keys~~ | ~~2~~ | **DONE** `R/define-read.R` + `op_key_not_unique_per_define` + `value_in_dictionary` (loinc) |
 | Q32 | compound combinator residual | ~40 | triage script + hand-translate |
 | **total expected net** | | **~1050** | brings corpus to ~1750 / 1814 |
 
@@ -1296,7 +1296,16 @@ Pattern `define-xml-key-uniqueness` consumes the parsed keys.  *[recommended]*
 **(b)** Block both rules until a proper Define.xml reader
 ships.
 
-**User answer:** _(pending)_
+**User answer:** **(a)** -- shipped 2026-04-24.
+- `R/define-read.R` added: `read_define_xml()` returns `herald_define`
+  with `$key_vars` (named list: dataset -> key var names) and
+  `$loinc_version` (from `def:Standard[@Name="LOINC"]/@Version`).
+- `validate(..., define = read_define_xml("define.xml"))` wires
+  `ctx$define` so ops can read parsed metadata.
+- `op_key_not_unique_per_define` in `R/ops-define.R` (CG0019).
+- CG0400 uses existing `value_in_dictionary` with `dict_name: loinc`.
+- Patterns: `define-xml-key-uniqueness`, `loinc-code-valid`.
+- 2 rules converted to predicate.
 
 ---
 

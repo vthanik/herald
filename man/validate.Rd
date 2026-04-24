@@ -13,6 +13,7 @@ validate(
   standards = NULL,
   dictionaries = NULL,
   study_metadata = NULL,
+  define = NULL,
   quiet = FALSE
 )
 }
@@ -45,6 +46,11 @@ keys: \code{collected_domains} (character vector of CDISC domain codes
 collected in this study, e.g. \code{c("MB", "PC")}). When \code{NULL} (default),
 rules that depend on study metadata return NA (advisory) rather than
 firing a definitive finding.}
+
+\item{define}{Optional \code{herald_define} object (from \code{read_define_xml()})
+carrying sponsor-defined key variables and dictionary version metadata.
+When supplied, rules that depend on Define-XML (e.g. CG0019, CG0400)
+evaluate against the parsed metadata; otherwise they return NA advisory.}
 
 \item{quiet}{Suppress progress output. Default FALSE.}
 }

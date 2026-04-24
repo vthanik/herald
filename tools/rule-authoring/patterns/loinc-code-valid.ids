@@ -1,0 +1,2 @@
+rule_id,authority,standard,variable,dict_name,field
+CG0400,CDISC,SDTM-IG,--LOINC,loinc,loinc_num
