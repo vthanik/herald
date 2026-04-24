@@ -1,0 +1,26 @@
+id: DEFINE-112
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: SASDatasetName attribute value must match the filename identified by
+    the file referenced by the ArchiveLocationID attribute.
+outcome:
+  message: '@SASDatasetName value does not match the filename for def:leaf[@ID=@def:ArchiveLocationID]/@href.'
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 112
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
+  element: ItemGroupDef
+  attribute: SASDatasetName

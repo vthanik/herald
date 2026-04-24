@@ -1,0 +1,28 @@
+id: DEFINE-259
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The value of attribute ID must start with either a letter or underscore
+    (_), and may contain only letters, digits, underscores, hyphens and periods.
+outcome:
+  message: The value of attribute ID[@ID] does not start with either a letter or underscore
+    (_) or contains characters other than letters, digits, underscores, hyphens and
+    periods.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 259
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: "/ODM/Study/MetaDataVersion/def:leaf\r\r\n/ODM/Study/MetaDataVersion/ItemGroupDef/def:leaf"
+  element: def:leaf
+  attribute: ID

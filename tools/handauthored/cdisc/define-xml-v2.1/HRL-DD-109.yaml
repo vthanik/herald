@@ -1,0 +1,18 @@
+id: HRL-DD-109
+version: 1
+standard: Define-XML
+description: The def:DefineVersion should have a value of '2.0.0' for Define-XML v2.0.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Invalid def:DefineVersion value
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: Herald
+  p21_id_equivalent: DD0020A
+  executability: reference
+  license: MIT
+notes: |
+  Blocked on `define_version_matches_schema` operator (def:DefineVersion must be '2.0.0' for Define-XML v2.0 and '2.1.0' for v2.1; today's `in` operator would need a schema-version pre-condition). See HANDOFF section 4g.

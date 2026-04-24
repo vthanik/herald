@@ -1,0 +1,24 @@
+id: DEFINE-237
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Child element ItemRef must be provided for the def:ValueListDef element.
+outcome:
+  message: Child element ItemRef is missing for element def:ValueListDef[@OID].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 237
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/def:ValueListDef
+  element: def:ValueListDef ItemRef

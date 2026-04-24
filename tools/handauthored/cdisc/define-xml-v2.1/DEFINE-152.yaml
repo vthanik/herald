@@ -1,0 +1,26 @@
+id: DEFINE-152
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The def:StandardOID attribute on the CodeList element must reference
+    an existing def:Standard element with Type="CT".
+outcome:
+  message: There is no def:Standard of type "CT" with an OID attribute that matches
+    CodeList[@Name]/def:StandardOID.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 152
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/CodeList
+  element: CodeList
+  attribute: def:StandardOID

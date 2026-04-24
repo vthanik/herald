@@ -1,0 +1,24 @@
+id: DEFINE-017
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The value of the def:Context attribute must be one of "Submission", "Other".
+outcome:
+  message: The value of def:Context[@def:Context] is not one of "Submission", "Other".
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 17
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Schema
+  xpaths: /ODM
+  element: ODM
+  attribute: def:Context

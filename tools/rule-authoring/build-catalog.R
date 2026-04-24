@@ -53,6 +53,18 @@ normalize_executability <- function(x) {
 
 is_core_schema <- function(yml) !is.null(yml$Core) || !is.null(yml$Authorities)
 
+normalize_standard <- function(raw) {
+  if (is.null(raw) || is.na(raw) || !nzchar(raw)) return(NA_character_)
+  key <- toupper(gsub("-", "", raw, fixed = TRUE))
+  switch(key,
+    "SDTMIG" = "SDTM-IG", "SDTM" = "SDTM-IG",
+    "ADAMIG" = "ADaM-IG", "ADAM" = "ADaM-IG",
+    "SENDIG" = "SEND-IG", "SEND" = "SEND-IG",
+    "DEFINEXML" = "Define-XML", "CT" = "CT",
+    raw
+  )
+}
+
 bucket_from_path <- function(path) {
   # last component of the directory that sits under tools/handauthored/cdisc/
   rel <- sub(paste0(auth_root, "/"), "", path, fixed = TRUE)
@@ -126,7 +138,7 @@ for (i in seq_along(yaml_paths)) {
     auth_block    <- yml$Authorities[[1L]] %||% list()
     std_block     <- auth_block$Standards[[1L]] %||% list()
     authority     <- na_chr(auth_block$Organization) %||% "CDISC"
-    standard      <- na_chr(std_block$Name)
+    standard      <- normalize_standard(na_chr(std_block$Name))
     std_versions  <- na_chr(std_block$Version)
     severity      <- normalize_severity(yml$Sensitivity)
     executability <- normalize_executability(core_executability(yml))
@@ -143,7 +155,7 @@ for (i in seq_along(yaml_paths)) {
   } else {
     rule_id       <- na_chr(yml$id)
     authority     <- na_chr(yml$authority %||% yml$provenance$authority) %||% "CDISC"
-    standard      <- na_chr(yml$standard)
+    standard      <- normalize_standard(na_chr(yml$standard))
     std_versions  <- if (!is.null(yml$standard_versions)) {
                        paste(as.character(yml$standard_versions), collapse = ";")
                      } else {

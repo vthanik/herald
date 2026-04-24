@@ -1,0 +1,26 @@
+id: DEFINE-216
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: ID attribute value must be unique within the set of def:leaf elements.
+outcome:
+  message: '[count(//def:leaf/[@ID]] def:leaf elements found with the same def:leaf[@ID]
+    value.'
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 216
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: "/ODM/Study/MetaDataVersion/def:leaf\r\r\n/ODM/Study/MetaDataVersion/ItemGroupDef/def:leaf"
+  element: def:leaf
+  attribute: ID

@@ -1,0 +1,26 @@
+id: DEFINE-205
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: No more than one child element Description may be provided for the MethodDef
+    element.
+outcome:
+  message: Child element Description is provided more than once for MethodDef[@Name]
+    .
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 205
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/MethodDef/Description
+  element: MethodDef/Description

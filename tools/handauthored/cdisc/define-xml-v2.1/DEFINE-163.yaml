@@ -1,0 +1,26 @@
+id: DEFINE-163
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The ValueListOID attribute on the def:ValueListRef element must reference
+    an existing def:ValueListDef element.
+outcome:
+  message: There is no def:ValueListDef with an OID attribute that matches ItemDef[@Name]/def:ValueListRef/[@ValueListOID].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 163
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemDef/def:ValueListRef
+  element: def:ValueListRef
+  attribute: ValueListOID

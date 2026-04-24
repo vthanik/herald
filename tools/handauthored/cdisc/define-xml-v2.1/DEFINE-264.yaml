@@ -1,0 +1,26 @@
+id: DEFINE-264
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The value of the Status attribute must be one of the values from the
+    CDISC/NCI standard Status codelist included in the Define-XML Controlled Terminology.
+outcome:
+  message: The value of Standard Status [@Status] is not in the CDISC/NCI Standard
+    Status codelist (C-Code C172332) for Define-XML.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 264
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/def:Standards/def:Standard
+  element: def:Standard
+  attribute: Status

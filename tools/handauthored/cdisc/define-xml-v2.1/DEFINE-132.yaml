@@ -1,0 +1,27 @@
+id: DEFINE-132
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The value of the Name attribute in the ItemGroupDef/def:Class element
+    must be one of the values from the CDISC/NCI GNRLOBSC General Observation Class
+    codelist included in the Define-XML Controlled Terminology.
+outcome:
+  message: The value of the dataset's class name [ItemGroupDef/def:Class/@Name] is
+    not in the CDISC/NCI GNRLOBSC General Observation Class codelist with C-Code C103329.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 132
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef/def:Class
+  element: def:Class
+  attribute: Name

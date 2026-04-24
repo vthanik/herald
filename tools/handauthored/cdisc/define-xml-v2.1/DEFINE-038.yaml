@@ -1,0 +1,25 @@
+id: DEFINE-038
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: No more than one child element def:AnnotatedCRF must be provided for
+    the MetaDataVersion element.
+outcome:
+  message: Child element def:AnnotatedCRF is provided more than once for element MetaDataVersion.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 38
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/def:AnnotatedCRF
+  element: def:AnnotatedCRF

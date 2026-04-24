@@ -1,0 +1,26 @@
+id: DEFINE-122
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The IsNonStandard attribute must be populated when the dataset is not
+    standard.
+outcome:
+  message: The IsNonStandard attribute is missing for ItemGroupDef[@Name] when the
+    dataset is not standard.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 122
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
+  element: ItemGroupDef
+  attribute: def:IsNonStandard

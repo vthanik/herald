@@ -1,0 +1,24 @@
+id: DEFINE-126
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The value of the def:HasNoData attribute must be "Yes".
+outcome:
+  message: The value of ItemGroupDef[@Name]/@def:HasNoData is not "Yes"
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 126
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
+  element: ItemGroupDef
+  attribute: def:HasNoData

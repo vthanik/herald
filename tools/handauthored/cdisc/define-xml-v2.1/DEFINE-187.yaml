@@ -1,0 +1,25 @@
+id: DEFINE-187
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Attribute @def:ExtendedValue must not be present when a CodeList is non-extensible.
+outcome:
+  message: EnumeratedItem[@CodedValue] has a def:ExtendedValue attribute but the CodeList[@Name]/Alias[@Name]
+    is non-extensible.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 187
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/CodeList/EnumeratedItem
+  element: EnumeratedItem
+  attribute: def:ExtendedValue

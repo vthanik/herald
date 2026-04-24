@@ -1,0 +1,27 @@
+id: DEFINE-185
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Attribute OrderNumber must be provided for the EnumeratedItem element
+    when there is at least one OrderNumber attribute value provided for the same CodeList.
+outcome:
+  message: Attribute OrderNumber is missing for element EnumeratedItem[@CodedValue]
+    in CodeList[@Name] which has attribute OrderNumber provided for another EnumeratedItem.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 185
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/CodeList/EnumeratedItem
+  element: EnumeratedItem
+  attribute: OrderNumber

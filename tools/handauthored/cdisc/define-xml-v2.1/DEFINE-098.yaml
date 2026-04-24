@@ -1,0 +1,27 @@
+id: DEFINE-098
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Missing Alias for Codelist EnumeratedItem element where the ExtendedValue
+    attribute  is not present and the CodeList is referenced by a variable that requires
+    CDISC Controlled Terminology according to the standard.
+outcome:
+  message: Missing CodeList[@OID=<CodeListOID>]/EnumeratedItem[@CodedValue]/Alias
+    for ItemDef[@Name] where CDISC Controlled Terminology is required.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 98
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/CodeList/EnumeratedItem/Alias
+  element: Alias

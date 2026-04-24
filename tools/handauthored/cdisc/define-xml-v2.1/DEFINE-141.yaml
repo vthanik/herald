@@ -1,0 +1,27 @@
+id: DEFINE-141
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The ItemDef element must have the Length attribute present when the DataType
+    attribute has the value text, integer or float.
+outcome:
+  message: Length attribute must be present for ItemDef[@OID] within $ParentElementType[@OID]
+    when (ItemDef[@DataType]) is one of 'text', 'integer' or 'float'.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 141
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemDef
+  element: ItemDef
+  attribute: Length

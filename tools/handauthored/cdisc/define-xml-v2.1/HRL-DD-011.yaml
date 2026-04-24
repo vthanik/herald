@@ -1,0 +1,19 @@
+id: HRL-DD-011
+version: 1
+standard: Define-XML
+description: |
+  A Description element must be included in each arm:ResultDisplay.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Missing Required Description Element
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: Herald
+  p21_id_equivalent: DD0090
+  executability: reference
+  license: MIT
+notes: |
+  Blocked on `arm_description_required` operator (each arm:ResultDisplay must have a Description child). See HANDOFF section 4i.

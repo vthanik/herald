@@ -1,0 +1,27 @@
+id: DEFINE-242
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The def:CommentOID attribute must be provided for an ItemDef when its
+    ItemOID is referenced in an ItemRef that has the def:HasNoData  attribute  value
+    'Yes'.
+outcome:
+  message: ItemDef[@OID]/@def:CommentOID is not provided  when ItemGroupDef[@OID]/ItemRef[@ItemOID]
+    has def:HasNoData attribute set to  'Yes'.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 242
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: "/ODM/Study/MetaDataVersion/ItemDef\r\r\n/ODM/Study/MetaDataVersion/ItemRef"
+  element: ItemDef
+  attribute: def:CommentOID

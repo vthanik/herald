@@ -1,0 +1,27 @@
+id: DEFINE-266
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The value of an English variable's description must match the one specified
+    in the CDISC standard for an ItemDef element that represents a dataset's variable
+    defined as following an SDTMIG or SENDIG standard.
+outcome:
+  message: The English variable's description for ItemGroupDef[@Name], ItemDef[@Name]
+    does not follow the def:Standard[OID=ItemGroupDef/@def:StandardOID]/@Name and
+    def:Standard[OID=ItemGroupDef/@def:StandardOID]/@Version.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 266
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemDef/Description/TranslatedText
+  element: Description

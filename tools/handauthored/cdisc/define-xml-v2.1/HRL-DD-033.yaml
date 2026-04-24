@@ -1,0 +1,29 @@
+id: HRL-DD-033
+version: 2
+standard: Define-XML
+description: |
+  SubClass must be a valid CDISC Controlled Terminology value when provided.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: subclass
+    operator: empty
+  - name: subclass
+    operator: in
+    value:
+    - TIME-TO-EVENT
+    - ADVERSE EVENT
+outcome:
+  message: SubClass value is not valid. Allowable values are 'TIME-TO-EVENT' and 'ADVERSE
+    EVENT'.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.11.2.1
+  cited_guidance: |
+    def:SubClass -- Name must follow CDISC Controlled Terminology for SubClass.
+  executability: predicate
+  license: MIT

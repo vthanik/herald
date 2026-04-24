@@ -1,0 +1,25 @@
+id: DEFINE-055
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The QVAL variable in a Supplemental Qualifier dataset must have a def:ValueListRef
+    element.
+outcome:
+  message: def:ValueListRef is missing for //ItemDef[@OID, @Name="QVAL'].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 55
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/def:ValueListDef
+  element: def:ValueListDef

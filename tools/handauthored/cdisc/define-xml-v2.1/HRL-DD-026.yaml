@@ -1,0 +1,24 @@
+id: HRL-DD-026
+version: 2
+standard: Define-XML
+description: |
+  ProtocolName is required and must be non-empty in the Define sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: ProtocolName
+    operator: non_empty
+outcome:
+  message: ProtocolName is missing or empty in the Define sheet. This is required
+    for all Define-XML documents.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.4.4
+  cited_guidance: |
+    ProtocolName -- Required. Cardinality: Exactly one. A protocol name or number assigned to the study.
+  executability: predicate
+  license: MIT

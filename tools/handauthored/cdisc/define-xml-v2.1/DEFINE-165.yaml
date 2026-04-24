@@ -1,0 +1,26 @@
+id: DEFINE-165
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: CodeList element must contain either one or more EnumeratedItem elements,
+    one or more CodeListItem elements or one ExternalCodelist element.
+outcome:
+  message: CodeList[@Name] must contain either one or more EnumeratedItem elements,
+    one or more CodeListItem elements or one ExternalCodelist element.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 165
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/CodeList
+  element: CodeList

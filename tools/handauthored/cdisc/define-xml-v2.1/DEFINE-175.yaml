@@ -1,0 +1,26 @@
+id: DEFINE-175
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Codelist SASFormatName attribute must contain a valid SAS format name.
+    It needs to start with a $ character in case the CodeList DataType is text.
+outcome:
+  message: ItemDef[@Name] has an invalid SASFormatName attribute value [@SASFormatName].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 175
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/CodeList
+  element: CodeList
+  attribute: SASFormatName

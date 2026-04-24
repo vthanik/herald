@@ -1,0 +1,25 @@
+id: HRL-DD-108
+version: 1
+standard: Define-XML
+description: |
+  Dataset and variable metadata must match the configured base standard.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: __metadata_matches_standard
+    operator: equal_to
+    value: no
+outcome:
+  message: Metadata does not match the configured base standard. Check that dataset/variable
+    metadata aligns with the expected values defined in the referenced standard.
+  severity: Warning
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 4.1.1; 5.3.6.1
+  cited_guidance: |
+    P21 DD0148: Check metadata to make sure the value matches the configured base standard.
+  executability: predicate
+  license: MIT

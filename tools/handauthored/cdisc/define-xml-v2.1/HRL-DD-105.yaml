@@ -1,0 +1,25 @@
+id: HRL-DD-105
+version: 1
+standard: Define-XML
+description: |
+  Variables shared across datasets (e.g., USUBJID) should have consistent Origin across all datasets.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: __origin_consistent_across_datasets
+    operator: equal_to
+    value: no
+outcome:
+  message: Variable origin is inconsistent across datasets. Shared variables like
+    USUBJID should have consistent origin metadata.
+  severity: Warning
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 4.3.2
+  cited_guidance: |
+    P21 DD0109: USUBJID should always be derived/assigned in the same way.
+  executability: predicate
+  license: MIT

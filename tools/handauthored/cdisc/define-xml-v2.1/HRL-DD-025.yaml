@@ -1,0 +1,24 @@
+id: HRL-DD-025
+version: 2
+standard: Define-XML
+description: |
+  StudyDescription is required and must be non-empty in the Define sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: StudyDescription
+    operator: non_empty
+outcome:
+  message: StudyDescription is missing or empty in the Define sheet. This is required
+    for all Define-XML documents.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.4.3
+  cited_guidance: |
+    StudyDescription -- Required. Cardinality: Exactly one. A text description of the contents of the Study.
+  executability: predicate
+  license: MIT

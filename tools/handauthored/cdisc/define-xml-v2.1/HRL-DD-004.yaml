@@ -1,0 +1,19 @@
+id: HRL-DD-004
+version: 1
+standard: Define-XML
+description: When a variable or value level record is subject to controlled terminology,
+  the Assigned Value must be populated with a term from its associated codelist.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Assigned value not found in codelist
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: Herald
+  p21_id_equivalent: DD0147
+  executability: reference
+  license: MIT
+notes: |
+  Blocked on `valid_codelist_term` operator (VLM Assigned Value must be a term in the linked codelist). See HANDOFF section 4g.

@@ -1,0 +1,26 @@
+id: DEFINE-096
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Alias is Required for ItemGroupDef elements representing Supplemental
+    Qualifier datasets in the context of a regulatory submission.
+outcome:
+  message: Alias is missing for ItemGroupDef[@Name] representing Supplemental Qualifier
+    datasets in the context of a regulatory submission.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 96
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef/Alias
+  element: Alias

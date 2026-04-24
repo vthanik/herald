@@ -1,0 +1,23 @@
+id: DEFINE-131
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The dataset class needs to be provided when the file is used for submission.
+outcome:
+  message: $ItemGroupDef[@Name]/def:Class is missing.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 131
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef/def:Class
+  element: def:Class

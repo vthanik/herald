@@ -1,0 +1,24 @@
+id: DEFINE-061
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The Description element must have at least one TranslatedText child element
+outcome:
+  message: XPATH/Description/TranslatedText not found.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 61
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: "/ODM/Study/MetaDataVersion/def:ValueListDef/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/ItemGroupDef/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/ItemDef/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/ItemDef/def:Origin/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/CodeList/CodeListItem/Decode/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/CodeList/Description/TranslatedText\r\r\n\r\r\n/ODM/Study/MetaDataVersion/CodeList/CodeListItem/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/MethodDef/Description/TranslatedText\r\r\n/ODM/Study/MetaDataVersion/def:CommentDef/Description/TranslatedText"
+  element: TranslatedText

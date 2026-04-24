@@ -1,0 +1,27 @@
+id: DEFINE-213
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: There must be only one def:CommentDef element for a given OID attribute
+    value.
+outcome:
+  message: There is more than one def:CommentDef element with the OID attribute =
+    [def:CommentDef/@OID].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 213
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: ODM/Study/MetaDataVersion/def:CommentDef
+  element: def:CommentDef
+  attribute: OID

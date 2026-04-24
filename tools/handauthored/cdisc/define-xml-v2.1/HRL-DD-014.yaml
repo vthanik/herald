@@ -1,0 +1,19 @@
+id: HRL-DD-014
+version: 1
+standard: Define-XML
+description: |
+  When ParameterOID is included in a arm:AnalysisResult, then at least one of the children arm:AnalysisDataset elements must be a BDS and the ParameterOID must reference a PARAMCD variable for that dataset.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Improper use of ParameterOID
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: Herald
+  p21_id_equivalent: DD0093
+  executability: reference
+  license: MIT
+notes: |
+  Blocked on `arm_parameter_oid_references_paramcd` operator (when ParameterOID is present, at least one AnalysisDataset must be BDS and ParameterOID must reference a PARAMCD variable in that dataset). See HANDOFF section 4i.

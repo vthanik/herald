@@ -1,0 +1,25 @@
+id: DEFINE-035
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Attribute PublishingSet must be provided for the def:Standard element
+    when Type is "CT".
+outcome:
+  message: Attribute PublishingSet is missing for def:Standard[@Name] with @Type='CT'.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 35
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/def:Standards/def:Standard
+  element: def:Standard
+  attribute: PublishingSet

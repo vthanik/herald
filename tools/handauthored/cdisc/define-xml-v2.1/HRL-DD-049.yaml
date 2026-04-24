@@ -1,0 +1,26 @@
+id: HRL-DD-049
+version: 1
+standard: Define-XML
+description: |
+  Significant Digits is required when Data Type is float.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: data_type
+    operator: equal_to
+    value: float
+  - name: sig_digits
+    operator: empty
+outcome:
+  message: Significant Digits is missing but required when Data Type is float.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.12
+  cited_guidance: |
+    SignificantDigits -- Conditional. Required if DataType is 'Float'. When DataType is float, both Length and SignificantDigits must be provided.
+  executability: predicate
+  license: MIT

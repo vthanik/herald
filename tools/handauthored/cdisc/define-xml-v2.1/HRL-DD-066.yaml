@@ -1,0 +1,38 @@
+id: HRL-DD-066
+version: 2
+standard: Define-XML
+description: |
+  Data Type in value-level metadata must be a valid Define-XML data type.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: data_type
+    operator: empty
+  - name: data_type
+    operator: in
+    value:
+    - text
+    - integer
+    - float
+    - date
+    - datetime
+    - time
+    - partialDate
+    - partialTime
+    - partialDatetime
+    - incompleteDatetime
+    - durationDatetime
+    - intervalDatetime
+outcome:
+  message: Value-level Data Type is not a valid Define-XML type.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.12
+  cited_guidance: |
+    DataType -- Required. See Section 4.3.1 for valid Define-XML DataType values.
+  executability: predicate
+  license: MIT

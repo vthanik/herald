@@ -1,0 +1,26 @@
+id: DEFINE-251
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The value of the Purpose attribute must be "Tabulation" for an ItemGroupDef
+    element that represents a dataset defined as following an SDTMIG or SENDIG standard.
+outcome:
+  message: The Purpose attribute for ItemGroupDef[@Name] is not "Tabulation" but the
+    dataset follows the def:Standard[OID=ItemGroupDef/@def:StandardOID]/@Name.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 251
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
+  element: ItemGroupDef
+  attribute: Purpose

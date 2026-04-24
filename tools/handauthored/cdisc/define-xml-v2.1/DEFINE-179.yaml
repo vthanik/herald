@@ -1,0 +1,26 @@
+id: DEFINE-179
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: For NCI/CDISC Controlled Terminology, the value of CodedValue must exactly
+    match the CDISC Submission Value from the published Controlled Terminology.
+outcome:
+  message: CodeList[@Name]/EnumeratedItem[@CodedValue]/@CodedValue does not match
+    CDISC Submission Value for CDISC Controlled Terminology with C-Code CodeList[@Name]/Alias[@Name].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 179
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/CodeList/EnumeratedItem
+  element: EnumeratedItem
+  attribute: CodedValue

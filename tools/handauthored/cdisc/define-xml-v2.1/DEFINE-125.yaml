@@ -1,0 +1,26 @@
+id: DEFINE-125
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Attribute def:HasNoData must be provided when def:ArchiveLocationID is
+    not provided in the context of a regulatory submission.
+outcome:
+  message: Attribute def:HasNoData is missing for ItemGroupDef[@Name] when def:ArchiveLocationID
+    is not provided in the context of a regulatory submission.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 125
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef
+  element: ItemGroupDef
+  attribute: def:HasNoData

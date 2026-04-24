@@ -1,0 +1,29 @@
+id: HRL-DD-056
+version: 2
+standard: Define-XML
+description: |
+  Source is required for SDTM and ADaM variables when Origin is populated and not equal to 'Predecessor'.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: origin
+    operator: in
+    value: Predecessor
+  - name: origin
+    operator: empty
+  - name: source
+    operator: non_empty
+outcome:
+  message: Source is missing. For SDTM and ADaM datasets, Source is required when
+    Origin is not Predecessor.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 4.3.2.1; 4.3.2.2
+  cited_guidance: |
+    Source is required for SDTM and ADaM datasets when Origin Type is not Predecessor.
+  executability: predicate
+  license: MIT

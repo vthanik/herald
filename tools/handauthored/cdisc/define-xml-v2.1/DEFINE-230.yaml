@@ -1,0 +1,25 @@
+id: DEFINE-230
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The value of the OID attribute must be unique within the Define-XML document.
+outcome:
+  message: There is more than one element with OID [@OID].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 230
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: "/ODM/Study\r\r\n/ODM/Study/MetaDataVersion\r\r\n/ODM/Study/MetaDataVersion/Standard\r\r\n/ODM/Study/MetaDataVersion/def:ValueListDef\r\r\n/ODM/Study/MetaDataVersion/def:WhereClauseDef\r\r\n/ODM/Study/MetaDataVersion/ItemGroupDef\r\r\n/ODM/Study/MetaDataVersion/ItemDef\r\r\n/ODM/Study/MetaDataVersion/CodeList\r\r\n/ODM/Study/MetaDataVersion/MethodDef\r\r\n/ODM/Study/MetaDataVersion/def:CommentDef"
+  element: All
+  attribute: OID

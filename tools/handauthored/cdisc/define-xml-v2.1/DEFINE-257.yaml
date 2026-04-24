@@ -1,0 +1,24 @@
+id: DEFINE-257
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Attribute OID must be provided for the def:Standard element.
+outcome:
+  message: Attribute OID is missing for element def:Standard[@Name].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 257
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/def:Standards/def:Standard
+  element: def:Standard
+  attribute: OID

@@ -1,0 +1,27 @@
+id: HRL-DD-103
+version: 1
+standard: Define-XML
+description: |
+  AnalysisReason must use valid ADaM Controlled Terminology values when provided.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: reason
+    operator: empty
+  - name: __reason_in_adam_ct
+    operator: equal_to
+    value: yes
+outcome:
+  message: AnalysisReason value is not in ADaM Controlled Terminology. Values are
+    controlled by the Analysis Reason extensible codelist.
+  severity: Warning
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: ARM 1.0
+  cited_guidance: |
+    P21 DD0099: Values for the AnalysisReason attribute are controlled by the Analysis Reason extensible codelist in ADaM CT.
+  executability: predicate
+  license: MIT

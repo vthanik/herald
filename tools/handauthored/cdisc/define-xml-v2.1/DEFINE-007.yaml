@@ -1,0 +1,26 @@
+id: DEFINE-007
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The value of the ODMVersion attribute must be "1.3.2"
+outcome:
+  message: The value of ODMVersion[@ODMVersion] is not "1.3.2" for the ODM element
+    .
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 7
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: /ODM
+  element: ODM
+  attribute: ODMVersion

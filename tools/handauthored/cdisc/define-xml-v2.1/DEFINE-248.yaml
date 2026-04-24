@@ -1,0 +1,25 @@
+id: DEFINE-248
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Attribute xlink:href must be provided.
+outcome:
+  message: def:leaf[@ID] is missing the xlink:href attribute.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 248
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: "/ODM/MetaDataVersion/def:leaf\r\r\n/ODM/MetaDataVersion/ItemGroupDef/def:leaf"
+  element: def:leaf
+  attribute: xlink:href

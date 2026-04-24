@@ -1,0 +1,24 @@
+id: HRL-DD-029
+version: 2
+standard: Define-XML
+description: |
+  Dataset name is required in the Datasets sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: dataset
+    operator: non_empty
+outcome:
+  message: Dataset name is missing. Each row in the Datasets sheet must have a dataset
+    name.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.11
+  cited_guidance: |
+    Name -- Required. Short description for the ItemGroup.
+  executability: predicate
+  license: MIT

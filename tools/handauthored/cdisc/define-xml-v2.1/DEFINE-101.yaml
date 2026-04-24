@@ -1,0 +1,26 @@
+id: DEFINE-101
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The Alias element must have a Name attribute.
+outcome:
+  message: $ParentElementType[@OID] must have a Name attribute for the Alias element
+    provided.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 101
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: "/ODM/Study/MetaDataVersion/ItemGroupDef/Alias\r\r\n/ODM/Study/MetaDataVersion/ItemDef/Alias\r\r\n/ODM/Study/MetaDataVersion/CodeList/Alias\r\r\n/ODM/Study/MetaDataVersion/CodeList/CodeListItem/Alias\r\r\n/ODM/Study/MetaDataVersion/CodeList/EnumeratedItem/Alias"
+  element: Alias
+  attribute: Name

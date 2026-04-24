@@ -1,0 +1,28 @@
+id: HRL-DD-069
+version: 1
+standard: Define-XML
+description: |
+  Dataset.Variable reference in ValueLevel must exist in the Variables sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: dataset
+    operator: empty
+  - name: variable
+    operator: empty
+  - name: __variable_exists_in_var_spec
+    operator: equal_to
+    value: yes
+outcome:
+  message: Dataset.Variable in ValueLevel does not exist in the Variables sheet.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.9; 5.3.12
+  cited_guidance: |
+    Value-level metadata is specified using def:ValueListDef elements linked to variable definitions.
+  executability: predicate
+  license: MIT

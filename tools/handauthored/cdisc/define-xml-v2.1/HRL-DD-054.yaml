@@ -1,0 +1,33 @@
+id: HRL-DD-054
+version: 2
+standard: Define-XML
+description: |
+  Origin Type must be a valid value. When populated, origin must be one of {Collected, Derived, Assigned, Protocol, Predecessor, Not Available}. Empty origins are scoped out of this rule and flagged by HRL-DD-053.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: origin
+    operator: empty
+  - name: origin
+    operator: in
+    value:
+    - Collected
+    - Derived
+    - Assigned
+    - Protocol
+    - Predecessor
+    - Not Available
+outcome:
+  message: 'Origin type is not valid. Must be one of: Collected, Derived, Assigned,
+    Protocol, Predecessor, Not Available.'
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 4.3.2; 5.3.12.3
+  cited_guidance: |
+    Type -- Required. Origin type. The list of allowable values is not extensible.
+  executability: predicate
+  license: MIT

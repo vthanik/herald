@@ -1,0 +1,24 @@
+id: DEFINE-154
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: For regulatory submissions, def:Origin metadata must be provided for
+    all SDTM, ADaM or SEND variables.
+outcome:
+  message: ItemDef[@Name]/def:Origin is not found.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 154
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemDef/def:Origin
+  element: def:Origin

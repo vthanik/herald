@@ -1,0 +1,27 @@
+id: DEFINE-160
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The value of the Type attribute must be one of the values from the CDISC/NCI
+    standard Origin Type codelist included in the Define-XML Controlled Terminology.
+outcome:
+  message: The value of Type [@Type] is not in the CDISC/NCI Standard Origin Type
+    codelist (C-Code C170449) for Define-XML.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 160
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/ItemDef/def:Origin
+  element: def:Origin
+  attribute: Type

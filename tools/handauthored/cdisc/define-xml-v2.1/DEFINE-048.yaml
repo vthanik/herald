@@ -1,0 +1,27 @@
+id: DEFINE-048
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Attribute FirstPage must be provided for the def:PDFPageRef element when
+    PageRefs is missing and Type is PhysicalRef.
+outcome:
+  message: Attribute FirstPage is missing for element def:PDFPageRef, when attribute
+    PageRefs is missing and Type is PhysicalRef.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 48
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: "/ODM/Study/MetaDataVersion/ItemDef/def:Origin/def:DocumentRef/def:PDFPageRef\r\r\n/ODM/Study/MetaDataVersion/MethodDef/def:DocumentRef/def:PDFPageRef\r\r\n/ODM/Study/MetaDataVersion/def:CommentDef/def:DocumentRef/def:PDFPageRef"
+  element: def:PDFPageRef
+  attribute: FirstPage

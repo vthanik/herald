@@ -1,0 +1,26 @@
+id: DEFINE-249
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: There must be an Alias element with the Context Attribute nci:ExtCodeID
+    when the Codelist includes a reference to a CDISC Controlled Terminology Standard.
+outcome:
+  message: Missing Alias element with Context attribute 'nci:ExtCodeID' for CodeList[@OID]
+    with def:Standard = //def:Standard[@OID=CodeList/@def:StandardOID]/@Name.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 249
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/CodeList/Alias
+  element: Alias
+  attribute: Context

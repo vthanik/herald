@@ -1,0 +1,23 @@
+id: DEFINE-235
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: No more than one /def:ValueListDef/Description may be provided.
+outcome:
+  message: Child element Description is provided more than once for def:ValueListDef[@OID].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 235
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/def:ValueListDef/Description
+  element: def:ValueListDef/Description

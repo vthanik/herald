@@ -1,0 +1,27 @@
+id: HRL-DD-092
+version: 1
+standard: Define-XML
+description: |
+  ValueLevel Comment ID must exist in the Comments sheet when provided.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: comment_id
+    operator: empty
+  - name: __comment_exists_in_cm_spec
+    operator: equal_to
+    value: yes
+outcome:
+  message: ValueLevel references a Comment ID that does not exist in the Comments
+    sheet.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.15
+  cited_guidance: |
+    def:CommentOID -- Must match the OID of a def:CommentDef element.
+  executability: predicate
+  license: MIT

@@ -1,0 +1,27 @@
+id: DEFINE-084
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Comment must be provided for a where clause when two or more datasets
+    are referenced in where clause conditions.
+outcome:
+  message: Comment is not provided for WhereClauseDef which references more than one
+    dataset.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 84
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/def:WhereClauseDef
+  element: def:WhereClauseDef
+  attribute: def:CommentOID

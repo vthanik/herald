@@ -1,0 +1,31 @@
+id: HRL-DD-037
+version: 1
+standard: Define-XML
+description: |
+  SDTMIG version must be one of the allowable versions: 3.1.2, 3.2, 3.3, 3.4.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: standard_name
+    operator: not_equal_to
+    value: SDTMIG
+  - name: standard_version
+    operator: in
+    value:
+    - 3.1.2
+    - '3.2'
+    - '3.3'
+    - '3.4'
+outcome:
+  message: 'SDTMIG version is not allowable. Must be one of: 3.1.2, 3.2, 3.3, 3.4.'
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 4.1.1; 1.5.1
+  cited_guidance: |
+    Name: SDTMIG. Allowable Versions: 3.1.2, 3.2, 3.3. Define-XML v2.1 supports SDTMIG v3.1.2 and higher.
+  executability: predicate
+  license: MIT

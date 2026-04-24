@@ -1,0 +1,26 @@
+id: DEFINE-095
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The Alias element is required for each ItemGroupDef where the Domain
+    attribute value is not the same as the Name attribute value.
+outcome:
+  message: Domain attribute is not the same as the Name attribute but Alias is missing
+    for ItemGroupDef[@Name].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 95
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef/Alias
+  element: Alias

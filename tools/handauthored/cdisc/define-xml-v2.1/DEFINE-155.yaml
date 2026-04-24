@@ -1,0 +1,28 @@
+id: DEFINE-155
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: All variable definitions must have a  def:Origin child element when there
+    is no def:ValueListRef child element. When there is a def:ValueListRef either
+    the variable definition must have a def:Origin or it must be provided for each
+    ItemDef referenced in the def:ValueLIstDef.
+outcome:
+  message: There must be a  def:Origin defined at the variable or value level for
+    ItemDef[@OID].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 155
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemDef/def:Origin
+  element: def:Origin

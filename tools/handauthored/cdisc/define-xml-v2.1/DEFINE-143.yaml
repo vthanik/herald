@@ -1,0 +1,27 @@
+id: DEFINE-143
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Length attribute must not be present for ItemDef when DataType is not
+    in ('integer','text', 'float').
+outcome:
+  message: ItemDef[@Name] has a Length attribute but the DataType is not one of ('integer','text',
+    'float').
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 143
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemDef
+  element: ItemDef
+  attribute: Length

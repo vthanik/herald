@@ -1,0 +1,25 @@
+id: HRL-DD-027
+version: 2
+standard: Define-XML
+description: |
+  DefineVersion must start with '2.1' to conform to Define-XML v2.1.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: DefineVersion
+    operator: matches_regex
+    value: ^2\.1
+outcome:
+  message: DefineVersion does not match '2.1.x'. Define-XML v2.1 requires def:DefineVersion
+    starting with '2.1'.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.5
+  cited_guidance: |
+    def:DefineVersion -- Required. '2.1.n'. Version of Define-XML to which the file conforms.
+  executability: predicate
+  license: MIT

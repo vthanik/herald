@@ -1,0 +1,26 @@
+id: DEFINE-067
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Mandatory attribute for the ItemRef corresponding to a SENDIG or SDTMIG
+    variable with Core = "Req" must be "Yes".
+outcome:
+  message: ItemGroupDef/ItemRef[@ItemOID] must have @Mandatory = "Yes" because ItemDef[@Name]
+    has Core = "Req" in def:Standard[ItemDef[@def:StandardOID]/@Name - def:Standard[ItemDef[@def:StandardOID]/@Version.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 67
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: "/ODM/Study/MetaDataVersion/ItemGroupDef/ItemRef\r\r\n/ODM/Study/MetaDataVersion/def:ValueListDef/ItemRef"
+  element: ItemRef
+  attribute: Mandatory

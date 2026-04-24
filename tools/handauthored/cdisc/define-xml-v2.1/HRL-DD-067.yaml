@@ -1,0 +1,27 @@
+id: HRL-DD-067
+version: 1
+standard: Define-XML
+description: |
+  Value-level Length must not exceed the parent variable length.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: length
+    operator: empty
+  - name: __length_exceeds_parent
+    operator: equal_to
+    value: no
+outcome:
+  message: Value-level Length exceeds the parent variable Length. For ItemDef referenced
+    from a ValueListDef, Length must be <= parent variable length.
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: 5.3.12
+  cited_guidance: |
+    For ItemDef elements referenced from a ValueListDef, the Length must be less than or equal to the length of the parent variable.
+  executability: predicate
+  license: MIT

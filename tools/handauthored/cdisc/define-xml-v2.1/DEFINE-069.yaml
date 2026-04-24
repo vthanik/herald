@@ -1,0 +1,25 @@
+id: DEFINE-069
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Attribute Mandatory must be provided for the ItemRef element.
+outcome:
+  message: Attribute Mandatory is missing for element ItemRef[@ItemOID] in ItemGroupDef[@Name].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 69
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Schema
+  xpaths: "/ODM/Study/MetaDataVersion/ItemGroupDef/ItemRef\r\r\n/ODM/Study/MetaDataVersion/def:ValueListDef/ItemRef"
+  element: ItemRef
+  attribute: Mandatory

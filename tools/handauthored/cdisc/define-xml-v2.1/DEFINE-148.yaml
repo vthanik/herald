@@ -1,0 +1,26 @@
+id: DEFINE-148
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The def:CommentOID attribute on the ItemDef element must reference an
+    existing def:CommentDef element.
+outcome:
+  message: There is no def:CommentDef with an OID attribute that matches ItemDef[@Name]/def:CommentOID.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 148
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: ODM/Study/MetaDataVersion/ItemDef
+  element: ItemDef
+  attribute: def:CommentOID

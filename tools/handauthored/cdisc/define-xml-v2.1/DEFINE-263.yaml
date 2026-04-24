@@ -1,0 +1,26 @@
+id: DEFINE-263
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.0'
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: The version identifier must match a version identifier used in the standard.
+outcome:
+  message: The version identifier value is not a valid value for the standard def:Standard[@Name]
+    .
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 263
+  license: CC-BY-4.0
+  applicable_versions: Both 2.0 and 2.1
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/def:Standards/def:Standard
+  element: def:Standard
+  attribute: Version

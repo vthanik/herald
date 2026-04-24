@@ -1,0 +1,24 @@
+id: DEFINE-057
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: For non-standard domains or datasets, sponsors must provide a short ItemGroupDef
+    description of the type of data contained within the dataset.
+outcome:
+  message: Missing Description for nonstandard dataset ItemGroupDef[@Name].
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 57
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Specification
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef/Description
+  element: Description

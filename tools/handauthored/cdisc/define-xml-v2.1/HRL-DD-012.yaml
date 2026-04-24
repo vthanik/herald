@@ -1,0 +1,19 @@
+id: HRL-DD-012
+version: 1
+standard: Define-XML
+description: |
+  The OID for an arm:AnalysisResult must be unique within a arm:ResultDisplay.
+scope:
+  classes: []
+  domains: []
+outcome:
+  message: Duplicate arm:AnalysisResult OID
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: Herald
+  p21_id_equivalent: DD0091
+  executability: reference
+  license: MIT
+notes: |
+  Blocked on `arm_analysisresult_oid_unique` operator (arm:AnalysisResult OID must be unique within a arm:ResultDisplay). See HANDOFF section 4i.

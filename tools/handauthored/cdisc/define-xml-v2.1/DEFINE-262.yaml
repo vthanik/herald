@@ -1,0 +1,26 @@
+id: DEFINE-262
+authority: CDISC
+standard: Define-XML
+standard_versions:
+- '2.1'
+severity: Medium
+scope:
+  classes: []
+  domains: []
+check:
+  narrative: Value of the ParentClass attribute in the def:Class must be one of the
+    values from the CDISC/NCI Class or Subclass codelists.
+outcome:
+  message: The value of SubClass ParentClass [@ParentClass] for dataset [$ParentItemGroupDef/@Name]
+    is not in the CDISC/NCI class or subclass codelists.
+  severity: Medium
+provenance:
+  source_document: CDISC Define-XML v2.1 Conformance Rules
+  executability: narrative
+  define_rule_id: 262
+  license: CC-BY-4.0
+  applicable_versions: 2.1 only
+  source_type: Schema
+  xpaths: /ODM/Study/MetaDataVersion/ItemGroupDef/def:Class/def:SubClass
+  element: def:SubClass
+  attribute: ParentClass

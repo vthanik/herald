@@ -1,0 +1,25 @@
+id: HRL-DD-097
+version: 1
+standard: Define-XML
+description: |
+  Method defined in Methods sheet but never referenced by any Variable or ValueLevel entry.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: __method_is_referenced
+    operator: equal_to
+    value: no
+outcome:
+  message: Method is defined but never referenced by any variable or value-level entry.
+    Consider removing orphaned methods.
+  severity: Warning
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: CDISC
+  section: '3.5'
+  cited_guidance: |
+    Each distinct method is expected to have a unique MethodOID and can be referenced from different variables.
+  executability: predicate
+  license: MIT
