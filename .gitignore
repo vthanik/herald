@@ -38,6 +38,5 @@ tools/harvest-cache/
 # macOS
 .DS_Store
 
-# IDE
-.vscode/
+# IDE (.vscode tracked for project-level air recommendations)
 .idea/
