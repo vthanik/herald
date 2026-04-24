@@ -140,6 +140,20 @@ op_not_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) 
   )
 )
 
+# Short aliases (P21-B: ^= / .= sugar op names used in CONVENTIONS.md)
+.register_op("equal_to_ci",     op_equal_to_ci,     meta = list(
+  kind = "compare", summary = "Case-insensitive equality (short alias)",
+  arg_schema = list(name = list(type = "string", required = TRUE),
+                    value = list(type = "any", required = TRUE),
+                    value_is_literal = list(type = "logical", default = TRUE)),
+  cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE))
+.register_op("not_equal_to_ci", op_not_equal_to_ci, meta = list(
+  kind = "compare", summary = "Case-insensitive inequality (short alias)",
+  arg_schema = list(name = list(type = "string", required = TRUE),
+                    value = list(type = "any", required = TRUE),
+                    value_is_literal = list(type = "logical", default = TRUE)),
+  cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE))
+
 # --- ordinal comparisons -----------------------------------------------------
 
 .numeric_compare <- function(col, value, op) {

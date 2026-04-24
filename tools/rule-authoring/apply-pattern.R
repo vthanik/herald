@@ -119,9 +119,30 @@ cat(sprintf("  applying to %d rules\n", nrow(ids)))
   out
 }
 
+# ---- normalise the variable: field (Q17) ------------------------------------
+# Extracts the first `name` leaf from a rendered check_tree and returns it as
+# the canonical variable name. Falls back to NA_character_ when no leaf has a
+# `name` slot (e.g. pure metadata rules). Result is used to overwrite the
+# prose `variable:` field so it matches what emit_findings actually reports.
+.normalise_variable <- function(ct) {
+  if (is.null(ct) || length(ct) == 0L) return(NA_character_)
+  if (!is.null(ct[["name"]])) return(as.character(ct[["name"]]))
+  for (key in c("all", "any")) {
+    children <- ct[[key]]
+    if (is.list(children)) {
+      for (child in children) {
+        v <- .normalise_variable(child)
+        if (!is.na(v)) return(v)
+      }
+    }
+  }
+  if (!is.null(ct[["not"]])) return(.normalise_variable(ct[["not"]]))
+  NA_character_
+}
+
 # ---- write the check block into a YAML file --------------------------------
-# Preserves everything except the top-level `check:` block and the
-# `provenance.executability` field.
+# Preserves everything except the top-level `check:` block, the
+# `provenance.executability` field, and (Q17) the `variable:` field.
 
 .rewrite_yaml <- function(path, new_check_yaml) {
   y <- yaml::read_yaml(path)
@@ -129,6 +150,9 @@ cat(sprintf("  applying to %d rules\n", nrow(ids)))
   y$check <- ct
   if (is.null(y$provenance)) y$provenance <- list()
   y$provenance$executability <- "predicate"
+  # Q17: overwrite variable: with the primary column name from the check_tree.
+  norm_var <- .normalise_variable(ct)
+  if (!is.na(norm_var)) y$variable <- norm_var
   # Round-trip; keep strings block-folded when possible.
   yaml::write_yaml(y, path)
 }

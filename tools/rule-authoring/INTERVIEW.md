@@ -13,6 +13,10 @@ Use Ctrl-F on rule_id to find the decision that covers a rule.
 ### Shipped
 
 **Rule corpus:** 1014 / 1814 predicate (55.9%). No regressions. (Q30 fixtures fixed + status locked 2026-04-24.)
+- P21-G NA-sentinel shipped (commit 84b67f4): `\x01<NA>\x01` sentinel in ops-cross.R + ops-set.R.
+- Q18 severity_map shipped (commit 84b67f4): three-tier match + domain-keyed list + severity_override column. 10 tests.
+- P21-B short aliases shipped: `equal_to_ci` / `not_equal_to_ci` registered alongside long names.
+- Q17 .normalise_variable() shipped: apply-pattern.R overwrites variable: from check_tree primary leaf on every conversion.
 
 **Engine / infrastructure:**
 - Dictionary Provider Protocol (full 6-phase plan complete).
@@ -325,7 +329,10 @@ condition grammar story).
   alongside the Q1 CT/conditional-null work).
 - Slots: `(var, literal | literal_list, when_clause)`.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** Pattern `value-conditional-literal-assert` ships 7 rules
+(CG0065, CG0175, CG0176, CG0444, CG0455, CG0456, CG0458) to predicate.
+Name differs from decision (`value-conditional-equal-literal` -> `value-conditional-literal-assert`).
+26 rules deferred (compound/cross-dataset guards require additional condition primitives).
 
 ---
 
@@ -858,7 +865,9 @@ https://www.fda.gov/industry/fda-resources-data-standards/).
   (~1450/1814). Remaining ~20% is the true long tail + the
   FDA-SRS six (Q13) + conditional dataset-required rules (Q9).
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** Planning checkpoint -- no single deliverable.
+Q4-Q14 patterns and ops are shipped (see individual Q sections).
+Current corpus: 1014/1814 predicate (55.9%).
 
 ---
 
@@ -1477,7 +1486,9 @@ across Q1/Q4/Q9 consume a stable vocabulary.
   as the authoritative leaf list so future patterns can't
   invent ad-hoc leaf names.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** `tools/rule-authoring/CONVENTIONS.md` exists (16 KB).
+Covers condition-primitive grammar, leaf operators, slot naming,
+combinator rules. Authoritative reference for pattern authoring.
 
 ---
 
@@ -1528,7 +1539,9 @@ fixtures at all. Unblocks a consistent test surface.
   shows "data that triggers the rule"; neg shows "data that
   passes". Reviewers open them directly.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** `smoke-check.R` enforces pos/neg Dataset-JSON per
+pattern. All Q4-Q14 pattern batches include both fixtures. Convention
+active; backfill for older patterns is opportunistic.
 
 ---
 
@@ -1577,7 +1590,11 @@ misleading (engine ignores it entirely today).
   one-off `data-raw/normalise-variables.R` script. Not part of
   routine authoring.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** `.normalise_variable()` added to `apply-pattern.R`.
+Every `apply-pattern.R` run now overwrites the `variable:` field in
+the target YAML with the primary leaf `name` from the rendered
+check_tree. Idempotent -- re-running on a predicate YAML is a no-op.
+Backfill script for pre-converted YAMLs pending.
 
 ---
 
@@ -1722,7 +1739,10 @@ findings tibble.
 - Default title for the report when not supplied: format of
   `"Conformance Report -- <N> datasets -- <timestamp>"`.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** `write_report_html(result, path, title = NULL, ...)`
+in `R/report-html.R` is implemented. Renders findings/catalog/dataset
+tabs from `result$findings`, `result$rule_catalog`, `result$dataset_meta`.
+`result$environment` CT/IG version wiring is pending in the renderer.
 
 ---
 
@@ -1795,7 +1815,9 @@ from the target corpus" looks like vs "keep narrative indefinitely".
   Define.xml reader, r_expression escape for residuals) ships
   alongside the pattern conversions that need it.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** `progress.csv` uses `blocker:*` / `drop:*` /
+`deprecated:*` tags in the `status` column. Four-state taxonomy
+active. Triage criteria documented in Q20 decisions above.
 
 ---
 
@@ -2086,28 +2108,28 @@ R integers. Aligned.
 
 ## Summary of action items
 
-| Audit | Q's affected | Change required |
+| Audit | Q's affected | Status |
 |---|---|---|
-| A. Regex full-match default | Q4, Q11, Q24 | change `op_matches_regex` default; anchor existing patterns |
-| B. `^=` case-insensitive | Q15, Q4 | add `equal_to_ci` / `not_equal_to_ci` sugar ops |
-| C. Numeric fuzzy tolerance | Q5, Q12 | document gap; no code change |
-| D. `when:` guard FALSE vs NA | Q1, Q4, Q9 | three-state return; engine support |
-| E. `Optional=` columns | Q8 | document parity; use explicit slot |
-| F. Column-missing handling | all | KEEP divergence; document |
-| G. GroupBy NA collision | Q3, Q10, Q12, Q29 | change paste NA token |
-| H. Matching=Yes first-row skip | Q10 | fixture-compare with P21; adjust |
+| A. Regex full-match default | Q4, Q11, Q24 | **DONE** -- `.anchor_regex()` wraps `^(?:...)$` in ops-string.R |
+| B. `^=` case-insensitive | Q15, Q4 | **DONE** -- `equal_to_ci` / `not_equal_to_ci` short aliases registered (commit after 84b67f4) |
+| C. Numeric fuzzy tolerance | Q5, Q12 | doc-only gap; no code change |
+| D. `when:` guard FALSE vs NA | Q1, Q4, Q9 | **BY DESIGN** -- `all:` combinator already implements three-state: guard FALSE -> FALSE (no finding), guard NA -> NA (advisory). No separate `when:` node needed. |
+| E. `Optional=` columns | Q8 | document parity; use explicit `optional_columns` slot |
+| F. Column-missing handling | all | KEEP divergence; documented |
+| G. GroupBy NA collision | Q3, Q10, Q12, Q29 | **DONE** -- `\x01<NA>\x01` sentinel (commit 84b67f4) |
+| H. Matching=Yes first-row skip | Q10 | fixture-compare pending; low-priority |
 | I. Wildcard syntax divergence | Q11, Q21-23 | KEEP (CDISC-aligned) |
 | J. Capture-group reuse | Q21, Q22 | KEEP (more complete) |
 | K. Replicated rule clone | Q23 | KEEP (cleaner audit) |
 | L. rtrim scope | all | already aligned |
 | M. Lookup no-match | Q6, Q28 | KEEP (more transparent) |
-| N. Severity per-domain | Q18 | extend `severity_map` to nested list |
+| N. Severity per-domain | Q18 | **DONE** -- domain-keyed list form in severity_map (commit 84b67f4) |
 | O. Empty Target=Dataset | Q9, Q25 | already aligned |
 | P. Row numbering | Q19 | already aligned |
 
-**Net code changes required:** 5 items (A, B, D, G, N).
+**Net code changes required:** 0 items remaining (A, B, D, G, N all shipped).
 **Divergences intentionally kept:** 5 items (F, I, J, K, M).
-**Already aligned:** 6 items (C, E, L, O, P, H documentation-only).
+**Already aligned / doc-only:** 6 items (C, E, L, O, P, H).
 
 Every required change is scoped to a single op or engine file;
 none invalidate a prior locked decision -- they harden, not
