@@ -9,10 +9,11 @@ scope:
   classes: ALL
   domains: ALL
   exclude_domains: []
+  submission: yes
 variable: RELMIDS
 check:
-  narrative: TM dataset present in study
-  condition: RELMIDS present in dataset
+  operator: not_exists
+  name: TM
 outcome:
   message: TM dataset present in study
   severity: Medium
@@ -24,5 +25,4 @@ provenance:
     Instance Name in MIDS. Examples: "IMMEDIATELY BEFORE", "AT TIME OF", "AFTER".'
   source_version: '2'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

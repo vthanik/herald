@@ -10,10 +10,15 @@ scope:
   classes: FND
   domains: PC
   exclude_domains: []
+  submission: yes
 variable: GEN
 check:
-  narrative: PC dataset present in study
-  condition: PP dataset present in study
+  all:
+  - operator: study_metadata_is
+    key: collected_domains
+    value: PC
+  - operator: not_exists
+    name: PC
 outcome:
   message: PC dataset present in study
   severity: Medium
@@ -27,5 +32,4 @@ provenance:
     derived from pharmacokinetic concentration-time (PC) data.]
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

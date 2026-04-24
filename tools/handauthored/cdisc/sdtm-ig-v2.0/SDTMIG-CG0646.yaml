@@ -7,10 +7,11 @@ scope:
   classes: SPC
   domains: SJ
   exclude_domains: []
+  submission: yes
 variable: ''
 check:
-  narrative: SJ dataset not present
-  condition: ''
+  operator: exists
+  name: SJ
 outcome:
   message: SJ dataset not present
   severity: Medium
@@ -21,5 +22,4 @@ provenance:
   cited_guidance: Not in human clinical trials.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

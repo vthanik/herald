@@ -543,7 +543,10 @@ landed (ADaM-1 pattern). Same mechanism works here.
     fires normally. No rules remain narrative.
 - All 10 rules convert. 0 blockers.
 
-**Delivered:** _(pending -- not yet implemented)_
+**Delivered:** 2026-04-24 -- 8 rules predicate (CG0191, CG0318, CG0368,
+  CG0373, CG0374, CG0501, CG0502, CG0646). 3 patterns +
+  op_study_metadata_is + op_ref_column_domains_exist.
+  validate() gains study_metadata param. 30 new unit tests.
 
 ---
 

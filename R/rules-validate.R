@@ -22,6 +22,12 @@
 #'   objects (from `ct_provider()`, `srs_provider()`, `meddra_provider()`,
 #'   etc.) to install for this run. Entries override the session-level
 #'   registry from `register_dictionary()`.
+#' @param study_metadata Optional named list of sponsor-supplied study
+#'   characteristics used by conditional dataset-presence rules. Recognized
+#'   keys: `collected_domains` (character vector of CDISC domain codes
+#'   collected in this study, e.g. `c("MB", "PC")`). When `NULL` (default),
+#'   rules that depend on study metadata return NA (advisory) rather than
+#'   firing a definitive finding.
 #' @param quiet Suppress progress output. Default FALSE.
 #'
 #' @return A `herald_result` S3 object.
@@ -41,6 +47,7 @@ validate <- function(path = NULL,
                      authorities = NULL,
                      standards = NULL,
                      dictionaries = NULL,
+                     study_metadata = NULL,
                      quiet = FALSE) {
   t0 <- Sys.time()
   call      <- rlang::caller_env()
@@ -94,9 +101,10 @@ validate <- function(path = NULL,
 
   # ---- ctx + per-rule execution -------------------------------------------
   ctx <- new_herald_ctx()
-  ctx$datasets     <- datasets
-  ctx$spec         <- spec
-  ctx$crossrefs    <- build_crossrefs(datasets, spec)
+  ctx$datasets       <- datasets
+  ctx$spec           <- spec
+  ctx$study_metadata <- study_metadata
+  ctx$crossrefs      <- build_crossrefs(datasets, spec)
   # Per-run CT cache. op_value_in_codelist lazy-loads on first use.
   ctx$ct           <- list()
   # Dictionary registry (Dictionary Provider Protocol). Populated

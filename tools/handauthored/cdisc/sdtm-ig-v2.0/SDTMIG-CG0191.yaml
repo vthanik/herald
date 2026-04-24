@@ -10,10 +10,15 @@ scope:
   classes: FND
   domains: MS
   exclude_domains: []
+  submission: yes
 variable: GEN
 check:
-  narrative: MB dataset present in study
-  condition: MS dataset present in study
+  all:
+  - operator: study_metadata_is
+    key: collected_domains
+    value: MB
+  - operator: not_exists
+    name: MB
 outcome:
   message: MB dataset present in study
   severity: Medium
@@ -28,5 +33,4 @@ provenance:
     and submitted in MB.]'
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

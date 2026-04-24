@@ -10,10 +10,11 @@ scope:
   classes: SPC
   domains: DM
   exclude_domains: []
+  submission: yes
 variable: GEN
 check:
-  narrative: DM dataset present in study
-  condition: Study on human subjects
+  operator: not_exists
+  name: DM
 outcome:
   message: DM dataset present in study
   severity: Medium
@@ -25,5 +26,4 @@ provenance:
     a specific structure; this is the Demographics domain described in Table 2.2.6.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

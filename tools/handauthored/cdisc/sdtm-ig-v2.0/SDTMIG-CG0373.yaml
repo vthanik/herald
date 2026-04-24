@@ -8,12 +8,12 @@ standard_versions:
 severity: Medium
 scope:
   classes: ALL
-  domains: ALL
+  domains: SUPP--
   exclude_domains: []
 variable: GEN
 check:
-  narrative: Dataset present in study with DOMAIN = SUPP--.RDOMAIN
-  condition: SUPP-- dataset present in study
+  operator: ref_column_domains_exist
+  reference_column: RDOMAIN
 outcome:
   message: Dataset present in study with DOMAIN = SUPP--.RDOMAIN
   severity: Medium
@@ -29,5 +29,4 @@ provenance:
     the supplemental Qualifiers relate back to.
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

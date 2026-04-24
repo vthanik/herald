@@ -8,12 +8,12 @@ standard_versions:
 severity: Medium
 scope:
   classes: ALL
-  domains: ALL
+  domains: RELREC
   exclude_domains: []
 variable: GEN
 check:
-  narrative: Dataset present in study with DOMAIN = RELREC.RDOMAIN
-  condition: RELREC dataset present in study
+  operator: ref_column_domains_exist
+  reference_column: RDOMAIN
 outcome:
   message: Dataset present in study with DOMAIN = RELREC.RDOMAIN
   severity: Medium
@@ -24,5 +24,4 @@ provenance:
   cited_guidance: Two-character abbreviation for the domain of the parent record(s).
   source_version: '1'
   license: CC-BY-4.0
-  executability: narrative
-
+  executability: predicate

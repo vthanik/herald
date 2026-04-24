@@ -1578,6 +1578,89 @@ op_shared_values_mismatch_by_key <- function(data, ctx,
   )
 )
 
+# --- op_study_metadata_is ---------------------------------------------------
+# Submission-level guard for "IF study collected domain X THEN dataset Y is
+# required" rules (CG0191 MB, CG0318 PC).
+#
+# ctx$study_metadata is a named list supplied via validate(study_metadata=...).
+# The op checks whether study_metadata[[key]] contains value (character
+# membership, case-insensitive). When study_metadata is NULL the op returns
+# NA for every row -- advisory ("supply study_metadata to evaluate this rule").
+#
+# CDISC semantics: the collected_domains key is a character vector of domain
+# codes (e.g. c("MB","PC","LB")). The op fires (TRUE) when the study collected
+# that domain, so the paired not_exists check can then fire the finding.
+
+op_study_metadata_is <- function(data, ctx, key, value) {
+  n <- nrow(data)
+  md <- if (!is.null(ctx)) ctx$study_metadata else NULL
+  if (is.null(md)) {
+    # No study metadata supplied -- return NA (advisory) for every row so the
+    # parent all: combinator bubbles NA upward and the finding is advisory.
+    return(rep(NA, n))
+  }
+  entry <- md[[as.character(key)]]
+  if (is.null(entry)) return(rep(FALSE, n))
+  matched <- toupper(as.character(value)) %in% toupper(as.character(entry))
+  rep(isTRUE(matched), n)
+}
+.register_op(
+  "study_metadata_is", op_study_metadata_is,
+  meta = list(
+    kind     = "cross",
+    summary  = "TRUE when study_metadata[[key]] contains value; NA when study_metadata not supplied",
+    arg_schema = list(
+      key   = list(type = "string",  required = TRUE),
+      value = list(type = "string",  required = TRUE)
+    ),
+    cost_hint     = "O(1)",
+    column_arg    = NULL,
+    returns_na_ok = TRUE
+  )
+)
+
+# --- op_ref_column_domains_exist --------------------------------------------
+# Per-row (of reference dataset): fires when the domain code in
+# reference_column is NOT present as a loaded dataset.
+#
+# Use-cases:
+#   CG0373: every SUPP-- dataset's RDOMAIN value must be a present domain.
+#   CG0374: every RELREC row's RDOMAIN value must be a present domain.
+#
+# The op is evaluated against the reference dataset (RELREC, or any SUPP--
+# dataset) directly. Each row carries a domain code in `reference_column`;
+# the op fires (TRUE) when that domain is not among names(ctx$datasets).
+# If the column is absent, returns NA for all rows (advisory).
+
+op_ref_column_domains_exist <- function(data, ctx, reference_column) {
+  n <- nrow(data)
+  col <- as.character(reference_column)
+  vals <- data[[col]]
+  if (is.null(vals)) return(rep(NA, n))
+  ds_names <- if (!is.null(ctx) && !is.null(ctx$datasets)) {
+    toupper(names(ctx$datasets))
+  } else character(0)
+  # Fire when the domain code is not among submission datasets.
+  # NA values in vals produce NA (advisory) per-row.
+  vapply(vals, function(v) {
+    if (is.na(v) || !nzchar(trimws(as.character(v)))) return(NA)
+    !toupper(trimws(as.character(v))) %in% ds_names
+  }, logical(1L))
+}
+.register_op(
+  "ref_column_domains_exist", op_ref_column_domains_exist,
+  meta = list(
+    kind     = "cross",
+    summary  = "Fires per row when the domain code in reference_column is not a loaded dataset",
+    arg_schema = list(
+      reference_column = list(type = "string", required = TRUE)
+    ),
+    cost_hint     = "O(n)",
+    column_arg    = "reference_column",
+    returns_na_ok = TRUE
+  )
+)
+
 #' Resolve a templated column name (e.g. "TRTxxP" or "PxxSw") against a
 #' dataset's column list. Returns the concrete column names that match.
 #' @noRd

@@ -12,6 +12,7 @@ validate(
   authorities = NULL,
   standards = NULL,
   dictionaries = NULL,
+  study_metadata = NULL,
   quiet = FALSE
 )
 }
@@ -37,6 +38,13 @@ compiled catalog.}
 objects (from \code{ct_provider()}, \code{srs_provider()}, \code{meddra_provider()},
 etc.) to install for this run. Entries override the session-level
 registry from \code{register_dictionary()}.}
+
+\item{study_metadata}{Optional named list of sponsor-supplied study
+characteristics used by conditional dataset-presence rules. Recognized
+keys: \code{collected_domains} (character vector of CDISC domain codes
+collected in this study, e.g. \code{c("MB", "PC")}). When \code{NULL} (default),
+rules that depend on study metadata return NA (advisory) rather than
+firing a definitive finding.}
 
 \item{quiet}{Suppress progress output. Default FALSE.}
 }

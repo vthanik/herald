@@ -412,7 +412,7 @@
 "CG0188","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRLO  is expressed using the units in LBSTRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: LBSTNRLO - operator: matches_regex name: LBSTNRLO value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: LBSTRESU","predicate","2026-04-24T09:34:59Z",NA,NA
 "CG0189","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRHI is expressed using the units in LBSTRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: LBSTNRHI - operator: matches_regex name: LBSTNRHI value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: LBSTRESU","predicate","2026-04-24T09:34:59Z",NA,NA
 "CG0190","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","LBSTNRC  is expressed using the units in LBSTRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: LBSTNRC - operator: matches_regex name: LBSTNRC value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: LBSTRESU","predicate","2026-04-24T09:34:59Z",NA,NA
-"CG0191","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","MB dataset present in study",NA,NA,"narrative",NA,NA,NA
+"CG0191","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","MB dataset present in study","submission-conditional-dataset-required","all: - operator: study_metadata_is key: collected_domains value: MB - operator: not_exists name: MB","predicate","2026-04-24T10:02:11Z",NA,NA
 "CG0192","CDISC","SDTM-IG","3.2","Medium","MBTESTCD = 'ORGANISM'",NA,NA,"blocker:no-machine-checkable-condition","2026-04-24T04:31:01Z",NA,"Q4 triage: condition not machine-checkable against SDTM columns."
 "CG0196","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","PEORRES = 'NORMAL'",NA,NA,"blocker:no-machine-checkable-condition","2026-04-24T04:31:01Z",NA,"Q4 triage: condition not machine-checkable against SDTM columns."
 "CG0197","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","PESTRESC = PEORRES OR a dictionary coded preferred term",NA,NA,"narrative",NA,NA,NA
@@ -468,7 +468,7 @@
 "CG0312","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DOMAIN not in reserved or modeled standard",NA,NA,"narrative",NA,NA,NA
 "CG0313","CDISC","SDTM-IG","3.2","Medium","STUDYID, USUBJID or POOLID, DOMAIN, and --SEQ exist",NA,NA,"narrative",NA,NA,NA
 "CG0314","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Value of SUPP--.QNAM ^= any variable name defined in the corresponding SDTM version",NA,NA,"narrative",NA,NA,NA
-"CG0318","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","PC dataset present in study",NA,NA,"narrative",NA,NA,NA
+"CG0318","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","PC dataset present in study","submission-conditional-dataset-required","all: - operator: study_metadata_is key: collected_domains value: PC - operator: not_exists name: PC","predicate","2026-04-24T10:02:11Z",NA,NA
 "CG0320","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TESTCD present in custom findings dataset",NA,NA,"narrative",NA,NA,NA
 "CG0321","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Custom domain is based on one of the observation classes",NA,NA,"narrative",NA,NA,NA
 "CG0322","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","ELEMENT value does not refer to any specific ARM",NA,NA,"narrative",NA,NA,NA
@@ -494,13 +494,13 @@
 "CG0365","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RDEVID = null",NA,NA,"narrative",NA,NA,"AP-scoped; defer until AP class in taxonomy (similar to CG0156/157/158)"
 "CG0366","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RSUBJID = null",NA,NA,"narrative",NA,NA,"AP-scoped; defer until AP class in taxonomy (similar to CG0156/157/158)"
 "CG0367","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RSUBJID = DM.USUBJID","value-equals-cross-dataset-col","all: - operator: differs_by_key name: ""RSUBJID"" reference_dataset: ""DM"" reference_column: ""USUBJID"" key: ""USUBJID""","predicate","2026-04-24T09:20:55Z",NA,NA
-"CG0368","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DM dataset present in study",NA,NA,"narrative",NA,NA,NA
+"CG0368","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","DM dataset present in study","submission-dataset-required","operator: not_exists name: %dataset%","predicate","2026-04-24T10:02:11Z",NA,NA
 "CG0369","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","RDOMAIN is dataset in study",NA,NA,"narrative",NA,NA,NA
 "CG0370","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IDVAR is variable in domain = RDOMAIN",NA,NA,"narrative",NA,NA,NA
 "CG0371","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","IDVARVAL = value of variable = IDVAR in domain = RDOMAIN",NA,NA,"narrative",NA,NA,NA
 "CG0372","CDISC","SDTM-IG","3.2,3.3,3.4","Low","--TESTCD <= 8 chars and contains only letters, numbers, and underscores and can not start with a number",NA,NA,"narrative",NA,NA,NA
-"CG0373","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset present in study with DOMAIN = SUPP--.RDOMAIN",NA,NA,"narrative",NA,NA,NA
-"CG0374","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset present in study with DOMAIN = RELREC.RDOMAIN",NA,NA,"narrative",NA,NA,NA
+"CG0373","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset present in study with DOMAIN = SUPP--.RDOMAIN","submission-domains-from-ref-column","operator: ref_column_domains_exist reference_column: %reference_column%","predicate","2026-04-24T10:02:11Z",NA,NA
+"CG0374","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","Dataset present in study with DOMAIN = RELREC.RDOMAIN","submission-domains-from-ref-column","operator: ref_column_domains_exist reference_column: %reference_column%","predicate","2026-04-24T10:02:11Z",NA,NA
 "CG0376","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","TDSTOFF = 0 or positive value in ISO 8601 Duration format",NA,NA,"narrative",NA,NA,NA
 "CG0377","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLT = MedDRA lowest level TERM",NA,NA,"narrative",NA,NA,NA
 "CG0378","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLTCD = MedDRA lowest level code",NA,NA,"narrative",NA,NA,NA
@@ -562,8 +562,8 @@
 "CG0464","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--TERM present in custom events dataset",NA,NA,"narrative",NA,NA,NA
 "CG0466","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--LLOQ is expressed using the units in --STRESU","unit-variable-required-when-var-populated","all: - operator: non_empty name: --LLOQ - operator: matches_regex name: --LLOQ value: ""^[-+]?[0-9]*\\.?[0-9]+$"" - operator: empty name: --STRESU","predicate","2026-04-24T09:34:59Z",NA,NA
 "CG0467","CDISC","SDTM-IG","3.2,3.3,3.4","Medium","--STDTC not present",NA,NA,"narrative",NA,NA,NA
-"CG0501","CDISC","SDTM-IG","3.3,3.4","Medium","TM dataset present in study",NA,NA,"narrative",NA,NA,NA
-"CG0502","CDISC","SDTM-IG","3.3,3.4","Medium","TM dataset present in study",NA,NA,"narrative",NA,NA,NA
+"CG0501","CDISC","SDTM-IG","3.3,3.4","Medium","TM dataset present in study","submission-dataset-required","operator: not_exists name: %dataset%","predicate","2026-04-24T10:02:11Z",NA,NA
+"CG0502","CDISC","SDTM-IG","3.3,3.4","Medium","TM dataset present in study","submission-dataset-required","operator: not_exists name: %dataset%","predicate","2026-04-24T10:02:11Z",NA,NA
 "CG0513","CDISC","SDTM-IG","3.3,3.4","Medium","ARMNRS^=null",NA,NA,"narrative",NA,NA,NA
 "CG0515","CDISC","SDTM-IG","3.3,3.4","Medium","ARMNRS^=null",NA,NA,"narrative",NA,NA,NA
 "CG0517","CDISC","SDTM-IG","3.3,3.4","Medium","ARMNRS^=null",NA,NA,"narrative",NA,NA,NA
@@ -618,7 +618,7 @@
 "CG0617","CDISC","SDTM-IG","3.4","Medium","MBTEST = name of the organism or group of organisms",NA,NA,"narrative",NA,NA,NA
 "CG0619","CDISC","SDTM-IG","3.4","Medium","--SPCUFL = 'N' or null",NA,NA,"narrative",NA,NA,NA
 "CG0620","CDISC","SDTM-IG","3.3,3.4","Medium","--SEQ is in a consistent chronological order",NA,NA,"narrative",NA,NA,NA
-"CG0646","CDISC","SDTM-IG","3.4","Medium","SJ dataset not present",NA,NA,"narrative",NA,NA,NA
+"CG0646","CDISC","SDTM-IG","3.4","Medium","SJ dataset not present","submission-dataset-absent","operator: exists name: %dataset%","predicate","2026-04-24T10:02:11Z",NA,NA
 "CG0647","CDISC","SDTM-IG","3.4","Medium","TJ dataset not present",NA,NA,"narrative",NA,NA,NA
 "CG0648","CDISC","SDTM-IG","3.4","Medium","TP dataset not present",NA,NA,"narrative",NA,NA,NA
 "CG0649","CDISC","SDTM-IG","3.4","Medium","TSVALNF = null",NA,NA,"narrative",NA,NA,NA
