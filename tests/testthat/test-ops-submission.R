@@ -36,7 +36,7 @@ test_that("op_study_metadata_is is case-insensitive", {
   df <- data.frame(X = 1L, stringsAsFactors = FALSE)
   ctx <- list(study_metadata = list(collected_domains = c("mb", "lB")))
   out <- herald:::op_study_metadata_is(df, ctx, key = "collected_domains", value = "MB")
-  expect_true(isTRUE(out[[1L]]))
+  expect_equal(out[[1L]], TRUE)
 })
 
 test_that("op_study_metadata_is returns FALSE when key is absent from study_metadata", {
@@ -72,7 +72,7 @@ test_that("op_ref_column_domains_exist returns all FALSE when all domains presen
     AE = data.frame(USUBJID = "S1")
   ))
   out <- herald:::op_ref_column_domains_exist(relrec, ctx, reference_column = "RDOMAIN")
-  expect_false(any(out, na.rm = TRUE))
+  expect_equal(any(out, na.rm = TRUE), FALSE)
 })
 
 test_that("op_ref_column_domains_exist returns NA for NA rows", {
