@@ -145,7 +145,7 @@ emit_submission_finding <- function(rule, status = "fired", message = NULL,
                                     severity = NULL, variable = NA_character_,
                                     value = NA_character_) {
   if (!status %in% c("fired", "advisory")) {
-    cli::cli_abort("{.arg status} must be one of {.val fired} or {.val advisory}.")
+    herald_error_runtime("{.arg status} must be one of {.val fired} or {.val advisory}.")
   }
   tibble::tibble(
     rule_id           = rule[["id"]]        %||% NA_character_,

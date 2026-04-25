@@ -255,7 +255,7 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
     ))
   }
   if (!grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", version)) {
-    cli::cli_abort(
+    herald_error(
       c("{.arg version} must be {.val latest} or a {.val YYYY-MM-DD} date.",
         "x" = "Got {.val {version}}."),
       class = "herald_error_input"
@@ -316,9 +316,8 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
 .nci_evs_latest_release <- function(package, timeout = 30L) {
   releases <- .list_nci_evs_releases(package, timeout = timeout)
   if (nrow(releases) == 0L) {
-    cli::cli_abort(
-      "Could not discover the latest {.pkg {package}} CT release from NCI EVS.",
-      class = "herald_error_runtime"
+    herald_error_runtime(
+      "Could not discover the latest {.pkg {package}} CT release from NCI EVS."
     )
   }
   releases$release_date[[1L]]
@@ -349,10 +348,9 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
   )
   missing <- want[!want %in% names(raw)]
   if (length(missing) > 0L) {
-    cli::cli_abort(
+    herald_error_runtime(
       c("NCI EVS file is missing expected column{?s}: {.val {unname(missing)}}",
-        "i" = "Parsed columns: {.val {names(raw)}}"),
-      class = "herald_error_runtime"
+        "i" = "Parsed columns: {.val {names(raw)}}")
     )
   }
   df <- data.frame(

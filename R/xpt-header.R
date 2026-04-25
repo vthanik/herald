@@ -11,9 +11,8 @@ detect_xpt_version <- function(rec1_str) {
   } else if (grepl("LIBV8", rec1_str, fixed = TRUE)) {
     8L
   } else {
-    cli::cli_abort(
-      "Not a valid XPT transport file: unrecognised library header.",
-      call = NULL
+    herald_error_xpt(
+      "Not a valid XPT transport file: unrecognised library header."
     )
   }
 }

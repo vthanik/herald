@@ -40,11 +40,11 @@ read_json <- function(file) {
   check_scalar_chr(file, call = call)
 
   if (!file.exists(file)) {
-    cli::cli_abort("File {.path {file}} does not exist.", call = call)
+    herald_error_io("File {.path {file}} does not exist.", path = file, call = call)
   }
 
   if (!requireNamespace("jsonlite", quietly = TRUE)) {
-    cli::cli_abort(
+    herald_error_io(
       c(
         "Package {.pkg jsonlite} is required to read Dataset-JSON files.",
         "i" = "Install with: {.code install.packages(\"jsonlite\")}"
@@ -56,11 +56,12 @@ read_json <- function(file) {
   raw <- jsonlite::fromJSON(file, simplifyVector = FALSE)
 
   if (is.null(raw[["columns"]]) || is.null(raw[["rows"]])) {
-    cli::cli_abort(
+    herald_error_io(
       c(
         "Unrecognised Dataset-JSON structure.",
         "i" = "Expected v1.1 flat structure with {.field columns} and {.field rows}."
       ),
+      path = file,
       call = call
     )
   }

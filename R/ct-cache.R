@@ -45,7 +45,11 @@
 #' Append or update a manifest entry.
 #' @noRd
 .ct_cache_write <- function(entry, dir = .ct_cache_dir()) {
-  stopifnot(is.list(entry), !is.null(entry$package), !is.null(entry$version))
+  if (!is.list(entry) || is.null(entry$package) || is.null(entry$version)) {
+    herald_error_runtime(
+      "{.arg entry} must be a list with {.field package} and {.field version} fields."
+    )
+  }
   m <- .ct_cache_read(dir)
   key <- paste0(entry$package, "@", entry$version)
   m[[key]] <- entry

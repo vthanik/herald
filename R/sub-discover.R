@@ -12,7 +12,7 @@
 #' @noRd
 scan_folder_datasets <- function(path, call = rlang::caller_env()) {
   if (!dir.exists(path)) {
-    cli::cli_abort("Directory {.path {path}} does not exist.", call = call)
+    herald_error_io("Directory {.path {path}} does not exist.", path = path, call = call)
   }
 
   xpt_files <- list.files(path, pattern = "\\.(xpt|XPT)$", full.names = TRUE)
@@ -64,8 +64,9 @@ load_folder_datasets_filtered <- function(
   candidate_files <- if (format == "xpt") found$xpt_files else found$json_files
 
   if (length(candidate_files) == 0L) {
-    cli::cli_abort(
+    herald_error_io(
       "No .{format} files found in {.path {path}}.",
+      path = path,
       call = call
     )
   }
@@ -77,12 +78,13 @@ load_folder_datasets_filtered <- function(
     requested <- toupper(datasets)
     missing_ds <- setdiff(requested, file_stems)
     if (length(missing_ds) > 0L) {
-      cli::cli_abort(
+      herald_error_io(
         c(
           "Dataset(s) not found as .{format} file(s) in {.path {path}}:",
           "x" = "{.val {missing_ds}}",
           "i" = "Available: {.val {file_stems}}"
         ),
+        path = path,
         call = call
       )
     }
@@ -122,8 +124,9 @@ load_folder_datasets <- function(path, call = rlang::caller_env()) {
   all_files <- c(found$xpt_files, found$json_files)
 
   if (length(all_files) == 0L) {
-    cli::cli_abort(
+    herald_error_io(
       "No dataset files (.xpt, .json) found in {.path {path}}.",
+      path = path,
       call = call
     )
   }
@@ -347,7 +350,7 @@ detect_adam_classes <- function(x, call = rlang::caller_env()) {
     ))
   }
 
-  cli::cli_abort(
+  herald_error_io(
     "{.arg x} must be a named list of data frames or a {.cls herald_spec}.",
     call = call
   )

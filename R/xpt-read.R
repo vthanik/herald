@@ -117,7 +117,7 @@ read_xpt <- function(
   path <- file # internal alias — internal helpers use 'path'
 
   if (!file.exists(file)) {
-    cli::cli_abort(
+    herald_error_xpt(
       "File {.path {file}} does not exist.",
       call = call
     )
@@ -212,7 +212,7 @@ read_xpt <- function(
   }
 
   if (length(members) == 0L) {
-    cli::cli_abort("No datasets found in {.path {path}}.", call = call)
+    herald_error_xpt("No datasets found in {.path {path}}.", call = call)
   }
 
   if (length(members) == 1L) {

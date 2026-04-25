@@ -182,9 +182,8 @@ srs_provider <- function(version = "latest-cache") {
   files <- utils::unzip(path, list = TRUE)
   txt <- files$Name[grepl("\\.txt$", files$Name, ignore.case = TRUE)][1L]
   if (is.na(txt)) {
-    cli::cli_abort(
-      "SRS download does not contain a .txt file (saw: {.val {files$Name}}).",
-      class = "herald_error_runtime"
+    herald_error_runtime(
+      "SRS download does not contain a .txt file (saw: {.val {files$Name}})."
     )
   }
   # Extract to a tempdir so read.delim can open / close the file
@@ -203,10 +202,9 @@ srs_provider <- function(version = "latest-cache") {
                       "UNII_TYPE", "NAME_TYPE"),
                     names(raw))
   if (!all(c("UNII", "PT") %in% keep)) {
-    cli::cli_abort(
+    herald_error_runtime(
       c("SRS file missing required columns UNII / PT.",
-        "i" = "Got columns: {.val {names(raw)}}"),
-      class = "herald_error_runtime"
+        "i" = "Got columns: {.val {names(raw)}}")
     )
   }
   out <- tibble::as_tibble(raw[, keep, drop = FALSE])

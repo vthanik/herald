@@ -179,7 +179,7 @@ write_xpt_multi <- function(data_list, file, version, call, encoding = NULL) {
   for (i in seq_along(data_list)) {
     df <- data_list[[i]]
     if (!is.data.frame(df)) {
-      cli::cli_abort(
+      herald_error_xpt(
         "Element {i} of {.arg data} must be a data frame.",
         call = call
       )
@@ -216,7 +216,7 @@ coerce_xpt_types <- function(data, version, call) {
     col <- data[[nm]]
 
     if (is.factor(col)) {
-      cli::cli_abort(
+      herald_error_xpt(
         c(
           "Column {.var {nm}} is a factor.",
           "i" = "Convert to character first with {.code as.character()}."

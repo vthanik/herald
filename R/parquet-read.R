@@ -40,7 +40,7 @@ read_parquet <- function(file) {
   call <- rlang::caller_env()
   check_scalar_chr(file, call = call)
   if (!file.exists(file)) {
-    cli::cli_abort("File {.path {file}} does not exist.", call = call)
+    herald_error_io("File {.path {file}} does not exist.", path = file, call = call)
   }
   .require_arrow(call)
 
@@ -72,7 +72,7 @@ read_parquet <- function(file) {
 #' @noRd
 .require_arrow <- function(call) {
   if (!requireNamespace("arrow", quietly = TRUE)) {
-    cli::cli_abort(
+    herald_error_io(
       c(
         "Package {.pkg arrow} is required for Parquet I/O.",
         "i" = "Install with: {.code install.packages(\"arrow\")}"

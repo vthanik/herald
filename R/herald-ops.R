@@ -41,8 +41,16 @@
 )
 
 .register_op <- function(name, fn, meta = list()) {
-  stopifnot(is.character(name), length(name) == 1L, nzchar(name))
-  stopifnot(is.function(fn))
+  call <- rlang::caller_env()
+  if (!is.character(name) || length(name) != 1L || !nzchar(name)) {
+    herald_error_runtime(
+      "{.arg name} must be a non-empty scalar character string.",
+      call = call
+    )
+  }
+  if (!is.function(fn)) {
+    herald_error_runtime("{.arg fn} must be a function.", call = call)
+  }
 
   if (exists(name, envir = .OP_TABLE, inherits = FALSE)) {
     cli::cli_warn("Operator {.val {name}} is being re-registered.")
@@ -63,7 +71,7 @@
 #' @noRd
 .get_op <- function(name) {
   if (!exists(name, envir = .OP_TABLE, inherits = FALSE)) {
-    cli::cli_abort(c(
+    herald_error_runtime(c(
       "Unknown operator {.val {name}}.",
       "i" = "Registered operators: {.val {sort(ls(.OP_TABLE))}}"
     ))
@@ -80,7 +88,7 @@
 .op_meta <- function(name = NULL) {
   if (!is.null(name)) {
     if (!exists(name, envir = .OP_META, inherits = FALSE)) {
-      cli::cli_abort("No metadata for operator {.val {name}}.")
+      herald_error_runtime("No metadata for operator {.val {name}}.")
     }
     return(get(name, envir = .OP_META))
   }

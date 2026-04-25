@@ -37,8 +37,16 @@
 #' Register an Operations pre-compute function
 #' @noRd
 .register_operation <- function(name, fn, meta = list()) {
-  stopifnot(is.character(name), length(name) == 1L, nzchar(name))
-  stopifnot(is.function(fn))
+  call <- rlang::caller_env()
+  if (!is.character(name) || length(name) != 1L || !nzchar(name)) {
+    herald_error_runtime(
+      "{.arg name} must be a non-empty scalar character string.",
+      call = call
+    )
+  }
+  if (!is.function(fn)) {
+    herald_error_runtime("{.arg fn} must be a function.", call = call)
+  }
 
   if (exists(name, envir = .OP_TABLE_OPS, inherits = FALSE)) {
     cli::cli_warn("Operation {.val {name}} is being re-registered.")

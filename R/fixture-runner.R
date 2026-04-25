@@ -22,7 +22,7 @@
   req <- c("rule_id", "fixture_type", "datasets", "expected")
   missing <- setdiff(req, names(fx))
   if (length(missing) > 0L) {
-    cli::cli_abort(
+    herald_error_runtime(
       "Fixture {.path {path}} is missing field{?s}: {.val {missing}}."
     )
   }

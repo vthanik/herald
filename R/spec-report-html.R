@@ -41,11 +41,15 @@ write_spec_report_html <- function(findings, path) {
 # --------------------------------------------------------------------------
 
 .spec_report_template <- function() {
+  call <- rlang::caller_env()
   p <- system.file("report", "spec-template.html", package = "herald")
   if (nzchar(p) && file.exists(p)) return(paste(readLines(p, warn = FALSE), collapse = "\n"))
   here <- file.path("inst", "report", "spec-template.html")
   if (file.exists(here)) return(paste(readLines(here, warn = FALSE), collapse = "\n"))
-  stop("spec-template.html not found")
+  herald_error_file(
+    "spec-template.html not found in {.pkg herald} installation.",
+    call = call
+  )
 }
 
 .spec_findings_rows <- function(findings) {

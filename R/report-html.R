@@ -21,7 +21,7 @@ write_report_html <- function(x, path, title = NULL, ...) {
 
   tmpl_path <- .report_template_path()
   if (!file.exists(tmpl_path)) {
-    cli::cli_abort(
+    herald_error_report(
       "Report template not found at {.path {tmpl_path}}.",
       call = call
     )

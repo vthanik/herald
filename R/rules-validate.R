@@ -72,8 +72,9 @@ validate <- function(path = NULL,
   files_exp <- rlang::enexpr(files)
 
   if (is.null(path) && is.null(files)) {
-    cli::cli_abort(
+    herald_error(
       "Either {.arg path} or {.arg files} must be supplied.",
+      class = "herald_error_input",
       call = call
     )
   }
@@ -113,8 +114,9 @@ validate <- function(path = NULL,
   # ---- load rule corpus ----------------------------------------------------
   rules_rds <- .rules_path()
   if (!file.exists(rules_rds)) {
-    cli::cli_abort(
+    herald_error(
       "Rule catalog {.path {rules_rds}} not found. Run tools/compile-rules.R.",
+      class = "herald_error_input",
       call = call
     )
   }
@@ -505,7 +507,7 @@ validate <- function(path = NULL,
   # expressions -- flag that.
   if (any(!nzchar(have_names))) {
     bad <- which(!nzchar(have_names))[[1L]]
-    cli::cli_abort(
+    herald_error_validation(
       c(
         "Every element of {.arg files} must be named or a bare variable.",
         "i" = "Entry at position {bad} is an inline expression; pass a named entry or assign it to a variable first."
@@ -540,21 +542,21 @@ validate <- function(path = NULL,
 
 .assemble_from_files <- function(files, call) {
   if (!is.list(files)) {
-    cli::cli_abort(
+    herald_error_validation(
       "{.arg files} must be a named list of data frames.",
       call = call
     )
   }
   if (length(files) == 0L) return(list())
   if (is.null(names(files))) {
-    cli::cli_abort(
+    herald_error_validation(
       "{.arg files} must be a named list of data frames.",
       call = call
     )
   }
   bad <- !vapply(files, is.data.frame, logical(1))
   if (any(bad)) {
-    cli::cli_abort(
+    herald_error_validation(
       "All entries of {.arg files} must be data frames. Offenders: {.val {names(files)[bad]}}",
       call = call
     )
@@ -565,7 +567,7 @@ validate <- function(path = NULL,
 
 .assemble_from_path <- function(path, call) {
   if (!dir.exists(path)) {
-    cli::cli_abort("{.arg path} {.path {path}} does not exist.", call = call)
+    herald_error_validation("{.arg path} {.path {path}} does not exist.", call = call)
   }
   xpt_files  <- list.files(path, pattern = "\\.xpt$", full.names = TRUE,
                            ignore.case = TRUE)

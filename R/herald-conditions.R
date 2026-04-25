@@ -124,6 +124,46 @@ herald_error_define <- function(message, call = caller_env()) {
   )
 }
 
+# -- I/O (format-agnostic) --------------------------------------------------
+
+#' Signal a generic I/O error (JSON, Parquet, CSV, etc.)
+#' @noRd
+herald_error_io <- function(message, path = NULL, call = caller_env()) {
+  herald_error(
+    message,
+    path = path,
+    class = "herald_error_io",
+    call = call,
+    .envir = parent.frame()
+  )
+}
+
+# -- Runtime (internal assertion failures) -----------------------------------
+
+#' Signal an unexpected internal/runtime error
+#' @noRd
+herald_error_runtime <- function(message, call = caller_env()) {
+  herald_error(
+    message,
+    class = "herald_error_runtime",
+    call = call,
+    .envir = parent.frame()
+  )
+}
+
+# -- Report generation -------------------------------------------------------
+
+#' Signal a report-generation error
+#' @noRd
+herald_error_report <- function(message, call = caller_env()) {
+  herald_error(
+    message,
+    class = "herald_error_report",
+    call = call,
+    .envir = parent.frame()
+  )
+}
+
 # -- Missing soft dependency -------------------------------------------------
 
 #' Signal that a suggested package is required but missing

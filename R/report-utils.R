@@ -134,7 +134,7 @@ resolve_report_format <- function(path, format, call = rlang::caller_env()) {
   } else {
     ext <- tolower(tools::file_ext(path))
     if (!nzchar(ext)) {
-      cli::cli_abort(
+      herald_error_report(
         c(
           "Could not infer report format from {.path {path}}.",
           "i" = "Pass {.arg format} explicitly (\"html\", \"xlsx\", or \"json\")."
@@ -145,7 +145,7 @@ resolve_report_format <- function(path, format, call = rlang::caller_env()) {
     format <- ext
   }
   if (!format %in% c("html", "xlsx", "json")) {
-    cli::cli_abort(
+    herald_error_report(
       "Unknown report format {.val {format}}. Expected \"html\", \"xlsx\", or \"json\".",
       call = call
     )
@@ -157,7 +157,7 @@ resolve_report_format <- function(path, format, call = rlang::caller_env()) {
 #' @noRd
 check_report_inputs <- function(x, path, call = rlang::caller_env()) {
   if (!inherits(x, "herald_result")) {
-    cli::cli_abort(
+    herald_error_report(
       "{.arg x} must be a {.cls herald_result}, not {.cls {class(x)[[1L]]}}.",
       call = call
     )

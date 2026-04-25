@@ -65,7 +65,7 @@ write_json <- function(
   data <- x
 
   if (!requireNamespace("jsonlite", quietly = TRUE)) {
-    cli::cli_abort(
+    herald_error_io(
       c(
         "Package {.pkg jsonlite} is required to write Dataset-JSON files.",
         "i" = "Install with: {.code install.packages(\"jsonlite\")}"
