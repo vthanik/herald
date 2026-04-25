@@ -21,30 +21,28 @@ sponsor-defined key variables, and the LOINC dictionary version declared
 in \code{MetaDataVersion}. Requires the \code{xml2} package.
 }
 \examples{
-if (requireNamespace("xml2", quietly = TRUE)) {
-  tmp <- tempfile(fileext = ".xml")
-  on.exit(unlink(tmp))
-  writeLines(c(
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"',
-    '     xmlns:def="http://www.cdisc.org/ns/def/v2.1">',
-    '  <Study OID="S.TEST">',
-    '    <GlobalVariables>',
-    '      <StudyName>PILOT01</StudyName>',
-    '    </GlobalVariables>',
-    '    <MetaDataVersion OID="MDV.1" Name="MDV1">',
-    '      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No">',
-    '        <Description>',
-    '          <TranslatedText>Demographics</TranslatedText>',
-    '        </Description>',
-    '      </ItemGroupDef>',
-    '    </MetaDataVersion>',
-    '  </Study>',
-    '</ODM>'
-  ), tmp)
-  d <- read_define_xml(tmp)
-  d$ds_spec
-}
+tmp <- tempfile(fileext = ".xml")
+on.exit(unlink(tmp))
+writeLines(c(
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"',
+  '     xmlns:def="http://www.cdisc.org/ns/def/v2.1">',
+  '  <Study OID="S.TEST">',
+  '    <GlobalVariables>',
+  '      <StudyName>PILOT01</StudyName>',
+  '    </GlobalVariables>',
+  '    <MetaDataVersion OID="MDV.1" Name="MDV1">',
+  '      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No">',
+  '        <Description>',
+  '          <TranslatedText>Demographics</TranslatedText>',
+  '        </Description>',
+  '      </ItemGroupDef>',
+  '    </MetaDataVersion>',
+  '  </Study>',
+  '</ODM>'
+), tmp)
+d <- read_define_xml(tmp)
+d$ds_spec
 
 }
 \seealso{

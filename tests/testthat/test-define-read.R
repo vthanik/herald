@@ -123,7 +123,6 @@ write_test_define <- function(
 # -- read_define_xml: basic parsing ------------------------------------------
 
 test_that("read_define_xml returns herald_define object", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp)
@@ -133,7 +132,6 @@ test_that("read_define_xml returns herald_define object", {
 })
 
 test_that("read_define_xml extracts study metadata", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp)
@@ -148,7 +146,6 @@ test_that("read_define_xml extracts study metadata", {
 })
 
 test_that("read_define_xml extracts datasets from ItemGroupDef", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp)
@@ -160,7 +157,6 @@ test_that("read_define_xml extracts datasets from ItemGroupDef", {
 })
 
 test_that("read_define_xml extracts variables from ItemDef", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp)
@@ -174,7 +170,6 @@ test_that("read_define_xml extracts variables from ItemDef", {
 })
 
 test_that("read_define_xml extracts codelists", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp)
@@ -186,7 +181,6 @@ test_that("read_define_xml extracts codelists", {
 })
 
 test_that("read_define_xml extracts methods", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp)
@@ -198,7 +192,6 @@ test_that("read_define_xml extracts methods", {
 })
 
 test_that("read_define_xml extracts comments", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp)
@@ -212,7 +205,6 @@ test_that("read_define_xml extracts comments", {
 # -- ARM parsing -------------------------------------------------------------
 
 test_that("read_define_xml extracts ARM metadata", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp, include_arm = TRUE)
@@ -226,7 +218,6 @@ test_that("read_define_xml extracts ARM metadata", {
 })
 
 test_that("read_define_xml returns NULL arm when no ARM section", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp, include_arm = FALSE)
@@ -239,7 +230,6 @@ test_that("read_define_xml returns NULL arm when no ARM section", {
 # -- ItemRef extraction ------------------------------------------------------
 
 test_that("read_define_xml extracts order and mandatory from ItemRef", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp, include_itemref = TRUE)
@@ -257,7 +247,6 @@ test_that("read_define_xml extracts order and mandatory from ItemRef", {
 # -- key_vars extraction -----------------------------------------------------
 
 test_that("read_define_xml extracts key_vars from ItemGroupDef", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp, include_keyvar = TRUE)
@@ -271,7 +260,6 @@ test_that("read_define_xml extracts key_vars from ItemGroupDef", {
 })
 
 test_that("read_define_xml key_vars is empty list when no KeyVariables declared", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp, include_keyvar = FALSE)
@@ -284,7 +272,6 @@ test_that("read_define_xml key_vars is empty list when no KeyVariables declared"
 # -- loinc_version extraction ------------------------------------------------
 
 test_that("read_define_xml extracts loinc_version from def:Standard", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp, include_loinc_std = TRUE)
@@ -294,7 +281,6 @@ test_that("read_define_xml extracts loinc_version from def:Standard", {
 })
 
 test_that("read_define_xml loinc_version is NA when no LOINC standard", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp, include_loinc_std = FALSE)
@@ -313,7 +299,6 @@ test_that("read_define_xml errors on non-existent file", {
 })
 
 test_that("read_define_xml errors on non-XML file content", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   writeLines("this is not xml at all, no angle brackets", tmp)
@@ -324,7 +309,6 @@ test_that("read_define_xml errors on non-XML file content", {
 })
 
 test_that("read_define_xml errors on malformed XML", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   writeLines("<ODM><unclosed>", tmp)
@@ -335,7 +319,6 @@ test_that("read_define_xml errors on malformed XML", {
 })
 
 test_that("read_define_xml errors when MetaDataVersion is missing", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   writeLines(
@@ -354,7 +337,6 @@ test_that("read_define_xml errors when MetaDataVersion is missing", {
 # -- NULL codelist / methods / comments edge cases ---------------------------
 
 test_that("read_define_xml returns NULL codelist when no CodeList elements", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   writeLines(
@@ -377,7 +359,6 @@ test_that("read_define_xml returns NULL codelist when no CodeList elements", {
 })
 
 test_that("read_define_xml returns NULL methods when no MethodDef", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   writeLines(
@@ -398,7 +379,6 @@ test_that("read_define_xml returns NULL methods when no MethodDef", {
 })
 
 test_that("read_define_xml returns NULL comments when no CommentDef", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   writeLines(
@@ -421,7 +401,6 @@ test_that("read_define_xml returns NULL comments when no CommentDef", {
 # -- print.herald_define -------------------------------------------------------
 
 test_that("print.herald_define prints without error", {
-  skip_if_not_installed("xml2")
   tmp <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
   write_test_define(tmp)

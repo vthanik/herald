@@ -1,7 +1,6 @@
 # Tests for R/json-read.R -- read_json()
 
 test_that("read_json() round-trips correctly", {
-  skip_if_not_installed("jsonlite")
 
   dm <- data.frame(
     STUDYID = c("STUDY1", "STUDY1"),
@@ -32,7 +31,6 @@ test_that("read_json() round-trips correctly", {
 })
 
 test_that("write_json() handles NA values", {
-  skip_if_not_installed("jsonlite")
 
   df <- data.frame(
     X = c("a", NA, "c"),
@@ -50,7 +48,6 @@ test_that("write_json() handles NA values", {
 })
 
 test_that("read_json() handles empty dataset", {
-  skip_if_not_installed("jsonlite")
 
   df <- data.frame(
     STUDYID = character(0),
@@ -69,7 +66,6 @@ test_that("read_json() handles empty dataset", {
 })
 
 test_that("read_json() errors on invalid input", {
-  skip_if_not_installed("jsonlite")
 
   # Non-existent file
   expect_error(read_json("nonexistent.json"), class = "herald_error_io")
@@ -85,12 +81,10 @@ test_that("read_json errors for non-existent file", {
 })
 
 test_that("read_json errors for non-character path", {
-  skip_if_not_installed("jsonlite")
   expect_error(read_json(42L), class = "herald_error_input")
 })
 
 test_that("read_json errors for invalid Dataset-JSON structure", {
-  skip_if_not_installed("jsonlite")
   tmp <- withr::local_tempfile(fileext = ".json")
   # Missing 'rows' and 'columns'
   writeLines('{"name": "DM", "label": "Demographics"}', tmp)
@@ -98,7 +92,6 @@ test_that("read_json errors for invalid Dataset-JSON structure", {
 })
 
 test_that("read_json handles dataset with zero rows", {
-  skip_if_not_installed("jsonlite")
   tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(STUDYID = character(0L), stringsAsFactors = FALSE)
@@ -111,7 +104,6 @@ test_that("read_json handles dataset with zero rows", {
 })
 
 test_that("write_json with herald.sort_keys sorts rows before writing", {
-  skip_if_not_installed("jsonlite")
   tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(
@@ -128,7 +120,6 @@ test_that("write_json with herald.sort_keys sorts rows before writing", {
 })
 
 test_that("read_json preserves sas.length attribute from JSON", {
-  skip_if_not_installed("jsonlite")
   tmp <- withr::local_tempfile(fileext = ".json")
 
   # Write JSON with a column that has length attribute
@@ -143,7 +134,6 @@ test_that("read_json preserves sas.length attribute from JSON", {
 })
 
 test_that("read_json handles null values in rows (sparse rows)", {
-  skip_if_not_installed("jsonlite")
   tmp <- withr::local_tempfile(fileext = ".json")
 
   # Create JSON with sparse rows (some cells missing)
@@ -171,7 +161,6 @@ test_that("read_json handles null values in rows (sparse rows)", {
 })
 
 test_that("read_json errors when columns and rows fields missing", {
-  skip_if_not_installed("jsonlite")
 
   tmp <- withr::local_tempfile(fileext = ".json")
   writeLines('{"name":"DM","label":"Demographics"}', tmp)
@@ -180,7 +169,6 @@ test_that("read_json errors when columns and rows fields missing", {
 })
 
 test_that("read_json handles zero-row dataset with numeric columns", {
-  skip_if_not_installed("jsonlite")
 
   json_content <- jsonlite::toJSON(
     list(

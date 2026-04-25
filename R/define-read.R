@@ -33,30 +33,28 @@
 #' @return A `herald_define` S3 object (inherits from `list`).
 #'
 #' @examples
-#' if (requireNamespace("xml2", quietly = TRUE)) {
-#'   tmp <- tempfile(fileext = ".xml")
-#'   on.exit(unlink(tmp))
-#'   writeLines(c(
-#'     '<?xml version="1.0" encoding="UTF-8"?>',
-#'     '<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"',
-#'     '     xmlns:def="http://www.cdisc.org/ns/def/v2.1">',
-#'     '  <Study OID="S.TEST">',
-#'     '    <GlobalVariables>',
-#'     '      <StudyName>PILOT01</StudyName>',
-#'     '    </GlobalVariables>',
-#'     '    <MetaDataVersion OID="MDV.1" Name="MDV1">',
-#'     '      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No">',
-#'     '        <Description>',
-#'     '          <TranslatedText>Demographics</TranslatedText>',
-#'     '        </Description>',
-#'     '      </ItemGroupDef>',
-#'     '    </MetaDataVersion>',
-#'     '  </Study>',
-#'     '</ODM>'
-#'   ), tmp)
-#'   d <- read_define_xml(tmp)
-#'   d$ds_spec
-#' }
+#' tmp <- tempfile(fileext = ".xml")
+#' on.exit(unlink(tmp))
+#' writeLines(c(
+#'   '<?xml version="1.0" encoding="UTF-8"?>',
+#'   '<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"',
+#'   '     xmlns:def="http://www.cdisc.org/ns/def/v2.1">',
+#'   '  <Study OID="S.TEST">',
+#'   '    <GlobalVariables>',
+#'   '      <StudyName>PILOT01</StudyName>',
+#'   '    </GlobalVariables>',
+#'   '    <MetaDataVersion OID="MDV.1" Name="MDV1">',
+#'   '      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No">',
+#'   '        <Description>',
+#'   '          <TranslatedText>Demographics</TranslatedText>',
+#'   '        </Description>',
+#'   '      </ItemGroupDef>',
+#'   '    </MetaDataVersion>',
+#'   '  </Study>',
+#'   '</ODM>'
+#' ), tmp)
+#' d <- read_define_xml(tmp)
+#' d$ds_spec
 #'
 #' @family spec
 #' @export
@@ -70,17 +68,6 @@ read_define_xml <- function(path, call = rlang::caller_env()) {
         "i" = "Supply a path to a valid Define-XML 2.1 file."
       ),
       class = "herald_error_file",
-      call = call
-    )
-  }
-
-  if (!requireNamespace("xml2", quietly = TRUE)) {
-    herald_error(
-      c(
-        "Package {.pkg xml2} is required to read Define-XML files.",
-        "i" = "Install with: {.code install.packages(\"xml2\")}"
-      ),
-      class = "herald_error_input",
       call = call
     )
   }

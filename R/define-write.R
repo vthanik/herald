@@ -55,17 +55,6 @@ write_define_xml <- function(spec, path, stylesheet = TRUE, validate = TRUE) {
   check_herald_spec(spec, call = call)
   check_scalar_chr(path, call = call)
 
-  if (!requireNamespace("xml2", quietly = TRUE)) {
-    herald_error(
-      c(
-        "Package {.pkg xml2} is required to write Define-XML files.",
-        "i" = "Install with: {.code install.packages(\"xml2\")}"
-      ),
-      class = "herald_error_input",
-      call = call
-    )
-  }
-
   # Pre-flight spec validation: abort with viewer-opened HTML report if issues.
   if (isTRUE(validate)) {
     validate_spec(spec)

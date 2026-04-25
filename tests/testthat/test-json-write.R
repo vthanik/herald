@@ -1,7 +1,6 @@
 # Tests for R/json-write.R -- write_json()
 
 test_that("write_json() creates valid JSON", {
-  skip_if_not_installed("jsonlite")
 
   dm <- data.frame(
     STUDYID = c("STUDY1", "STUDY1"),
@@ -46,7 +45,6 @@ test_that("write_json() creates valid JSON", {
 })
 
 test_that("write_json() errors on non-data.frame", {
-  skip_if_not_installed("jsonlite")
 
   expect_error(
     write_json("not a data frame", tempfile()),
@@ -55,7 +53,6 @@ test_that("write_json() errors on non-data.frame", {
 })
 
 test_that("write_json() infers dataset name from path", {
-  skip_if_not_installed("jsonlite")
 
   path <- withr::local_tempfile(pattern = "adsl", fileext = ".json")
   write_json(data.frame(X = 1L, stringsAsFactors = FALSE), path)  # inline -> no capture
@@ -64,7 +61,6 @@ test_that("write_json() infers dataset name from path", {
 })
 
 test_that("write_json handles Date column as date dataType", {
-  skip_if_not_installed("jsonlite")
   tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(
@@ -80,7 +76,6 @@ test_that("write_json handles Date column as date dataType", {
 })
 
 test_that("write_json handles POSIXct column as datetime dataType", {
-  skip_if_not_installed("jsonlite")
   tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(
@@ -97,7 +92,6 @@ test_that("write_json handles POSIXct column as datetime dataType", {
 })
 
 test_that("write_json infers dataset name from dataset_name attribute", {
-  skip_if_not_installed("jsonlite")
   tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(X = 1L, stringsAsFactors = FALSE)
@@ -112,7 +106,6 @@ test_that("write_json infers dataset name from dataset_name attribute", {
 })
 
 test_that("write_json infers dataset name from bare variable symbol", {
-  skip_if_not_installed("jsonlite")
   adsl <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
   tmp <- withr::local_tempfile(fileext = ".json")
   write_json(adsl, tmp)
@@ -121,7 +114,6 @@ test_that("write_json infers dataset name from bare variable symbol", {
 })
 
 test_that("write_json explicit dataset= beats variable symbol capture", {
-  skip_if_not_installed("jsonlite")
   adsl <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
   tmp <- withr::local_tempfile(fileext = ".json")
   write_json(adsl, tmp, dataset = "CUSTOM")
@@ -130,7 +122,6 @@ test_that("write_json explicit dataset= beats variable symbol capture", {
 })
 
 test_that("write_json falls through symbol capture for inline expression", {
-  skip_if_not_installed("jsonlite")
   tmp <- file.path(withr::local_tempdir(), "dm_test.json")
   write_json(data.frame(X = 1L), tmp)
   raw <- jsonlite::fromJSON(tmp, simplifyVector = FALSE)
@@ -138,7 +129,6 @@ test_that("write_json falls through symbol capture for inline expression", {
 })
 
 test_that("write_json infers dataset name from filename when no attribute", {
-  skip_if_not_installed("jsonlite")
   tmp <- file.path(withr::local_tempdir(), "dm_test.json")
 
   write_json(data.frame(X = 1L, stringsAsFactors = FALSE), tmp)  # inline -> no capture
@@ -148,7 +138,6 @@ test_that("write_json infers dataset name from filename when no attribute", {
 })
 
 test_that("write_json with metadata_ref includes it in output", {
-  skip_if_not_installed("jsonlite")
   tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(X = 1L, stringsAsFactors = FALSE)
@@ -163,7 +152,6 @@ test_that("write_json with metadata_ref includes it in output", {
 })
 
 test_that("write_json handles logical column as boolean dataType", {
-  skip_if_not_installed("jsonlite")
 
   dm <- data.frame(
     STUDYID = "S1",
@@ -179,7 +167,6 @@ test_that("write_json handles logical column as boolean dataType", {
 })
 
 test_that("write_json handles difftime column as time dataType via SAS format", {
-  skip_if_not_installed("jsonlite")
 
   dm <- data.frame(RFTM = "12:30:00", stringsAsFactors = FALSE)
   attr(dm$RFTM, "format.sas") <- "TIME"
@@ -193,7 +180,6 @@ test_that("write_json handles difftime column as time dataType via SAS format", 
 })
 
 test_that("write_json handles SAS datetime format string as datetime", {
-  skip_if_not_installed("jsonlite")
 
   dm <- data.frame(RFSTDTC = "2020-01-01T00:00:00", stringsAsFactors = FALSE)
   attr(dm$RFSTDTC, "format.sas") <- "DATETIME"
@@ -206,7 +192,6 @@ test_that("write_json handles SAS datetime format string as datetime", {
 })
 
 test_that("write_json handles SAS date format string as date", {
-  skip_if_not_installed("jsonlite")
 
   dm <- data.frame(RFSTDTC = "2020-01-01", stringsAsFactors = FALSE)
   attr(dm$RFSTDTC, "format.sas") <- "DATE"
@@ -219,7 +204,6 @@ test_that("write_json handles SAS date format string as date", {
 })
 
 test_that("write_json includes studyOID when study_oid specified", {
-  skip_if_not_installed("jsonlite")
 
   dm <- data.frame(STUDYID = "S1", stringsAsFactors = FALSE)
   tmp <- withr::local_tempfile(fileext = ".json")

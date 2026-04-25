@@ -29,7 +29,8 @@ Imports:
     rlang,
     S7,
     tibble,
-    vctrs
+    vctrs,
+    xml2
 Suggests:
     arrow,
     htmltools,
@@ -37,7 +38,6 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     withr,
-    xml2,
     yaml
 VignetteBuilder: knitr
 Config/testthat/edition: 3

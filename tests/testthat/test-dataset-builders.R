@@ -58,7 +58,6 @@ test_that(".list_builders() returns all 6 builders", {
 # ---- .build_define_datasets produces frames ---------------------------------
 
 test_that(".build_define_datasets returns named list of data.frames", {
-  skip_if_not_installed("xml2")
   def <- .make_minimal_define()
   if (is.null(def)) skip("xml2 not available")
   frames <- herald:::.build_define_datasets(def)
@@ -73,7 +72,6 @@ test_that(".build_define_datasets returns named list of data.frames", {
 # ---- Define_Study_Metadata --------------------------------------------------
 
 test_that("Define_Study_Metadata captures ODM + GlobalVariables fields", {
-  skip_if_not_installed("xml2")
   def <- .make_minimal_define()
   if (is.null(def)) skip("xml2 not available")
   frames <- herald:::.build_define_datasets(def)
@@ -89,7 +87,6 @@ test_that("Define_Study_Metadata captures ODM + GlobalVariables fields", {
 # ---- Define_Dataset_Metadata ------------------------------------------------
 
 test_that("Define_Dataset_Metadata has one row per ItemGroupDef", {
-  skip_if_not_installed("xml2")
   def <- .make_minimal_define()
   if (is.null(def)) skip("xml2 not available")
   frames <- herald:::.build_define_datasets(def)
@@ -104,7 +101,6 @@ test_that("Define_Dataset_Metadata has one row per ItemGroupDef", {
 # ---- Define_Variable_Metadata -----------------------------------------------
 
 test_that("Define_Variable_Metadata has one row per ItemDef", {
-  skip_if_not_installed("xml2")
   def <- .make_minimal_define()
   if (is.null(def)) skip("xml2 not available")
   frames <- herald:::.build_define_datasets(def)
@@ -121,7 +117,6 @@ test_that("Define_Variable_Metadata has one row per ItemDef", {
 # ---- Define_Codelist_Metadata ------------------------------------------------
 
 test_that("Define_Codelist_Metadata has one row per codelist item", {
-  skip_if_not_installed("xml2")
   def <- .make_minimal_define()
   if (is.null(def)) skip("xml2 not available")
   frames <- herald:::.build_define_datasets(def)
@@ -135,7 +130,6 @@ test_that("Define_Codelist_Metadata has one row per codelist item", {
 # ---- Define_Standards_Metadata -----------------------------------------------
 
 test_that("Define_Standards_Metadata has one row per def:Standard", {
-  skip_if_not_installed("xml2")
   def <- .make_minimal_define()
   if (is.null(def)) skip("xml2 not available")
   frames <- herald:::.build_define_datasets(def)
@@ -149,7 +143,6 @@ test_that("Define_Standards_Metadata has one row per def:Standard", {
 # ---- validate() injection ---------------------------------------------------
 
 test_that("validate() injects Define builder frames when define= is supplied", {
-  skip_if_not_installed("xml2")
   def <- .make_minimal_define()
   if (is.null(def)) skip("xml2 not available")
   # Just verify validate() runs without error and datasets include builder frames

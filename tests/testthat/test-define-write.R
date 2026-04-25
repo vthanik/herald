@@ -80,7 +80,6 @@
 # -- write_define_xml: basic output ------------------------------------------
 
 test_that("write_define_xml creates a valid XML file", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -94,7 +93,6 @@ test_that("write_define_xml creates a valid XML file", {
 })
 
 test_that("write_define_xml output has correct root element", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -105,7 +103,6 @@ test_that("write_define_xml output has correct root element", {
 })
 
 test_that("write_define_xml includes namespace declarations", {
-  skip_if_not_installed("xml2")
   spec     <- .make_minimal_spec()
   tmp      <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -138,7 +135,6 @@ test_that("write_define_xml errors on non-character path", {
 # -- Round-trip: write -> read -----------------------------------------------
 
 test_that("round-trip preserves dataset names and labels", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -151,7 +147,6 @@ test_that("round-trip preserves dataset names and labels", {
 })
 
 test_that("round-trip preserves variable names and labels", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -165,7 +160,6 @@ test_that("round-trip preserves variable names and labels", {
 })
 
 test_that("round-trip preserves variable data types and lengths", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -178,7 +172,6 @@ test_that("round-trip preserves variable data types and lengths", {
 })
 
 test_that("round-trip preserves study metadata", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -195,7 +188,6 @@ test_that("round-trip preserves study metadata", {
 })
 
 test_that("round-trip preserves codelists", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -211,7 +203,6 @@ test_that("round-trip preserves codelists", {
 })
 
 test_that("round-trip preserves methods", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -228,7 +219,6 @@ test_that("round-trip preserves methods", {
 })
 
 test_that("round-trip preserves comments", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -243,7 +233,6 @@ test_that("round-trip preserves comments", {
 })
 
 test_that("round-trip preserves ARM displays", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -258,7 +247,6 @@ test_that("round-trip preserves ARM displays", {
 })
 
 test_that("round-trip preserves ARM results", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -276,7 +264,6 @@ test_that("round-trip preserves ARM results", {
 # -- Edge cases ---------------------------------------------------------------
 
 test_that("write_define_xml handles minimal spec (no optional slots)", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -292,7 +279,6 @@ test_that("write_define_xml handles minimal spec (no optional slots)", {
 })
 
 test_that("write_define_xml handles empty study slot", {
-  skip_if_not_installed("xml2")
   spec <- herald_spec(
     study   = data.frame(attribute = character(), value = character(),
                          stringsAsFactors = FALSE),
@@ -310,7 +296,6 @@ test_that("write_define_xml handles empty study slot", {
 })
 
 test_that("write_define_xml handles codelist with EnumeratedItem (no decode)", {
-  skip_if_not_installed("xml2")
   spec <- herald_spec(
     ds_spec = data.frame(dataset = "DM", label = "Demographics",
                          stringsAsFactors = FALSE),
@@ -336,7 +321,6 @@ test_that("write_define_xml handles codelist with EnumeratedItem (no decode)", {
 })
 
 test_that("write_define_xml produces ItemRef children in ItemGroupDef", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -354,7 +338,6 @@ test_that("write_define_xml produces ItemRef children in ItemGroupDef", {
 # -- XML structure snapshot ---------------------------------------------------
 
 test_that("write_define_xml output has correct structure", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -398,7 +381,6 @@ test_that("write_define_xml output has correct structure", {
 # -- GlobalVariables backfill -------------------------------------------------
 
 test_that("write_define_xml with no study data includes UNKNOWN StudyName", {
-  skip_if_not_installed("xml2")
   spec <- herald_spec(
     ds_spec  = data.frame(dataset = "DM", label = "Demographics",
                           stringsAsFactors = FALSE),
@@ -417,7 +399,6 @@ test_that("write_define_xml with no study data includes UNKNOWN StudyName", {
 # -- DD conformance attributes ------------------------------------------------
 
 test_that("write_define_xml emits SASDatasetName on ItemGroupDef (DD0108)", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -428,7 +409,6 @@ test_that("write_define_xml emits SASDatasetName on ItemGroupDef (DD0108)", {
 })
 
 test_that("write_define_xml emits SASFieldName on ItemDef (DD0147)", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -439,7 +419,6 @@ test_that("write_define_xml emits SASFieldName on ItemDef (DD0147)", {
 })
 
 test_that("write_define_xml emits Purpose on ItemGroupDef (DD0117)", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -450,7 +429,6 @@ test_that("write_define_xml emits Purpose on ItemGroupDef (DD0117)", {
 })
 
 test_that("write_define_xml emits MethodDef Type (DD0208)", {
-  skip_if_not_installed("xml2")
   spec <- .make_full_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -461,7 +439,6 @@ test_that("write_define_xml emits MethodDef Type (DD0208)", {
 })
 
 test_that("write_define_xml MethodDef without Type defaults to Computation (DD0208)", {
-  skip_if_not_installed("xml2")
   spec <- herald_spec(
     ds_spec  = data.frame(dataset = "DM", label = "Demo",
                           stringsAsFactors = FALSE),
@@ -486,7 +463,6 @@ test_that("write_define_xml MethodDef without Type defaults to Computation (DD02
 # -- OID prefix alignment (P21 convention) ------------------------------------
 
 test_that("OIDs use P21-convention prefixes: IG., IT., CL., MT., COM.", {
-  skip_if_not_installed("xml2")
   spec     <- .make_full_spec()
   tmp      <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -505,7 +481,6 @@ test_that("OIDs use P21-convention prefixes: IG., IT., CL., MT., COM.", {
 })
 
 test_that("OID normalisation adds missing prefix: bare name gets prefixed", {
-  skip_if_not_installed("xml2")
   spec <- herald_spec(
     ds_spec  = data.frame(dataset = "DM", label = "Demographics",
                           stringsAsFactors = FALSE),
@@ -558,7 +533,6 @@ test_that("OID normalisation adds missing prefix: bare name gets prefixed", {
 # -- Stylesheet processing instruction ----------------------------------------
 
 test_that("write_define_xml always adds PI before root ODM element", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -575,7 +549,6 @@ test_that("write_define_xml always adds PI before root ODM element", {
 })
 
 test_that("stylesheet = FALSE still emits the xml-stylesheet PI (param ignored)", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -588,7 +561,6 @@ test_that("stylesheet = FALSE still emits the xml-stylesheet PI (param ignored)"
 })
 
 test_that("stylesheet PI output is still valid parseable XML", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -600,7 +572,6 @@ test_that("stylesheet PI output is still valid parseable XML", {
 })
 
 test_that("write_define_xml skips XSL copy when define2-1.xsl already exists", {
-  skip_if_not_installed("xml2")
   spec   <- herald_spec(
     ds_spec  = data.frame(dataset = "DM", label = "Demo",
                           stringsAsFactors = FALSE),
@@ -622,7 +593,6 @@ test_that("write_define_xml skips XSL copy when define2-1.xsl already exists", {
 # -- validate = TRUE integration ----------------------------------------------
 
 test_that("write_define_xml with validate = FALSE skips validation", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -632,7 +602,6 @@ test_that("write_define_xml with validate = FALSE skips validation", {
 })
 
 test_that("write_define_xml with validate = TRUE passes on a clean spec", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -743,7 +712,6 @@ test_that(".parse_standard_string returns NULL for empty string", {
 # -- Standards in output (DD0031-DD0036) --------------------------------------
 
 test_that("build with standards in ds_spec creates Standards node", {
-  skip_if_not_installed("xml2")
   spec <- herald_spec(
     ds_spec  = data.frame(dataset = "DM", label = "Demographics",
                           standard = "SDTMIG 3.3", stringsAsFactors = FALSE),
@@ -760,7 +728,6 @@ test_that("build with standards in ds_spec creates Standards node", {
 })
 
 test_that("build with keys in ds_spec includes key refs", {
-  skip_if_not_installed("xml2")
   spec <- herald_spec(
     ds_spec  = data.frame(dataset = "DM", label = "Demographics",
                           keys = "STUDYID USUBJID", stringsAsFactors = FALSE),
@@ -823,7 +790,6 @@ test_that("build with keys in ds_spec includes key refs", {
 }
 
 test_that("write_define_xml with ARM data creates ARM nodes", {
-  skip_if_not_installed("xml2")
   spec <- .make_arm_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -837,7 +803,6 @@ test_that("write_define_xml with ARM data creates ARM nodes", {
 })
 
 test_that("write_define_xml with no arm_displays skips ARM section", {
-  skip_if_not_installed("xml2")
   spec <- .make_minimal_spec()
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -848,7 +813,6 @@ test_that("write_define_xml with no arm_displays skips ARM section", {
 })
 
 test_that("write_define_xml ARM with reason and purpose includes those attrs", {
-  skip_if_not_installed("xml2")
   spec <- .make_arm_spec(include_extras = TRUE)
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -861,7 +825,6 @@ test_that("write_define_xml ARM with reason and purpose includes those attrs", {
 })
 
 test_that("write_define_xml ARM with variables creates AnalysisDatasets", {
-  skip_if_not_installed("xml2")
   spec <- .make_arm_spec(include_extras = TRUE)
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -874,7 +837,6 @@ test_that("write_define_xml ARM with variables creates AnalysisDatasets", {
 })
 
 test_that("write_define_xml ARM with documentation creates Documentation node", {
-  skip_if_not_installed("xml2")
   spec <- .make_arm_spec(include_extras = TRUE)
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -885,7 +847,6 @@ test_that("write_define_xml ARM with documentation creates Documentation node", 
 })
 
 test_that("write_define_xml ARM with programming code creates ProgrammingCode", {
-  skip_if_not_installed("xml2")
   spec <- .make_arm_spec(include_extras = TRUE)
   tmp  <- tempfile(fileext = ".xml")
   withr::defer(unlink(tmp))
@@ -898,7 +859,6 @@ test_that("write_define_xml ARM with programming code creates ProgrammingCode", 
 })
 
 test_that("write_define_xml ARM with document_id creates DocumentRef", {
-  skip_if_not_installed("xml2")
   arm_displays <- data.frame(display_id = "RD.T14.1", title = "Table 14.1",
                               document_id = "LF.doc1", pages = "10-12",
                               stringsAsFactors = FALSE)
@@ -944,7 +904,6 @@ test_that(".safe_col returns the value when present", {
 # -- value_spec creates ValueListDef -----------------------------------------
 
 test_that("write_define_xml with value_spec creates ValueListDef elements", {
-  skip_if_not_installed("xml2")
   spec <- herald_spec(
     ds_spec  = data.frame(dataset = "DM", label = "Demographics",
                           stringsAsFactors = FALSE),
@@ -976,7 +935,6 @@ test_that("write_define_xml with value_spec creates ValueListDef elements", {
 # -- Triplet output: define.xml + define.html + define2-1.xsl ----------------
 
 test_that("write_define_xml always produces all three triplet files", {
-  skip_if_not_installed("xml2")
   spec   <- .make_full_spec()
   outdir <- withr::local_tempdir()
   tmp    <- file.path(outdir, "define.xml")
@@ -989,7 +947,6 @@ test_that("write_define_xml always produces all three triplet files", {
 })
 
 test_that("triplet define.html contains study name from spec", {
-  skip_if_not_installed("xml2")
   spec   <- .make_full_spec()
   outdir <- withr::local_tempdir()
   tmp    <- file.path(outdir, "define.xml")
@@ -1001,7 +958,6 @@ test_that("triplet define.html contains study name from spec", {
 })
 
 test_that("triplet define.html contains dataset names from spec", {
-  skip_if_not_installed("xml2")
   spec   <- .make_full_spec()
   outdir <- withr::local_tempdir()
   tmp    <- file.path(outdir, "define.xml")
@@ -1016,7 +972,6 @@ test_that("triplet define.html contains dataset names from spec", {
 })
 
 test_that("write_define_xml skips define2-1.xsl copy when already exists", {
-  skip_if_not_installed("xml2")
   spec   <- herald_spec(
     ds_spec  = data.frame(dataset = "DM", label = "Demo",
                           stringsAsFactors = FALSE),
