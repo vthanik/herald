@@ -107,6 +107,14 @@ new_herald_submission <- function(
 #'   `$<-` returns the modified object. `[[` returns the property value.
 #'   `print` returns `x` invisibly.
 #'
+#' @examples
+#' # Requires a real submission directory produced by submit()
+#' if (interactive()) {
+#'   sub <- submit("/path/to/sdtm", spec = my_spec)
+#'   sub$xpt_files
+#'   sub$output_dir
+#' }
+#'
 #' @name herald_submission-methods
 #' @keywords internal
 #' @export

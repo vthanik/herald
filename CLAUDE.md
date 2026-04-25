@@ -173,6 +173,44 @@ bench::mark(
 )
 ```
 
+## pkgdown
+
+pkgdown renders every root `*.md` to gh-pages. before site build:
+
+1. `mv CLAUDE.md .local/CLAUDE.md.build-hide`
+2. `Rscript -e 'unlink("docs", recursive=TRUE); pkgdown::build_site(new_process=FALSE, install=FALSE)'`
+3. `Rscript -e 'pkgdown::deploy_to_branch(clean=TRUE)'`
+4. `mv .local/CLAUDE.md.build-hide CLAUDE.md`
+
+sanity: `ls docs/ | grep -i claude` empty and `grep -rc CLAUDE docs/` = 0.
+forget = leak. redeploy with `clean=TRUE`.
+
+## documentation standard
+
+- never use `\dontrun{}`, `\donttest{}`, or `\dontshow{}` -- all
+  examples must run and pass `R CMD check`.
+- file i/o in examples: `tempfile(fileext = "...")` +
+  `on.exit(unlink(out))`.
+- optional packages: gate with `if (requireNamespace("pkg", quietly = TRUE))`.
+- network / interactive ops: gate with `if (interactive())`.
+
+## testing policy
+
+tests must cover:
+
+- the exact bug scenario -- reproduce the failure as a test before fixing.
+- edge cases -- boundary values, empty inputs, single-element, NA/missing.
+- cross-component interactions -- when a fix spans multiple files, test
+  the integration.
+
+write tests **during** the fix, not after.
+
+## commit policy
+
+- no `Co-Authored-By` trailers -- ever.
+- commit after every bug fix -- do not batch.
+- commit after every completed plan draft or feature increment.
+
 ## git hygiene
 
 - local-only. never `git push` without explicit approval per

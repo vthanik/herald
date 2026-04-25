@@ -43,6 +43,15 @@
 #'     \item{source}{`"bundled"`, `"cache"`, or `"remote"`.}
 #'   }
 #'
+#' @examples
+#' # Local-only: bundled + already-cached releases (no network required)
+#' available_ct_releases("sdtm", include_remote = FALSE)
+#'
+#' # Full listing including NCI EVS archive (requires internet)
+#' if (interactive()) {
+#'   available_ct_releases("sdtm")
+#' }
+#'
 #' @family ct
 #' @export
 available_ct_releases <- function(package = c("sdtm", "adam", "send"),
@@ -135,6 +144,13 @@ available_ct_releases <- function(package = c("sdtm", "adam", "send"),
 #' @param quiet Suppress progress output.
 #'
 #' @return The path to the generated RDS, invisibly.
+#'
+#' @examples
+#' # Download the latest SDTM CT to a temporary directory (requires internet)
+#' if (interactive()) {
+#'   dest <- tempdir()
+#'   download_ct("sdtm", version = "latest", dest = dest)
+#' }
 #'
 #' @family ct
 #' @export

@@ -25,6 +25,16 @@ Runs the built-in spec-validation rules (standard: \code{herald-spec}) against
 the slots of \code{spec}.  If any issues are found a detailed HTML report is
 written to \code{report}, opened in the IDE viewer, and an error is raised.
 }
+\examples{
+## -- Valid spec: returns invisibly with no side effects ---------------------
+spec <- as_herald_spec(
+  ds_spec = data.frame(dataset = "DM", stringsAsFactors = FALSE)
+)
+if (interactive()) {
+  validate_spec(spec)
+}
+
+}
 \seealso{
 Other spec: 
 \code{\link{apply_spec}()},

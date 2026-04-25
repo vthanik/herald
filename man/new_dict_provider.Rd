@@ -36,6 +36,18 @@ required fields, sets the S3 class, and returns the object. Factory
 authors should prefer this over hand-assembling a list so the
 contract stays stable.
 }
+\examples{
+p <- new_dict_provider(
+  name     = "my-codes",
+  contains = function(value, field = "code", ignore_case = FALSE) {
+    value \%in\% c("A", "B", "C")
+  },
+  fields   = "code",
+  size_rows = 3L
+)
+p$contains(c("A", "D"))
+
+}
 \seealso{
 Other dict: 
 \code{\link{ct_provider}()},

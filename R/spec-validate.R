@@ -27,6 +27,16 @@
 #'   is opened in the IDE viewer pane before aborting.
 #' @return Invisibly, when the spec is clean.  Otherwise an error of class
 #'   `herald_error_validation` is raised.
+#'
+#' @examples
+#' ## -- Valid spec: returns invisibly with no side effects ---------------------
+#' spec <- as_herald_spec(
+#'   ds_spec = data.frame(dataset = "DM", stringsAsFactors = FALSE)
+#' )
+#' if (interactive()) {
+#'   validate_spec(spec)
+#' }
+#'
 #' @family spec
 #' @export
 validate_spec <- function(spec, report = NULL, view = TRUE) {

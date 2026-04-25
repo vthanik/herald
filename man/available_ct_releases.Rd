@@ -39,6 +39,16 @@ plus (when network is reachable) every archived quarterly release
 listed on NCI EVS. Works offline -- missing columns become \code{NA}
 rather than errors.
 }
+\examples{
+# Local-only: bundled + already-cached releases (no network required)
+available_ct_releases("sdtm", include_remote = FALSE)
+
+# Full listing including NCI EVS archive (requires internet)
+if (interactive()) {
+  available_ct_releases("sdtm")
+}
+
+}
 \seealso{
 Other ct: 
 \code{\link{ct_info}()},

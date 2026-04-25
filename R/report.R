@@ -29,10 +29,11 @@
 #' @return `path`, invisibly.
 #'
 #' @examples
-#' \dontrun{
-#' r <- validate(files = list(AE = my_ae))
-#' report(r, tempfile(fileext = ".json"))
-#' report(r, tempfile(fileext = ".html"))
+#' if (interactive()) {
+#'   r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
+#'   out <- tempfile(fileext = ".json")
+#'   on.exit(unlink(out))
+#'   report(r, out)
 #' }
 #'
 #' @seealso [write_report_html()], [write_report_xlsx()],
@@ -66,6 +67,15 @@ report <- function(x, path, format = NULL, ...) {
 #' @param ... Ignored.
 #'
 #' @return `path`, invisibly.
+#'
+#' @examples
+#' if (interactive()) {
+#'   r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
+#'   out <- tempfile(fileext = ".json")
+#'   on.exit(unlink(out))
+#'   write_report_json(r, out)
+#' }
+#'
 #' @family report
 #' @export
 write_report_json <- function(x, path, pretty = TRUE, ...) {

@@ -37,4 +37,13 @@ S3 methods for \code{$}, \verb{$<-}, \code{[[}, and \code{print} on \code{herald
 \code{$} provides derived views (\code{xpt_files}, \code{json_files}, \code{define_path},
 \code{report_paths}) in addition to the raw S7 properties.
 }
+\examples{
+# Requires a real submission directory produced by submit()
+if (interactive()) {
+  sub <- submit("/path/to/sdtm", spec = my_spec)
+  sub$xpt_files
+  sub$output_dir
+}
+
+}
 \keyword{internal}

@@ -19,6 +19,16 @@
 #'
 #' @return `x` invisibly.
 #'
+#' @examples
+#' if (requireNamespace("arrow", quietly = TRUE)) {
+#'   dm <- data.frame(STUDYID = "PILOT01", USUBJID = "01-001",
+#'                    stringsAsFactors = FALSE)
+#'   attr(dm, "label") <- "Demographics"
+#'   out <- tempfile(fileext = ".parquet")
+#'   on.exit(unlink(out))
+#'   write_parquet(dm, out, dataset = "DM")
+#' }
+#'
 #' @seealso [read_parquet()], [write_xpt()], [write_json()].
 #' @family io
 #' @export

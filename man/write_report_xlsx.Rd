@@ -19,6 +19,15 @@ write_report_xlsx(x, path, ...)
 \description{
 Write a herald_result as an XLSX workbook
 }
+\examples{
+if (interactive()) {
+  r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
+  out <- tempfile(fileext = ".xlsx")
+  on.exit(unlink(out))
+  write_report_xlsx(r, out)
+}
+
+}
 \seealso{
 Other report: 
 \code{\link{report}()},

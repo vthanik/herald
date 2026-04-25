@@ -72,6 +72,10 @@ readiness_state <- function(r) {
   "Submission Ready"
 }
 
+#' Print a herald_result
+#' @param x A `herald_result` object.
+#' @param ... Ignored.
+#' @return `x` invisibly.
 #' @export
 print.herald_result <- function(x, ...) {
   state <- readiness_state(x)
@@ -117,6 +121,12 @@ print.herald_result <- function(x, ...) {
   invisible(x)
 }
 
+#' Summarise a herald_result
+#' @param object A `herald_result` object.
+#' @param ... Ignored.
+#' @return A named list with `state`, `rules_applied`, `rules_total`,
+#'   `datasets_checked`, `n_findings_fired`, `n_findings_advisory`,
+#'   `severity_counts`, `duration`, and `timestamp`.
 #' @export
 summary.herald_result <- function(object, ...) {
   list(

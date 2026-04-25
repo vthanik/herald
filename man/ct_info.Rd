@@ -20,6 +20,10 @@ Returns a list describing what \code{load_ct(package, version)} would
 return without deserialising it. Pulls version + release date from
 the bundled \code{CT-MANIFEST.json} or the user cache manifest.
 }
+\examples{
+ct_info("sdtm")
+
+}
 \seealso{
 Other ct: 
 \code{\link{available_ct_releases}()},

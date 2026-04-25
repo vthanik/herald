@@ -63,6 +63,13 @@
 #' @param provider A `herald_dict_provider` (from one of the factories:
 #'   [ct_provider()], [srs_provider()], [meddra_provider()], ...).
 #' @return `invisible(provider)`.
+#'
+#' @examples
+#' p <- ct_provider("sdtm")
+#' register_dictionary("sdtm", p)
+#' list_dictionaries()
+#' unregister_dictionary("sdtm")
+#'
 #' @family dict
 #' @export
 register_dictionary <- function(name, provider) {
@@ -83,6 +90,12 @@ register_dictionary <- function(name, provider) {
 #'
 #' @param name Character scalar.
 #' @return `invisible(TRUE)` if removed, `FALSE` if not registered.
+#'
+#' @examples
+#' p <- ct_provider("sdtm")
+#' register_dictionary("sdtm", p)
+#' unregister_dictionary("sdtm")
+#'
 #' @family dict
 #' @export
 unregister_dictionary <- function(name) {
@@ -106,6 +119,10 @@ unregister_dictionary <- function(name) {
 #' @param include_cache Scan the user cache. Default TRUE.
 #' @return A tibble with columns `name`, `version`, `source`,
 #'   `license`, `size_rows`.
+#'
+#' @examples
+#' list_dictionaries()
+#'
 #' @family dict
 #' @export
 list_dictionaries <- function(include_global = TRUE,
@@ -167,6 +184,17 @@ list_dictionaries <- function(include_global = TRUE,
 #'
 #' @return An object of class `c("herald_dict_provider", "list")`.
 #'
+#' @examples
+#' p <- new_dict_provider(
+#'   name     = "my-codes",
+#'   contains = function(value, field = "code", ignore_case = FALSE) {
+#'     value %in% c("A", "B", "C")
+#'   },
+#'   fields   = "code",
+#'   size_rows = 3L
+#' )
+#' p$contains(c("A", "D"))
+#'
 #' @family dict
 #' @export
 new_dict_provider <- function(name,
@@ -199,6 +227,10 @@ new_dict_provider <- function(name,
   )
 }
 
+#' Print a herald_dict_provider
+#' @param x A `herald_dict_provider` object.
+#' @param ... Ignored.
+#' @return `x` invisibly.
 #' @export
 print.herald_dict_provider <- function(x, ...) {
   i <- tryCatch(x$info(), error = function(e) list())

@@ -24,6 +24,14 @@ Returns a \code{herald_dict_provider} backed by the user-cached FDA SRS
 table (written by \code{\link[=download_srs]{download_srs()}}). Rule ops query it under the
 name \code{"srs"}.
 }
+\examples{
+# Requires a prior download_srs() call to populate the cache
+if (interactive()) {
+  p <- srs_provider()
+  p$contains("ASPIRIN", field = "preferred_name")
+}
+
+}
 \seealso{
 \code{\link[=download_srs]{download_srs()}}, \code{\link[=register_dictionary]{register_dictionary()}}.
 

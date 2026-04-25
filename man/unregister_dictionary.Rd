@@ -15,6 +15,12 @@ unregister_dictionary(name)
 \description{
 Remove a dictionary from the session registry
 }
+\examples{
+p <- ct_provider("sdtm")
+register_dictionary("sdtm", p)
+unregister_dictionary("sdtm")
+
+}
 \seealso{
 Other dict: 
 \code{\link{ct_provider}()},

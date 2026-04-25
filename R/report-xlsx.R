@@ -14,6 +14,15 @@
 #' @param path Output file path (should end in `.xlsx`).
 #' @param ... Ignored.
 #' @return `path`, invisibly.
+#'
+#' @examples
+#' if (interactive()) {
+#'   r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
+#'   out <- tempfile(fileext = ".xlsx")
+#'   on.exit(unlink(out))
+#'   write_report_xlsx(r, out)
+#' }
+#'
 #' @family report
 #' @export
 write_report_xlsx <- function(x, path, ...) {

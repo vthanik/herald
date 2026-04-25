@@ -34,10 +34,11 @@ for CI diffing.
 }
 }
 \examples{
-\dontrun{
-r <- validate(files = list(AE = my_ae))
-report(r, tempfile(fileext = ".json"))
-report(r, tempfile(fileext = ".html"))
+if (interactive()) {
+  r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
+  out <- tempfile(fileext = ".json")
+  on.exit(unlink(out))
+  report(r, out)
 }
 
 }

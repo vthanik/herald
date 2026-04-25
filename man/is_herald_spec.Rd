@@ -15,6 +15,12 @@ is_herald_spec(x)
 \description{
 Is \code{x} a \code{herald_spec}?
 }
+\examples{
+spec <- as_herald_spec(data.frame(dataset = "DM", stringsAsFactors = FALSE))
+is_herald_spec(spec)
+is_herald_spec(list())
+
+}
 \seealso{
 Other spec: 
 \code{\link{apply_spec}()},

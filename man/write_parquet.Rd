@@ -25,6 +25,17 @@ then \code{NULL} (omitted from metadata).}
 \description{
 Write a data frame to Apache Parquet with CDISC column attributes
 }
+\examples{
+if (requireNamespace("arrow", quietly = TRUE)) {
+  dm <- data.frame(STUDYID = "PILOT01", USUBJID = "01-001",
+                   stringsAsFactors = FALSE)
+  attr(dm, "label") <- "Demographics"
+  out <- tempfile(fileext = ".parquet")
+  on.exit(unlink(out))
+  write_parquet(dm, out, dataset = "DM")
+}
+
+}
 \seealso{
 \code{\link[=read_parquet]{read_parquet()}}, \code{\link[=write_xpt]{write_xpt()}}, \code{\link[=write_json]{write_json()}}.
 

@@ -39,6 +39,14 @@ short name), writes the result to \verb{<dest>/<package>-ct-<version>.rds},
 and updates the cache manifest. Idempotent: returns the existing
 path if the file already exists and \code{!force}.
 }
+\examples{
+# Download the latest SDTM CT to a temporary directory (requires internet)
+if (interactive()) {
+  dest <- tempdir()
+  download_ct("sdtm", version = "latest", dest = dest)
+}
+
+}
 \seealso{
 Other ct: 
 \code{\link{available_ct_releases}()},

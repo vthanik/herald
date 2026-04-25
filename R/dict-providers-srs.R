@@ -42,6 +42,12 @@
 #'
 #' @return The path to the generated RDS, invisibly.
 #'
+#' @examples
+#' # Download the FDA SRS table to a temporary directory (requires internet)
+#' if (interactive()) {
+#'   download_srs(dest = tempdir())
+#' }
+#'
 #' @seealso [srs_provider()], [download_ct()].
 #' @family ct
 #' @export
@@ -93,6 +99,13 @@ download_srs <- function(version = format(Sys.Date(), "%Y-%m-%d"),
 #' @return A `herald_dict_provider` with name `"srs"`; returns NULL
 #'   when the cache is empty -- op layer records a missing_ref with
 #'   a hint pointing the user at `download_srs()`.
+#'
+#' @examples
+#' # Requires a prior download_srs() call to populate the cache
+#' if (interactive()) {
+#'   p <- srs_provider()
+#'   p$contains("ASPIRIN", field = "preferred_name")
+#' }
 #'
 #' @seealso [download_srs()], [register_dictionary()].
 #' @family dict

@@ -13,6 +13,15 @@
 #'   `"Herald validation -- <timestamp>"`.
 #' @param ... Ignored.
 #' @return `path`, invisibly.
+#'
+#' @examples
+#' if (interactive()) {
+#'   r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
+#'   out <- tempfile(fileext = ".html")
+#'   on.exit(unlink(out))
+#'   write_report_html(r, out)
+#' }
+#'
 #' @family report
 #' @export
 write_report_html <- function(x, path, title = NULL, ...) {

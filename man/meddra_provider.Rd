@@ -25,11 +25,11 @@ licensed, herald never bundles the data -- the user must supply a
 valid local distribution.
 }
 \examples{
-\dontrun{
-p <- meddra_provider("/path/to/meddra_27_0/MedAscii",
-                     version = "27.0")
-p$contains("Headache", field = "pt")
-register_dictionary("meddra", p)
+# Requires a licensed MedDRA ASCII distribution (user-supplied)
+if (interactive()) {
+  p <- meddra_provider("/path/to/meddra_27_0/MedAscii", version = "27.0")
+  p$contains("Headache", field = "pt")
+  register_dictionary("meddra", p)
 }
 
 }

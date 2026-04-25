@@ -21,6 +21,15 @@ returns a \code{herald_dict_provider} with concept-id and term
 membership lookup. SNOMED requires an affiliate licence in many
 jurisdictions; herald never bundles the data.
 }
+\examples{
+# Requires an IHTSDO SNOMED CT RF2 distribution (user-supplied)
+if (interactive()) {
+  p <- snomed_provider("/path/to/SnomedCT_RF2Release", version = "2024-01-31")
+  p$contains("Headache", field = "term")
+  register_dictionary("snomed", p)
+}
+
+}
 \seealso{
 \code{\link[=register_dictionary]{register_dictionary()}}.
 

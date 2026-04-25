@@ -19,6 +19,15 @@ Reads a Regenstrief LOINC CSV distribution (\code{Loinc.csv}) and
 returns a \code{herald_dict_provider} with membership lookup by
 \code{LOINC_NUM}, \code{COMPONENT}, \code{SHORTNAME}, or \code{LONG_COMMON_NAME}.
 }
+\examples{
+# Requires a LOINC CSV distribution (user-supplied)
+if (interactive()) {
+  p <- loinc_provider("/path/to/Loinc_2.77/LoincTable", version = "2.77")
+  p$contains("2160-0", field = "loinc_num")
+  register_dictionary("loinc", p)
+}
+
+}
 \seealso{
 \code{\link[=register_dictionary]{register_dictionary()}}.
 

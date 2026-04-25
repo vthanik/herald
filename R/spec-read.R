@@ -162,10 +162,20 @@ herald_spec <- function(
 #'
 #' @param x Any object.
 #' @return `TRUE` if `x` inherits from `herald_spec`, else `FALSE`.
+#'
+#' @examples
+#' spec <- as_herald_spec(data.frame(dataset = "DM", stringsAsFactors = FALSE))
+#' is_herald_spec(spec)
+#' is_herald_spec(list())
+#'
 #' @family spec
 #' @export
 is_herald_spec <- function(x) inherits(x, "herald_spec")
 
+#' Print a herald_spec
+#' @param x A `herald_spec` object.
+#' @param ... Ignored.
+#' @return `x` invisibly.
 #' @export
 print.herald_spec <- function(x, ...) {
   n_ds  <- if (is.data.frame(x$ds_spec))  nrow(x$ds_spec)  else 0L

@@ -20,6 +20,10 @@ Enumerates everything herald can see: session-registered
 dictionaries, cache-discoverable dictionaries, and the bundled
 CDISC CT. Used for reporting and debugging.
 }
+\examples{
+list_dictionaries()
+
+}
 \seealso{
 Other dict: 
 \code{\link{ct_provider}()},

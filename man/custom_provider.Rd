@@ -36,6 +36,16 @@ names) that rules may query. Useful for site codes, custom RACE
 categories, pilot-study codelists, or any sponsor-private
 terminology that isn't covered by a CDISC CT codelist.
 }
+\examples{
+races <- data.frame(
+  race_code = c("1002-5", "2028-9", "2054-5"),
+  race_label = c("American Indian or Alaska Native", "Asian", "Black or African American"),
+  stringsAsFactors = FALSE
+)
+p <- custom_provider(races, name = "sponsor-race", fields = "race_code")
+p$contains(c("2028-9", "9999"), field = "race_code")
+
+}
 \seealso{
 \code{\link[=register_dictionary]{register_dictionary()}}.
 

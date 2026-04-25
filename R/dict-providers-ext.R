@@ -40,11 +40,11 @@
 #' @return A `herald_dict_provider` with name `"meddra"`.
 #'
 #' @examples
-#' \dontrun{
-#' p <- meddra_provider("/path/to/meddra_27_0/MedAscii",
-#'                      version = "27.0")
-#' p$contains("Headache", field = "pt")
-#' register_dictionary("meddra", p)
+#' # Requires a licensed MedDRA ASCII distribution (user-supplied)
+#' if (interactive()) {
+#'   p <- meddra_provider("/path/to/meddra_27_0/MedAscii", version = "27.0")
+#'   p$contains("Headache", field = "pt")
+#'   register_dictionary("meddra", p)
 #' }
 #'
 #' @seealso [register_dictionary()], [whodrug_provider()].
@@ -227,6 +227,14 @@ meddra_provider <- function(path, version = "unknown") {
 #'
 #' @return A `herald_dict_provider` with name `"whodrug"`.
 #'
+#' @examples
+#' # Requires a licensed WHO-Drug B3 distribution (user-supplied)
+#' if (interactive()) {
+#'   p <- whodrug_provider("/path/to/whodrug-b3", version = "2026-Mar-01")
+#'   p$contains("ASPIRIN", field = "drug_name")
+#'   register_dictionary("whodrug", p)
+#' }
+#'
 #' @seealso [register_dictionary()], [meddra_provider()].
 #' @family dict
 #' @export
@@ -365,6 +373,15 @@ whodrug_provider <- function(path, version = "unknown", format = "b3") {
 #' @param version LOINC release tag (e.g. `"2.77"`). User-supplied.
 #'
 #' @return A `herald_dict_provider` with name `"loinc"`.
+#'
+#' @examples
+#' # Requires a LOINC CSV distribution (user-supplied)
+#' if (interactive()) {
+#'   p <- loinc_provider("/path/to/Loinc_2.77/LoincTable", version = "2.77")
+#'   p$contains("2160-0", field = "loinc_num")
+#'   register_dictionary("loinc", p)
+#' }
+#'
 #' @seealso [register_dictionary()].
 #' @family dict
 #' @export
@@ -467,6 +484,15 @@ loinc_provider <- function(path, version = "unknown") {
 #' @param version SNOMED release tag. User-supplied.
 #'
 #' @return A `herald_dict_provider` with name `"snomed"`.
+#'
+#' @examples
+#' # Requires an IHTSDO SNOMED CT RF2 distribution (user-supplied)
+#' if (interactive()) {
+#'   p <- snomed_provider("/path/to/SnomedCT_RF2Release", version = "2024-01-31")
+#'   p$contains("Headache", field = "term")
+#'   register_dictionary("snomed", p)
+#' }
+#'
 #' @seealso [register_dictionary()].
 #' @family dict
 #' @export
@@ -578,6 +604,16 @@ snomed_provider <- function(path, version = "unknown") {
 #' @param license Optional license tag (e.g. `"sponsor-private"`).
 #'
 #' @return A `herald_dict_provider`.
+#'
+#' @examples
+#' races <- data.frame(
+#'   race_code = c("1002-5", "2028-9", "2054-5"),
+#'   race_label = c("American Indian or Alaska Native", "Asian", "Black or African American"),
+#'   stringsAsFactors = FALSE
+#' )
+#' p <- custom_provider(races, name = "sponsor-race", fields = "race_code")
+#' p$contains(c("2028-9", "9999"), field = "race_code")
+#'
 #' @seealso [register_dictionary()].
 #' @family dict
 #' @export

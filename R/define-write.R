@@ -1140,6 +1140,18 @@ write_define_xml <- function(spec, path, stylesheet = TRUE, validate = TRUE) {
 #'
 #' @return The output path, invisibly.
 #'
+#' @examples
+#' ## -- Minimal spec to HTML --------------------------------------------------
+#' spec <- as_herald_spec(
+#'   ds_spec  = data.frame(dataset = "DM", label = "Demographics",
+#'                         stringsAsFactors = FALSE),
+#'   var_spec = data.frame(dataset = "DM", variable = "STUDYID",
+#'                         stringsAsFactors = FALSE)
+#' )
+#' out <- tempfile(fileext = ".html")
+#' on.exit(unlink(out))
+#' write_define_html(spec, out)
+#'
 #' @family spec
 #' @export
 write_define_html <- function(spec, path, define_xml = NULL) {

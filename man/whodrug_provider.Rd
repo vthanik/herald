@@ -24,6 +24,15 @@ Reads a UMC WHO-Drug B3 distribution from \code{path} and returns a
 \code{herald_dict_provider} serving drug-name membership checks. Since
 WHO-Drug is licensed, herald never bundles the data.
 }
+\examples{
+# Requires a licensed WHO-Drug B3 distribution (user-supplied)
+if (interactive()) {
+  p <- whodrug_provider("/path/to/whodrug-b3", version = "2026-Mar-01")
+  p$contains("ASPIRIN", field = "drug_name")
+  register_dictionary("whodrug", p)
+}
+
+}
 \seealso{
 \code{\link[=register_dictionary]{register_dictionary()}}, \code{\link[=meddra_provider]{meddra_provider()}}.
 

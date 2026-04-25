@@ -91,6 +91,9 @@ load_ct <- function(package = c("sdtm", "adam"), version = "bundled") {
 #' @return A list with `package`, `version`, `release_date`,
 #'   `row_count`, `codelist_count`, `source_path`, `source_url`.
 #'
+#' @examples
+#' ct_info("sdtm")
+#'
 #' @family ct
 #' @export
 ct_info <- function(package = c("sdtm", "adam"), version = "bundled") {

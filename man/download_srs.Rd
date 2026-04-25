@@ -35,6 +35,13 @@ body inside the ZIP into a tidy tibble, writes it to the user
 cache as an RDS, and updates the cache manifest. Idempotent --
 re-runs short-circuit when the file is already cached.
 }
+\examples{
+# Download the FDA SRS table to a temporary directory (requires internet)
+if (interactive()) {
+  download_srs(dest = tempdir())
+}
+
+}
 \seealso{
 \code{\link[=srs_provider]{srs_provider()}}, \code{\link[=download_ct]{download_ct()}}.
 

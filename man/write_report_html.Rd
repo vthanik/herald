@@ -22,6 +22,15 @@ write_report_html(x, path, title = NULL, ...)
 \description{
 Write a herald_result as a self-contained HTML report
 }
+\examples{
+if (interactive()) {
+  r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
+  out <- tempfile(fileext = ".html")
+  on.exit(unlink(out))
+  write_report_html(r, out)
+}
+
+}
 \seealso{
 Other report: 
 \code{\link{report}()},

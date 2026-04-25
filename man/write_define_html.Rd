@@ -23,6 +23,19 @@ that mirrors the CDISC Define-XML browser view. This is the
 \code{define.xml} by \code{\link{write_define_xml}}, but it can also
 be written independently.
 }
+\examples{
+## -- Minimal spec to HTML --------------------------------------------------
+spec <- as_herald_spec(
+  ds_spec  = data.frame(dataset = "DM", label = "Demographics",
+                        stringsAsFactors = FALSE),
+  var_spec = data.frame(dataset = "DM", variable = "STUDYID",
+                        stringsAsFactors = FALSE)
+)
+out <- tempfile(fileext = ".html")
+on.exit(unlink(out))
+write_define_html(spec, out)
+
+}
 \seealso{
 Other spec: 
 \code{\link{apply_spec}()},

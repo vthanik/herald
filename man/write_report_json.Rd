@@ -24,6 +24,15 @@ Serialises a \code{herald_result} to a UTF-8 JSON document with a stable
 key order. Intended as the machine-readable artifact for CI
 pipelines and diffing.
 }
+\examples{
+if (interactive()) {
+  r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
+  out <- tempfile(fileext = ".json")
+  on.exit(unlink(out))
+  write_report_json(r, out)
+}
+
+}
 \seealso{
 Other report: 
 \code{\link{report}()},

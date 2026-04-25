@@ -21,6 +21,13 @@ After this call every subsequent \code{validate()} picks up \code{provider}
 automatically under \code{name} unless explicitly overridden by the
 \verb{dictionaries=} argument.
 }
+\examples{
+p <- ct_provider("sdtm")
+register_dictionary("sdtm", p)
+list_dictionaries()
+unregister_dictionary("sdtm")
+
+}
 \seealso{
 Other dict: 
 \code{\link{ct_provider}()},
