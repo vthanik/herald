@@ -24,9 +24,15 @@ paths:
 
 - Expectation-based only (`expect_equal`, `expect_s3_class`,
   `expect_true`, `expect_error`, `expect_type`).
-- No snapshots. No mocks. Hermetic.
-- Error tests pin the class, not the message:
-  `expect_error(..., class = "herald_error_input")`.
+- No mocks. Hermetic.
+- Snapshots are required for error messages and complex output:
+  - Use `expect_snapshot(error = TRUE)` for error tests (captures
+    full message text).
+  - Use `expect_snapshot()` for warning/message tests and complex
+    printed output.
+- Error tests must ALSO pin the class alongside the snapshot:
+  `expect_error(..., class = "herald_error_input")`. Both are
+  required -- class pins the type; snapshot pins the message.
 - Rule-engine tests use `validate(files = list(...), rules =
   "<id>", quiet = TRUE)` and assert on `result$findings`.
 
