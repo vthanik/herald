@@ -165,3 +165,185 @@ test_that("does_not_contain", {
   d <- data.frame(X = c("HEADACHE", "NAUSEA"), stringsAsFactors = FALSE)
   expect_equal(op_does_not_contain(d, NULL, "X", "HEAD"), c(FALSE, TRUE))
 })
+
+# =============================================================================
+# Additional coverage: missing column returns NA
+# =============================================================================
+
+test_that("op_length_le returns NA when column absent", {
+  d <- data.frame(X = "A", stringsAsFactors = FALSE)
+  expect_equal(op_length_le(d, NULL, "ABSENT", 10), NA)
+})
+
+test_that("op_contains returns FALSE for NA values", {
+  d <- data.frame(X = c("HEADACHE", NA_character_), stringsAsFactors = FALSE)
+  out <- op_contains(d, NULL, "X", "HEAD")
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+test_that("op_contains returns NA when column absent", {
+  d <- data.frame(X = "A", stringsAsFactors = FALSE)
+  expect_equal(op_contains(d, NULL, "ABSENT", "A"), NA)
+})
+
+test_that("op_longer_than returns NA when column absent", {
+  d <- data.frame(X = "A", stringsAsFactors = FALSE)
+  expect_equal(op_longer_than(d, NULL, "ABSENT", 5), NA)
+})
+
+test_that("op_shorter_than returns NA when column absent", {
+  d <- data.frame(X = "A", stringsAsFactors = FALSE)
+  expect_equal(op_shorter_than(d, NULL, "ABSENT", 5), NA)
+})
+
+test_that("op_starts_with returns NA when column absent", {
+  d <- data.frame(X = "A", stringsAsFactors = FALSE)
+  expect_equal(op_starts_with(d, NULL, "ABSENT", "A"), NA)
+})
+
+test_that("op_ends_with returns NA when column absent", {
+  d <- data.frame(X = "A", stringsAsFactors = FALSE)
+  expect_equal(op_ends_with(d, NULL, "ABSENT", "A"), NA)
+})
+
+test_that("op_starts_with ignore_case=TRUE works", {
+  d <- data.frame(X = c("Headache", "NAUSEA"), stringsAsFactors = FALSE)
+  out <- op_starts_with(d, NULL, "X", "head", ignore_case = TRUE)
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+test_that("op_ends_with ignore_case=TRUE works", {
+  d <- data.frame(X = c("HEADACHE", "nausea"), stringsAsFactors = FALSE)
+  out <- op_ends_with(d, NULL, "X", "ACHE", ignore_case = TRUE)
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+# =============================================================================
+# prefix / suffix ops
+# =============================================================================
+
+test_that("op_prefix_equal_to returns TRUE when prefix matches", {
+  d <- data.frame(AETERM = c("AEHEAD", "CMHEAD"), stringsAsFactors = FALSE)
+  out <- herald:::op_prefix_equal_to(d, NULL, "AETERM", "AE", prefix_length = 2L)
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+test_that("op_prefix_equal_to returns NA when column absent", {
+  d <- data.frame(X = "A", stringsAsFactors = FALSE)
+  out <- herald:::op_prefix_equal_to(d, NULL, "ABSENT", "AE", prefix_length = 2L)
+  expect_equal(out, NA)
+})
+
+test_that("op_prefix_not_equal_to is the inverse of prefix_equal_to", {
+  d <- data.frame(AETERM = c("AEHEAD", "CMHEAD"), stringsAsFactors = FALSE)
+  m <- herald:::op_prefix_equal_to(d, NULL, "AETERM", "AE", prefix_length = 2L)
+  mnot <- herald:::op_prefix_not_equal_to(d, NULL, "AETERM", "AE", prefix_length = 2L)
+  expect_equal(mnot, ifelse(is.na(m), NA, !m))
+})
+
+test_that("op_prefix_matches_regex returns TRUE when prefix matches pattern", {
+  d <- data.frame(AETERM = c("AEHEAD", "CMHEAD"), stringsAsFactors = FALSE)
+  out <- herald:::op_prefix_matches_regex(d, NULL, "AETERM", "^AE$", prefix_length = 2L)
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+test_that("op_prefix_matches_regex returns NA when column absent", {
+  d <- data.frame(X = "A", stringsAsFactors = FALSE)
+  out <- herald:::op_prefix_matches_regex(d, NULL, "ABSENT", "^AE$")
+  expect_equal(out, NA)
+})
+
+test_that("op_not_prefix_matches_regex is the inverse", {
+  d <- data.frame(AETERM = c("AEHEAD", "CMHEAD"), stringsAsFactors = FALSE)
+  m <- herald:::op_prefix_matches_regex(d, NULL, "AETERM", "^AE$", prefix_length = 2L)
+  mnot <- herald:::op_not_prefix_matches_regex(
+    d, NULL, "AETERM", "^AE$", prefix_length = 2L
+  )
+  expect_equal(mnot, ifelse(is.na(m), NA, !m))
+})
+
+test_that(".anchor_regex wraps unanchored pattern", {
+  p <- herald:::.anchor_regex("[0-9]+")
+  expect_true(startsWith(p, "^(?:"))
+  expect_true(endsWith(p, ")$"))
+})
+
+test_that(".anchor_regex leaves anchored pattern untouched", {
+  p <- herald:::.anchor_regex("^[0-9]+$")
+  expect_equal(p, "^[0-9]+$")
+})
+
+test_that(".anchor_regex returns empty string unchanged", {
+  expect_equal(herald:::.anchor_regex(""), "")
+})
+
+# =============================================================================
+# op_prefix_is_not_contained_by / op_suffix_is_not_contained_by
+# =============================================================================
+
+test_that("op_prefix_is_not_contained_by fires when prefix not in allowed set", {
+  d <- data.frame(
+    DOMAIN = c("AE", "CM", "LB"),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_prefix_is_not_contained_by(
+    d, NULL, name = "DOMAIN", prefix = 2L, value = list("AE", "CM")
+  )
+  expect_equal(out, c(FALSE, FALSE, TRUE))
+})
+
+test_that("op_prefix_is_not_contained_by returns NA when column absent", {
+  d <- data.frame(X = "AE", stringsAsFactors = FALSE)
+  out <- herald:::op_prefix_is_not_contained_by(
+    d, NULL, name = "DOMAIN", prefix = 2L, value = list("AE")
+  )
+  expect_equal(out, NA)
+})
+
+test_that("op_suffix_is_not_contained_by fires when suffix not in allowed set", {
+  d <- data.frame(
+    VISITNUM = c("V01", "V02", "V99"),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_suffix_is_not_contained_by(
+    d, NULL, name = "VISITNUM", suffix = 2L, value = list("01", "02")
+  )
+  expect_equal(out, c(FALSE, FALSE, TRUE))
+})
+
+test_that("op_suffix_is_not_contained_by returns NA when column absent", {
+  d <- data.frame(X = "V01", stringsAsFactors = FALSE)
+  out <- herald:::op_suffix_is_not_contained_by(
+    d, NULL, name = "VISITNUM", suffix = 2L, value = list("01")
+  )
+  expect_equal(out, NA)
+})
+
+# =============================================================================
+# op_does_not_equal_string_part
+# =============================================================================
+
+test_that("op_does_not_equal_string_part fires when value differs from ds name chars", {
+  d <- data.frame(RDOMAIN = c("AE", "DM", "AE"), stringsAsFactors = FALSE)
+  ctx <- list(current_dataset = "SUPPAE")
+  # Chars 5-6 of "SUPPAE" = "AE"
+  out <- herald:::op_does_not_equal_string_part(d, ctx, name = "RDOMAIN",
+                                                 start = 5L, end = 6L)
+  expect_equal(out, c(FALSE, TRUE, FALSE))
+})
+
+test_that("op_does_not_equal_string_part returns NA when column absent", {
+  d <- data.frame(X = "AE", stringsAsFactors = FALSE)
+  ctx <- list(current_dataset = "SUPPAE")
+  out <- herald:::op_does_not_equal_string_part(d, ctx, name = "RDOMAIN")
+  expect_equal(out, NA)
+})
+
+test_that("op_does_not_equal_string_part returns NA when expected part is empty", {
+  d <- data.frame(RDOMAIN = "AE", stringsAsFactors = FALSE)
+  ctx <- list(current_dataset = "AB")
+  # start=5 > length of "AB" -> expected = "" -> NA
+  out <- herald:::op_does_not_equal_string_part(d, ctx, name = "RDOMAIN",
+                                                 start = 5L, end = 6L)
+  expect_equal(out, NA)
+})

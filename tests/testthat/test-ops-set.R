@@ -310,3 +310,175 @@ test_that("is_not_unique_relationship flags inconsistent X->Y mappings (AEDECOD 
   )
   expect_equal(out, c(TRUE, TRUE, FALSE, TRUE))
 })
+
+# =============================================================================
+# op_is_not_contained_by_case_insensitive (ci inverse)
+# =============================================================================
+
+test_that("is_not_contained_by_ci returns complement of is_contained_by_ci", {
+  d <- data.frame(x = c("A", "B", "C"), stringsAsFactors = FALSE)
+  expect_equal(
+    op_is_not_contained_by_ci(d, NULL, "x", c("a", "b")),
+    c(FALSE, FALSE, TRUE)
+  )
+})
+
+test_that("is_not_contained_by_ci handles missing column", {
+  d <- data.frame(y = "A", stringsAsFactors = FALSE)
+  expect_equal(op_is_not_contained_by_ci(d, NULL, "x", c("A")), !rep(NA, 1L))
+})
+
+# =============================================================================
+# op_contains_all / op_not_contains_all
+# =============================================================================
+
+test_that("op_contains_all fires when all required tokens are present", {
+  d <- data.frame(
+    FLAG = c("CRIT1 CRIT2", "CRIT1", "CRIT2 CRIT1", NA_character_),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_contains_all(d, NULL, "FLAG", c("CRIT1", "CRIT2"))
+  expect_equal(unname(out), c(TRUE, FALSE, TRUE, NA))
+})
+
+test_that("op_contains_all passes with empty needed set (always TRUE)", {
+  d <- data.frame(FLAG = c("CRIT1", "CRIT2"), stringsAsFactors = FALSE)
+  out <- herald:::op_contains_all(d, NULL, "FLAG", character(0))
+  expect_equal(out, c(TRUE, TRUE))
+})
+
+test_that("op_contains_all returns NA for missing column", {
+  d <- data.frame(X = "A", stringsAsFactors = FALSE)
+  out <- herald:::op_contains_all(d, NULL, "FLAG", c("CRIT1"))
+  expect_equal(out, NA)
+})
+
+test_that("op_contains_all returns NA for empty/NA values", {
+  d <- data.frame(FLAG = c("", NA_character_), stringsAsFactors = FALSE)
+  out <- herald:::op_contains_all(d, NULL, "FLAG", c("CRIT1"))
+  expect_equal(unname(out), c(NA, NA))
+})
+
+test_that("op_not_contains_all is the inverse of op_contains_all", {
+  d <- data.frame(
+    FLAG = c("CRIT1 CRIT2", "CRIT1"),
+    stringsAsFactors = FALSE
+  )
+  m <- herald:::op_contains_all(d, NULL, "FLAG", c("CRIT1", "CRIT2"))
+  mnot <- herald:::op_not_contains_all(d, NULL, "FLAG", c("CRIT1", "CRIT2"))
+  expect_equal(mnot, ifelse(is.na(m), NA, !m))
+})
+
+# =============================================================================
+# op_shares_no_elements_with
+# =============================================================================
+
+test_that("op_shares_no_elements_with fires when tokenized value has banned token", {
+  d <- data.frame(
+    QEVLTYP = c("SAFETY EFFICACY", "SAFETY", "PHARMACOKINETICS"),
+    stringsAsFactors = FALSE
+  )
+  banned <- c("SAFETY")
+  out <- herald:::op_shares_no_elements_with(d, NULL, "QEVLTYP", banned)
+  expect_equal(unname(out), c(FALSE, FALSE, TRUE))
+})
+
+test_that("op_shares_no_elements_with returns NA for NA/empty values", {
+  d <- data.frame(
+    QEVLTYP = c(NA_character_, ""),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_shares_no_elements_with(d, NULL, "QEVLTYP", c("SAFETY"))
+  expect_equal(unname(out), c(NA, NA))
+})
+
+test_that("op_shares_no_elements_with returns NA for missing column", {
+  d <- data.frame(X = "A", stringsAsFactors = FALSE)
+  out <- herald:::op_shares_no_elements_with(d, NULL, "QEVLTYP", c("SAFETY"))
+  expect_equal(out, NA)
+})
+
+# =============================================================================
+# op_is_ordered_subset_of / op_is_not_ordered_subset_of
+# =============================================================================
+
+test_that("op_is_ordered_subset_of passes for in-order sequence", {
+  d <- data.frame(VISITNUM = c(1, 2, 4), stringsAsFactors = FALSE)
+  universe <- as.list(c(1, 2, 3, 4, 5))
+  out <- herald:::op_is_ordered_subset_of(d, NULL, "VISITNUM", universe)
+  expect_equal(out, c(TRUE, TRUE, TRUE))
+})
+
+test_that("op_is_ordered_subset_of fires when sequence goes backward", {
+  d <- data.frame(VISITNUM = c(1, 3, 2), stringsAsFactors = FALSE)
+  universe <- as.list(c(1, 2, 3, 4, 5))
+  out <- herald:::op_is_ordered_subset_of(d, NULL, "VISITNUM", universe)
+  expect_equal(out, c(TRUE, TRUE, FALSE))
+})
+
+test_that("op_is_ordered_subset_of returns NA when value not in universe", {
+  d <- data.frame(VISITNUM = c(1, 99), stringsAsFactors = FALSE)
+  universe <- as.list(c(1, 2, 3))
+  out <- herald:::op_is_ordered_subset_of(d, NULL, "VISITNUM", universe)
+  expect_equal(out[[1L]], TRUE)
+  expect_true(is.na(out[[2L]]))
+})
+
+test_that("op_is_ordered_subset_of returns NA for missing column", {
+  d <- data.frame(X = 1L, stringsAsFactors = FALSE)
+  out <- herald:::op_is_ordered_subset_of(d, NULL, "VISITNUM", as.list(1:5))
+  expect_equal(out, NA)
+})
+
+test_that("op_is_not_ordered_subset_of is the inverse", {
+  d <- data.frame(VISITNUM = c(1, 3, 2), stringsAsFactors = FALSE)
+  universe <- as.list(c(1, 2, 3))
+  m <- herald:::op_is_ordered_subset_of(d, NULL, "VISITNUM", universe)
+  mnot <- herald:::op_is_not_ordered_subset_of(d, NULL, "VISITNUM", universe)
+  expect_equal(mnot, ifelse(is.na(m), NA, !m))
+})
+
+# =============================================================================
+# .tokenize helper
+# =============================================================================
+
+test_that(".tokenize splits on comma, pipe, semicolon, and space", {
+  result <- herald:::.tokenize("A,B|C;D E")
+  expect_equal(sort(result), c("A", "B", "C", "D", "E"))
+})
+
+# =============================================================================
+# .as_set helper
+# =============================================================================
+
+test_that(".as_set converts NULL to empty character", {
+  expect_equal(herald:::.as_set(NULL), character(0))
+})
+
+test_that(".as_set converts list to character vector", {
+  expect_equal(herald:::.as_set(list("A", "B")), c("A", "B"))
+})
+
+# =============================================================================
+# .lookup_codelist helper
+# =============================================================================
+
+test_that(".lookup_codelist finds by submission name", {
+  ct <- list(SEX = list(codelist_code = "C66731", codelist_name = "Sex"))
+  expect_equal(herald:::.lookup_codelist(ct, "SEX")$codelist_code, "C66731")
+})
+
+test_that(".lookup_codelist finds by codelist_code", {
+  ct <- list(SEX = list(codelist_code = "C66731", codelist_name = "Sex"))
+  expect_equal(herald:::.lookup_codelist(ct, "C66731")$codelist_name, "Sex")
+})
+
+test_that(".lookup_codelist finds by codelist_name", {
+  ct <- list(SEX = list(codelist_code = "C66731", codelist_name = "Sex"))
+  expect_equal(herald:::.lookup_codelist(ct, "Sex")$codelist_code, "C66731")
+})
+
+test_that(".lookup_codelist returns NULL when not found", {
+  ct <- list(SEX = list(codelist_code = "C66731", codelist_name = "Sex"))
+  expect_null(herald:::.lookup_codelist(ct, "NOTEXIST"))
+})

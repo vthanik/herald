@@ -709,3 +709,233 @@ test_that("op_var_by_suffix_not_numeric empty exclude_prefix has no effect", {
   )
   expect_true(all(out))
 })
+
+# =============================================================================
+# op_label_by_suffix_missing (ADaMIG Section 3.1.6 label convention)
+# =============================================================================
+
+test_that("op_label_by_suffix_missing fires when DT col lacks 'Date' in label", {
+  df <- data.frame(ASTDT = 18000L, stringsAsFactors = FALSE)
+  attr(df$ASTDT, "label") <- "Analysis Start Time"
+  out <- herald:::op_label_by_suffix_missing(df, list(), suffix = "DT", value = "Date")
+  expect_true(isTRUE(out[[1L]]))
+})
+
+test_that("op_label_by_suffix_missing passes when DT col label contains 'Date'", {
+  df <- data.frame(ASTDT = 18000L, stringsAsFactors = FALSE)
+  attr(df$ASTDT, "label") <- "Analysis Start Date"
+  out <- herald:::op_label_by_suffix_missing(df, list(), suffix = "DT", value = "Date")
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_label_by_suffix_missing skips columns with null/empty labels", {
+  df <- data.frame(ASTDT = 18000L, stringsAsFactors = FALSE)
+  # no label attribute -> rule skips (returns FALSE, not TRUE)
+  out <- herald:::op_label_by_suffix_missing(df, list(), suffix = "DT", value = "Date")
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_label_by_suffix_missing skips all-whitespace labels (P21 rtrim)", {
+  df <- data.frame(ASTDT = 18000L, stringsAsFactors = FALSE)
+  attr(df$ASTDT, "label") <- "   "
+  out <- herald:::op_label_by_suffix_missing(df, list(), suffix = "DT", value = "Date")
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_label_by_suffix_missing returns FALSE when no matching suffix cols", {
+  df <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  out <- herald:::op_label_by_suffix_missing(df, list(), suffix = "DT", value = "Date")
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_label_by_suffix_missing returns FALSE when suffix is empty", {
+  df <- data.frame(ASTDT = 18000L, stringsAsFactors = FALSE)
+  out <- herald:::op_label_by_suffix_missing(df, list(), suffix = "", value = "Date")
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_label_by_suffix_missing returns dataset-level mask", {
+  df <- data.frame(
+    ASTDT = c(18000L, 18001L, 18002L),
+    stringsAsFactors = FALSE
+  )
+  attr(df$ASTDT, "label") <- "Analysis Start Time"
+  out <- herald:::op_label_by_suffix_missing(df, list(), suffix = "DT", value = "Date")
+  expect_equal(length(out), 3L)
+  expect_true(isTRUE(out[[1L]]))
+  expect_false(any(out[-1L]))
+})
+
+test_that("op_label_by_suffix_missing handles empty dataset", {
+  df <- data.frame(ASTDT = integer(0), stringsAsFactors = FALSE)
+  out <- herald:::op_label_by_suffix_missing(df, list(), suffix = "DT", value = "Date")
+  expect_length(out, 0L)
+})
+
+# =============================================================================
+# op_any_var_name_exceeds_length
+# =============================================================================
+
+test_that("op_any_var_name_exceeds_length fires when a var name is too long", {
+  df <- data.frame(
+    USUBJID = "S1",
+    AVERYLONGVARIABLENAME = 1L,
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_any_var_name_exceeds_length(df, list(), value = 8L)
+  expect_true(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_var_name_exceeds_length passes when all names are within limit", {
+  df <- data.frame(USUBJID = "S1", AGE = 30L, stringsAsFactors = FALSE)
+  out <- herald:::op_any_var_name_exceeds_length(df, list(), value = 8L)
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_var_name_exceeds_length returns FALSE when no columns", {
+  df <- data.frame(stringsAsFactors = FALSE)[1L, , drop = FALSE]
+  out <- herald:::op_any_var_name_exceeds_length(df, list(), value = 8L)
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_var_name_exceeds_length returns FALSE for invalid limit", {
+  df <- data.frame(TOOLONGNAME = 1L, stringsAsFactors = FALSE)
+  out <- herald:::op_any_var_name_exceeds_length(df, list(), value = "NOT_INT")
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_var_name_exceeds_length returns dataset-level mask", {
+  df <- data.frame(
+    USUBJID = c("S1", "S2"),
+    AVERYLONGNAME = c(1L, 2L),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_any_var_name_exceeds_length(df, list(), value = 8L)
+  expect_equal(length(out), 2L)
+  expect_true(isTRUE(out[[1L]]))
+  expect_false(isTRUE(out[[2L]]))
+})
+
+# =============================================================================
+# op_any_var_label_exceeds_length
+# =============================================================================
+
+test_that("op_any_var_label_exceeds_length fires when a label is too long", {
+  df <- data.frame(AGE = 30L, stringsAsFactors = FALSE)
+  attr(df$AGE, "label") <- "This is a very long label exceeding forty characters"
+  out <- herald:::op_any_var_label_exceeds_length(df, list(), value = 40L)
+  expect_true(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_var_label_exceeds_length passes when all labels are short", {
+  df <- data.frame(AGE = 30L, stringsAsFactors = FALSE)
+  attr(df$AGE, "label") <- "Age"
+  out <- herald:::op_any_var_label_exceeds_length(df, list(), value = 40L)
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_var_label_exceeds_length skips cols with no label attr", {
+  df <- data.frame(AGE = 30L, stringsAsFactors = FALSE)
+  out <- herald:::op_any_var_label_exceeds_length(df, list(), value = 40L)
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_var_label_exceeds_length skips all-whitespace labels", {
+  df <- data.frame(AGE = 30L, stringsAsFactors = FALSE)
+  attr(df$AGE, "label") <- "   "
+  out <- herald:::op_any_var_label_exceeds_length(df, list(), value = 40L)
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_var_label_exceeds_length returns FALSE for invalid limit", {
+  df <- data.frame(AGE = 30L, stringsAsFactors = FALSE)
+  attr(df$AGE, "label") <- "Age In Years"
+  out <- herald:::op_any_var_label_exceeds_length(df, list(), value = "BAD")
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_var_label_exceeds_length returns dataset-level mask", {
+  df <- data.frame(
+    AGE = c(30L, 31L),
+    stringsAsFactors = FALSE
+  )
+  attr(df$AGE, "label") <- "This is a very long label exceeding forty characters"
+  out <- herald:::op_any_var_label_exceeds_length(df, list(), value = 40L)
+  expect_equal(length(out), 2L)
+  expect_true(isTRUE(out[[1L]]))
+  expect_false(isTRUE(out[[2L]]))
+})
+
+# =============================================================================
+# op_any_value_exceeds_length
+# =============================================================================
+
+test_that("op_any_value_exceeds_length fires when any char col has value too long", {
+  df <- data.frame(
+    AETERM = c(strrep("X", 201), "short"),
+    AGE = c(30L, 31L),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_any_value_exceeds_length(df, list(), value = 200L)
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+test_that("op_any_value_exceeds_length passes when all values within limit", {
+  df <- data.frame(
+    AETERM = c("HEADACHE", "NAUSEA"),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_any_value_exceeds_length(df, list(), value = 200L)
+  expect_equal(out, c(FALSE, FALSE))
+})
+
+test_that("op_any_value_exceeds_length skips numeric columns", {
+  df <- data.frame(
+    AGE = c(30L, 31L),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::op_any_value_exceeds_length(df, list(), value = 1L)
+  expect_equal(out, c(FALSE, FALSE))
+})
+
+test_that("op_any_value_exceeds_length handles empty dataset", {
+  df <- data.frame(AETERM = character(0), stringsAsFactors = FALSE)
+  out <- herald:::op_any_value_exceeds_length(df, list(), value = 200L)
+  expect_length(out, 0L)
+})
+
+test_that("op_any_value_exceeds_length returns FALSE for invalid limit", {
+  df <- data.frame(AETERM = "HEADACHE", stringsAsFactors = FALSE)
+  out <- herald:::op_any_value_exceeds_length(df, list(), value = "BAD")
+  expect_equal(out, FALSE)
+})
+
+test_that("op_any_value_exceeds_length applies rtrim before byte count", {
+  # A value of 200 spaces + "X" would be 201 but rtrim collapses trailing
+  # spaces, leaving just the non-space content.
+  trailing_spaces <- paste0(strrep(" ", 190), "X")
+  df <- data.frame(AETERM = trailing_spaces, stringsAsFactors = FALSE)
+  out <- herald:::op_any_value_exceeds_length(df, list(), value = 200L)
+  expect_equal(out, FALSE)
+})
+
+test_that("op_var_present_in_any_other_dataset with required_dataset_classes filters correctly", {
+  ae <- data.frame(AELNKGRP = "G1", USUBJID = "S1", stringsAsFactors = FALSE)
+  mh <- data.frame(MHLNKGRP = "G1", USUBJID = "S1", stringsAsFactors = FALSE)
+  cm <- data.frame(CMLNKGRP = "G1", USUBJID = "S1", stringsAsFactors = FALSE)
+  attr(mh, "herald_class") <- "EVENTS"
+  attr(cm, "herald_class") <- "INTERVENTIONS"
+  ctx <- list(datasets = list(AE = ae, MH = mh, CM = cm), current_dataset = "AE")
+  # Only search datasets with class "EVENTS" -- should find MH
+  out <- herald:::op_var_present_in_any_other_dataset(
+    ae, ctx, name = "AELNKGRP",
+    required_dataset_classes = "EVENTS"
+  )
+  expect_true(isTRUE(out[[1L]]))
+  # Only search datasets with class "FINDINGS" -- should not find any
+  out2 <- herald:::op_var_present_in_any_other_dataset(
+    ae, ctx, name = "AELNKGRP",
+    required_dataset_classes = "FINDINGS"
+  )
+  expect_true(is.na(out2[[1L]]))
+})

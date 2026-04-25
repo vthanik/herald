@@ -106,3 +106,131 @@ test_that("is_not_unique_set is the inverse", {
   d <- data.frame(USUBJID = c("A", "A", "B"), stringsAsFactors = FALSE)
   expect_equal(op_is_not_unique_set(d, NULL, "USUBJID"), c(TRUE, TRUE, FALSE))
 })
+
+# =============================================================================
+# op_equal_to: column-vs-column (value_is_literal=FALSE)
+# =============================================================================
+
+test_that("op_equal_to col-vs-col returns TRUE when columns match", {
+  d <- data.frame(
+    A = c("X", "Y", "Z"),
+    B = c("X", "W", "Z"),
+    stringsAsFactors = FALSE
+  )
+  out <- op_equal_to(d, NULL, "A", "B", value_is_literal = FALSE)
+  expect_equal(out, c(TRUE, FALSE, TRUE))
+})
+
+test_that("op_equal_to col-vs-col returns NA when ref col absent", {
+  d <- data.frame(A = c("X", "Y"), stringsAsFactors = FALSE)
+  out <- op_equal_to(d, NULL, "A", "NOPE", value_is_literal = FALSE)
+  expect_equal(out, rep(NA, 2L))
+})
+
+test_that("op_equal_to col-vs-col returns NA when name col absent", {
+  d <- data.frame(B = c("X", "Y"), stringsAsFactors = FALSE)
+  out <- op_equal_to(d, NULL, "A", "B", value_is_literal = FALSE)
+  expect_equal(out, rep(NA, 2L))
+})
+
+test_that("op_equal_to literal: NA in col treated as FALSE for non-NA literal", {
+  d <- data.frame(A = c(NA_character_, "X"), stringsAsFactors = FALSE)
+  out <- op_equal_to(d, NULL, "A", "X")
+  expect_equal(out, c(FALSE, TRUE))
+})
+
+# =============================================================================
+# op_not_equal_to: col-vs-col P21 NullComparison
+# =============================================================================
+
+test_that("op_not_equal_to col-vs-col fires when one side is NA", {
+  d <- data.frame(
+    A = c("X", NA_character_, "Z"),
+    B = c("X", "Y", NA_character_),
+    stringsAsFactors = FALSE
+  )
+  out <- op_not_equal_to(d, NULL, "A", "B", value_is_literal = FALSE)
+  # Row 1: both populated equal -> FALSE
+  # Row 2: A is NA, B is populated -> one-null -> TRUE
+  # Row 3: A is populated, B is NA -> one-null -> TRUE
+  expect_equal(out, c(FALSE, TRUE, TRUE))
+})
+
+# =============================================================================
+# op_equal_to_ci: column-vs-column (value_is_literal=FALSE)
+# =============================================================================
+
+test_that("op_equal_to_ci col-vs-col is case-insensitive", {
+  d <- data.frame(
+    A = c("hello", "world"),
+    B = c("HELLO", "EARTH"),
+    stringsAsFactors = FALSE
+  )
+  out <- op_equal_to_ci(d, NULL, "A", "B", value_is_literal = FALSE)
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+test_that("op_equal_to_ci col-vs-col returns NA when ref col absent", {
+  d <- data.frame(A = "X", stringsAsFactors = FALSE)
+  out <- op_equal_to_ci(d, NULL, "A", "B", value_is_literal = FALSE)
+  expect_equal(out, NA)
+})
+
+test_that("op_equal_to_ci literal: NA treated as FALSE for non-NA literal", {
+  d <- data.frame(A = c(NA_character_, "X"), stringsAsFactors = FALSE)
+  out <- op_equal_to_ci(d, NULL, "A", "x")
+  expect_equal(out, c(FALSE, TRUE))
+})
+
+# =============================================================================
+# op_not_equal_to_ci: col-vs-col NullComparison
+# =============================================================================
+
+test_that("op_not_equal_to_ci col-vs-col fires when one side is NA", {
+  d <- data.frame(
+    A = c("X", NA_character_),
+    B = c("X", "Y"),
+    stringsAsFactors = FALSE
+  )
+  out <- op_not_equal_to_ci(d, NULL, "A", "B", value_is_literal = FALSE)
+  expect_equal(out, c(FALSE, TRUE))
+})
+
+# =============================================================================
+# ordinal ops: missing column returns NA
+# =============================================================================
+
+test_that("op_greater_than returns NA when column absent", {
+  d <- data.frame(X = 1L, stringsAsFactors = FALSE)
+  expect_equal(op_greater_than(d, NULL, "ABSENT", 5), NA)
+})
+
+test_that("op_greater_than_or_equal_to returns NA when column absent", {
+  d <- data.frame(X = 1L, stringsAsFactors = FALSE)
+  expect_equal(op_greater_than_or_equal_to(d, NULL, "ABSENT", 5), NA)
+})
+
+test_that("op_less_than returns NA when column absent", {
+  d <- data.frame(X = 1L, stringsAsFactors = FALSE)
+  expect_equal(op_less_than(d, NULL, "ABSENT", 5), NA)
+})
+
+test_that("op_less_than_or_equal_to returns NA when column absent", {
+  d <- data.frame(X = 1L, stringsAsFactors = FALSE)
+  expect_equal(op_less_than_or_equal_to(d, NULL, "ABSENT", 5), NA)
+})
+
+test_that("op_greater_than_or_equal_to returns NA for multi-value guard", {
+  d <- data.frame(X = 1:3, stringsAsFactors = FALSE)
+  expect_equal(op_greater_than_or_equal_to(d, NULL, "X", c(1, 2)), rep(NA, 3L))
+})
+
+test_that("op_less_than returns NA for multi-value guard", {
+  d <- data.frame(X = 1:3, stringsAsFactors = FALSE)
+  expect_equal(op_less_than(d, NULL, "X", c(1, 2)), rep(NA, 3L))
+})
+
+test_that("op_less_than_or_equal_to returns NA for multi-value guard", {
+  d <- data.frame(X = 1:3, stringsAsFactors = FALSE)
+  expect_equal(op_less_than_or_equal_to(d, NULL, "X", c(1, 2)), rep(NA, 3L))
+})

@@ -2047,3 +2047,564 @@ test_that("CG0374: validate passes when all RELREC domains present", {
   )
   expect_equal(nrow(result$findings), 0L)
 })
+
+# =============================================================================
+# .to_iso_if_temporal (difftime branch)
+# =============================================================================
+
+test_that(".to_iso_if_temporal converts difftime to HH:MM:SS", {
+  dt <- as.difftime(c(3661, NA_real_), units = "secs")
+  out <- herald:::.to_iso_if_temporal(dt)
+  expect_equal(out[[1L]], "01:01:01")
+  expect_true(is.na(out[[2L]]))
+})
+
+test_that(".to_iso_if_temporal converts POSIXct to ISO with T separator", {
+  pt <- as.POSIXct("2024-06-15 12:30:00", tz = "UTC")
+  out <- herald:::.to_iso_if_temporal(pt)
+  expect_true(grepl("T", out[[1L]]))
+})
+
+test_that(".to_iso_if_temporal converts Date to YYYY-MM-DD", {
+  d <- as.Date("2024-06-15")
+  out <- herald:::.to_iso_if_temporal(d)
+  expect_equal(out[[1L]], "2024-06-15")
+})
+
+test_that(".to_iso_if_temporal passes through character unchanged", {
+  expect_equal(herald:::.to_iso_if_temporal("2024-01-01"), "2024-01-01")
+})
+
+# =============================================================================
+# op_ref_col_empty / op_ref_col_populated
+# =============================================================================
+
+test_that("op_ref_col_empty fires when ref column is empty for the row's key", {
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    RFSTDTC = c("2024-01-01", ""),
+    stringsAsFactors = FALSE
+  )
+  ae <- data.frame(
+    USUBJID = c("S1", "S2", "S3"),
+    stringsAsFactors = FALSE
+  )
+  ctx <- .mk_ctx_with(list(DM = dm, AE = ae))
+  out <- herald:::op_ref_col_empty(
+    ae, ctx, name = "USUBJID",
+    value = list(reference_dataset = "DM", reference_column = "RFSTDTC", by = "USUBJID")
+  )
+  # S1: ref populated -> FALSE; S2: ref empty -> TRUE; S3: no ref row -> TRUE
+  expect_false(out[[1L]])
+  expect_true(out[[2L]])
+  expect_true(out[[3L]])
+})
+
+test_that("op_ref_col_empty returns NA when ref dataset absent", {
+  ae <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list())
+  out <- herald:::op_ref_col_empty(
+    ae, ctx, name = "USUBJID", value = "DM.RFSTDTC"
+  )
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("op_ref_col_empty returns NA for invalid value arg", {
+  ae <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list())
+  out <- herald:::op_ref_col_empty(ae, ctx, name = "USUBJID", value = 42L)
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("op_ref_col_empty dotted string form", {
+  dm <- data.frame(USUBJID = "S1", RFSTDTC = "2024-01-01", stringsAsFactors = FALSE)
+  ae <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(DM = dm, AE = ae))
+  out <- herald:::op_ref_col_empty(ae, ctx, name = "USUBJID", value = "DM.RFSTDTC")
+  expect_false(out[[1L]])
+})
+
+test_that("op_ref_col_populated is complement of op_ref_col_empty", {
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    RFSTDTC = c("2024-01-01", NA_character_),
+    stringsAsFactors = FALSE
+  )
+  ae <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(DM = dm, AE = ae))
+  empty <- herald:::op_ref_col_empty(ae, ctx, name = "USUBJID", value = "DM.RFSTDTC")
+  popu <- herald:::op_ref_col_populated(ae, ctx, name = "USUBJID", value = "DM.RFSTDTC")
+  expect_equal(popu, ifelse(is.na(empty), NA, !empty))
+})
+
+# =============================================================================
+# .cmp_by_key / op_less_than_by_key / op_greater_than_by_key etc.
+# =============================================================================
+
+test_that("op_less_than_by_key fires when row value < ref value", {
+  ae <- data.frame(
+    USUBJID = c("S1", "S2"),
+    RFSTDTC = c("2023-12-01", "2024-06-01"),
+    stringsAsFactors = FALSE
+  )
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    RFICDTC = c("2024-01-01", "2024-05-01"),
+    stringsAsFactors = FALSE
+  )
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_less_than_by_key(
+    ae, ctx, name = "RFSTDTC",
+    reference_dataset = "DM", reference_column = "RFICDTC",
+    key = "USUBJID"
+  )
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+test_that("op_less_than_by_key returns NA when ref dataset absent", {
+  ae <- data.frame(USUBJID = "S1", RFSTDTC = "2024-01-01", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae))
+  out <- herald:::op_less_than_by_key(
+    ae, ctx, name = "RFSTDTC",
+    reference_dataset = "DM", reference_column = "RFICDTC"
+  )
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("op_less_than_by_key returns NA when name col absent", {
+  ae <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  dm <- data.frame(USUBJID = "S1", RFICDTC = "2024-01-01", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_less_than_by_key(
+    ae, ctx, name = "RFSTDTC",
+    reference_dataset = "DM", reference_column = "RFICDTC"
+  )
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("op_less_than_by_key handles empty data frame", {
+  ae <- data.frame(USUBJID = character(0), RFSTDTC = character(0),
+                   stringsAsFactors = FALSE)
+  dm <- data.frame(USUBJID = character(0), RFICDTC = character(0),
+                   stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_less_than_by_key(
+    ae, ctx, name = "RFSTDTC",
+    reference_dataset = "DM", reference_column = "RFICDTC"
+  )
+  expect_length(out, 0L)
+})
+
+test_that("op_less_than_or_equal_by_key fires when row value <= ref value", {
+  ae <- data.frame(
+    USUBJID = c("S1", "S2"),
+    AVAL = c(5, 10),
+    stringsAsFactors = FALSE
+  )
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    MAXVAL = c(5, 9),
+    stringsAsFactors = FALSE
+  )
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_less_than_or_equal_by_key(
+    ae, ctx, name = "AVAL",
+    reference_dataset = "DM", reference_column = "MAXVAL",
+    key = "USUBJID"
+  )
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+test_that("op_greater_than_by_key fires when row value > ref value", {
+  ae <- data.frame(
+    USUBJID = c("S1", "S2"),
+    AVAL = c(10, 3),
+    stringsAsFactors = FALSE
+  )
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    MINVAL = c(5, 5),
+    stringsAsFactors = FALSE
+  )
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_greater_than_by_key(
+    ae, ctx, name = "AVAL",
+    reference_dataset = "DM", reference_column = "MINVAL",
+    key = "USUBJID"
+  )
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+test_that("op_greater_than_or_equal_by_key fires when row value >= ref value", {
+  ae <- data.frame(
+    USUBJID = c("S1", "S2"),
+    AVAL = c(5, 3),
+    stringsAsFactors = FALSE
+  )
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    MINVAL = c(5, 5),
+    stringsAsFactors = FALSE
+  )
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_greater_than_or_equal_by_key(
+    ae, ctx, name = "AVAL",
+    reference_dataset = "DM", reference_column = "MINVAL",
+    key = "USUBJID"
+  )
+  expect_equal(out, c(TRUE, FALSE))
+})
+
+test_that("cmp_by_key returns NA when key column absent from data", {
+  ae <- data.frame(AVAL = c(10, 5), stringsAsFactors = FALSE)
+  dm <- data.frame(USUBJID = c("S1"), MINVAL = c(5), stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_greater_than_by_key(
+    ae, ctx, name = "AVAL",
+    reference_dataset = "DM", reference_column = "MINVAL",
+    key = "USUBJID"
+  )
+  expect_equal(out, c(NA, NA))
+})
+
+# =============================================================================
+# op_study_day_mismatch
+# =============================================================================
+
+test_that("op_study_day_mismatch fires when stored study day differs from computed", {
+  ae <- data.frame(
+    USUBJID = c("S1", "S2"),
+    AESTDY = c(10L, 5L),
+    AESTDTC = c("2024-01-10", "2024-01-05"),
+    stringsAsFactors = FALSE
+  )
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    RFSTDTC = c("2024-01-01", "2024-01-01"),
+    stringsAsFactors = FALSE
+  )
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_study_day_mismatch(
+    ae, ctx, name = "AESTDY",
+    reference_dataset = "DM", reference_column = "RFSTDTC",
+    target_date_column = "AESTDTC", key = "USUBJID"
+  )
+  # S1: 2024-01-10 - 2024-01-01 = 9 days + 1 = 10 -> matches
+  # S2: 2024-01-05 - 2024-01-01 = 4 days + 1 = 5 -> matches
+  expect_equal(out, c(FALSE, FALSE))
+})
+
+test_that("op_study_day_mismatch fires when study day is wrong", {
+  ae <- data.frame(
+    USUBJID = "S1",
+    AESTDY = 99L,
+    AESTDTC = "2024-01-10",
+    stringsAsFactors = FALSE
+  )
+  dm <- data.frame(USUBJID = "S1", RFSTDTC = "2024-01-01", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_study_day_mismatch(
+    ae, ctx, name = "AESTDY",
+    reference_dataset = "DM", reference_column = "RFSTDTC",
+    target_date_column = "AESTDTC"
+  )
+  expect_true(out[[1L]])
+})
+
+test_that("op_study_day_mismatch returns NA when target date is incomplete", {
+  ae <- data.frame(
+    USUBJID = "S1",
+    AESTDY = 10L,
+    AESTDTC = "2024-01",
+    stringsAsFactors = FALSE
+  )
+  dm <- data.frame(USUBJID = "S1", RFSTDTC = "2024-01-01", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_study_day_mismatch(
+    ae, ctx, name = "AESTDY",
+    reference_dataset = "DM", reference_column = "RFSTDTC",
+    target_date_column = "AESTDTC"
+  )
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("op_study_day_mismatch returns NA when ref dataset absent", {
+  ae <- data.frame(
+    USUBJID = "S1", AESTDY = 10L, AESTDTC = "2024-01-10",
+    stringsAsFactors = FALSE
+  )
+  ctx <- .mk_ctx_with(list(AE = ae))
+  out <- herald:::op_study_day_mismatch(
+    ae, ctx, name = "AESTDY",
+    reference_dataset = "DM", reference_column = "RFSTDTC",
+    target_date_column = "AESTDTC"
+  )
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("op_study_day_mismatch handles negative study day (before baseline)", {
+  ae <- data.frame(
+    USUBJID = "S1",
+    AESTDY = -2L,
+    AESTDTC = "2023-12-30",
+    stringsAsFactors = FALSE
+  )
+  dm <- data.frame(USUBJID = "S1", RFSTDTC = "2024-01-01", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_study_day_mismatch(
+    ae, ctx, name = "AESTDY",
+    reference_dataset = "DM", reference_column = "RFSTDTC",
+    target_date_column = "AESTDTC"
+  )
+  # 2023-12-30 - 2024-01-01 = -2 days (before anchor -> no +1) -> -2 matches
+  expect_false(out[[1L]])
+})
+
+test_that("op_study_day_mismatch handles empty dataset", {
+  ae <- data.frame(
+    USUBJID = character(0), AESTDY = integer(0), AESTDTC = character(0),
+    stringsAsFactors = FALSE
+  )
+  dm <- data.frame(USUBJID = character(0), RFSTDTC = character(0),
+                   stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_study_day_mismatch(
+    ae, ctx, name = "AESTDY",
+    reference_dataset = "DM", reference_column = "RFSTDTC",
+    target_date_column = "AESTDTC"
+  )
+  expect_length(out, 0L)
+})
+
+# =============================================================================
+# op_any_index_missing_ref_var
+# =============================================================================
+
+test_that("op_any_index_missing_ref_var fires when expected var missing from ref", {
+  bds <- data.frame(APERIOD = c(1L, 2L), stringsAsFactors = FALSE)
+  adsl <- data.frame(TRT01P = "DRUG", stringsAsFactors = FALSE) # only period 01
+  ctx <- .mk_ctx_with(list(BDS = bds, ADSL = adsl))
+  out <- herald:::op_any_index_missing_ref_var(
+    bds, ctx, name = "APERIOD",
+    reference_dataset = "ADSL", name_template = "TRTxxP"
+  )
+  # Period 2 -> TRT02P which is absent from ADSL -> fires
+  expect_true(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_index_missing_ref_var passes when all expected vars present", {
+  bds <- data.frame(APERIOD = c(1L), stringsAsFactors = FALSE)
+  adsl <- data.frame(TRT01P = "DRUG", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(BDS = bds, ADSL = adsl))
+  out <- herald:::op_any_index_missing_ref_var(
+    bds, ctx, name = "APERIOD",
+    reference_dataset = "ADSL", name_template = "TRTxxP"
+  )
+  expect_false(isTRUE(out[[1L]]))
+})
+
+test_that("op_any_index_missing_ref_var returns NA when ref dataset absent", {
+  bds <- data.frame(APERIOD = 1L, stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(BDS = bds))
+  out <- herald:::op_any_index_missing_ref_var(
+    bds, ctx, name = "APERIOD",
+    reference_dataset = "ADSL", name_template = "TRTxxP"
+  )
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("op_any_index_missing_ref_var returns NA when name col absent", {
+  bds <- data.frame(X = 1L, stringsAsFactors = FALSE)
+  adsl <- data.frame(TRT01P = "DRUG", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(BDS = bds, ADSL = adsl))
+  out <- herald:::op_any_index_missing_ref_var(
+    bds, ctx, name = "APERIOD",
+    reference_dataset = "ADSL", name_template = "TRTxxP"
+  )
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("op_any_index_missing_ref_var handles empty dataset", {
+  bds <- data.frame(APERIOD = integer(0), stringsAsFactors = FALSE)
+  adsl <- data.frame(TRT01P = "DRUG", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(BDS = bds, ADSL = adsl))
+  out <- herald:::op_any_index_missing_ref_var(
+    bds, ctx, name = "APERIOD",
+    reference_dataset = "ADSL", name_template = "TRTxxP"
+  )
+  expect_length(out, 0L)
+})
+
+test_that("op_any_index_missing_ref_var returns FALSE when all index values are NA", {
+  bds <- data.frame(APERIOD = c(NA_integer_, NA_integer_), stringsAsFactors = FALSE)
+  adsl <- data.frame(TRT01P = "DRUG", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(BDS = bds, ADSL = adsl))
+  out <- herald:::op_any_index_missing_ref_var(
+    bds, ctx, name = "APERIOD",
+    reference_dataset = "ADSL", name_template = "TRTxxP"
+  )
+  expect_false(any(out))
+})
+
+test_that("op_any_index_missing_ref_var uses single-digit format for placeholder=y", {
+  bds <- data.frame(ASPER = c(1L, 2L), stringsAsFactors = FALSE)
+  adsl <- data.frame(P1STTM = "2024", P2STTM = "2024", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(BDS = bds, ADSL = adsl))
+  out <- herald:::op_any_index_missing_ref_var(
+    bds, ctx, name = "ASPER",
+    reference_dataset = "ADSL", name_template = "PySTTM",
+    placeholder = "y"
+  )
+  expect_false(isTRUE(out[[1L]]))
+})
+
+# =============================================================================
+# op_value_not_var_in_ref_dataset
+# =============================================================================
+
+test_that("op_value_not_var_in_ref_dataset fires when value is not a var in ref", {
+  d <- data.frame(TDANCVAR = c("RFSTDTC", "NOTAVAR"), stringsAsFactors = FALSE)
+  adsl <- data.frame(RFSTDTC = "2024-01-01", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(TS = d, ADSL = adsl))
+  out <- herald:::op_value_not_var_in_ref_dataset(
+    d, ctx, name = "TDANCVAR", reference_dataset = "ADSL"
+  )
+  expect_equal(out, c(FALSE, TRUE))
+})
+
+test_that("op_value_not_var_in_ref_dataset returns NA for empty/NA values", {
+  d <- data.frame(TDANCVAR = c(NA_character_, ""), stringsAsFactors = FALSE)
+  adsl <- data.frame(RFSTDTC = "2024-01-01", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(TS = d, ADSL = adsl))
+  out <- herald:::op_value_not_var_in_ref_dataset(
+    d, ctx, name = "TDANCVAR", reference_dataset = "ADSL"
+  )
+  expect_true(all(is.na(out)))
+})
+
+test_that("op_value_not_var_in_ref_dataset fires when var exists but wrong suffix", {
+  d <- data.frame(TDANCVAR = c("AGE", "RFSTDTC"), stringsAsFactors = FALSE)
+  adsl <- data.frame(AGE = 30L, RFSTDTC = "2024-01-01", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(TS = d, ADSL = adsl))
+  # Require suffix DTC -- AGE is in ADSL but doesn't end in DTC -> fires
+  out <- herald:::op_value_not_var_in_ref_dataset(
+    d, ctx, name = "TDANCVAR", reference_dataset = "ADSL", name_suffix = "DTC"
+  )
+  expect_true(out[[1L]])
+  expect_false(out[[2L]])
+})
+
+test_that("op_value_not_var_in_ref_dataset returns NA when col absent", {
+  d <- data.frame(X = "RFSTDTC", stringsAsFactors = FALSE)
+  adsl <- data.frame(RFSTDTC = "2024-01-01", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(TS = d, ADSL = adsl))
+  out <- herald:::op_value_not_var_in_ref_dataset(
+    d, ctx, name = "TDANCVAR", reference_dataset = "ADSL"
+  )
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("op_value_not_var_in_ref_dataset returns NA when ref dataset absent", {
+  d <- data.frame(TDANCVAR = "RFSTDTC", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list())
+  out <- herald:::op_value_not_var_in_ref_dataset(
+    d, ctx, name = "TDANCVAR", reference_dataset = "ADSL"
+  )
+  expect_true(is.na(out[[1L]]))
+})
+
+# =============================================================================
+# op_missing_in_ref
+# =============================================================================
+
+test_that("op_missing_in_ref fires when key not present in reference", {
+  ae <- data.frame(USUBJID = c("S1", "S2", "S3"), stringsAsFactors = FALSE)
+  dm <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_missing_in_ref(ae, ctx, name = "USUBJID",
+                                     reference_dataset = "DM")
+  expect_equal(out, c(FALSE, FALSE, TRUE))
+})
+
+test_that("op_missing_in_ref returns NA when ref dataset absent", {
+  ae <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae))
+  out <- herald:::op_missing_in_ref(ae, ctx, name = "USUBJID",
+                                     reference_dataset = "DM")
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("op_missing_in_ref handles empty dataset", {
+  ae <- data.frame(USUBJID = character(0), stringsAsFactors = FALSE)
+  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_missing_in_ref(ae, ctx, name = "USUBJID",
+                                     reference_dataset = "DM")
+  expect_length(out, 0L)
+})
+
+test_that("op_missing_in_ref returns NA when join col absent from data", {
+  ae <- data.frame(AEDECOD = "HEADACHE", stringsAsFactors = FALSE)
+  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(AE = ae, DM = dm))
+  out <- herald:::op_missing_in_ref(ae, ctx, name = "USUBJID",
+                                     reference_dataset = "DM")
+  expect_true(is.na(out[[1L]]))
+})
+
+# =============================================================================
+# op_differs_by_key: bracketed key form
+# =============================================================================
+
+test_that("differs_by_key handles bracketed key string", {
+  ae <- data.frame(
+    USUBJID = c("S1", "S1"),
+    VISITNUM = c(1L, 2L),
+    VISITDY = c(1L, 15L),
+    stringsAsFactors = FALSE
+  )
+  tv <- data.frame(
+    USUBJID = c("S1", "S1"),
+    VISITNUM = c(1L, 2L),
+    VISITDY = c(1L, 8L),
+    stringsAsFactors = FALSE
+  )
+  ctx <- .mk_ctx_with(list(AE = ae, TV = tv))
+  mask <- herald:::op_differs_by_key(
+    ae, ctx, name = "VISITDY",
+    reference_dataset = "TV", reference_column = "VISITDY",
+    key = "[USUBJID, VISITNUM]"
+  )
+  expect_equal(mask, c(FALSE, TRUE))
+})
+
+# =============================================================================
+# op_is_inconsistent_across_dataset: dotted form + missing col
+# =============================================================================
+
+test_that("is_inconsistent_across_dataset uses dotted string form (join by same key)", {
+  # In dotted form, by_key = name, so it joins DM.USUBJID via USUBJID in ae.
+  dm <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  ae <- data.frame(USUBJID = c("S1", "S3"), stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(DM = dm, AE = ae))
+  # DM.USUBJID joined by ae$USUBJID: S1 matches S1 (equal -> FALSE), S3 not in DM -> FALSE
+  out <- herald:::op_is_inconsistent_across_dataset(ae, ctx, "USUBJID", "DM.USUBJID")
+  expect_equal(out, c(FALSE, FALSE))
+})
+
+test_that("is_inconsistent_across_dataset returns NA for non-parseable value", {
+  dm <- data.frame(USUBJID = "S1", AGE = 65, stringsAsFactors = FALSE)
+  ae <- data.frame(USUBJID = "S1", AGE = 65, stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(DM = dm, AE = ae))
+  out <- herald:::op_is_inconsistent_across_dataset(ae, ctx, "AGE", 42L)
+  expect_true(is.na(out[[1L]]))
+})
+
+test_that("is_inconsistent_across_dataset returns NA when name col absent", {
+  dm <- data.frame(USUBJID = "S1", AGE = 65, stringsAsFactors = FALSE)
+  ae <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  ctx <- .mk_ctx_with(list(DM = dm, AE = ae))
+  out <- herald:::op_is_inconsistent_across_dataset(ae, ctx, "AGE",
+    list(reference_dataset = "DM", by = "USUBJID", column = "AGE"))
+  expect_true(is.na(out[[1L]]))
+})
