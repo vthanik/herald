@@ -117,22 +117,5 @@ file_sha256 <- function(path) {
   if (!file.exists(path)) {
     return(NA_character_)
   }
-  # Use R's built-in tools::md5sum as fallback, or digest if available
-  raw_bytes <- readBin(path, "raw", file.info(path)$size)
-  digest_val <- tryCatch(
-    {
-      con <- rawConnection(raw_bytes)
-      on.exit(close(con), add = TRUE)
-      # Use base R sha256 via openssl-style computation
-      # R >= 4.0 has tools::md5sum but not sha256; use simple approach
-      paste(as.character(raw_bytes), collapse = "")
-    },
-    error = function(e) NA_character_
-  )
-  # For a proper SHA-256, use the digest package if available
-  if (requireNamespace("digest", quietly = TRUE)) {
-    return(digest::digest(path, algo = "sha256", file = TRUE))
-  }
-  # Fallback: use tools::md5sum (not SHA-256, but better than nothing)
-  tools::md5sum(path)[[1L]]
+  digest::digest(path, algo = "sha256", file = TRUE)
 }

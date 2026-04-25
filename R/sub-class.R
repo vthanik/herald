@@ -138,7 +138,6 @@ new_herald_submission <- function(
 #' @rdname herald_submission-methods
 #' @export
 `[[.herald_submission` <- function(x, i, ...) {
-  x[[i]] <- NULL # trigger $ dispatch
   `$.herald_submission`(x, i)
 }
 

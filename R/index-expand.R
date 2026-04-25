@@ -342,5 +342,3 @@
   gsub("--", prefix, as.character(txt), fixed = TRUE)
 }
 
-`%||%` <- function(a, b) if (is.null(a) || length(a) == 0L ||
-                             (length(a) == 1L && is.na(a))) b else a
