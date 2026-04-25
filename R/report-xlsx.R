@@ -51,28 +51,17 @@ write_report_xlsx <- function(x, path, ...) {
     creator = "herald",
     title   = "herald validation report"
   )
-  spec_val <- .spec_validation_df(findings)
 
-  .add_sheet(wb, "summary",          summary_df, filter = FALSE)
-  .add_sheet(wb, "findings",         findings)
-  .add_sheet(wb, "datasets",         ds_meta)
-  .add_sheet(wb, "rules",            rules_df)
-  .add_sheet(wb, "spec_validation",  spec_val)
+  .add_sheet(wb, "summary",  summary_df, filter = FALSE)
+  .add_sheet(wb, "findings", findings)
+  .add_sheet(wb, "datasets", ds_meta)
+  .add_sheet(wb, "rules",    rules_df)
 
   openxlsx2::wb_save(wb, path, overwrite = TRUE)
   invisible(path)
 }
 
 # -- internals ---------------------------------------------------------------
-
-.spec_validation_df <- function(findings) {
-  if (!is.data.frame(findings) || nrow(findings) == 0L) {
-    return(findings[integer(0), , drop = FALSE])
-  }
-  is_spec <- (!is.na(findings$standard) & findings$standard == "Define-XML") |
-             grepl("^define_", findings$rule_id %||% "")
-  findings[is_spec, , drop = FALSE]
-}
 
 .add_sheet <- function(wb, name, df, filter = TRUE) {
   wb$add_worksheet(name)

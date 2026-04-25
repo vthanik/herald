@@ -63,9 +63,8 @@ write_report_html <- function(x, path, title = NULL, ...) {
       ),
       "{{TAB_DETAILS}}"   = .html_tab_details(findings),
       "{{TAB_DATASETS}}"  = .html_tab_datasets(ds_tbl),
-      "{{TAB_RULES}}"            = .html_tab_rules(rules_df),
-      "{{TAB_SPEC_VALIDATION}}"  = .html_tab_spec_validation(findings),
-      "{{COLOPHON_SIG}}"         = paste0("HERALD &middot; v", htmlesc(version))
+      "{{TAB_RULES}}"    = .html_tab_rules(rules_df),
+      "{{COLOPHON_SIG}}" = paste0("HERALD &middot; v", htmlesc(version))
     )
   )
 
@@ -321,37 +320,6 @@ write_report_html <- function(x, path, title = NULL, ...) {
         '<td class="num">', .fmt_int(rules_df$advisory_n[i]),     '</td>',
         '<td>',       src_cell, '</td>',
         '<td class="wide">', htmlesc(.na_blank(rules_df$message[i])), '</td>',
-      '</tr>'
-    )
-  }
-  paste(out, collapse = "\n")
-}
-
-# -- Spec Validation tab -----------------------------------------------------
-
-.html_tab_spec_validation <- function(findings) {
-  if (!is.data.frame(findings) || nrow(findings) == 0L) {
-    return('<tr><td colspan="8" class="empty">No spec validation findings.</td></tr>')
-  }
-  is_spec <- (!is.na(findings$standard) & findings$standard == "Define-XML") |
-             grepl("^define_", findings$rule_id %||% "")
-  rows <- findings[is_spec, , drop = FALSE]
-  if (nrow(rows) == 0L) {
-    return('<tr><td colspan="8" class="empty">No spec validation findings.</td></tr>')
-  }
-  sev_class <- paste0("sev-", tolower(rows$severity %|NA|% "low"))
-  out <- character(nrow(rows))
-  for (i in seq_len(nrow(rows))) {
-    out[i] <- paste0(
-      '<tr class="', sev_class[i], '">',
-        '<td class="mono ink">', htmlesc(.na_blank(rows$rule_id[i])),  '</td>',
-        '<td class="sev-cell">', htmlesc(.na_blank(rows$severity[i])), '</td>',
-        '<td>',                  htmlesc(.na_blank(rows$status[i])),   '</td>',
-        '<td class="mono">',     htmlesc(.na_blank(rows$dataset[i])),  '</td>',
-        '<td class="mono">',     htmlesc(.na_blank(rows$variable[i])), '</td>',
-        '<td class="num">',      .fmt_row(rows$row[i]),                '</td>',
-        '<td class="mono">',     htmlesc(.na_blank(rows$value[i])),    '</td>',
-        '<td class="wide mono">', htmlesc(.na_blank(rows$message[i])), '</td>',
       '</tr>'
     )
   }

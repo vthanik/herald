@@ -122,7 +122,7 @@ test_that("write_report_json handles an empty result", {
 
 # ---- XLSX writer ----------------------------------------------------------
 
-test_that("write_report_xlsx emits the expected 5 sheets", {
+test_that("write_report_xlsx emits the expected 4 sheets", {
   r <- mk_result_fixture()
   p <- withr::local_tempfile(fileext = ".xlsx")
   write_report_xlsx(r, p)
@@ -130,7 +130,7 @@ test_that("write_report_xlsx emits the expected 5 sheets", {
 
   wb <- openxlsx2::wb_load(p)
   expect_equal(unname(wb$get_sheet_names()),
-               c("summary", "findings", "datasets", "rules", "spec_validation"))
+               c("summary", "findings", "datasets", "rules"))
 
   findings_back <- openxlsx2::wb_to_df(wb, sheet = "findings")
   expect_equal(nrow(findings_back), 3L)
