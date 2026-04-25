@@ -1,0 +1,23 @@
+id: define_variable_name_required
+version: 2
+standard: herald-spec
+description: |
+  Variable name is required in the Variables sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: variable
+    operator: empty
+outcome:
+  message: VARIABLE_NAME_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.12
+  cited_guidance: |
+    Name -- Required. Dataset Variable name or Variable Value Name.
+  executability: predicate
+  license: MIT

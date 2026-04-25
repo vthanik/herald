@@ -1,0 +1,28 @@
+id: define_method_type_valid
+version: 2
+standard: herald-spec
+description: |
+  Method Type must be 'Computation' or 'Imputation'.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: type
+    operator: non_empty
+  - name: type
+    operator: not_in
+    value:
+    - Computation
+    - Imputation
+outcome:
+  message: METHOD_TYPE_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.14
+  cited_guidance: |
+    Type -- Required. Computation, Imputation.
+  executability: predicate
+  license: MIT

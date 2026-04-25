@@ -1,0 +1,28 @@
+id: define_vlm_variable_ref_exists
+version: 1
+standard: herald-spec
+description: |
+  Dataset.Variable reference in ValueLevel must exist in the Variables sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: dataset
+    operator: non_empty
+  - name: variable
+    operator: non_empty
+  - name: __variable_exists_in_var_spec
+    operator: not_equal_to
+    value: yes
+outcome:
+  message: VLM_VARIABLE_REF_EXISTS
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.9; 5.3.12
+  cited_guidance: |
+    Value-level metadata is specified using def:ValueListDef elements linked to variable definitions.
+  executability: predicate
+  license: MIT

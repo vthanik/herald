@@ -1,0 +1,26 @@
+id: define_variable_length_positive_int
+version: 1
+standard: herald-spec
+description: |
+  Length must be a positive integer when provided.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: length
+    operator: non_empty
+  - name: length
+    operator: less_than_or_equal_to
+    value: 0
+outcome:
+  message: VARIABLE_LENGTH_POSITIVE_INT
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.12
+  cited_guidance: |
+    Length -- Integer. The variable length in characters.
+  executability: predicate
+  license: MIT

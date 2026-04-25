@@ -1,0 +1,23 @@
+id: define_variable_origin_required
+version: 2
+standard: herald-spec
+description: |
+  Origin is required for all variables in regulatory submissions.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: origin
+    operator: empty
+outcome:
+  message: VARIABLE_ORIGIN_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.9; 5.3.12.3
+  cited_guidance: |
+    For regulatory submissions, def:Origin metadata must be provided for all variables.
+  executability: predicate
+  license: MIT

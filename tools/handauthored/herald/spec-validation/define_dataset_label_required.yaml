@@ -1,0 +1,23 @@
+id: define_dataset_label_required
+version: 2
+standard: herald-spec
+description: |
+  Dataset label (Description) is required for regulatory submissions.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: label
+    operator: empty
+outcome:
+  message: DATASET_LABEL_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.9.1
+  cited_guidance: |
+    Description -- Required for all ItemGroupDef in the context of a regulatory submission.
+  executability: predicate
+  license: MIT

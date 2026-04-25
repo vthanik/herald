@@ -1,0 +1,23 @@
+id: define_dataset_structure_required
+version: 2
+standard: herald-spec
+description: |
+  Structure description is required for all datasets.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: structure
+    operator: empty
+outcome:
+  message: DATASET_STRUCTURE_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.11
+  cited_guidance: |
+    def:Structure -- Required. Description of the level of detail represented by individual records in the dataset.
+  executability: predicate
+  license: MIT

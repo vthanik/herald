@@ -1,0 +1,26 @@
+id: define_variable_method_ref_exists
+version: 1
+standard: herald-spec
+description: |
+  Method ID referenced by a variable must exist in the Methods sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: method_id
+    operator: non_empty
+  - name: __method_exists
+    operator: not_equal_to
+    value: yes
+outcome:
+  message: VARIABLE_METHOD_REF_EXISTS
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.14
+  cited_guidance: |
+    MethodOID -- Reference to the unique ID of a MethodDef element. Required for each unique value of the MethodOID attribute.
+  executability: predicate
+  license: MIT

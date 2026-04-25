@@ -1,0 +1,31 @@
+id: define_sdtmig_version_valid
+version: 1
+standard: herald-spec
+description: |
+  SDTMIG version must be one of the allowable versions: 3.1.2, 3.2, 3.3, 3.4.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: standard_name
+    operator: equal_to
+    value: SDTMIG
+  - name: standard_version
+    operator: not_in
+    value:
+    - 3.1.2
+    - '3.2'
+    - '3.3'
+    - '3.4'
+outcome:
+  message: SDTMIG_VERSION_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.1.1; 1.5.1
+  cited_guidance: |
+    Name: SDTMIG. Allowable Versions: 3.1.2, 3.2, 3.3. Define-XML v2.1 supports SDTMIG v3.1.2 and higher.
+  executability: predicate
+  license: MIT

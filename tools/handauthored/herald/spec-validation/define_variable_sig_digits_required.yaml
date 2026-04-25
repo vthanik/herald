@@ -1,0 +1,26 @@
+id: define_variable_sig_digits_required
+version: 1
+standard: herald-spec
+description: |
+  Significant Digits is required when Data Type is float.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: data_type
+    operator: not_equal_to
+    value: float
+  - name: sig_digits
+    operator: non_empty
+outcome:
+  message: VARIABLE_SIG_DIGITS_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.12
+  cited_guidance: |
+    SignificantDigits -- Conditional. Required if DataType is 'Float'. When DataType is float, both Length and SignificantDigits must be provided.
+  executability: predicate
+  license: MIT

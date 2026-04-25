@@ -1,0 +1,25 @@
+id: define_codelist_nci_code_required
+version: 1
+standard: herald-spec
+description: |
+  NCI Codelist Code is required for codelists representing CDISC Controlled Terminology.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: terminology
+    operator: non_empty
+  - name: nci_code
+    operator: empty
+outcome:
+  message: CODELIST_NCI_CODE_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.9; 5.3.11.1
+  cited_guidance: |
+    When used for regulatory submission, the Alias element is required for each CodeList that represents CDISC Controlled Terminology.
+  executability: predicate
+  license: MIT

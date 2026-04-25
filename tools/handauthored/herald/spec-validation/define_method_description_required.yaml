@@ -1,0 +1,23 @@
+id: define_method_description_required
+version: 2
+standard: herald-spec
+description: |
+  Method Description is required.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: description
+    operator: empty
+outcome:
+  message: METHOD_DESCRIPTION_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.14
+  cited_guidance: |
+    Business Rule: Must contain the child Description element.
+  executability: predicate
+  license: MIT

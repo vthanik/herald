@@ -1,0 +1,26 @@
+id: define_arm_display_name_unique
+version: 1
+standard: herald-spec
+description: |
+  The name of an arm:ResultDisplay should uniquely identify the display in the report (e.g., Table or Figure number).
+scope:
+  classes: []
+  domains: []
+  datasets:
+  - Define_ARM_Metadata
+outcome:
+  message: ARM_DISPLAY_NAME_UNIQUE
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: herald
+  p21_id_equivalent: DD0089
+  executability: predicate
+  license: MIT
+  builder_dataset: Define_ARM_Metadata
+notes: Blocked on `arm_name_unique` operator (arm:ResultDisplay Name must be unique).
+  See HANDOFF section 4i.
+check:
+  all:
+  - name: display_name
+    operator: arm_name_unique

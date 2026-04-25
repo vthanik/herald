@@ -1,0 +1,29 @@
+id: define_variable_length_required
+version: 1
+standard: herald-spec
+description: |
+  Length is required when Data Type is text, integer, or float.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: data_type
+    operator: in
+    value:
+    - text
+    - integer
+    - float
+  - name: length
+    operator: empty
+outcome:
+  message: VARIABLE_LENGTH_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.12
+  cited_guidance: |
+    Length -- Conditional. Required if DataType is 'Text', 'Integer', or 'Float'.
+  executability: predicate
+  license: MIT

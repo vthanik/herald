@@ -1,0 +1,23 @@
+id: define_codelist_id_required
+version: 2
+standard: herald-spec
+description: |
+  Codelist ID is required for each codelist entry.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: codelist_id
+    operator: empty
+outcome:
+  message: CODELIST_ID_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.13
+  cited_guidance: |
+    OID -- Required. Unique ID for the CodeList.
+  executability: predicate
+  license: MIT

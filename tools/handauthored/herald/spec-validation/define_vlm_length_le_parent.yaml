@@ -1,0 +1,26 @@
+id: define_vlm_length_le_parent
+version: 1
+standard: herald-spec
+description: |
+  Value-level Length must not exceed the parent variable length.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: length
+    operator: non_empty
+  - name: __length_exceeds_parent
+    operator: not_equal_to
+    value: no
+outcome:
+  message: VLM_LENGTH_LE_PARENT
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.12
+  cited_guidance: |
+    For ItemDef elements referenced from a ValueListDef, the Length must be less than or equal to the length of the parent variable.
+  executability: predicate
+  license: MIT

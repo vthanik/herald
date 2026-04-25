@@ -1,0 +1,26 @@
+id: define_variable_data_type_matches_codelist
+version: 1
+standard: herald-spec
+description: |
+  Variable Data Type must match the referenced Codelist Data Type.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: codelist_id
+    operator: non_empty
+  - name: __datatype_matches_codelist
+    operator: not_equal_to
+    value: yes
+outcome:
+  message: VARIABLE_DATA_TYPE_MATCHES_CODELIST
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.12; 5.3.13
+  cited_guidance: |
+    P21 OD0075/OD0080: Datatype of variable should match with Codelist datatype.
+  executability: predicate
+  license: MIT

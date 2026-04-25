@@ -1,0 +1,25 @@
+id: define_dataset_class_required
+version: 1
+standard: herald-spec
+description: |
+  Class is required for datasets following SDTM, SEND, or ADaM standards.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: standard
+    operator: non_empty
+  - name: class
+    operator: empty
+outcome:
+  message: DATASET_CLASS_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.11.2
+  cited_guidance: |
+    def:Class -- Conditional. Required when the ItemGroupDef describes a dataset that follows SDTM, SEND, or ADaM.
+  executability: predicate
+  license: MIT

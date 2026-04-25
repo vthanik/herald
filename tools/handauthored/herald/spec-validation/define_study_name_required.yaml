@@ -1,0 +1,23 @@
+id: define_study_name_required
+version: 2
+standard: herald-spec
+description: |
+  StudyName is required and must be non-empty in the Define sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: StudyName
+    operator: empty
+outcome:
+  message: STUDY_NAME_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.4.2
+  cited_guidance: |
+    StudyName -- Required. Cardinality: Exactly one. A short name assigned to the study by the sponsor.
+  executability: predicate
+  license: MIT

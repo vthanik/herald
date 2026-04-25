@@ -1,0 +1,33 @@
+id: define_sdtm_origin_source_valid
+version: 1
+standard: herald-spec
+description: |
+  SDTM Origin Source must be a valid value.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: purpose
+    operator: equal_to
+    value: Tabulation
+  - name: source
+    operator: non_empty
+  - name: source
+    operator: not_in
+    value:
+    - Subject
+    - Investigator
+    - Vendor
+    - Sponsor
+outcome:
+  message: SDTM_ORIGIN_SOURCE_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.3.2.1
+  cited_guidance: |
+    Allowed Source Values for SDTM: Subject, Investigator, Vendor, Sponsor.
+  executability: predicate
+  license: MIT

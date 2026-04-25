@@ -1,0 +1,23 @@
+id: define_study_description_required
+version: 2
+standard: herald-spec
+description: |
+  StudyDescription is required and must be non-empty in the Define sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: StudyDescription
+    operator: empty
+outcome:
+  message: STUDY_DESCRIPTION_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.4.3
+  cited_guidance: |
+    StudyDescription -- Required. Cardinality: Exactly one. A text description of the contents of the Study.
+  executability: predicate
+  license: MIT

@@ -1,0 +1,26 @@
+id: define_arm_display_description_required
+version: 1
+standard: herald-spec
+description: |
+  A Description element must be included in each arm:ResultDisplay.
+scope:
+  classes: []
+  domains: []
+  datasets:
+  - Define_ARM_Metadata
+outcome:
+  message: ARM_DISPLAY_DESCRIPTION_REQUIRED
+  severity: Error
+provenance:
+  source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
+  authority: herald
+  p21_id_equivalent: DD0090
+  executability: predicate
+  license: MIT
+  builder_dataset: Define_ARM_Metadata
+notes: Blocked on `arm_description_required` operator (each arm:ResultDisplay must
+  have a Description child). See HANDOFF section 4i.
+check:
+  all:
+  - name: has_description
+    operator: arm_description_required

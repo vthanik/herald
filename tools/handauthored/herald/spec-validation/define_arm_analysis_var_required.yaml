@@ -1,0 +1,23 @@
+id: define_arm_analysis_var_required
+version: 2
+standard: herald-spec
+description: |
+  ARM AnalysisVariable is required when AnalysisResults are defined.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: variables
+    operator: empty
+outcome:
+  message: ARM_ANALYSIS_VAR_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: ARM 1.0
+  cited_guidance: |
+    P21 DD0096: The armAnalysisVariable in the Analysis Results Metadata is missing and must be populated.
+  executability: predicate
+  license: MIT

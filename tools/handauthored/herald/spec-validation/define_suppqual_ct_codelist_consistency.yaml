@@ -1,0 +1,24 @@
+id: define_suppqual_ct_codelist_consistency
+version: 1
+standard: herald-spec
+description: |
+  SUPPQUAL VLM ItemDefs with controlled terminology values must have a CodeListRef. Free-text QNAMs must NOT have a CodeListRef. Mismatch between value type and codelist presence causes P21 findings.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: __qnam_has_controlled_values__
+    operator: not_equal_to
+    value: yes
+  - name: __codeListRef__
+    operator: non_empty
+outcome:
+  message: SUPPQUAL_CT_CODELIST_CONSISTENCY
+  severity: Error
+provenance:
+  source_doc: StudySAS Blog — Define.xml for SUPPQUAL QNAM-Level Metadata (2026-04)
+  authority: herald
+  reference_url: https://studysas.blogspot.com/2026/04/definexml-for-suppqual-getting-qnam.html
+  executability: predicate
+  license: MIT

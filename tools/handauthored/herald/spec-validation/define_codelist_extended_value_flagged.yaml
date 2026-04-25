@@ -1,0 +1,29 @@
+id: define_codelist_extended_value_flagged
+version: 1
+standard: herald-spec
+description: |
+  Extended codelist terms must be flagged with def:ExtendedValue when CT is non-extensible.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: terminology
+    operator: non_empty
+  - name: __term_not_in_ct
+    operator: not_equal_to
+    value: no
+  - name: __extended_value_flag
+    operator: not_equal_to
+    value: 'Yes'
+outcome:
+  message: CODELIST_EXTENDED_VALUE_FLAGGED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.13.1
+  cited_guidance: |
+    P21 DD0029: If a codelist exists but not all terms are in CDISC CT, terms not included must have def:ExtendedValue set to 'Yes'.
+  executability: predicate
+  license: MIT

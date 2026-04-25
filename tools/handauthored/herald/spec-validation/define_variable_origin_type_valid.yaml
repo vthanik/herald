@@ -1,0 +1,32 @@
+id: define_variable_origin_type_valid
+version: 2
+standard: herald-spec
+description: |
+  Origin Type must be a valid value. When populated, origin must be one of {Collected, Derived, Assigned, Protocol, Predecessor, Not Available}. Empty origins are scoped out of this rule and flagged by HRL-DD-053.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: origin
+    operator: non_empty
+  - name: origin
+    operator: not_in
+    value:
+    - Collected
+    - Derived
+    - Assigned
+    - Protocol
+    - Predecessor
+    - Not Available
+outcome:
+  message: VARIABLE_ORIGIN_TYPE_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.3.2; 5.3.12.3
+  cited_guidance: |
+    Type -- Required. Origin type. The list of allowable values is not extensible.
+  executability: predicate
+  license: MIT

@@ -1,0 +1,31 @@
+id: define_adamig_version_valid
+version: 1
+standard: herald-spec
+description: |
+  ADaMIG version must be one of the allowable versions: 1.0, 1.1, 1.2, 1.3.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: standard_name
+    operator: equal_to
+    value: ADaMIG
+  - name: standard_version
+    operator: not_in
+    value:
+    - '1.0'
+    - '1.1'
+    - '1.2'
+    - '1.3'
+outcome:
+  message: ADAMIG_VERSION_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: '1.6'
+  cited_guidance: |
+    Define-XML v2.1 can be used to transmit metadata for ADaMIG v1.0 and higher.
+  executability: predicate
+  license: MIT

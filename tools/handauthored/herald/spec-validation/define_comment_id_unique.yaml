@@ -1,0 +1,23 @@
+id: define_comment_id_unique
+version: 2
+standard: herald-spec
+description: |
+  Comment ID is required and must be unique.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: comment_id
+    operator: empty
+outcome:
+  message: COMMENT_ID_UNIQUE
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.15
+  cited_guidance: |
+    OID -- Required. Unique ID for the CommentDef.
+  executability: predicate
+  license: MIT

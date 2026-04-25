@@ -1,0 +1,26 @@
+id: define_vlm_codelist_oid_exists
+version: 1
+standard: herald-spec
+description: |
+  ValueLevel Codelist ID must exist in the Codelists sheet when provided.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: codelist_id
+    operator: non_empty
+  - name: __codelist_exists_in_cl_spec
+    operator: not_equal_to
+    value: yes
+outcome:
+  message: VLM_CODELIST_OID_EXISTS
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.12.1
+  cited_guidance: |
+    CodeListOID -- Must match the OID of a CodeList element in the same MetaDataVersion.
+  executability: predicate
+  license: MIT

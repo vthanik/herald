@@ -1,0 +1,24 @@
+id: define_codelist_unreferenced
+version: 1
+standard: herald-spec
+description: |
+  Codelist defined in Codelists sheet but never referenced by any Variable or ValueLevel entry.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: __codelist_is_referenced
+    operator: not_equal_to
+    value: no
+outcome:
+  message: CODELIST_UNREFERENCED
+  severity: Warning
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: '3.5'
+  cited_guidance: |
+    For each controlled terminology referenced by variable or valuelist, a CodeList element must be provided.
+  executability: predicate
+  license: MIT

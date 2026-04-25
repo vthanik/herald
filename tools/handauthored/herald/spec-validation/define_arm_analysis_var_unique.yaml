@@ -1,0 +1,26 @@
+id: define_arm_analysis_var_unique
+version: 1
+standard: herald-spec
+description: |
+  ARM AnalysisVariable must be unique within an AnalysisResult.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: variables
+    operator: non_empty
+  - name: __arm_variables_unique
+    operator: not_equal_to
+    value: yes
+outcome:
+  message: ARM_ANALYSIS_VAR_UNIQUE
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: ARM 1.0
+  cited_guidance: |
+    P21 DD0091: The armAnalysisVariable in the Analysis Results Metadata must be unique within an ARM.
+  executability: predicate
+  license: MIT

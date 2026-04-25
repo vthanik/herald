@@ -1,0 +1,26 @@
+id: define_codelist_decoded_value_required
+version: 1
+standard: herald-spec
+description: |
+  Decoded Value is required when codelist uses CodeListItem format (has both coded and decoded values).
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: decoded_value
+    operator: empty
+  - name: __codelist_has_any_decodes
+    operator: not_equal_to
+    value: no
+outcome:
+  message: CODELIST_DECODED_VALUE_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.13.2; 5.3.13.3
+  cited_guidance: |
+    CodeListItem -- For Controlled Terminologies where there are Coded and Decoded values, a CodeListItem must be provided for each Item.
+  executability: predicate
+  license: MIT

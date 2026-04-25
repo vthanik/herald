@@ -1,0 +1,26 @@
+id: define_document_ref_exists
+version: 1
+standard: herald-spec
+description: |
+  Document ID referenced by a method or comment must exist in the Documents sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: document_id
+    operator: non_empty
+  - name: __document_exists
+    operator: not_equal_to
+    value: yes
+outcome:
+  message: DOCUMENT_REF_EXISTS
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.16
+  cited_guidance: |
+    leafID -- Required. Reference to the unique ID of the def:leaf element that contains the location of a file.
+  executability: predicate
+  license: MIT

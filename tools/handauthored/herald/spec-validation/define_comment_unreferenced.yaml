@@ -1,0 +1,24 @@
+id: define_comment_unreferenced
+version: 1
+standard: herald-spec
+description: |
+  Comment defined in Comments sheet but never referenced by any Dataset, Variable, or ValueLevel entry.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: __comment_is_referenced
+    operator: not_equal_to
+    value: no
+outcome:
+  message: COMMENT_UNREFERENCED
+  severity: Warning
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: '3.5'
+  cited_guidance: |
+    Each distinct comment is expected to have a unique def:CommentOID and can be referenced from different variables.
+  executability: predicate
+  license: MIT

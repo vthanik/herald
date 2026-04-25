@@ -1,0 +1,38 @@
+id: define_variable_data_type_valid
+version: 2
+standard: herald-spec
+description: |
+  Data Type must be a valid Define-XML data type.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: data_type
+    operator: non_empty
+  - name: data_type
+    operator: not_in
+    value:
+    - text
+    - integer
+    - float
+    - date
+    - datetime
+    - time
+    - partialDate
+    - partialTime
+    - partialDatetime
+    - incompleteDatetime
+    - durationDatetime
+    - intervalDatetime
+outcome:
+  message: VARIABLE_DATA_TYPE_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.3.1; 5.3.12
+  cited_guidance: |
+    DataType -- Required. See Section 4.3.1, Data Type Considerations, for a list of valid Define-XML DataType values.
+  executability: predicate
+  license: MIT

@@ -1,0 +1,27 @@
+id: define_adam_origin_not_available_invalid
+version: 2
+standard: herald-spec
+description: |
+  For ADaM datasets (Purpose='Analysis'), Origin 'Not Available' is not a valid value.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: purpose
+    operator: equal_to
+    value: Analysis
+  - name: origin
+    operator: equal_to
+    value: Not Available
+outcome:
+  message: ADAM_ORIGIN_NOT_AVAILABLE_INVALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.3.2.2
+  cited_guidance: |
+    For ADaM datasets -- Not Available is not valid.
+  executability: predicate
+  license: MIT

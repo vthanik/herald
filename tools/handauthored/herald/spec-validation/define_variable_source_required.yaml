@@ -1,0 +1,28 @@
+id: define_variable_source_required
+version: 2
+standard: herald-spec
+description: |
+  Source is required for SDTM and ADaM variables when Origin is populated and not equal to 'Predecessor'.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: origin
+    operator: not_in
+    value: Predecessor
+  - name: origin
+    operator: non_empty
+  - name: source
+    operator: empty
+outcome:
+  message: VARIABLE_SOURCE_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.3.2.1; 4.3.2.2
+  cited_guidance: |
+    Source is required for SDTM and ADaM datasets when Origin Type is not Predecessor.
+  executability: predicate
+  license: MIT

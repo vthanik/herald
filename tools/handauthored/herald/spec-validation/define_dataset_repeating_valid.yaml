@@ -1,0 +1,28 @@
+id: define_dataset_repeating_valid
+version: 2
+standard: herald-spec
+description: |
+  Repeating must be 'Yes' or 'No'.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: repeating
+    operator: non_empty
+  - name: repeating
+    operator: not_in
+    value:
+    - 'Yes'
+    - 'No'
+outcome:
+  message: DATASET_REPEATING_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.11
+  cited_guidance: |
+    Repeating -- Required. 'Yes', 'No'.
+  executability: predicate
+  license: MIT

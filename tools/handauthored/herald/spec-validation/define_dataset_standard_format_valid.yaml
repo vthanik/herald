@@ -1,0 +1,26 @@
+id: define_dataset_standard_format_valid
+version: 2
+standard: herald-spec
+description: |
+  Standard column must use a recognized standard name and version format.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: standard
+    operator: non_empty
+  - name: standard
+    operator: not_matches_regex
+    value: ^(SDTMIG|SDTMIG-MD|SDTMIG-AP|SDTMIG-PGx|SENDIG|SENDIG-DART|ADaMIG)\s+\d
+outcome:
+  message: DATASET_STANDARD_FORMAT_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.1.1
+  cited_guidance: |
+    Allowable Names: SDTMIG, SDTMIG-MD, SDTMIG-AP, SDTMIG-PGx, SENDIG, SENDIG-DART, ADaMIG.
+  executability: predicate
+  license: MIT

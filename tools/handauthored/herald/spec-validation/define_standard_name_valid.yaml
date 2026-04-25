@@ -1,0 +1,33 @@
+id: define_standard_name_valid
+version: 2
+standard: herald-spec
+description: |
+  Standard name component must be one of the CDISC allowable standard names.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: standard_name
+    operator: non_empty
+  - name: standard_name
+    operator: not_in
+    value:
+    - SDTMIG
+    - SDTMIG-MD
+    - SDTMIG-AP
+    - SDTMIG-PGx
+    - SENDIG
+    - SENDIG-DART
+    - ADaMIG
+outcome:
+  message: STANDARD_NAME_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.1.1
+  cited_guidance: |
+    Type IG -- Allowable Names: SDTMIG, SDTMIG-MD, SDTMIG-AP, SDTMIG-PGx, SENDIG, SENDIG-DART, ADaMIG.
+  executability: predicate
+  license: MIT

@@ -1,0 +1,24 @@
+id: define_variable_origin_consistent
+version: 1
+standard: herald-spec
+description: |
+  Variables shared across datasets (e.g., USUBJID) should have consistent Origin across all datasets.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: __origin_consistent_across_datasets
+    operator: not_equal_to
+    value: no
+outcome:
+  message: VARIABLE_ORIGIN_CONSISTENT
+  severity: Warning
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.3.2
+  cited_guidance: |
+    P21 DD0109: USUBJID should always be derived/assigned in the same way.
+  executability: predicate
+  license: MIT

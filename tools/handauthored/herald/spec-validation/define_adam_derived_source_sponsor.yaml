@@ -1,0 +1,32 @@
+id: define_adam_derived_source_sponsor
+version: 2
+standard: herald-spec
+description: |
+  For ADaM datasets (Purpose='Analysis') with Origin in {Derived, Assigned}, Source must be 'Sponsor'.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: purpose
+    operator: equal_to
+    value: Analysis
+  - name: origin
+    operator: in
+    value:
+    - Derived
+    - Assigned
+  - name: source
+    operator: not_equal_to
+    value: Sponsor
+outcome:
+  message: ADAM_DERIVED_SOURCE_SPONSOR
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.3.2.2
+  cited_guidance: |
+    The Source is always 'Sponsor' for ADaM Derived and Assigned origin types.
+  executability: predicate
+  license: MIT

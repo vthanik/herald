@@ -1,0 +1,28 @@
+id: define_variable_mandatory_valid
+version: 2
+standard: herald-spec
+description: |
+  Mandatory must be 'Yes' or 'No'.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: mandatory
+    operator: non_empty
+  - name: mandatory
+    operator: not_in
+    value:
+    - 'Yes'
+    - 'No'
+outcome:
+  message: VARIABLE_MANDATORY_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.9.2
+  cited_guidance: |
+    Mandatory -- Required. 'Yes', 'No'.
+  executability: predicate
+  license: MIT

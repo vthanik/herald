@@ -1,0 +1,24 @@
+id: define_metadata_matches_standard
+version: 1
+standard: herald-spec
+description: |
+  Dataset and variable metadata must match the configured base standard.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: __metadata_matches_standard
+    operator: not_equal_to
+    value: no
+outcome:
+  message: METADATA_MATCHES_STANDARD
+  severity: Warning
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 4.1.1; 5.3.6.1
+  cited_guidance: |
+    P21 DD0148: Check metadata to make sure the value matches the configured base standard.
+  executability: predicate
+  license: MIT

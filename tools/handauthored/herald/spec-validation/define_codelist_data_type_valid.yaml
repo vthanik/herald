@@ -1,0 +1,29 @@
+id: define_codelist_data_type_valid
+version: 2
+standard: herald-spec
+description: |
+  Codelist Data Type must be 'text', 'integer', or 'float'.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: data_type
+    operator: non_empty
+  - name: data_type
+    operator: not_in
+    value:
+    - text
+    - integer
+    - float
+outcome:
+  message: CODELIST_DATA_TYPE_VALID
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.13
+  cited_guidance: |
+    DataType -- Required. 'text', 'float', 'Integer'. The data type of the codes.
+  executability: predicate
+  license: MIT

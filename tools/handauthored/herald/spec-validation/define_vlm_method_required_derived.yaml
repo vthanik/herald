@@ -1,0 +1,26 @@
+id: define_vlm_method_required_derived
+version: 2
+standard: herald-spec
+description: |
+  Method is required when Origin is 'Derived' at the value level.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: origin
+    operator: equal_to
+    value: Derived
+  - name: method_id
+    operator: empty
+outcome:
+  message: VLM_METHOD_REQUIRED_DERIVED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.9.2; 5.3.12.3
+  cited_guidance: |
+    MethodOID -- Conditional. Required when the Type attribute for the def:Origin is 'Derived'.
+  executability: predicate
+  license: MIT

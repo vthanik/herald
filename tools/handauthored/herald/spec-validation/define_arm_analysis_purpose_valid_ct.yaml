@@ -1,0 +1,26 @@
+id: define_arm_analysis_purpose_valid_ct
+version: 1
+standard: herald-spec
+description: |
+  AnalysisPurpose must use valid ADaM Controlled Terminology values when provided.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: purpose
+    operator: non_empty
+  - name: __purpose_in_adam_ct
+    operator: not_equal_to
+    value: yes
+outcome:
+  message: ARM_ANALYSIS_PURPOSE_VALID_CT
+  severity: Warning
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: ARM 1.0
+  cited_guidance: |
+    P21 DD0100: Values for the AnalysisPurpose attribute are controlled by the AnalysisPurpose extensible codelist in ADaM CT.
+  executability: predicate
+  license: MIT

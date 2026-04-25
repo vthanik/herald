@@ -1,0 +1,23 @@
+id: define_dataset_name_required
+version: 2
+standard: herald-spec
+description: |
+  Dataset name is required in the Datasets sheet.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: dataset
+    operator: empty
+outcome:
+  message: DATASET_NAME_REQUIRED
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.11
+  cited_guidance: |
+    Name -- Required. Short description for the ItemGroup.
+  executability: predicate
+  license: MIT

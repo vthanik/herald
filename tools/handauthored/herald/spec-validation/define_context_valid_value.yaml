@@ -1,0 +1,28 @@
+id: define_context_valid_value
+version: 2
+standard: herald-spec
+description: |
+  def:Context must be 'Submission' or 'Other' when specified.
+scope:
+  classes: []
+  domains: []
+check:
+  all:
+  - name: Context
+    operator: non_empty
+  - name: Context
+    operator: not_in
+    value:
+    - Submission
+    - Other
+outcome:
+  message: CONTEXT_VALID_VALUE
+  severity: Error
+provenance:
+  source_doc: CDISC Define-XML v2.1 Specification
+  authority: herald
+  section: 5.3.3
+  cited_guidance: |
+    def:Context -- Required. Allowable Values: 'Submission', 'Other'.
+  executability: predicate
+  license: MIT
