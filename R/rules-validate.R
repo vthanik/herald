@@ -255,7 +255,7 @@ validate <- function(path = NULL,
                             stringsAsFactors = FALSE, check.names = FALSE)
         # lapply with NA_integer_ gives 1 row of NAs preserving column types.
         if (nrow(ph) == 0L) ph <- as.data.frame(
-          setNames(rep(list(NA), length(names(d))), names(d)),
+          stats::setNames(rep(list(NA), length(names(d))), names(d)),
           stringsAsFactors = FALSE, check.names = FALSE
         )
         mask <- walk_tree(xp$tree, ph, ctx)

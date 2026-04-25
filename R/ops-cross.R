@@ -2008,7 +2008,7 @@ op_base_not_equal_abl_row <- function(data, ctx, b_var, a_var,
   anch_gk    <- group_key[is_anchor]
   anch_av    <- a_vals[is_anchor]
   uniq_anch  <- !duplicated(anch_gk)
-  anchor_map <- setNames(anch_av[uniq_anch], anch_gk[uniq_anch])
+  anchor_map <- stats::setNames(anch_av[uniq_anch], anch_gk[uniq_anch])
 
   # Active rows: b_var populated + optional row-level basetype gate
   active <- !is.na(b_vals)
