@@ -24,9 +24,10 @@ renv/lock/
 renv/python/
 renv/staging/
 
-# Claude + local (CLAUDE.md + .claude/ tracked; only personal
-# overrides and deprecated claudeignore ignored)
+# Claude + local (not tracked -- edit locally only)
+CLAUDE.md
 .claude/settings.local.json
+.claude/GRAPH.md
 .claudeignore
 CLAUDE.local.md
 .local/
