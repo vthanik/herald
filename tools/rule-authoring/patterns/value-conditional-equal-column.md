@@ -103,7 +103,7 @@ the same commit as a one-off bare `not_equal_to` assertion.
 
 ## Fixture strategy
 
-Per-rule synth: smoke-check builds a 2-row fixture with `cond_var`
-set to the first listed condition value on both rows. Row 1 has
-`var_a` == `var_b` (compliant), row 2 has them different (violation).
-Positive fires 1x (row 2), negative (where both rows comply) fires 0x.
+Per-rule golden fixture (seeded by `tools/seed-fixtures.R`): 2-row
+dataset with `cond_var` set to the first listed condition value on
+both rows. Row 1 has `var_a` == `var_b` (compliant), row 2 has them
+different (violation). Positive fires 1x (row 2), negative fires 0x.

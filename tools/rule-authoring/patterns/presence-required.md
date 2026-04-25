@@ -60,5 +60,5 @@ indexed placeholders). Simpler case than presence-forbidden.
 
 ADaMIG class scope is authoritative. The engine's scope filter +
 class-detection (`R/class-detect.R`) already maps ADSL, BDS, OCCDS
-correctly. smoke-check synth picks the right concrete dataset per
-rule.
+correctly. `tools/seed-fixtures.R` picks the right concrete dataset
+per rule when seeding golden fixtures.

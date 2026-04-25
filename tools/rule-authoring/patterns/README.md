@@ -11,15 +11,15 @@ Authoring flow (see `../../../.claude/plans/cached-nibbling-penguin.md`):
 2. Pick the largest unclaimed cluster, author this directory's
    `<pattern>.md` (intent, CDISC source, P21 conceptual parallel, herald
    `check_tree` template).
-3. Build minimal fixtures at `../fixtures/<pattern>/{pos.json,neg.json}`.
-4. Build rule-id list + slot substitutions at `<pattern>.ids` (CSV;
+3. Build rule-id list + slot substitutions at `<pattern>.ids` (CSV;
    first column `rule_id`, additional columns fill template slots).
-5. `apply-pattern.R --pattern <name> --ids patterns/<name>.ids` writes the
+4. `apply-pattern.R --pattern <name> --ids patterns/<name>.ids` writes the
    rendered `check_tree` into every matching YAML and flips
    `provenance.executability` → `predicate`.
-6. `smoke-check.R --pattern <name>` runs `validate()` on every converted
-   rule against the pattern fixture; positive must fire, negative must not.
-7. Commit per pattern.
+5. `Rscript tools/seed-fixtures.R` seeds golden fixtures for the converted
+   rules under `tests/testthat/fixtures/golden/` and validates each via
+   `validate()` during seeding.
+6. Commit per pattern.
 
 ## Pattern naming
 

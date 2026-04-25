@@ -29,7 +29,7 @@ validateDatasetList(). herald routes via scope.submission: true + op_not_exists.
   likewise defers to op_not_exists(.ds_present) which returns FALSE when
   ctx$datasets is NULL or empty.
 - TM check: P21 fires TM-required only when any dataset contains MIDS or
-  RELMIDS. The INTERVIEW.md decision routes CG0501/CG0502 via unconditional
+  RELMIDS. CG0501/CG0502 route via unconditional
   submission-required to match the "must be present" assertion. The condition
   (MIDS or RELMIDS present) is captured in scope.domains / the existing YAML
   condition narrative; the engine assertion is op_not_exists(TM).

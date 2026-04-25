@@ -121,7 +121,7 @@ All 54 matching rules covered. Three mechanical shapes:
 
 ## Fixture strategy
 
-No shared fixture. Per-rule synth via `smoke-check.R` builds a
-minimal ADSL (or class-appropriate) dataset with two rows and
-columns named per the probed-index value; positive leaves `<VAR_A>`
-populated and `<VAR_B>` blank, negative inverts.
+Golden fixtures seeded per rule by `tools/seed-fixtures.R`: minimal
+ADSL (or class-appropriate) dataset with two rows and columns named
+per the probed-index value; positive leaves `<VAR_A>` populated and
+`<VAR_B>` blank, negative inverts.

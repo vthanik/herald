@@ -31,7 +31,7 @@ AESDTH^='Y' and AESHOSP^='Y' and AESLIFE^='Y' and AESOD^='Y'"` and
 
 Note: the SDTMIG narrative lists only seven sub-flags (the
 AESMIE "other medically important" flag is excluded from the
-all-null guard -- see Q4 INTERVIEW rationale). Matches the
+all-null guard -- AESMIE excluded by design). Matches the
 YAML condition verbatim.
 
 ## P21 edge-case audit

@@ -44,7 +44,7 @@ violation), no negation wrapper needed. No XML/DSL copy.
 | `''` on a string column = rtrimmed null | `DataEntryFactory.java:69-79,313-328` | `op_empty` rtrims + `nzchar`: `""`, NA, and `"   "` all count as empty. Matches. |
 | Negated Test `!(expr)` -- rule passes when the inner Test is FALSE | `ConditionalValidationRule` via `Expression` | herald uses the regex leaf directly (TRUE=match=violation) without negation. Equivalent outcome. |
 | Missing column -> `CorruptRuleException` | `AbstractValidationRule.java:148-161` | Any leaf's missing-column returns NA -> `{all}` -> advisory. Safer than P21's silent disable. |
-| Cross-class scope (`RELREC` isn't in P21's class taxonomy; P21 scopes via domain name directly) | `ItemGroupDef` config | herald's scope filter accepts the rule's declared class (`SPC`) against RELREC via the `pick_dataset_for_scope` class-fallback (smoke-check.R: when infer_class returns NA, use declared scope class). |
+| Cross-class scope (`RELREC` isn't in P21's class taxonomy; P21 scopes via domain name directly) | `ItemGroupDef` config | herald's scope filter accepts the rule's declared class (`SPC`) against RELREC via the `pick_dataset_for_scope` class-fallback (when infer_class returns NA, use declared scope class). |
 
 ## herald check_tree template
 

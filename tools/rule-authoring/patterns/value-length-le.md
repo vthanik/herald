@@ -75,6 +75,6 @@ value: %max_len%
 ## Batch scope (8 of 8 candidate rules)
 
 All 8 matching rules converted. Domains span DM, TA, TS, TV, and
-SUPP-- (QLABEL under Supplemental Qualifiers). The smoke-check synth
+SUPP-- (QLABEL under Supplemental Qualifiers). `tools/seed-fixtures.R`
 picks the scope-declared domain and builds a minimal dataset with a
 single row whose `<VAR>` cell has the target length.

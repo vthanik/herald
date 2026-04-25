@@ -65,9 +65,7 @@ dataset) even though each mask is length `nrow(data)`.
 
 ## Fixture strategy
 
-No shared fixture file. Each rule smoke-checks via the per-rule synth
-path in `smoke-check.R`, which builds a minimal ADaM BDS dataset with
-a single `<suffix>`-ending column, applies a label attribute directly
-via `attr(df[[col]], "label") <- "..."`, and calls `validate()`. The
-synth path is `label_by_suffix_missing`-aware (see smoke-check.R for
-the branch).
+Golden fixtures seeded per rule by `tools/seed-fixtures.R`. Each
+fixture is a minimal ADaM BDS dataset with a single `<suffix>`-ending
+column; the positive fixture omits or mismatches the required label
+substring, the negative fixture satisfies it.
