@@ -1,6 +1,6 @@
 # tools/compile-rules.R
-# Compile tools/handauthored/**/*.yaml into inst/rules/rules.rds + rules.jsonl
-# + MANIFEST.json. The ONLY path rule content gets into the installed package.
+# Compile tools/handauthored/**/*.yaml into inst/rules/rules.rds + MANIFEST.json.
+# The ONLY path rule content gets into the installed package.
 #
 # Run:  Rscript tools/compile-rules.R
 #
@@ -390,16 +390,6 @@ if (nrow(spec_rules) > 0L) {
 
 saveRDS(rules, file.path(out_dir, "rules.rds"), version = 3)
 
-jsonl_path <- file.path(out_dir, "rules.jsonl")
-con <- file(jsonl_path, "w", encoding = "UTF-8")
-for (i in seq_len(nrow(rules))) {
-  row <- as.list(rules[i, ])
-  row$scope <- rules$scope[[i]]
-  row$check_tree <- rules$check_tree[[i]]
-  row$fetched_at <- format(rules$fetched_at[i], "%Y-%m-%dT%H:%M:%SZ")
-  writeLines(jsonlite::toJSON(row, auto_unbox = TRUE, null = "null"), con)
-}
-close(con)
 
 by_authority <- table(rules$authority)
 by_standard  <- table(rules$standard)
