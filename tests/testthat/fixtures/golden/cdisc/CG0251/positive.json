@@ -1,0 +1,20 @@
+{
+  "rule_id": "CG0251",
+  "fixture_type": "positive",
+  "datasets": {
+    "TA": {
+      "TABRANCH": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): empty",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "TA": "TDM"
+    }
+  }
+}

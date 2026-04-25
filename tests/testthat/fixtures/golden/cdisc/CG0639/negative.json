@@ -1,0 +1,15 @@
+{
+  "rule_id": "CG0639",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "_placeholder_": "x"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): exists (should not fire)",
+  "authored": "auto-seed@4"
+}

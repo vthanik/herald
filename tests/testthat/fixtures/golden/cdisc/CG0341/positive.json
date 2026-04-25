@@ -1,0 +1,20 @@
+{
+  "rule_id": "CG0341",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "DMTESTCD": "OTHER"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): equal_to",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "DM": "FND"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "rule_id": "CG0010",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "define_variable_role": "library_variable_role"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): not_equal_to (should not fire)",
+  "authored": "auto-seed@4"
+}

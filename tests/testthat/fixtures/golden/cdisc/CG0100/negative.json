@@ -1,0 +1,23 @@
+{
+  "rule_id": "CG0100",
+  "fixture_type": "negative",
+  "datasets": {
+    "EC": {
+      "ECOCCUR": "N",
+      "ECSTAT": "value",
+      "ECDOSTXT": "value",
+      "ECDOSE": 1
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 16 leaf op(s): not_equal_to,empty,empty,less_than_or_equal_to,not_equal_to,not_exists,empty,less_than_or_equal_to,not_equal_to,empty,not_exists,less_than_or_equal_to,not_equal_to,not_exists,not_exists,less_than_or_equal_to (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "EC": "INT"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "rule_id": "726",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "APERIODC": ["a", "a"],
+      "APERIOD": ["1", "2"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": [1, 2]
+  },
+  "notes": "auto-seeded; 1 leaf op(s): is_not_unique_relationship",
+  "authored": "auto-seed@4"
+}

@@ -1,0 +1,20 @@
+{
+  "rule_id": "685",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "_placeholder_": "x"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): not_exists",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "DEVICE LEVEL ANALYSIS DATASET"
+    }
+  }
+}

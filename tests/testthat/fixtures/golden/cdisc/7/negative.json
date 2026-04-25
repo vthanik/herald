@@ -1,0 +1,16 @@
+{
+  "rule_id": "7",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADSL": {
+      "_placeholder_": "x",
+      "stemFL": "value"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): exists,not_exists (should not fire)",
+  "authored": "auto-seed@4"
+}

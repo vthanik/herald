@@ -1,0 +1,20 @@
+{
+  "rule_id": "CG0550",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "DMSTREFN": "value"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): empty (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "DM": "FND"
+    }
+  }
+}

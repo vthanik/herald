@@ -3,7 +3,7 @@
   "fixture_type": "negative",
   "datasets": {
     "IE": {
-      "IECAT": "OTHER",
+      "IECAT": "NOT_IN_INCLUSION",
       "IEORRES": "N"
     }
   },
@@ -11,11 +11,11 @@
     "fires": false,
     "rows": []
   },
-  "notes": "auto-seeded; 2 leaf op(s): equal_to,not_equal_to (should not fire)",
+  "notes": "auto-seeded; 2 leaf op(s): is_contained_by,not_equal_to (should not fire)",
   "authored": "auto-seed@4",
   "spec": {
     "class_map": {
-      "IE": "FINDINGS"
+      "IE": "FND"
     }
   }
 }

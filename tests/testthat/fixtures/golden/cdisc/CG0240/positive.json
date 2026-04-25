@@ -1,0 +1,17 @@
+{
+  "rule_id": "CG0240",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "_placeholder_": "x",
+      "DMTPT": ["a", "a"],
+      "DMTPTNUM": ["1", "2"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": [1, 2]
+  },
+  "notes": "auto-seeded; 3 leaf op(s): not_exists,not_exists,is_not_unique_relationship",
+  "authored": "auto-seed@4"
+}

@@ -1,0 +1,18 @@
+{
+  "rule_id": "CG0554",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "DOMAIN": "TESTvalueXX",
+      "_placeholder_": "x",
+      "STUDYID": "value",
+      "DMSEQ": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 10 leaf op(s): prefix_matches_regex,not_exists,not_prefix_matches_regex,exists,exists,not_exists,not_exists,not_exists,not_exists,not_exists",
+  "authored": "auto-seed@4"
+}

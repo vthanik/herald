@@ -1,0 +1,17 @@
+{
+  "rule_id": "CG0221",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "DMSTDTC": "2026-01-15",
+      "DMSTDY": "",
+      "RFSTDTC": "2026-01-15"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 4 leaf op(s): is_incomplete_date,non_empty,is_incomplete_date,non_empty (should not fire)",
+  "authored": "auto-seed@4"
+}

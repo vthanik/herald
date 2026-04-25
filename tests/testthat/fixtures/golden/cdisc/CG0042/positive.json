@@ -1,0 +1,27 @@
+{
+  "rule_id": "CG0042",
+  "fixture_type": "positive",
+  "datasets": {
+    "AE": {
+      "AESCAN": "OTHER",
+      "AESCONG": "OTHER",
+      "AESDISAB": "OTHER",
+      "AESDTH": "OTHER",
+      "AESHOSP": "OTHER",
+      "AESLIFE": "OTHER",
+      "AESOD": "OTHER",
+      "AESER": "OTHER"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 8 leaf op(s): not_equal_to,not_equal_to,not_equal_to,not_equal_to,not_equal_to,not_equal_to,not_equal_to,not_equal_to",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "AE": "EVT"
+    }
+  }
+}

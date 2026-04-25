@@ -1,0 +1,21 @@
+{
+  "rule_id": "CG0152",
+  "fixture_type": "positive",
+  "datasets": {
+    "SE": {
+      "ETCD": "UNPLAN",
+      "ELEMENT": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): equal_to,non_empty",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "SE": "SPC"
+    }
+  }
+}

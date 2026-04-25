@@ -1,0 +1,22 @@
+{
+  "rule_id": "CG0520",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "ARMCD": "",
+      "ACTARMCD": "",
+      "ARMNRS": ""
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 3 leaf op(s): non_empty,non_empty,non_empty (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "DM": "SPC"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "rule_id": "CG0280",
+  "fixture_type": "positive",
+  "datasets": {
+    "TS": {
+      "TSPARMCD": "RANDQT",
+      "TSVAL": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 4 leaf op(s): equal_to,non_empty,not_matches_regex,not_matches_regex",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "TS": "TDM"
+    }
+  }
+}

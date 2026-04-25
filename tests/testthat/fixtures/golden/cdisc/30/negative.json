@@ -1,0 +1,20 @@
+{
+  "rule_id": "30",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADSL": {
+      "SAFFN": "1"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,is_not_contained_by (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "SUBJECT LEVEL ANALYSIS DATASET"
+    }
+  }
+}

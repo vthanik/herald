@@ -1,0 +1,20 @@
+{
+  "rule_id": "CG0138",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "QNAM": "COMPLT"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): is_contained_by_case_insensitive",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "DM": "SPC"
+    }
+  }
+}

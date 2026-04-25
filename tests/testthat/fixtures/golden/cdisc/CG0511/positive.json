@@ -1,0 +1,15 @@
+{
+  "rule_id": "CG0511",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "DMNOMLBL": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): exists",
+  "authored": "auto-seed@4"
+}

@@ -11,11 +11,11 @@
     "fires": true,
     "rows": 1
   },
-  "notes": "auto-seeded; 2 leaf op(s): equal_to,not_equal_to",
+  "notes": "auto-seeded; 2 leaf op(s): is_contained_by,not_equal_to",
   "authored": "auto-seed@4",
   "spec": {
     "class_map": {
-      "IE": "FINDINGS"
+      "IE": "FND"
     }
   }
 }

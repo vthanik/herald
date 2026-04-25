@@ -1,0 +1,21 @@
+{
+  "rule_id": "CG0284",
+  "fixture_type": "negative",
+  "datasets": {
+    "TS": {
+      "TSPARMCD": "NOT_IN_NARMS",
+      "TSVAL": "TESTvalue"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): is_contained_by,not_matches_regex (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "TS": "TDM"
+    }
+  }
+}

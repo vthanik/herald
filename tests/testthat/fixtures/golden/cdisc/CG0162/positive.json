@@ -1,0 +1,22 @@
+{
+  "rule_id": "CG0162",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "RSUBJID": "",
+      "RDEVID": "",
+      "SREL": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 3 leaf op(s): empty,empty,empty",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "DM": "AP"
+    }
+  }
+}

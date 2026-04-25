@@ -1,0 +1,15 @@
+{
+  "rule_id": "CG0429",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "DMCAT": "value"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): empty (should not fire)",
+  "authored": "auto-seed@4"
+}

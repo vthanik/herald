@@ -1,0 +1,20 @@
+{
+  "rule_id": "CG0116",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "DMDIR": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): exists",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "DM": "INT"
+    }
+  }
+}

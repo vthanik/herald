@@ -10,11 +10,11 @@
     "fires": false,
     "rows": []
   },
-  "notes": "auto-seeded; 2 leaf op(s): not_equal_to,non_empty (should not fire)",
+  "notes": "auto-seeded; 1 leaf op(s): is_not_contained_by (should not fire)",
   "authored": "auto-seed@4",
   "spec": {
     "class_map": {
-      "DM": "SPECIAL PURPOSE"
+      "DM": "SPC"
     }
   }
 }
