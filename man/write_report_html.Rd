@@ -7,31 +7,37 @@
 write_report_html(x, path, title = NULL, ...)
 }
 \arguments{
-\item{x}{A \code{herald_result} object returned by \code{\link[=validate]{validate()}}.}
+\item{x}{A \code{herald_result} object from \code{\link[=validate]{validate()}}.}
 
 \item{path}{Output file path (should end in \code{.html}).}
 
-\item{title}{Optional document title. Defaults to
-\code{"Herald validation -- <timestamp>"}.}
+\item{title}{Document title. Defaults to
+\code{"Herald validation <YYYY-MM-DD>"}.}
 
 \item{...}{Ignored.}
 }
 \value{
-\code{path}, invisibly.
+\code{path} invisibly.
 }
 \description{
-Write a herald_result as a self-contained HTML report
+Renders a \code{herald_result} to a single-file, archival-quality HTML
+document. All CSS, JavaScript, and data are embedded inline -- the file
+is suitable for submission packages, inspection, and long-term
+archiving without external dependencies.
 }
 \examples{
-if (interactive()) {
-  r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
-  out <- tempfile(fileext = ".html")
-  on.exit(unlink(out))
-  write_report_html(r, out)
-}
+ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
+                  stringsAsFactors = FALSE)
+r   <- validate(files = list(AE = ae), quiet = TRUE)
+out <- tempfile(fileext = ".html")
+on.exit(unlink(out))
+write_report_html(r, out)
 
 }
 \seealso{
+\code{\link[=validate]{validate()}} to produce a result, \code{\link[=write_report_xlsx]{write_report_xlsx()}} for
+a spreadsheet output, \code{\link[=report]{report()}} to auto-select format from extension.
+
 Other report: 
 \code{\link{report}()},
 \code{\link{write_report_json}()},

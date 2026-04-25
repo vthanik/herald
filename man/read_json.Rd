@@ -7,19 +7,28 @@
 read_json(file)
 }
 \arguments{
-\item{file}{Path to a \code{.json} dataset file.}
+\item{file}{Path to a \code{.json} Dataset-JSON file.}
 }
 \value{
-A data frame with attributes:
+A data frame with:
 \describe{
-\item{label}{Dataset label.}
-\item{column labels}{Per-column \code{"label"} attributes.}
-\item{dataset_name}{Dataset name stored as \code{"dataset_name"} attribute.}
+\item{\code{attr(df, "label")}}{Dataset label.}
+\item{\code{attr(df, "dataset_name")}}{Dataset name.}
+\item{per-column \code{"label"}}{Column label from the JSON
+\verb{columns[].label} field.}
+\item{per-column \code{"sas.length"}}{Column length from
+\verb{columns[].length}.}
+\item{per-column \code{"format.sas"}}{Display format from
+\verb{columns[].displayFormat}.}
+\item{per-column \code{"xpt_type"}}{Logical type from
+\verb{columns[].dataType}.}
 }
 }
 \description{
-Reads a CDISC Dataset-JSON v1.1 file and returns a data frame with
-metadata preserved as attributes (labels, lengths).
+Reads a CDISC Dataset-JSON v1.1 file into a data frame, restoring
+column and dataset metadata from the JSON structure: column labels,
+lengths, display formats, and the dataset name are all preserved
+as R attributes.
 }
 \examples{
 dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
@@ -29,16 +38,20 @@ file <- tempfile(fileext = ".json")
 on.exit(unlink(file))
 write_json(dm, file, label = "Demographics")
 dm2  <- read_json(file)
-dm2
+attr(dm2, "label")
+attr(dm2$USUBJID, "label")
 
 }
 \seealso{
-\code{\link[=write_json]{write_json()}} for writing, \code{\link[=read_xpt]{read_xpt()}} for XPT I/O.
+\code{\link[=write_json]{write_json()}} for writing, \code{\link[=read_xpt]{read_xpt()}}, \code{\link[=read_parquet]{read_parquet()}},
+\code{\link[=apply_spec]{apply_spec()}} to stamp CDISC attributes after reading.
 
 Other io: 
 \code{\link{convert_dataset}()},
 \code{\link{read_parquet}()},
+\code{\link{read_xpt}()},
 \code{\link{write_json}()},
-\code{\link{write_parquet}()}
+\code{\link{write_parquet}()},
+\code{\link{write_xpt}()}
 }
 \concept{io}

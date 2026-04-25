@@ -5,56 +5,102 @@
 # rule corpus, scope each rule to matching datasets, walk its check_tree, and
 # collect findings into a herald_result.
 
-#' Validate CDISC clinical data against the bundled conformance rules
+#' Validate CDISC clinical data against the conformance rule catalog
 #'
-#' @param path Directory path containing XPT/JSON datasets. Alternatively,
-#'   pass `files = list(DM = df, AE = df, ...)` to skip disk reads.
-#' @param files Named list of data frames, mutually exclusive with `path`.
-#' @param spec Optional `herald_spec` (from `read_spec()`) for anchor +
-#'   class resolution.
-#' @param rules Optional subset of rule ids to run. `NULL` runs the full
-#'   compiled catalog.
-#' @param authorities Optional character vector of authorities to include
-#'   (e.g. `c("CDISC", "FDA")`). `NULL` = all.
-#' @param standards Optional character vector of standards to include
-#'   (e.g. `c("SDTM-IG", "ADaM-IG")`). `NULL` = all.
-#' @param dictionaries Optional named list of `herald_dict_provider`
-#'   objects (from `ct_provider()`, `srs_provider()`, `meddra_provider()`,
-#'   etc.) to install for this run. Entries override the session-level
-#'   registry from `register_dictionary()`.
-#' @param study_metadata Optional named list of sponsor-supplied study
-#'   characteristics used by conditional dataset-presence rules. Recognized
-#'   keys: `collected_domains` (character vector of CDISC domain codes
-#'   collected in this study, e.g. `c("MB", "PC")`). When `NULL` (default),
-#'   rules that depend on study metadata return NA (advisory) rather than
-#'   firing a definitive finding.
-#' @param define Optional `herald_define` object (from `read_define_xml()`)
-#'   carrying sponsor-defined key variables and dictionary version metadata.
-#'   When supplied, rules that depend on Define-XML (e.g. CG0019, CG0400)
-#'   evaluate against the parsed metadata; otherwise they return NA advisory.
-#' @param severity_map Optional named character vector (or named list for
-#'   domain-scoped overrides) that remaps rule severities at runtime without
-#'   editing the rule catalog. Names are matched in priority order:
+#' @description
+#' The primary entry point for CDISC conformance checking. Runs SDTM-IG,
+#' ADaM-IG, and SEND-IG rules from the compiled catalog against a set of
+#' clinical datasets and returns a `herald_result` carrying every finding,
+#' the full rule catalog snapshot, and dataset metadata.
+#'
+#' Supply datasets as a directory path (XPT or Dataset-JSON files on disk)
+#' or directly as a named list of data frames. For best results, stamp
+#' CDISC attributes first with [apply_spec()].
+#'
+#' @param path Directory path containing `.xpt` or `.json` datasets.
+#'   Mutually exclusive with `files`.
+#' @param files Named list of data frames (e.g.
+#'   `list(DM = dm, AE = ae)`). Mutually exclusive with `path`.
+#' @param spec Optional `herald_spec` from [as_herald_spec()] or
+#'   [read_define_xml()]. Used for class resolution and anchor variables.
+#' @param rules Character vector of rule IDs to run (e.g.
+#'   `c("CG0001", "ADaM-005")`). `NULL` (default) runs the full catalog.
+#' @param authorities Character vector of authorities to include
+#'   (e.g. `c("CDISC", "FDA")`). `NULL` (default) includes all.
+#' @param standards Character vector of standards to include
+#'   (e.g. `c("SDTM-IG", "ADaM-IG")`). `NULL` (default) includes all.
+#' @param dictionaries Named list of `herald_dict_provider` objects
+#'   from [ct_provider()], [srs_provider()], [meddra_provider()], etc.
+#'   Per-run overrides to the session registry set by
+#'   [register_dictionary()].
+#' @param study_metadata Named list of sponsor-supplied study
+#'   characteristics. Recognised key: `collected_domains` -- character
+#'   vector of CDISC domain codes collected in this study (e.g.
+#'   `c("MB", "PC")`). Rules that require this key return `NA` advisory
+#'   when it is absent.
+#' @param define A `herald_define` object from [read_define_xml()].
+#'   Activates Define-XML dependent rules (e.g. CG0019, CG0400) that
+#'   otherwise return `NA` advisory.
+#' @param severity_map Named character vector (or named list for
+#'   domain-scoped overrides) remapping rule severities at run time.
+#'   Match priority (first wins):
 #'   \enumerate{
-#'     \item Exact rule id (`"CG0085" = "Reject"`).
-#'     \item Regex against rule id (`"^ADaM-7[0-9]{2}$" = "High"`).
-#'     \item Severity category (`"Medium" = "High"`).
+#'     \item Exact rule ID: `c("CG0085" = "Reject")`.
+#'     \item Regex on rule ID: `c("^ADaM-7[0-9]{2}$" = "High")`.
+#'     \item Severity category: `c("Medium" = "High")`.
 #'   }
-#'   For domain-scoped overrides supply a named list as the value:
-#'   `list("CG0085" = list(ADSL = "Reject", BDS = "High", default = "Medium"))`.
-#'   First match wins. Findings include a `severity_override` column carrying
-#'   the original severity whenever an override is applied.
-#' @param quiet Suppress progress output. Default FALSE.
+#'   For domain-scoped overrides use a named list as the value:
+#'   `list("CG0085" = list(ADSL = "Reject", BDS = "High",
+#'   default = "Medium"))`. Findings include a `severity_override`
+#'   column when an override is applied.
+#' @param quiet Logical. Suppress progress output. Default `FALSE`.
 #'
-#' @return A `herald_result` S3 object.
+#' @return A `herald_result` S3 object with fields:
+#'   \describe{
+#'     \item{`findings`}{Data frame -- one row per (rule, dataset, record)
+#'       finding. Columns: `rule_id`, `dataset`, `row`, `variable`,
+#'       `value`, `status` (`"fired"` or `"advisory"`), `severity`,
+#'       `message`, `severity_override`.}
+#'     \item{`rule_catalog`}{Data frame snapshot of every rule applied,
+#'       with `id`, `title`, `authority`, `standard`, `severity`,
+#'       `source_url`, and per-rule `fired_n` / `advisory_n` counts.}
+#'     \item{`dataset_meta`}{Named list -- one entry per dataset with
+#'       row/column counts, detected class, and per-dataset finding
+#'       tallies.}
+#'     \item{`datasets_checked`}{Character vector of dataset names
+#'       that were evaluated.}
+#'     \item{`skipped_refs`}{List of cross-dataset references that
+#'       could not be resolved (missing datasets).}
+#'     \item{`timestamp`}{`POSIXct` of when `validate()` was called.}
+#'     \item{`duration`}{`difftime` of total elapsed time.}
+#'     \item{`profile`}{Character -- `"sdtm"`, `"adam"`, `"send"`, or
+#'       `"unknown"` -- autodetected from dataset names.}
+#'   }
 #'
 #' @examples
-#' \dontrun{
-#' result <- validate("/path/to/sdtm/")
-#' result <- validate(files = list(AE = my_ae_df))
-#' print(result)
-#' }
+#' # Minimal in-memory run
+#' ae <- data.frame(
+#'   STUDYID = "PILOT01", DOMAIN = "AE", USUBJID = "PILOT01-001-001",
+#'   AETERM  = "HEADACHE", AEDECOD = "Headache",
+#'   stringsAsFactors = FALSE
+#' )
+#' result <- validate(files = list(AE = ae), quiet = TRUE)
+#' result
 #'
+#' # Inspect findings
+#' result$findings[result$findings$status == "fired", ]
+#'
+#' # From disk -- apply_spec first for full attribute coverage
+#' dm   <- readRDS(system.file("extdata", "dm.rds",        package = "herald"))
+#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+#' dm   <- apply_spec(dm, spec)
+#' result2 <- validate(files = list(DM = dm), quiet = TRUE)
+#' result2
+#'
+#' @seealso [apply_spec()] to stamp CDISC attributes before validation,
+#'   [write_report_html()] / [write_report_xlsx()] to render results,
+#'   [rule_catalog()] to browse the available rules.
+#' @family validate
 #' @export
 validate <- function(path = NULL,
                      files = NULL,

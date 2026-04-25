@@ -36,7 +36,7 @@ attribute of the input data.}
 \code{to == "xpt"}; ignored otherwise.}
 }
 \value{
-\code{output} invisibly.
+\code{output} (the path to the written file) invisibly.
 }
 \description{
 Reads a dataset file in one CDISC-friendly format and writes it in
@@ -70,6 +70,9 @@ json <- tempfile(fileext = ".json")
 on.exit(unlink(c(xpt, json)))
 write_xpt(dm, xpt)
 convert_dataset(xpt, json)
+# round-trip back
+dm2 <- read_json(json)
+attr(dm2, "dataset_name")
 
 }
 \seealso{
@@ -79,7 +82,9 @@ convert_dataset(xpt, json)
 Other io: 
 \code{\link{read_json}()},
 \code{\link{read_parquet}()},
+\code{\link{read_xpt}()},
 \code{\link{write_json}()},
-\code{\link{write_parquet}()}
+\code{\link{write_parquet}()},
+\code{\link{write_xpt}()}
 }
 \concept{io}

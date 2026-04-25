@@ -5,36 +5,34 @@
 # explicit `format` arg. Low-level writers are exported for direct use in
 # pipelines that already know which format they want.
 
-#' Write a herald_result as an HTML, XLSX, or JSON report
+#' Write a herald_result to disk in any supported format
 #'
 #' @description
-#' Persists the result of [validate()] to disk in one of three
-#' formats:
+#' Single-function entry point for writing validation results.
+#' Dispatches to the appropriate writer based on the output path
+#' extension (or an explicit `format` override):
 #'
-#' * `"html"` -- a self-contained, offline-safe HTML report with
-#'   Issues / Issue Details / Datasets / Rules tabs.
-#' * `"xlsx"` -- a four-sheet workbook for SAS / Excel pipelines.
-#' * `"json"` -- a canonical machine-readable JSON document suitable
-#'   for CI diffing.
+#' * `"html"` -- self-contained archival HTML ([write_report_html()]).
+#' * `"xlsx"` -- five-sheet workbook for sponsor review
+#'   ([write_report_xlsx()]).
+#' * `"json"` -- machine-readable CI artifact ([write_report_json()]).
 #'
-#' @param x A `herald_result` object returned by [validate()].
+#' @param x A `herald_result` object from [validate()].
 #' @param path Output file path. The extension (`.html`, `.xlsx`,
-#'   `.json`) is used to infer `format` when `format` is not supplied.
-#' @param format Optional explicit format; one of `"html"`, `"xlsx"`,
-#'   `"json"`. Defaults to the extension of `path`.
-#' @param ... Passed to the underlying writer
-#'   ([write_report_html()], [write_report_xlsx()],
-#'   [write_report_json()]).
+#'   `.json`) determines the format when `format` is not supplied.
+#' @param format One of `"html"`, `"xlsx"`, `"json"`. Defaults to the
+#'   extension of `path`.
+#' @param ... Passed to the underlying writer.
 #'
-#' @return `path`, invisibly.
+#' @return `path` invisibly.
 #'
 #' @examples
-#' if (interactive()) {
-#'   r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
-#'   out <- tempfile(fileext = ".json")
-#'   on.exit(unlink(out))
-#'   report(r, out)
-#' }
+#' ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
+#'                   stringsAsFactors = FALSE)
+#' r   <- validate(files = list(AE = ae), quiet = TRUE)
+#' out <- tempfile(fileext = ".json")
+#' on.exit(unlink(out))
+#' report(r, out)
 #'
 #' @seealso [write_report_html()], [write_report_xlsx()],
 #'   [write_report_json()].
@@ -56,26 +54,30 @@ report <- function(x, path, format = NULL, ...) {
 #' Write a herald_result as canonical JSON
 #'
 #' @description
-#' Serialises a `herald_result` to a UTF-8 JSON document with a stable
-#' key order. Intended as the machine-readable artifact for CI
-#' pipelines and diffing.
+#' Serialises a `herald_result` to a UTF-8 JSON document with a
+#' stable key order. Designed as the machine-readable artifact for
+#' CI pipelines, diffing between runs, and programmatic processing.
 #'
-#' @param x A `herald_result` object returned by [validate()].
-#' @param path Output file path.
-#' @param pretty Logical; pretty-print with two-space indent. Default
+#' Requires the `jsonlite` package.
+#'
+#' @param x A `herald_result` object from [validate()].
+#' @param path Output file path (should end in `.json`).
+#' @param pretty Logical. Pretty-print with two-space indent. Default
 #'   `TRUE`.
 #' @param ... Ignored.
 #'
-#' @return `path`, invisibly.
+#' @return `path` invisibly.
 #'
 #' @examples
-#' if (interactive()) {
-#'   r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
-#'   out <- tempfile(fileext = ".json")
-#'   on.exit(unlink(out))
-#'   write_report_json(r, out)
-#' }
+#' ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
+#'                   stringsAsFactors = FALSE)
+#' r   <- validate(files = list(AE = ae), quiet = TRUE)
+#' out <- tempfile(fileext = ".json")
+#' on.exit(unlink(out))
+#' write_report_json(r, out)
 #'
+#' @seealso [validate()] to produce a result, [write_report_html()],
+#'   [write_report_xlsx()], [report()] to auto-select format.
 #' @family report
 #' @export
 write_report_json <- function(x, path, pretty = TRUE, ...) {

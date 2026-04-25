@@ -97,6 +97,9 @@ dm   <- apply_spec(dm, spec)
 tmp  <- tempfile(fileext = ".xpt")
 on.exit(unlink(tmp))
 write_xpt(dm, tmp)
+# dataset name inferred from variable symbol: "DM"
+dm2 <- read_xpt(tmp)
+attr(dm2, "dataset_name")
 
 }
 \references{
@@ -111,3 +114,16 @@ write_xpt(dm, tmp)
 \url{https://www.iana.org/assignments/character-sets/character-sets.xhtml}
 }
 }
+\seealso{
+\code{\link[=read_xpt]{read_xpt()}} to read, \code{\link[=write_json]{write_json()}}, \code{\link[=write_parquet]{write_parquet()}},
+\code{\link[=convert_dataset]{convert_dataset()}} to convert between formats.
+
+Other io: 
+\code{\link{convert_dataset}()},
+\code{\link{read_json}()},
+\code{\link{read_parquet}()},
+\code{\link{read_xpt}()},
+\code{\link{write_json}()},
+\code{\link{write_parquet}()}
+}
+\concept{io}

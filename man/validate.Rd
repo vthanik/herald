@@ -2,7 +2,7 @@
 % Please edit documentation in R/rules-validate.R
 \name{validate}
 \alias{validate}
-\title{Validate CDISC clinical data against the bundled conformance rules}
+\title{Validate CDISC clinical data against the conformance rule catalog}
 \usage{
 validate(
   path = NULL,
@@ -19,66 +19,110 @@ validate(
 )
 }
 \arguments{
-\item{path}{Directory path containing XPT/JSON datasets. Alternatively,
-pass \code{files = list(DM = df, AE = df, ...)} to skip disk reads.}
+\item{path}{Directory path containing \code{.xpt} or \code{.json} datasets.
+Mutually exclusive with \code{files}.}
 
-\item{files}{Named list of data frames, mutually exclusive with \code{path}.}
+\item{files}{Named list of data frames (e.g.
+\code{list(DM = dm, AE = ae)}). Mutually exclusive with \code{path}.}
 
-\item{spec}{Optional \code{herald_spec} (from \code{read_spec()}) for anchor +
-class resolution.}
+\item{spec}{Optional \code{herald_spec} from \code{\link[=as_herald_spec]{as_herald_spec()}} or
+\code{\link[=read_define_xml]{read_define_xml()}}. Used for class resolution and anchor variables.}
 
-\item{rules}{Optional subset of rule ids to run. \code{NULL} runs the full
-compiled catalog.}
+\item{rules}{Character vector of rule IDs to run (e.g.
+\code{c("CG0001", "ADaM-005")}). \code{NULL} (default) runs the full catalog.}
 
-\item{authorities}{Optional character vector of authorities to include
-(e.g. \code{c("CDISC", "FDA")}). \code{NULL} = all.}
+\item{authorities}{Character vector of authorities to include
+(e.g. \code{c("CDISC", "FDA")}). \code{NULL} (default) includes all.}
 
-\item{standards}{Optional character vector of standards to include
-(e.g. \code{c("SDTM-IG", "ADaM-IG")}). \code{NULL} = all.}
+\item{standards}{Character vector of standards to include
+(e.g. \code{c("SDTM-IG", "ADaM-IG")}). \code{NULL} (default) includes all.}
 
-\item{dictionaries}{Optional named list of \code{herald_dict_provider}
-objects (from \code{ct_provider()}, \code{srs_provider()}, \code{meddra_provider()},
-etc.) to install for this run. Entries override the session-level
-registry from \code{register_dictionary()}.}
+\item{dictionaries}{Named list of \code{herald_dict_provider} objects
+from \code{\link[=ct_provider]{ct_provider()}}, \code{\link[=srs_provider]{srs_provider()}}, \code{\link[=meddra_provider]{meddra_provider()}}, etc.
+Per-run overrides to the session registry set by
+\code{\link[=register_dictionary]{register_dictionary()}}.}
 
-\item{study_metadata}{Optional named list of sponsor-supplied study
-characteristics used by conditional dataset-presence rules. Recognized
-keys: \code{collected_domains} (character vector of CDISC domain codes
-collected in this study, e.g. \code{c("MB", "PC")}). When \code{NULL} (default),
-rules that depend on study metadata return NA (advisory) rather than
-firing a definitive finding.}
+\item{study_metadata}{Named list of sponsor-supplied study
+characteristics. Recognised key: \code{collected_domains} -- character
+vector of CDISC domain codes collected in this study (e.g.
+\code{c("MB", "PC")}). Rules that require this key return \code{NA} advisory
+when it is absent.}
 
-\item{define}{Optional \code{herald_define} object (from \code{read_define_xml()})
-carrying sponsor-defined key variables and dictionary version metadata.
-When supplied, rules that depend on Define-XML (e.g. CG0019, CG0400)
-evaluate against the parsed metadata; otherwise they return NA advisory.}
+\item{define}{A \code{herald_define} object from \code{\link[=read_define_xml]{read_define_xml()}}.
+Activates Define-XML dependent rules (e.g. CG0019, CG0400) that
+otherwise return \code{NA} advisory.}
 
-\item{severity_map}{Optional named character vector (or named list for
-domain-scoped overrides) that remaps rule severities at runtime without
-editing the rule catalog. Names are matched in priority order:
+\item{severity_map}{Named character vector (or named list for
+domain-scoped overrides) remapping rule severities at run time.
+Match priority (first wins):
 \enumerate{
-\item Exact rule id (\code{"CG0085" = "Reject"}).
-\item Regex against rule id (\code{"^ADaM-7[0-9]{2}$" = "High"}).
-\item Severity category (\code{"Medium" = "High"}).
+\item Exact rule ID: \code{c("CG0085" = "Reject")}.
+\item Regex on rule ID: \code{c("^ADaM-7[0-9]{2}$" = "High")}.
+\item Severity category: \code{c("Medium" = "High")}.
 }
-For domain-scoped overrides supply a named list as the value:
-\code{list("CG0085" = list(ADSL = "Reject", BDS = "High", default = "Medium"))}.
-First match wins. Findings include a \code{severity_override} column carrying
-the original severity whenever an override is applied.}
+For domain-scoped overrides use a named list as the value:
+\code{list("CG0085" = list(ADSL = "Reject", BDS = "High", default = "Medium"))}. Findings include a \code{severity_override}
+column when an override is applied.}
 
-\item{quiet}{Suppress progress output. Default FALSE.}
+\item{quiet}{Logical. Suppress progress output. Default \code{FALSE}.}
 }
 \value{
-A \code{herald_result} S3 object.
+A \code{herald_result} S3 object with fields:
+\describe{
+\item{\code{findings}}{Data frame -- one row per (rule, dataset, record)
+finding. Columns: \code{rule_id}, \code{dataset}, \code{row}, \code{variable},
+\code{value}, \code{status} (\code{"fired"} or \code{"advisory"}), \code{severity},
+\code{message}, \code{severity_override}.}
+\item{\code{rule_catalog}}{Data frame snapshot of every rule applied,
+with \code{id}, \code{title}, \code{authority}, \code{standard}, \code{severity},
+\code{source_url}, and per-rule \code{fired_n} / \code{advisory_n} counts.}
+\item{\code{dataset_meta}}{Named list -- one entry per dataset with
+row/column counts, detected class, and per-dataset finding
+tallies.}
+\item{\code{datasets_checked}}{Character vector of dataset names
+that were evaluated.}
+\item{\code{skipped_refs}}{List of cross-dataset references that
+could not be resolved (missing datasets).}
+\item{\code{timestamp}}{\code{POSIXct} of when \code{validate()} was called.}
+\item{\code{duration}}{\code{difftime} of total elapsed time.}
+\item{\code{profile}}{Character -- \code{"sdtm"}, \code{"adam"}, \code{"send"}, or
+\code{"unknown"} -- autodetected from dataset names.}
+}
 }
 \description{
-Validate CDISC clinical data against the bundled conformance rules
+The primary entry point for CDISC conformance checking. Runs SDTM-IG,
+ADaM-IG, and SEND-IG rules from the compiled catalog against a set of
+clinical datasets and returns a \code{herald_result} carrying every finding,
+the full rule catalog snapshot, and dataset metadata.
+
+Supply datasets as a directory path (XPT or Dataset-JSON files on disk)
+or directly as a named list of data frames. For best results, stamp
+CDISC attributes first with \code{\link[=apply_spec]{apply_spec()}}.
 }
 \examples{
-\dontrun{
-result <- validate("/path/to/sdtm/")
-result <- validate(files = list(AE = my_ae_df))
-print(result)
-}
+# Minimal in-memory run
+ae <- data.frame(
+  STUDYID = "PILOT01", DOMAIN = "AE", USUBJID = "PILOT01-001-001",
+  AETERM  = "HEADACHE", AEDECOD = "Headache",
+  stringsAsFactors = FALSE
+)
+result <- validate(files = list(AE = ae), quiet = TRUE)
+result
+
+# Inspect findings
+result$findings[result$findings$status == "fired", ]
+
+# From disk -- apply_spec first for full attribute coverage
+dm   <- readRDS(system.file("extdata", "dm.rds",        package = "herald"))
+spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+dm   <- apply_spec(dm, spec)
+result2 <- validate(files = list(DM = dm), quiet = TRUE)
+result2
 
 }
+\seealso{
+\code{\link[=apply_spec]{apply_spec()}} to stamp CDISC attributes before validation,
+\code{\link[=write_report_html]{write_report_html()}} / \code{\link[=write_report_xlsx]{write_report_xlsx()}} to render results,
+\code{\link[=rule_catalog]{rule_catalog()}} to browse the available rules.
+}
+\concept{validate}

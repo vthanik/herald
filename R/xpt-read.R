@@ -94,8 +94,10 @@
 #'     \url{https://www.iana.org/assignments/character-sets/character-sets.xhtml}
 #' }
 #'
-#' @return A data frame for single-member files, or a named list of data frames
-#'   for multi-member files.
+#' @return A data frame for single-member files (with `attr(df, "label")`,
+#'   `attr(df, "dataset_name")`, and per-column `"label"`, `"format.sas"`,
+#'   `"sas.length"`, `"xpt_type"` attributes populated from the XPT header),
+#'   or a named list of data frames for multi-member files.
 #'
 #' @examples
 #' dm  <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
@@ -104,8 +106,13 @@
 #' tmp <- tempfile(fileext = ".xpt")
 #' on.exit(unlink(tmp))
 #' write_xpt(dm, tmp)
-#' read_xpt(tmp)
+#' dm2 <- read_xpt(tmp)
+#' attr(dm2, "label")
+#' attr(dm2$USUBJID, "label")
 #'
+#' @seealso [write_xpt()] to write, [read_json()], [read_parquet()],
+#'   [apply_spec()] to stamp CDISC attributes after reading.
+#' @family io
 #' @export
 read_xpt <- function(
   file,

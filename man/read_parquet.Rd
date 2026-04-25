@@ -16,7 +16,14 @@ and per-column \code{attr(col, "label")}, \code{attr(col, "format.sas")},
 the file's key/value metadata when present.
 }
 \description{
-Read an Apache Parquet dataset with CDISC column attributes
+Reads a Parquet file into a data frame and restores CDISC metadata
+from the file's key/value metadata: column labels, SAS formats,
+lengths, and XPT types written by \code{\link[=write_parquet]{write_parquet()}} are recovered as
+R attributes. Parquet files without \verb{herald.*} keys are read as
+plain data frames; call \code{\link[=apply_spec]{apply_spec()}} afterwards to stamp attributes
+from a spec.
+
+Requires the \code{arrow} package.
 }
 \examples{
 \dontshow{if (requireNamespace("arrow", quietly = TRUE)) withAutoprint(\{ # examplesIf}
@@ -36,7 +43,9 @@ attr(dm2, "label")
 Other io: 
 \code{\link{convert_dataset}()},
 \code{\link{read_json}()},
+\code{\link{read_xpt}()},
 \code{\link{write_json}()},
-\code{\link{write_parquet}()}
+\code{\link{write_parquet}()},
+\code{\link{write_xpt}()}
 }
 \concept{io}

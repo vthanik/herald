@@ -7,21 +7,30 @@
 
 #' Write a herald_result as a self-contained HTML report
 #'
-#' @param x A `herald_result` object returned by [validate()].
+#' @description
+#' Renders a `herald_result` to a single-file, archival-quality HTML
+#' document. All CSS, JavaScript, and data are embedded inline -- the file
+#' is suitable for submission packages, inspection, and long-term
+#' archiving without external dependencies.
+#'
+#' @param x A `herald_result` object from [validate()].
 #' @param path Output file path (should end in `.html`).
-#' @param title Optional document title. Defaults to
-#'   `"Herald validation -- <timestamp>"`.
+#' @param title Document title. Defaults to
+#'   `"Herald validation <YYYY-MM-DD>"`.
 #' @param ... Ignored.
-#' @return `path`, invisibly.
+#'
+#' @return `path` invisibly.
 #'
 #' @examples
-#' if (interactive()) {
-#'   r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
-#'   out <- tempfile(fileext = ".html")
-#'   on.exit(unlink(out))
-#'   write_report_html(r, out)
-#' }
+#' ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
+#'                   stringsAsFactors = FALSE)
+#' r   <- validate(files = list(AE = ae), quiet = TRUE)
+#' out <- tempfile(fileext = ".html")
+#' on.exit(unlink(out))
+#' write_report_html(r, out)
 #'
+#' @seealso [validate()] to produce a result, [write_report_xlsx()] for
+#'   a spreadsheet output, [report()] to auto-select format from extension.
 #' @family report
 #' @export
 write_report_html <- function(x, path, title = NULL, ...) {

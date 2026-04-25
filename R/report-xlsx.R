@@ -8,21 +8,41 @@
 #   rules            applied rules + per-rule fired/advisory counts + source_url
 #   spec_validation  findings filtered to Define-XML / define_* rules only
 
-#' Write a herald_result as an XLSX workbook
+#' Write a herald_result as a five-sheet XLSX workbook
 #'
-#' @param x A `herald_result` object returned by [validate()].
-#' @param path Output file path (should end in `.xlsx`).
-#' @param ... Ignored.
-#' @return `path`, invisibly.
-#'
-#' @examples
-#' if (interactive()) {
-#'   r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
-#'   out <- tempfile(fileext = ".xlsx")
-#'   on.exit(unlink(out))
-#'   write_report_xlsx(r, out)
+#' @description
+#' Renders a `herald_result` to an Excel workbook structured for sponsor
+#' review and regulatory submission. The workbook contains five sheets:
+#' \describe{
+#'   \item{`summary`}{Key/value run metadata (version, timestamp,
+#'     finding counts).}
+#'   \item{`findings`}{Full findings data frame, one row per finding.}
+#'   \item{`datasets`}{Per-dataset row/column counts and finding
+#'     tallies.}
+#'   \item{`rules`}{Applied rule catalog with per-rule fired and
+#'     advisory counts plus source URLs.}
+#'   \item{`spec_validation`}{Findings scoped to Define-XML / spec
+#'     rules only.}
 #' }
 #'
+#' Requires the `openxlsx2` package.
+#'
+#' @param x A `herald_result` object from [validate()].
+#' @param path Output file path (should end in `.xlsx`).
+#' @param ... Ignored.
+#'
+#' @return `path` invisibly.
+#'
+#' @examplesIf requireNamespace("openxlsx2", quietly = TRUE)
+#' ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
+#'                   stringsAsFactors = FALSE)
+#' r   <- validate(files = list(AE = ae), quiet = TRUE)
+#' out <- tempfile(fileext = ".xlsx")
+#' on.exit(unlink(out))
+#' write_report_xlsx(r, out)
+#'
+#' @seealso [validate()] to produce a result, [write_report_html()] for
+#'   a self-contained HTML report, [report()] to auto-select format.
 #' @family report
 #' @export
 write_report_xlsx <- function(x, path, ...) {

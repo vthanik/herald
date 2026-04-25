@@ -20,6 +20,16 @@
 
 #' Read an Apache Parquet dataset with CDISC column attributes
 #'
+#' @description
+#' Reads a Parquet file into a data frame and restores CDISC metadata
+#' from the file's key/value metadata: column labels, SAS formats,
+#' lengths, and XPT types written by [write_parquet()] are recovered as
+#' R attributes. Parquet files without `herald.*` keys are read as
+#' plain data frames; call [apply_spec()] afterwards to stamp attributes
+#' from a spec.
+#'
+#' Requires the `arrow` package.
+#'
 #' @param file Path to a `.parquet` file.
 #'
 #' @return A data.frame with `attr(df, "label")`, `attr(df, "dataset_name")`,

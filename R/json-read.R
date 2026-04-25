@@ -6,17 +6,26 @@
 #' Read a CDISC Dataset-JSON file
 #'
 #' @description
-#' Reads a CDISC Dataset-JSON v1.1 file and returns a data frame with
-#' metadata preserved as attributes (labels, lengths).
+#' Reads a CDISC Dataset-JSON v1.1 file into a data frame, restoring
+#' column and dataset metadata from the JSON structure: column labels,
+#' lengths, display formats, and the dataset name are all preserved
+#' as R attributes.
 #'
-#' @param file Path to a \code{.json} dataset file.
+#' @param file Path to a `.json` Dataset-JSON file.
 #'
-#' @return A data frame with attributes:
-#' \describe{
-#'   \item{label}{Dataset label.}
-#'   \item{column labels}{Per-column \code{"label"} attributes.}
-#'   \item{dataset_name}{Dataset name stored as \code{"dataset_name"} attribute.}
-#' }
+#' @return A data frame with:
+#'   \describe{
+#'     \item{`attr(df, "label")`}{Dataset label.}
+#'     \item{`attr(df, "dataset_name")`}{Dataset name.}
+#'     \item{per-column `"label"`}{Column label from the JSON
+#'       `columns[].label` field.}
+#'     \item{per-column `"sas.length"`}{Column length from
+#'       `columns[].length`.}
+#'     \item{per-column `"format.sas"`}{Display format from
+#'       `columns[].displayFormat`.}
+#'     \item{per-column `"xpt_type"`}{Logical type from
+#'       `columns[].dataType`.}
+#'   }
 #'
 #' @examples
 #' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
@@ -26,10 +35,11 @@
 #' on.exit(unlink(file))
 #' write_json(dm, file, label = "Demographics")
 #' dm2  <- read_json(file)
-#' dm2
+#' attr(dm2, "label")
+#' attr(dm2$USUBJID, "label")
 #'
-#' @seealso [write_json()] for writing, [read_xpt()] for XPT I/O.
-#'
+#' @seealso [write_json()] for writing, [read_xpt()], [read_parquet()],
+#'   [apply_spec()] to stamp CDISC attributes after reading.
 #' @family io
 #' @export
 read_json <- function(file) {

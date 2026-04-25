@@ -59,6 +59,8 @@ Other io:
 \code{\link{convert_dataset}()},
 \code{\link{read_json}()},
 \code{\link{read_parquet}()},
-\code{\link{write_parquet}()}
+\code{\link{read_xpt}()},
+\code{\link{write_parquet}()},
+\code{\link{write_xpt}()}
 }
 \concept{io}

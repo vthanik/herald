@@ -41,7 +41,7 @@
 #' @param version XPT version (\code{5L} or \code{8L}). Only used when
 #'   \code{to == "xpt"}; ignored otherwise.
 #'
-#' @return \code{output} invisibly.
+#' @return `output` (the path to the written file) invisibly.
 #'
 #' @examples
 #' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
@@ -52,6 +52,9 @@
 #' on.exit(unlink(c(xpt, json)))
 #' write_xpt(dm, xpt)
 #' convert_dataset(xpt, json)
+#' # round-trip back
+#' dm2 <- read_json(json)
+#' attr(dm2, "dataset_name")
 #'
 #' @seealso [read_xpt()], [read_json()], [read_parquet()],
 #'   [write_xpt()], [write_json()], [write_parquet()].

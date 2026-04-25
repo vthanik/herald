@@ -8,14 +8,23 @@
 
 #' Write a data frame to Apache Parquet with CDISC column attributes
 #'
-#' @param x A data frame. Column and dataset attributes
-#'   (`label`, `format.sas`, `sas.length`, `xpt_type`) are serialised to
-#'   the file's key/value metadata when present.
+#' @description
+#' Writes a data frame to a Parquet file, embedding CDISC metadata
+#' (column labels, SAS formats, lengths, and XPT types) in the file's
+#' key/value metadata under `herald.*` keys. This ensures a full
+#' round-trip: `read_parquet()` restores every attribute that
+#' `write_parquet()` saved.
+#'
+#' Requires the `arrow` package.
+#'
+#' @param x A data frame. Column attributes (`label`, `format.sas`,
+#'   `sas.length`, `xpt_type`) are written to Parquet key/value
+#'   metadata when present.
 #' @param file Output path (should end in `.parquet`).
-#' @param dataset Dataset name (e.g., `"DM"`). Default: the
-#'   `"dataset_name"` attribute of `x`, then the uppercase file stem,
-#'   then `NULL` (omitted from metadata).
-#' @param label Dataset label. Default: the `"label"` attribute of `x`.
+#' @param dataset Dataset name (e.g., `"DM"`). Default: inferred from
+#'   the variable name (`dm` -> `"DM"`), then
+#'   `attr(x, "dataset_name")`, then the uppercase file stem.
+#' @param label Dataset label. Default: `attr(x, "label")`.
 #'
 #' @return `x` invisibly.
 #'

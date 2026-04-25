@@ -22,8 +22,10 @@ names (\code{"wlatin1"}, \code{"latin1"}, \code{"utf-8"}, \code{"shift-jis"}), a
 \code{"ISO-8859-1"}). Set to \code{NULL} to pass bytes through without conversion.}
 }
 \value{
-A data frame for single-member files, or a named list of data frames
-for multi-member files.
+A data frame for single-member files (with \code{attr(df, "label")},
+\code{attr(df, "dataset_name")}, and per-column \code{"label"}, \code{"format.sas"},
+\code{"sas.length"}, \code{"xpt_type"} attributes populated from the XPT header),
+or a named list of data frames for multi-member files.
 }
 \description{
 Reads V5 (FDA standard) or V8 (extended) XPT transport files into R data
@@ -114,7 +116,9 @@ dm  <- apply_spec(dm, spec)
 tmp <- tempfile(fileext = ".xpt")
 on.exit(unlink(tmp))
 write_xpt(dm, tmp)
-read_xpt(tmp)
+dm2 <- read_xpt(tmp)
+attr(dm2, "label")
+attr(dm2$USUBJID, "label")
 
 }
 \references{
@@ -129,3 +133,16 @@ read_xpt(tmp)
 \url{https://www.iana.org/assignments/character-sets/character-sets.xhtml}
 }
 }
+\seealso{
+\code{\link[=write_xpt]{write_xpt()}} to write, \code{\link[=read_json]{read_json()}}, \code{\link[=read_parquet]{read_parquet()}},
+\code{\link[=apply_spec]{apply_spec()}} to stamp CDISC attributes after reading.
+
+Other io: 
+\code{\link{convert_dataset}()},
+\code{\link{read_json}()},
+\code{\link{read_parquet}()},
+\code{\link{write_json}()},
+\code{\link{write_parquet}()},
+\code{\link{write_xpt}()}
+}
+\concept{io}

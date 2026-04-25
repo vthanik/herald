@@ -2,33 +2,51 @@
 % Please edit documentation in R/report-xlsx.R
 \name{write_report_xlsx}
 \alias{write_report_xlsx}
-\title{Write a herald_result as an XLSX workbook}
+\title{Write a herald_result as a five-sheet XLSX workbook}
 \usage{
 write_report_xlsx(x, path, ...)
 }
 \arguments{
-\item{x}{A \code{herald_result} object returned by \code{\link[=validate]{validate()}}.}
+\item{x}{A \code{herald_result} object from \code{\link[=validate]{validate()}}.}
 
 \item{path}{Output file path (should end in \code{.xlsx}).}
 
 \item{...}{Ignored.}
 }
 \value{
-\code{path}, invisibly.
+\code{path} invisibly.
 }
 \description{
-Write a herald_result as an XLSX workbook
-}
-\examples{
-if (interactive()) {
-  r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
-  out <- tempfile(fileext = ".xlsx")
-  on.exit(unlink(out))
-  write_report_xlsx(r, out)
+Renders a \code{herald_result} to an Excel workbook structured for sponsor
+review and regulatory submission. The workbook contains five sheets:
+\describe{
+\item{\code{summary}}{Key/value run metadata (version, timestamp,
+finding counts).}
+\item{\code{findings}}{Full findings data frame, one row per finding.}
+\item{\code{datasets}}{Per-dataset row/column counts and finding
+tallies.}
+\item{\code{rules}}{Applied rule catalog with per-rule fired and
+advisory counts plus source URLs.}
+\item{\code{spec_validation}}{Findings scoped to Define-XML / spec
+rules only.}
 }
 
+Requires the \code{openxlsx2} package.
+}
+\examples{
+\dontshow{if (requireNamespace("openxlsx2", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
+                  stringsAsFactors = FALSE)
+r   <- validate(files = list(AE = ae), quiet = TRUE)
+out <- tempfile(fileext = ".xlsx")
+on.exit(unlink(out))
+write_report_xlsx(r, out)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
+\code{\link[=validate]{validate()}} to produce a result, \code{\link[=write_report_html]{write_report_html()}} for
+a self-contained HTML report, \code{\link[=report]{report()}} to auto-select format.
+
 Other report: 
 \code{\link{report}()},
 \code{\link{write_report_html}()},

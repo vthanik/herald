@@ -7,33 +7,38 @@
 write_report_json(x, path, pretty = TRUE, ...)
 }
 \arguments{
-\item{x}{A \code{herald_result} object returned by \code{\link[=validate]{validate()}}.}
+\item{x}{A \code{herald_result} object from \code{\link[=validate]{validate()}}.}
 
-\item{path}{Output file path.}
+\item{path}{Output file path (should end in \code{.json}).}
 
-\item{pretty}{Logical; pretty-print with two-space indent. Default
+\item{pretty}{Logical. Pretty-print with two-space indent. Default
 \code{TRUE}.}
 
 \item{...}{Ignored.}
 }
 \value{
-\code{path}, invisibly.
+\code{path} invisibly.
 }
 \description{
-Serialises a \code{herald_result} to a UTF-8 JSON document with a stable
-key order. Intended as the machine-readable artifact for CI
-pipelines and diffing.
+Serialises a \code{herald_result} to a UTF-8 JSON document with a
+stable key order. Designed as the machine-readable artifact for
+CI pipelines, diffing between runs, and programmatic processing.
+
+Requires the \code{jsonlite} package.
 }
 \examples{
-if (interactive()) {
-  r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
-  out <- tempfile(fileext = ".json")
-  on.exit(unlink(out))
-  write_report_json(r, out)
-}
+ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
+                  stringsAsFactors = FALSE)
+r   <- validate(files = list(AE = ae), quiet = TRUE)
+out <- tempfile(fileext = ".json")
+on.exit(unlink(out))
+write_report_json(r, out)
 
 }
 \seealso{
+\code{\link[=validate]{validate()}} to produce a result, \code{\link[=write_report_html]{write_report_html()}},
+\code{\link[=write_report_xlsx]{write_report_xlsx()}}, \code{\link[=report]{report()}} to auto-select format.
+
 Other report: 
 \code{\link{report}()},
 \code{\link{write_report_html}()},

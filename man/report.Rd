@@ -2,44 +2,42 @@
 % Please edit documentation in R/report.R
 \name{report}
 \alias{report}
-\title{Write a herald_result as an HTML, XLSX, or JSON report}
+\title{Write a herald_result to disk in any supported format}
 \usage{
 report(x, path, format = NULL, ...)
 }
 \arguments{
-\item{x}{A \code{herald_result} object returned by \code{\link[=validate]{validate()}}.}
+\item{x}{A \code{herald_result} object from \code{\link[=validate]{validate()}}.}
 
 \item{path}{Output file path. The extension (\code{.html}, \code{.xlsx},
-\code{.json}) is used to infer \code{format} when \code{format} is not supplied.}
+\code{.json}) determines the format when \code{format} is not supplied.}
 
-\item{format}{Optional explicit format; one of \code{"html"}, \code{"xlsx"},
-\code{"json"}. Defaults to the extension of \code{path}.}
+\item{format}{One of \code{"html"}, \code{"xlsx"}, \code{"json"}. Defaults to the
+extension of \code{path}.}
 
-\item{...}{Passed to the underlying writer
-(\code{\link[=write_report_html]{write_report_html()}}, \code{\link[=write_report_xlsx]{write_report_xlsx()}},
-\code{\link[=write_report_json]{write_report_json()}}).}
+\item{...}{Passed to the underlying writer.}
 }
 \value{
-\code{path}, invisibly.
+\code{path} invisibly.
 }
 \description{
-Persists the result of \code{\link[=validate]{validate()}} to disk in one of three
-formats:
+Single-function entry point for writing validation results.
+Dispatches to the appropriate writer based on the output path
+extension (or an explicit \code{format} override):
 \itemize{
-\item \code{"html"} -- a self-contained, offline-safe HTML report with
-Issues / Issue Details / Datasets / Rules tabs.
-\item \code{"xlsx"} -- a four-sheet workbook for SAS / Excel pipelines.
-\item \code{"json"} -- a canonical machine-readable JSON document suitable
-for CI diffing.
+\item \code{"html"} -- self-contained archival HTML (\code{\link[=write_report_html]{write_report_html()}}).
+\item \code{"xlsx"} -- five-sheet workbook for sponsor review
+(\code{\link[=write_report_xlsx]{write_report_xlsx()}}).
+\item \code{"json"} -- machine-readable CI artifact (\code{\link[=write_report_json]{write_report_json()}}).
 }
 }
 \examples{
-if (interactive()) {
-  r <- validate(files = list(AE = data.frame(STUDYID = "X", USUBJID = "X-1")))
-  out <- tempfile(fileext = ".json")
-  on.exit(unlink(out))
-  report(r, out)
-}
+ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
+                  stringsAsFactors = FALSE)
+r   <- validate(files = list(AE = ae), quiet = TRUE)
+out <- tempfile(fileext = ".json")
+on.exit(unlink(out))
+report(r, out)
 
 }
 \seealso{

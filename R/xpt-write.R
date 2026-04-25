@@ -69,7 +69,7 @@
 #'     \url{https://www.iana.org/assignments/character-sets/character-sets.xhtml}
 #' }
 #'
-#' @return \code{x} invisibly (the input data frame, not the file path).
+#' @return `x` invisibly (the input data frame, not the file path).
 #'
 #' @examples
 #' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
@@ -78,7 +78,13 @@
 #' tmp  <- tempfile(fileext = ".xpt")
 #' on.exit(unlink(tmp))
 #' write_xpt(dm, tmp)
+#' # dataset name inferred from variable symbol: "DM"
+#' dm2 <- read_xpt(tmp)
+#' attr(dm2, "dataset_name")
 #'
+#' @seealso [read_xpt()] to read, [write_json()], [write_parquet()],
+#'   [convert_dataset()] to convert between formats.
+#' @family io
 #' @export
 write_xpt <- function(
   x,

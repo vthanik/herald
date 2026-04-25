@@ -7,23 +7,29 @@
 write_parquet(x, file, dataset = NULL, label = NULL)
 }
 \arguments{
-\item{x}{A data frame. Column and dataset attributes
-(\code{label}, \code{format.sas}, \code{sas.length}, \code{xpt_type}) are serialised to
-the file's key/value metadata when present.}
+\item{x}{A data frame. Column attributes (\code{label}, \code{format.sas},
+\code{sas.length}, \code{xpt_type}) are written to Parquet key/value
+metadata when present.}
 
 \item{file}{Output path (should end in \code{.parquet}).}
 
-\item{dataset}{Dataset name (e.g., \code{"DM"}). Default: the
-\code{"dataset_name"} attribute of \code{x}, then the uppercase file stem,
-then \code{NULL} (omitted from metadata).}
+\item{dataset}{Dataset name (e.g., \code{"DM"}). Default: inferred from
+the variable name (\code{dm} -> \code{"DM"}), then
+\code{attr(x, "dataset_name")}, then the uppercase file stem.}
 
-\item{label}{Dataset label. Default: the \code{"label"} attribute of \code{x}.}
+\item{label}{Dataset label. Default: \code{attr(x, "label")}.}
 }
 \value{
 \code{x} invisibly.
 }
 \description{
-Write a data frame to Apache Parquet with CDISC column attributes
+Writes a data frame to a Parquet file, embedding CDISC metadata
+(column labels, SAS formats, lengths, and XPT types) in the file's
+key/value metadata under \verb{herald.*} keys. This ensures a full
+round-trip: \code{read_parquet()} restores every attribute that
+\code{write_parquet()} saved.
+
+Requires the \code{arrow} package.
 }
 \examples{
 \dontshow{if (requireNamespace("arrow", quietly = TRUE)) withAutoprint(\{ # examplesIf}
@@ -42,6 +48,8 @@ Other io:
 \code{\link{convert_dataset}()},
 \code{\link{read_json}()},
 \code{\link{read_parquet}()},
-\code{\link{write_json}()}
+\code{\link{read_xpt}()},
+\code{\link{write_json}()},
+\code{\link{write_xpt}()}
 }
 \concept{io}
