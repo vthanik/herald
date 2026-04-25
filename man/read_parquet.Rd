@@ -19,10 +19,14 @@ the file's key/value metadata when present.
 Read an Apache Parquet dataset with CDISC column attributes
 }
 \examples{
-\dontrun{
-dm <- read_parquet("path/to/dm.parquet")
-attr(dm, "label")
-attr(dm$USUBJID, "label")
+if (requireNamespace("arrow", quietly = TRUE) &&
+    requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+  dm  <- pharmaversesdtm::dm
+  out <- tempfile(fileext = ".parquet")
+  on.exit(unlink(out))
+  write_parquet(dm, out, dataset = "DM", label = "Demographics")
+  dm2 <- read_parquet(out)
+  attr(dm2, "label")
 }
 
 }
@@ -30,10 +34,14 @@ attr(dm$USUBJID, "label")
 \code{\link[=write_parquet]{write_parquet()}}, \code{\link[=read_xpt]{read_xpt()}}, \code{\link[=read_json]{read_json()}}.
 
 Other io: 
+\code{\link{json_to_parquet}()},
 \code{\link{json_to_xpt}()},
+\code{\link{parquet_to_json}()},
+\code{\link{parquet_to_xpt}()},
 \code{\link{read_json}()},
 \code{\link{write_json}()},
 \code{\link{write_parquet}()},
-\code{\link{xpt_to_json}()}
+\code{\link{xpt_to_json}()},
+\code{\link{xpt_to_parquet}()}
 }
 \concept{io}

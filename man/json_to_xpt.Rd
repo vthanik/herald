@@ -21,23 +21,29 @@ Reads a CDISC Dataset-JSON v1.1 file and writes it as a SAS V5 transport
 file. All metadata (labels, lengths) is preserved.
 }
 \examples{
-dm <- data.frame(STUDYID = "S1", AGE = 65L, stringsAsFactors = FALSE)
-json <- tempfile(fileext = ".json")
-xpt <- tempfile(fileext = ".xpt")
-write_json(dm, json, dataset = "DM", label = "Demographics")
-json_to_xpt(json, xpt)
-read_xpt(xpt)
-unlink(c(json, xpt))
+if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+  dm   <- pharmaversesdtm::dm
+  json <- tempfile(fileext = ".json")
+  xpt  <- tempfile(fileext = ".xpt")
+  on.exit(unlink(c(json, xpt)))
+  write_json(dm, json, dataset = "DM", label = "Demographics")
+  json_to_xpt(json, xpt)
+  read_xpt(xpt)
+}
 
 }
 \seealso{
 \code{\link[=xpt_to_json]{xpt_to_json()}} for the reverse, \code{\link[=write_xpt]{write_xpt()}}, \code{\link[=read_json]{read_json()}}.
 
 Other io: 
+\code{\link{json_to_parquet}()},
+\code{\link{parquet_to_json}()},
+\code{\link{parquet_to_xpt}()},
 \code{\link{read_json}()},
 \code{\link{read_parquet}()},
 \code{\link{write_json}()},
 \code{\link{write_parquet}()},
-\code{\link{xpt_to_json}()}
+\code{\link{xpt_to_json}()},
+\code{\link{xpt_to_parquet}()}
 }
 \concept{io}

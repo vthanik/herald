@@ -44,25 +44,26 @@ extracted from attributes on each column. If the
 writing. JSON is always UTF-8.
 }
 \examples{
-dm <- data.frame(
-  STUDYID = c("STUDY1", "STUDY1"),
-  USUBJID = c("SUBJ01", "SUBJ02"),
-  AGE = c(65L, 72L),
-  stringsAsFactors = FALSE
-)
-file <- tempfile(fileext = ".json")
-write_json(dm, file, dataset = "DM", label = "Demographics")
-unlink(file)
+if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+  dm   <- pharmaversesdtm::dm
+  file <- tempfile(fileext = ".json")
+  on.exit(unlink(file))
+  write_json(dm, file, dataset = "DM", label = "Demographics")
+}
 
 }
 \seealso{
 \code{\link[=read_json]{read_json()}} for reading, \code{\link[=write_xpt]{write_xpt()}} for XPT I/O.
 
 Other io: 
+\code{\link{json_to_parquet}()},
 \code{\link{json_to_xpt}()},
+\code{\link{parquet_to_json}()},
+\code{\link{parquet_to_xpt}()},
 \code{\link{read_json}()},
 \code{\link{read_parquet}()},
 \code{\link{write_parquet}()},
-\code{\link{xpt_to_json}()}
+\code{\link{xpt_to_json}()},
+\code{\link{xpt_to_parquet}()}
 }
 \concept{io}

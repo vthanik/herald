@@ -25,15 +25,12 @@
 #' @return \code{x} invisibly (the input data frame, not the file path).
 #'
 #' @examples
-#' dm <- data.frame(
-#'   STUDYID = c("STUDY1", "STUDY1"),
-#'   USUBJID = c("SUBJ01", "SUBJ02"),
-#'   AGE = c(65L, 72L),
-#'   stringsAsFactors = FALSE
-#' )
-#' file <- tempfile(fileext = ".json")
-#' write_json(dm, file, dataset = "DM", label = "Demographics")
-#' unlink(file)
+#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+#'   dm   <- pharmaversesdtm::dm
+#'   file <- tempfile(fileext = ".json")
+#'   on.exit(unlink(file))
+#'   write_json(dm, file, dataset = "DM", label = "Demographics")
+#' }
 #'
 #' @seealso [read_json()] for reading, [write_xpt()] for XPT I/O.
 #'
@@ -218,13 +215,15 @@ write_json <- function(
 #' @return The output path, invisibly.
 #'
 #' @examples
-#' dm <- data.frame(STUDYID = "S1", AGE = 65L, stringsAsFactors = FALSE)
-#' xpt <- tempfile(fileext = ".xpt")
-#' json <- tempfile(fileext = ".json")
-#' write_xpt(dm, xpt, dataset = "DM", label = "Demographics")
-#' xpt_to_json(xpt, json)
-#' read_json(json)
-#' unlink(c(xpt, json))
+#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+#'   dm   <- pharmaversesdtm::dm
+#'   xpt  <- tempfile(fileext = ".xpt")
+#'   json <- tempfile(fileext = ".json")
+#'   on.exit(unlink(c(xpt, json)))
+#'   write_xpt(dm, xpt, dataset = "DM", label = "Demographics")
+#'   xpt_to_json(xpt, json)
+#'   read_json(json)
+#' }
 #'
 #' @seealso [json_to_xpt()] for the reverse, [read_xpt()], [write_json()].
 #'
@@ -239,6 +238,53 @@ xpt_to_json <- function(xpt_path, json_path, dataset = NULL, label = NULL) {
 
   if (is.null(dataset)) {
     dataset <- toupper(tools::file_path_sans_ext(basename(xpt_path)))
+  }
+  if (is.null(label)) {
+    label <- attr(data, "label")
+  }
+
+  write_json(data, json_path, dataset = dataset, label = label)
+  invisible(json_path)
+}
+
+#' Convert an Apache Parquet file to Dataset-JSON
+#'
+#' Reads an Apache Parquet file and writes it as CDISC Dataset-JSON v1.1.
+#' All CDISC column attributes (labels, formats, lengths) stored in the Parquet
+#' metadata are preserved.
+#'
+#' @param parquet_path Path to the input \code{.parquet} file.
+#' @param json_path Output path for the \code{.json} file.
+#' @param dataset Dataset name override. Default: inferred from Parquet metadata.
+#' @param label Dataset label override. Default: from Parquet metadata.
+#'
+#' @return \code{json_path} invisibly.
+#'
+#' @examples
+#' if (requireNamespace("arrow", quietly = TRUE) &&
+#'     requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+#'   dm   <- pharmaversesdtm::dm
+#'   pq   <- tempfile(fileext = ".parquet")
+#'   json <- tempfile(fileext = ".json")
+#'   on.exit(unlink(c(pq, json)))
+#'   write_parquet(dm, pq, dataset = "DM", label = "Demographics")
+#'   parquet_to_json(pq, json)
+#' }
+#'
+#' @seealso [xpt_to_json()] for XPT-to-JSON, [json_to_parquet()] for the reverse,
+#'   [read_parquet()], [write_json()].
+#' @family io
+#' @export
+parquet_to_json <- function(parquet_path, json_path, dataset = NULL, label = NULL) {
+  call <- rlang::caller_env()
+  check_scalar_chr(parquet_path, call = call)
+  check_scalar_chr(json_path, call = call)
+
+  data <- read_parquet(parquet_path)
+
+  if (is.null(dataset)) {
+    dataset <- attr(data, "dataset_name") %||%
+      toupper(tools::file_path_sans_ext(basename(parquet_path)))
   }
   if (is.null(label)) {
     label <- attr(data, "label")

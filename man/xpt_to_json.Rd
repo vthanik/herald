@@ -23,23 +23,29 @@ Reads an XPT transport file and writes it as CDISC Dataset-JSON v1.1.
 All metadata (labels, formats, lengths) is preserved.
 }
 \examples{
-dm <- data.frame(STUDYID = "S1", AGE = 65L, stringsAsFactors = FALSE)
-xpt <- tempfile(fileext = ".xpt")
-json <- tempfile(fileext = ".json")
-write_xpt(dm, xpt, dataset = "DM", label = "Demographics")
-xpt_to_json(xpt, json)
-read_json(json)
-unlink(c(xpt, json))
+if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+  dm   <- pharmaversesdtm::dm
+  xpt  <- tempfile(fileext = ".xpt")
+  json <- tempfile(fileext = ".json")
+  on.exit(unlink(c(xpt, json)))
+  write_xpt(dm, xpt, dataset = "DM", label = "Demographics")
+  xpt_to_json(xpt, json)
+  read_json(json)
+}
 
 }
 \seealso{
 \code{\link[=json_to_xpt]{json_to_xpt()}} for the reverse, \code{\link[=read_xpt]{read_xpt()}}, \code{\link[=write_json]{write_json()}}.
 
 Other io: 
+\code{\link{json_to_parquet}()},
 \code{\link{json_to_xpt}()},
+\code{\link{parquet_to_json}()},
+\code{\link{parquet_to_xpt}()},
 \code{\link{read_json}()},
 \code{\link{read_parquet}()},
 \code{\link{write_json}()},
-\code{\link{write_parquet}()}
+\code{\link{write_parquet}()},
+\code{\link{xpt_to_parquet}()}
 }
 \concept{io}

@@ -587,3 +587,35 @@ test_that("xpt_to_json infers dataset name from XPT file name", {
   expect_equal(result, json)
   expect_true(file.exists(json))
 })
+
+# -- parquet_to_json ----------------------------------------------------------
+
+test_that("parquet_to_json() converts Parquet to Dataset-JSON preserving attributes", {
+  skip_if_not_installed("arrow")
+
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    AGE     = c(65L, 72L),
+    stringsAsFactors = FALSE
+  )
+  attr(dm, "label") <- "Demographics"
+
+  pq   <- withr::local_tempfile(fileext = ".parquet")
+  json <- withr::local_tempfile(fileext = ".json")
+  write_parquet(dm, pq, dataset = "DM", label = "Demographics")
+
+  result <- parquet_to_json(pq, json)
+  expect_equal(result, json)
+  expect_true(file.exists(json))
+
+  out <- read_json(json)
+  expect_equal(out$USUBJID, dm$USUBJID)
+  expect_equal(out$AGE,     dm$AGE)
+  expect_equal(attr(out, "label"), "Demographics")
+})
+
+test_that("parquet_to_json() errors on missing input file", {
+  skip_if_not_installed("arrow")
+  json <- withr::local_tempfile(fileext = ".json")
+  expect_error(parquet_to_json("/no/such.parquet", json))
+})

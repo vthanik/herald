@@ -70,3 +70,81 @@ test_that("read_parquet errors when the file is missing", {
 # Note: a mocked-requireNamespace() test was considered for the "arrow not
 # installed" path but the file.exists() check fires first in read_parquet()
 # so it adds no real coverage. Left as documentation-only behaviour.
+
+# -- xpt_to_parquet -----------------------------------------------------------
+
+test_that("xpt_to_parquet() converts XPT to Parquet preserving attributes", {
+  skip_if_not_installed("arrow")
+
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    AGE     = c(65L, 72L),
+    stringsAsFactors = FALSE
+  )
+  attr(dm, "label")         <- "Demographics"
+  attr(dm$USUBJID, "label") <- "Unique Subject Identifier"
+
+  xpt <- withr::local_tempfile(fileext = ".xpt")
+  pq  <- withr::local_tempfile(fileext = ".parquet")
+  write_xpt(dm, xpt, dataset = "DM")
+
+  result <- xpt_to_parquet(xpt, pq)
+  expect_equal(result, pq)
+  expect_true(file.exists(pq))
+
+  out <- read_parquet(pq)
+  expect_equal(out$USUBJID, dm$USUBJID)
+  expect_equal(out$AGE,     dm$AGE)
+  expect_equal(attr(out, "dataset_name"), "DM")
+})
+
+test_that("xpt_to_parquet() infers dataset name from XPT file name", {
+  skip_if_not_installed("arrow")
+
+  dm  <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  xpt <- withr::local_tempfile(pattern = "dm", fileext = ".xpt")
+  pq  <- withr::local_tempfile(fileext = ".parquet")
+  write_xpt(dm, xpt, dataset = "DM")
+  xpt_to_parquet(xpt, pq)
+  out <- read_parquet(pq)
+  expect_equal(attr(out, "dataset_name"), "DM")
+})
+
+test_that("xpt_to_parquet() errors on missing input file", {
+  skip_if_not_installed("arrow")
+  pq <- withr::local_tempfile(fileext = ".parquet")
+  expect_error(xpt_to_parquet("/no/such.xpt", pq))
+})
+
+# -- json_to_parquet ----------------------------------------------------------
+
+test_that("json_to_parquet() converts Dataset-JSON to Parquet preserving attributes", {
+  skip_if_not_installed("arrow")
+
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    AGE     = c(65L, 72L),
+    stringsAsFactors = FALSE
+  )
+  attr(dm, "label") <- "Demographics"
+
+  json <- withr::local_tempfile(fileext = ".json")
+  pq   <- withr::local_tempfile(fileext = ".parquet")
+  write_json(dm, json, dataset = "DM", label = "Demographics")
+
+  result <- json_to_parquet(json, pq)
+  expect_equal(result, pq)
+  expect_true(file.exists(pq))
+
+  out <- read_parquet(pq)
+  expect_equal(out$USUBJID, dm$USUBJID)
+  expect_equal(out$AGE,     dm$AGE)
+  expect_equal(attr(out, "dataset_name"), "DM")
+  expect_equal(attr(out, "label"),        "Demographics")
+})
+
+test_that("json_to_parquet() errors on missing input file", {
+  skip_if_not_installed("arrow")
+  pq <- withr::local_tempfile(fileext = ".parquet")
+  expect_error(json_to_parquet("/no/such.json", pq))
+})

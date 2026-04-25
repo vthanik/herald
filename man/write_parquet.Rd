@@ -26,13 +26,12 @@ then \code{NULL} (omitted from metadata).}
 Write a data frame to Apache Parquet with CDISC column attributes
 }
 \examples{
-if (requireNamespace("arrow", quietly = TRUE)) {
-  dm <- data.frame(STUDYID = "PILOT01", USUBJID = "01-001",
-                   stringsAsFactors = FALSE)
-  attr(dm, "label") <- "Demographics"
+if (requireNamespace("arrow", quietly = TRUE) &&
+    requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+  dm  <- pharmaversesdtm::dm
   out <- tempfile(fileext = ".parquet")
   on.exit(unlink(out))
-  write_parquet(dm, out, dataset = "DM")
+  write_parquet(dm, out, dataset = "DM", label = "Demographics")
 }
 
 }
@@ -40,10 +39,14 @@ if (requireNamespace("arrow", quietly = TRUE)) {
 \code{\link[=read_parquet]{read_parquet()}}, \code{\link[=write_xpt]{write_xpt()}}, \code{\link[=write_json]{write_json()}}.
 
 Other io: 
+\code{\link{json_to_parquet}()},
 \code{\link{json_to_xpt}()},
+\code{\link{parquet_to_json}()},
+\code{\link{parquet_to_xpt}()},
 \code{\link{read_json}()},
 \code{\link{read_parquet}()},
 \code{\link{write_json}()},
-\code{\link{xpt_to_json}()}
+\code{\link{xpt_to_json}()},
+\code{\link{xpt_to_parquet}()}
 }
 \concept{io}

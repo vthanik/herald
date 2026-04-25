@@ -382,3 +382,46 @@ test_that("write_xpt handles zero-row data frame without error", {
   expect_no_error(write_xpt(df, tmp, dataset = "DM"))
   expect_true(file.exists(tmp))
 })
+
+
+# -- parquet_to_xpt -----------------------------------------------------------
+
+test_that("parquet_to_xpt() converts Parquet to XPT preserving data", {
+  skip_if_not_installed("arrow")
+
+  dm <- data.frame(
+    USUBJID = c("S1", "S2"),
+    AGE     = c(65L, 72L),
+    stringsAsFactors = FALSE
+  )
+  attr(dm, "label")         <- "Demographics"
+  attr(dm$USUBJID, "label") <- "Unique Subject Identifier"
+
+  pq  <- withr::local_tempfile(fileext = ".parquet")
+  xpt <- withr::local_tempfile(fileext = ".xpt")
+  write_parquet(dm, pq, dataset = "DM", label = "Demographics")
+
+  result <- parquet_to_xpt(pq, xpt)
+  expect_equal(result, xpt)
+  expect_true(file.exists(xpt))
+
+  out <- read_xpt(xpt)
+  expect_equal(out$USUBJID, dm$USUBJID)
+  expect_equal(out$AGE,     dm$AGE)
+})
+
+test_that("parquet_to_xpt() accepts version override", {
+  skip_if_not_installed("arrow")
+
+  dm  <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  pq  <- withr::local_tempfile(fileext = ".parquet")
+  xpt <- withr::local_tempfile(fileext = ".xpt")
+  write_parquet(dm, pq, dataset = "DM")
+  expect_no_error(parquet_to_xpt(pq, xpt, version = 8L))
+})
+
+test_that("parquet_to_xpt() errors on missing input file", {
+  skip_if_not_installed("arrow")
+  xpt <- withr::local_tempfile(fileext = ".xpt")
+  expect_error(parquet_to_xpt("/no/such.parquet", xpt))
+})
