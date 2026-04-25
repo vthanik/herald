@@ -19,14 +19,14 @@
 #' }
 #'
 #' @examples
-#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-#'   dm   <- pharmaversesdtm::dm
-#'   file <- tempfile(fileext = ".json")
-#'   on.exit(unlink(file))
-#'   write_json(dm, file, dataset = "DM", label = "Demographics")
-#'   dm2  <- read_json(file)
-#'   dm2
-#' }
+#' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+#' dm   <- apply_spec(dm, spec)
+#' file <- tempfile(fileext = ".json")
+#' on.exit(unlink(file))
+#' write_json(dm, file, label = "Demographics")
+#' dm2  <- read_json(file)
+#' dm2
 #'
 #' @seealso [write_json()] for writing, [read_xpt()] for XPT I/O.
 #'

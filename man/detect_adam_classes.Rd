@@ -2,30 +2,31 @@
 % Please edit documentation in R/sub-discover.R
 \name{detect_adam_classes}
 \alias{detect_adam_classes}
-\title{Detect ADaM class for each dataset in a named list or spec}
+\title{Detect ADaM class for each dataset}
 \usage{
-detect_adam_classes(x, call = rlang::caller_env())
+detect_adam_classes(..., call = rlang::caller_env())
 }
 \arguments{
-\item{x}{A named list of data frames, or a \code{herald_spec} object.}
+\item{...}{One or more data frames (names inferred from variable symbols or
+provided explicitly, e.g. \code{ADSL = adsl}), a single named list of
+data frames, or a single \code{herald_spec} object.}
 
 \item{call}{Caller environment for error reporting.}
 }
 \value{
-A named character vector mapping dataset name → ADaM class.
+A named character vector mapping dataset name to ADaM class.
 }
 \description{
-Applies \code{\link{detect_adam_class}} to every dataset, accepting either
-a named list of data frames or a \code{herald_spec} object.
+Applies \code{\link{detect_adam_class}} to every dataset. Pass data frames
+as bare variables (names inferred from symbols), as a named list, or as a
+\code{herald_spec}.
 }
 \examples{
-if (requireNamespace("pharmaverseadam", quietly = TRUE)) {
-  detect_adam_classes(list(
-    ADSL = pharmaverseadam::adsl,
-    ADVS = pharmaverseadam::advs,
-    ADAE = pharmaverseadam::adae
-  ))
-}
+adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
+advs <- readRDS(system.file("extdata", "advs.rds", package = "herald"))
+adae <- readRDS(system.file("extdata", "adae.rds", package = "herald"))
+
+detect_adam_classes(adsl, advs, adae)
 
 }
 \seealso{

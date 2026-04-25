@@ -26,14 +26,14 @@ then \code{NULL} (omitted from metadata).}
 Write a data frame to Apache Parquet with CDISC column attributes
 }
 \examples{
-if (requireNamespace("arrow", quietly = TRUE) &&
-    requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-  dm  <- pharmaversesdtm::dm
-  out <- tempfile(fileext = ".parquet")
-  on.exit(unlink(out))
-  write_parquet(dm, out, dataset = "DM", label = "Demographics")
-}
-
+\dontshow{if (requireNamespace("arrow", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+dm   <- apply_spec(dm, spec)
+out  <- tempfile(fileext = ".parquet")
+on.exit(unlink(out))
+write_parquet(dm, out, label = "Demographics")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=read_parquet]{read_parquet()}}, \code{\link[=write_xpt]{write_xpt()}}, \code{\link[=write_json]{write_json()}}.

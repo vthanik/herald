@@ -16,18 +16,14 @@ is_herald_spec(x)
 Is \code{x} a \code{herald_spec}?
 }
 \examples{
-if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-  spec <- as_herald_spec(
-    ds_spec = data.frame(dataset = "DM", stringsAsFactors = FALSE),
-    var_spec = data.frame(
-      dataset  = "DM",
-      variable = names(pharmaversesdtm::dm),
-      stringsAsFactors = FALSE
-    )
-  )
-  is_herald_spec(spec)
-  is_herald_spec(list())
-}
+dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+spec <- as_herald_spec(
+  ds_spec  = data.frame(dataset = "DM", stringsAsFactors = FALSE),
+  var_spec = data.frame(dataset = "DM", variable = names(dm),
+                        stringsAsFactors = FALSE)
+)
+is_herald_spec(spec)
+is_herald_spec(list())
 
 }
 \seealso{

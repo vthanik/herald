@@ -19,16 +19,16 @@ the file's key/value metadata when present.
 Read an Apache Parquet dataset with CDISC column attributes
 }
 \examples{
-if (requireNamespace("arrow", quietly = TRUE) &&
-    requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-  dm  <- pharmaversesdtm::dm
-  out <- tempfile(fileext = ".parquet")
-  on.exit(unlink(out))
-  write_parquet(dm, out, dataset = "DM", label = "Demographics")
-  dm2 <- read_parquet(out)
-  attr(dm2, "label")
-}
-
+\dontshow{if (requireNamespace("arrow", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+dm  <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+dm  <- apply_spec(dm, spec)
+out <- tempfile(fileext = ".parquet")
+on.exit(unlink(out))
+write_parquet(dm, out, label = "Demographics")
+dm2 <- read_parquet(out)
+attr(dm2, "label")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=write_parquet]{write_parquet()}}, \code{\link[=read_xpt]{read_xpt()}}, \code{\link[=read_json]{read_json()}}.

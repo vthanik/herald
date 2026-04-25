@@ -91,12 +91,12 @@ encoding reference table.
 }
 }
 \examples{
-if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-  dm  <- pharmaversesdtm::dm
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
-  write_xpt(dm, tmp, dataset = "DM")
-}
+dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+dm   <- apply_spec(dm, spec)
+tmp  <- tempfile(fileext = ".xpt")
+on.exit(unlink(tmp))
+write_xpt(dm, tmp)
 
 }
 \references{

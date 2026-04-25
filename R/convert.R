@@ -44,14 +44,14 @@
 #' @return \code{output} invisibly.
 #'
 #' @examples
-#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-#'   dm   <- pharmaversesdtm::dm
-#'   xpt  <- tempfile(fileext = ".xpt")
-#'   json <- tempfile(fileext = ".json")
-#'   on.exit(unlink(c(xpt, json)))
-#'   write_xpt(dm, xpt, dataset = "DM", label = "Demographics")
-#'   convert_dataset(xpt, json)
-#' }
+#' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+#' dm   <- apply_spec(dm, spec)
+#' xpt  <- tempfile(fileext = ".xpt")
+#' json <- tempfile(fileext = ".json")
+#' on.exit(unlink(c(xpt, json)))
+#' write_xpt(dm, xpt)
+#' convert_dataset(xpt, json)
 #'
 #' @seealso [read_xpt()], [read_json()], [read_parquet()],
 #'   [write_xpt()], [write_json()], [write_parquet()].

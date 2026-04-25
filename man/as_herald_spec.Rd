@@ -26,24 +26,22 @@ lowercase; required columns are checked. Extra columns pass through
 unchanged.
 }
 \examples{
-if (requireNamespace("pharmaverseadam", quietly = TRUE)) {
-  adsl_vars <- names(pharmaverseadam::adsl)
-  adae_vars <- names(pharmaverseadam::adae)
-  spec <- as_herald_spec(
-    ds_spec = data.frame(
-      dataset = c("ADSL", "ADAE"),
-      class   = c("SUBJECT LEVEL ANALYSIS DATASET", "BASIC DATA STRUCTURE"),
-      label   = c("Subject-Level Analysis Dataset", "Adverse Events"),
-      stringsAsFactors = FALSE
-    ),
-    var_spec = data.frame(
-      dataset  = c(rep("ADSL", length(adsl_vars)), rep("ADAE", length(adae_vars))),
-      variable = c(adsl_vars, adae_vars),
-      stringsAsFactors = FALSE
-    )
+adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
+adae <- readRDS(system.file("extdata", "adae.rds", package = "herald"))
+spec <- as_herald_spec(
+  ds_spec = data.frame(
+    dataset = c("ADSL", "ADAE"),
+    class   = c("SUBJECT LEVEL ANALYSIS DATASET", "BASIC DATA STRUCTURE"),
+    label   = c("Subject-Level Analysis Dataset", "Adverse Events"),
+    stringsAsFactors = FALSE
+  ),
+  var_spec = data.frame(
+    dataset  = c(rep("ADSL", ncol(adsl)), rep("ADAE", ncol(adae))),
+    variable = c(names(adsl), names(adae)),
+    stringsAsFactors = FALSE
   )
-  is_herald_spec(spec)
-}
+)
+is_herald_spec(spec)
 
 }
 \seealso{

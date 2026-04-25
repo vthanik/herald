@@ -7,13 +7,17 @@
 apply_spec(datasets, spec)
 }
 \arguments{
-\item{datasets}{A named list of data frames. Names are dataset names
-(matched case-insensitively against \code{spec$ds_spec$dataset}).}
+\item{datasets}{Either a single data frame \strong{or} a named list of data
+frames. When a single data frame is passed, the dataset name is
+inferred from the variable name (\code{dm} -> \code{"DM"}), then
+\code{attr(datasets, "dataset_name")}, then \code{"DATA"}. A single data frame
+is returned; a list returns a list.}
 
 \item{spec}{A \code{herald_spec} (see \code{\link[=as_herald_spec]{as_herald_spec()}}).}
 }
 \value{
-The \code{datasets} list with attributes populated.
+Same shape as \code{datasets}: a data frame if one was passed, a
+named list otherwise.
 }
 \description{
 For each dataset in \code{datasets}, writes \code{attr(., "label")} from
@@ -29,24 +33,17 @@ XPT and Dataset-JSON readers already set these attributes at ingest,
 so \code{apply_spec()} is optional there.
 }
 \examples{
-if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-  dm   <- pharmaversesdtm::dm
-  spec <- as_herald_spec(
-    ds_spec = data.frame(dataset = "DM", label = "Demographics",
-                         stringsAsFactors = FALSE),
-    var_spec = data.frame(
-      dataset  = c("DM", "DM"),
-      variable = c("USUBJID", "AGE"),
-      type     = c("text", "integer"),
-      label    = c("Unique Subject Identifier", "Age"),
-      length   = c(40L, 8L),
-      stringsAsFactors = FALSE
-    )
-  )
-  out <- apply_spec(list(DM = dm), spec)
-  attr(out$DM, "label")
-  attr(out$DM$USUBJID, "label")
-}
+dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+
+# Single data frame -- name inferred from variable, returns data frame
+dm   <- apply_spec(dm, spec)
+attr(dm, "label")
+attr(dm$USUBJID, "label")
+
+# Pipe-friendly
+dm2 <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+dm2 <- dm2 |> apply_spec(spec)
 
 }
 \seealso{

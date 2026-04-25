@@ -98,13 +98,13 @@
 #'   for multi-member files.
 #'
 #' @examples
-#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-#'   dm  <- pharmaversesdtm::dm
-#'   tmp <- tempfile(fileext = ".xpt")
-#'   on.exit(unlink(tmp))
-#'   write_xpt(dm, tmp, dataset = "DM")
-#'   read_xpt(tmp)
-#' }
+#' dm  <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+#' dm  <- apply_spec(dm, spec)
+#' tmp <- tempfile(fileext = ".xpt")
+#' on.exit(unlink(tmp))
+#' write_xpt(dm, tmp)
+#' read_xpt(tmp)
 #'
 #' @export
 read_xpt <- function(

@@ -27,16 +27,15 @@
 #'   `attr(col, "sas.length")`, `attr(col, "xpt_type")` populated from
 #'   the file's key/value metadata when present.
 #'
-#' @examples
-#' if (requireNamespace("arrow", quietly = TRUE) &&
-#'     requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-#'   dm  <- pharmaversesdtm::dm
-#'   out <- tempfile(fileext = ".parquet")
-#'   on.exit(unlink(out))
-#'   write_parquet(dm, out, dataset = "DM", label = "Demographics")
-#'   dm2 <- read_parquet(out)
-#'   attr(dm2, "label")
-#' }
+#' @examplesIf requireNamespace("arrow", quietly = TRUE)
+#' dm  <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+#' dm  <- apply_spec(dm, spec)
+#' out <- tempfile(fileext = ".parquet")
+#' on.exit(unlink(out))
+#' write_parquet(dm, out, label = "Demographics")
+#' dm2 <- read_parquet(out)
+#' attr(dm2, "label")
 #'
 #' @seealso [write_parquet()], [read_xpt()], [read_json()].
 #' @family io

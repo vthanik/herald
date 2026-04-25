@@ -44,11 +44,12 @@ matching \code{*FL} but no PARAMCD.
 }
 }
 \examples{
-if (requireNamespace("pharmaverseadam", quietly = TRUE)) {
-  detect_adam_class(names(pharmaverseadam::adsl))          # "ADSL"
-  detect_adam_class(names(pharmaverseadam::advs))          # "BDS"
-  detect_adam_class(names(pharmaverseadam::adae))          # "OCCDS"
-}
+adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
+advs <- readRDS(system.file("extdata", "advs.rds", package = "herald"))
+adae <- readRDS(system.file("extdata", "adae.rds", package = "herald"))
+detect_adam_class(names(adsl))  # "ADSL"
+detect_adam_class(names(advs))  # "BDS"
+detect_adam_class(names(adae))  # "OCCDS"
 
 }
 \seealso{

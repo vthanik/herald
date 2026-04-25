@@ -22,14 +22,14 @@ Reads a CDISC Dataset-JSON v1.1 file and returns a data frame with
 metadata preserved as attributes (labels, lengths).
 }
 \examples{
-if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-  dm   <- pharmaversesdtm::dm
-  file <- tempfile(fileext = ".json")
-  on.exit(unlink(file))
-  write_json(dm, file, dataset = "DM", label = "Demographics")
-  dm2  <- read_json(file)
-  dm2
-}
+dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+dm   <- apply_spec(dm, spec)
+file <- tempfile(fileext = ".json")
+on.exit(unlink(file))
+write_json(dm, file, label = "Demographics")
+dm2  <- read_json(file)
+dm2
 
 }
 \seealso{
