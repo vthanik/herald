@@ -112,16 +112,38 @@ Everything is CDISC-published content redistributed under CC-BY-4.0. See
 
 ```
 tools/
-├── harvest-cdisc-library.R       Library API → YAML
-├── parse-conformance-xlsx.R      XLSX → YAML
-├── compile-rules.R               YAML → rules.rds
+├── harvest-cdisc-library.R       Library API -> YAML
+├── parse-conformance-xlsx.R      XLSX -> YAML
+├── compile-rules.R               YAML -> rules.rds
+├── seed-fixtures.R               populate tests/testthat/fixtures/
+├── fixture-coverage.R            report fixture gap coverage
+├── advisory.R                    advisory-finding analysis helpers
 ├── harvest-cache/                raw Library API JSON (gitignored)
 └── handauthored/
-    ├── conformance/              source XLSX files (checked in, CC-BY-4.0)
-    └── cdisc/
-        ├── NOTICE.md
-        ├── sdtm-library-api/     executable SDTM rules (from API)
-        ├── sdtm-ig-v2.0/         narrative SDTM rules (from XLSX)
-        ├── adam-library-api/     executable ADaM rules (from API)
-        └── adam-v5.0/            narrative ADaM rules (from XLSX)
+    ├── cdisc/
+    │   ├── NOTICE.md
+    │   ├── sdtm-library-api/     executable SDTM rules (from API)
+    │   ├── sdtm-ig-v2.0/         narrative SDTM rules (from XLSX)
+    │   ├── adam-library-api/     executable ADaM rules (from API)
+    │   ├── adam-v5.0/            narrative ADaM rules (from XLSX)
+    │   └── define-xml-v2.1/      CDISC Define-XML 2.1 narratives
+    └── herald/
+        ├── spec-validation/      herald-spec pre-flight rules
+        └── define-xml/           herald define-xml emitted-XML rules
 ```
+
+## Decommissioned scripts
+
+Moved to `.local/quarantine/tools/` (gitignored). These were one-shot
+authoring-time scripts with no live callers:
+
+| Script | When decommissioned | Reason |
+|---|---|---|
+| `port-core.R` | 2026-04 | One-shot migration of core SDTM rules; work complete |
+| `port-define.R` | 2026-04 | One-shot Define-XML rule migration; work complete |
+| `rename-hrl-dd.R` | 2026-04 | One-shot HRL-DD prefix rename; work complete |
+| `smoke-check.R` | 2026-04 | Smoke-test harness; superseded by testthat fixtures |
+
+Scratch CSV intermediates (`progress.csv`, `core-vs-conformance.csv`,
+`smoke-latest.csv`) were also deleted; they are regenerable from the rule
+corpus.
