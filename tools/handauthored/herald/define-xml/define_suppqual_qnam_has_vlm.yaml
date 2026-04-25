@@ -12,11 +12,11 @@ check:
     operator: not_in_define_vlm
     value: __whereClauseDef__
 outcome:
-  message: DEFINE_SUPPQUAL_QNAM_HAS_VLM
+  message: SUPPQUAL_QNAM_HAS_VLM
   severity: Error
 provenance:
   source_doc: StudySAS Blog — Define.xml for SUPPQUAL QNAM-Level Metadata (2026-04)
-  authority: Herald
+  authority: herald
   reference_url: https://studysas.blogspot.com/2026/04/definexml-for-suppqual-getting-qnam.html
   executability: predicate
   license: MIT

@@ -12,11 +12,11 @@ check:
     operator: equal_to
     value: Hard
 outcome:
-  message: DEFINE_WHERE_CLAUSE_SOFT_HARD_IS_SOFT
+  message: WHERE_CLAUSE_SOFT_HARD_IS_SOFT
   severity: Warning
 provenance:
   source_doc: StudySAS Blog — Define.xml for SUPPQUAL QNAM-Level Metadata (2026-04)
-  authority: Herald
+  authority: herald
   reference_url: https://studysas.blogspot.com/2026/04/definexml-for-suppqual-getting-qnam.html
   executability: predicate
   license: MIT

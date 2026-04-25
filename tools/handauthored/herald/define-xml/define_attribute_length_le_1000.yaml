@@ -7,11 +7,11 @@ scope:
   classes: []
   domains: []
 outcome:
-  message: DEFINE_ATTRIBUTE_LENGTH_LE_1000
+  message: ATTRIBUTE_LENGTH_LE_1000
   severity: Error
 provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
-  authority: Herald
+  authority: herald
   p21_id_equivalent: DD0086
   executability: blocker:requires-op:define_attribute_length_le
   license: MIT

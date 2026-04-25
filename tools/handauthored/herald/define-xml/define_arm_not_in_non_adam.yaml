@@ -9,11 +9,11 @@ scope:
   datasets:
   - Define_ARM_Metadata
 outcome:
-  message: DEFINE_ARM_NOT_IN_NON_ADAM
+  message: ARM_NOT_IN_NON_ADAM
   severity: Error
 provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
-  authority: Herald
+  authority: herald
   p21_id_equivalent: DD0087
   executability: predicate
   license: MIT

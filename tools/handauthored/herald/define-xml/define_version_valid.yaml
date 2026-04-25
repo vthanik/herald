@@ -8,11 +8,11 @@ scope:
   datasets:
   - Define_Study_Metadata
 outcome:
-  message: DEFINE_VERSION_VALID
+  message: VERSION_VALID
   severity: Error
 provenance:
   source_doc: P21 ADaM Validation Rules v1.2 (Define-XML)
-  authority: Herald
+  authority: herald
   p21_id_equivalent: DD0020A
   executability: predicate
   license: MIT

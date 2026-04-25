@@ -12,11 +12,11 @@ check:
     operator: matches_regex
     value: ^2\.1
 outcome:
-  message: DEFINE_VERSION_IS_2_1
+  message: VERSION_IS_2_1
   severity: Error
 provenance:
   source_doc: CDISC Define-XML v2.1 Specification
-  authority: CDISC
+  authority: herald
   section: 5.3.5
   cited_guidance: |
     def:DefineVersion -- Required. '2.1.n'. Version of Define-XML to which the file conforms.
