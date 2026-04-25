@@ -1,0 +1,20 @@
+{
+  "rule_id": "196",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADVS": {
+      "PARAM": "value"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): empty (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADVS": "BASIC DATA STRUCTURE"
+    }
+  }
+}

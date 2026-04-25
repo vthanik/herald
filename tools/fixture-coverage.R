@@ -3,9 +3,9 @@
 # -----------------------------------------------------------------------------
 # Enumerates executable rules (check_tree contains at least one `operator`
 # leaf) and checks whether each has both positive.json + negative.json under
-# tests/testthat/fixtures/golden/<authority>/<rule_id>/.
+# tools/rule-authoring/fixtures/<authority>/<rule_id>/.
 #
-# Prints a terminal summary and writes tests/testthat/fixtures/COVERAGE.md
+# Prints a terminal summary and writes tools/rule-authoring/fixtures/COVERAGE.md
 # for PR reviewers.
 #
 # Exit code is ALWAYS 0 for Phase 1a (warn-only CI gate). Flip to
@@ -15,8 +15,8 @@ suppressPackageStartupMessages({
   library(jsonlite)
 })
 
-fx_root <- file.path("tests", "testthat", "fixtures", "golden")
-out_md  <- file.path("tests", "testthat", "fixtures", "COVERAGE.md")
+fx_root <- file.path("tools", "rule-authoring", "fixtures")
+out_md  <- file.path("tools", "rule-authoring", "fixtures", "COVERAGE.md")
 
 # -- classify rules ---------------------------------------------------------
 

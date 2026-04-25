@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # test-fixture-runner.R -- parameterised runner for golden fixtures
 # -----------------------------------------------------------------------------
-# Walks tests/testthat/fixtures/golden/, loads every fixture JSON, and
+# Walks tools/rule-authoring/fixtures/, loads every fixture JSON, and
 # calls .assert_fixture() on each. Each fixture becomes its own
 # test_that() so failures report the rule id + positive/negative type.
 
@@ -108,7 +108,10 @@
 
 # -- runner -------------------------------------------------------------------
 
-fx_dir <- testthat::test_path("fixtures", "golden")
+fx_dir <- file.path(
+  dirname(dirname(normalizePath(testthat::test_path("."), mustWork = FALSE))),
+  "tools", "rule-authoring", "fixtures"
+)
 
 if (dir.exists(fx_dir)) {
   fixture_paths <- .list_fixtures(fx_dir)

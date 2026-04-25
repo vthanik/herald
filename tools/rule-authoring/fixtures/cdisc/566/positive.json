@@ -1,0 +1,21 @@
+{
+  "rule_id": "566",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADVS": {
+      "PBCHGC1N": "value",
+      "_placeholder_": "x"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): exists,not_exists",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADVS": "BASIC DATA STRUCTURE"
+    }
+  }
+}

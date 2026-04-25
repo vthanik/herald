@@ -1,0 +1,21 @@
+{
+  "rule_id": "802",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADVS": {
+      "STUDYID": ["a", "a"],
+      "STUDYIDN": ["1", "2"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": [1, 2]
+  },
+  "notes": "auto-seeded; 1 leaf op(s): is_not_unique_relationship",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADVS": "BASIC DATA STRUCTURE"
+    }
+  }
+}

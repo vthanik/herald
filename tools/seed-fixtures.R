@@ -5,7 +5,7 @@
 #
 #   Rscript tools/seed-fixtures.R [--force]
 #
-# Writes tests/testthat/fixtures/golden/<authority>/<rule_id>/{positive,negative}.json
+# Writes tools/rule-authoring/fixtures/<authority>/<rule_id>/{positive,negative}.json
 #
 # Phase 1c + 2 + C scope:
 #   * single-leaf + multi-leaf `{all: [...]}` / `{any: [...]}` trees
@@ -102,7 +102,7 @@ CLASS_TO_DOMAIN <- list(
   "TTE" = "ADTTE"
 )
 
-fx_root <- file.path("tests", "testthat", "fixtures", "golden")
+fx_root <- file.path("tools", "rule-authoring", "fixtures")
 dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
 
 # -- tree walking -----------------------------------------------------------
