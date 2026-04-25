@@ -39,14 +39,9 @@ if (requireNamespace("arrow", quietly = TRUE) &&
 \code{\link[=read_parquet]{read_parquet()}}, \code{\link[=write_xpt]{write_xpt()}}, \code{\link[=write_json]{write_json()}}.
 
 Other io: 
-\code{\link{json_to_parquet}()},
-\code{\link{json_to_xpt}()},
-\code{\link{parquet_to_json}()},
-\code{\link{parquet_to_xpt}()},
+\code{\link{convert_dataset}()},
 \code{\link{read_json}()},
 \code{\link{read_parquet}()},
-\code{\link{write_json}()},
-\code{\link{xpt_to_json}()},
-\code{\link{xpt_to_parquet}()}
+\code{\link{write_json}()}
 }
 \concept{io}

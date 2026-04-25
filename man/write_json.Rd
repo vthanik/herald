@@ -56,14 +56,9 @@ if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
 \code{\link[=read_json]{read_json()}} for reading, \code{\link[=write_xpt]{write_xpt()}} for XPT I/O.
 
 Other io: 
-\code{\link{json_to_parquet}()},
-\code{\link{json_to_xpt}()},
-\code{\link{parquet_to_json}()},
-\code{\link{parquet_to_xpt}()},
+\code{\link{convert_dataset}()},
 \code{\link{read_json}()},
 \code{\link{read_parquet}()},
-\code{\link{write_parquet}()},
-\code{\link{xpt_to_json}()},
-\code{\link{xpt_to_parquet}()}
+\code{\link{write_parquet}()}
 }
 \concept{io}

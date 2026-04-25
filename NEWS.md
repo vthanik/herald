@@ -2,7 +2,7 @@
 
 Initial clean-slate rewrite. See plan at `.local/plan.md`.
 
-- `json_to_parquet()`, `parquet_to_json()`, `parquet_to_xpt()`, and `xpt_to_parquet()` complete the three-way XPT/JSON/Parquet conversion matrix alongside the existing `xpt_to_json()` / `json_to_xpt()` pair.
+- `convert_dataset()` replaces the six directional converters (`xpt_to_json()`, `json_to_xpt()`, `xpt_to_parquet()`, `parquet_to_xpt()`, `json_to_parquet()`, `parquet_to_json()`). Formats are inferred from file extensions; pass `from =` / `to =` to override.
 - All `@examples` now use `pharmaversesdtm` and `pharmaverseadam` pilot datasets instead of hand-crafted toy data frames.
 - Pure-R, CRAN-clean, no JVM.
 - SDTM + ADaM + Define-XML 2.1.
