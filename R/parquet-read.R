@@ -1,7 +1,7 @@
 # --------------------------------------------------------------------------
 # parquet-read.R -- read Apache Parquet with CDISC column attributes
 # --------------------------------------------------------------------------
-# GSK standard format for ADaM / SDTM interchange. Parquet's schema carries
+# Parquet format for ADaM / SDTM interchange. Parquet's schema carries
 # column types natively; labels / formats / lengths are stored in the file's
 # key/value metadata map under CDISC-convention keys:
 #
