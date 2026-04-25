@@ -78,6 +78,13 @@ validate <- function(path = NULL,
     )
   }
 
+  # ---- spec pre-flight gate -----------------------------------------------
+  # If a herald_spec is supplied, validate it before doing any dataset work.
+  # A bad spec aborts here with a viewer-opened HTML report.
+  if (!is.null(spec) && is_herald_spec(spec)) {
+    validate_spec(spec, view = !isTRUE(quiet))
+  }
+
   # ---- assemble dataset map ------------------------------------------------
   if (!is.null(files)) {
     files    <- .infer_file_names(files, files_exp, call)
