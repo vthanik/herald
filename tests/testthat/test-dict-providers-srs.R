@@ -80,10 +80,8 @@ test_that("download_srs() rejects a malformed version string", {
 })
 
 test_that(".parse_srs_zip handles a stub zipped tab-delim fixture", {
-  zip_path <- tempfile(fileext = ".zip")
-  on.exit(unlink(zip_path), add = TRUE)
-  tmpdir <- tempfile("srs-zip-")
-  dir.create(tmpdir)
+  zip_path <- withr::local_tempfile(fileext = ".zip")
+  tmpdir <- withr::local_tempdir(pattern = "srs-zip-")
   txt <- file.path(tmpdir, "UNII.txt")
   writeLines(
     c("UNII\tPT\tRN",
@@ -99,10 +97,8 @@ test_that(".parse_srs_zip handles a stub zipped tab-delim fixture", {
 })
 
 test_that(".parse_srs_zip errors when required columns missing", {
-  zip_path <- tempfile(fileext = ".zip")
-  on.exit(unlink(zip_path), add = TRUE)
-  tmpdir <- tempfile("srs-bad-")
-  dir.create(tmpdir)
+  zip_path <- withr::local_tempfile(fileext = ".zip")
+  tmpdir <- withr::local_tempdir(pattern = "srs-bad-")
   txt <- file.path(tmpdir, "bad.txt")
   writeLines(c("Foo\tBar", "1\t2"), txt)
   utils::zip(zipfile = zip_path, files = txt, flags = "-j")

@@ -33,7 +33,7 @@ test_that("registered_in records the source file (when available)", {
 })
 
 test_that(".get_op errors on unknown operator", {
-  expect_error(.get_op("does_not_exist"), "Unknown operator")
+  expect_error(.get_op("does_not_exist"), class = "herald_error_runtime")
 })
 
 test_that("metadata for all registered ops has required scalar shape", {

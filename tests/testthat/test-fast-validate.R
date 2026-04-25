@@ -3,16 +3,16 @@
 # -----------------------------------------------------------------------------
 
 test_that("validate() errors when neither path nor files supplied", {
-  expect_error(validate(), "path.*files")
+  expect_error(validate(), class = "herald_error_input")
 })
 
 test_that("validate() errors when path doesn't exist", {
-  expect_error(validate("/no/such/path"), "does not exist")
+  expect_error(validate("/no/such/path"), class = "herald_error_validation")
 })
 
 test_that("validate() errors when files is not a named list of data frames", {
-  expect_error(validate(files = list(1, 2)), "named list")
-  expect_error(validate(files = list(DM = "not a df")), "data frames")
+  expect_error(validate(files = list(1, 2)), class = "herald_error_validation")
+  expect_error(validate(files = list(DM = "not a df")), class = "herald_error_validation")
 })
 
 test_that("validate() runs end-to-end with a tiny fixture", {
@@ -94,7 +94,7 @@ test_that("validate(files = list(<inline expr>)) errors with a helpful message",
       files = list(data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)),
       rules = character(0), quiet = TRUE
     ),
-    "named list"
+    class = "herald_error_validation"
   )
   # Mixed bare + inline: surfaces the "bare variable" guidance.
   dm <- data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)
@@ -104,7 +104,7 @@ test_that("validate(files = list(<inline expr>)) errors with a helpful message",
                    data.frame(USUBJID = "S1-001", stringsAsFactors = FALSE)),
       rules = character(0), quiet = TRUE
     ),
-    "bare variable"
+    class = "herald_error_validation"
   )
 })
 

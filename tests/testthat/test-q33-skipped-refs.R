@@ -99,8 +99,7 @@ test_that("write_report_html() includes the skipped_refs banner + header cell", 
     )
   )
 
-  path <- tempfile(fileext = ".html")
-  on.exit(unlink(path), add = TRUE)
+  path <- withr::local_tempfile(fileext = ".html")
   write_report_html(r, path, title = "test")
 
   html <- paste(readLines(path, warn = FALSE), collapse = "\n")

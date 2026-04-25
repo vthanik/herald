@@ -47,7 +47,7 @@ test_that("emit_submission_finding() honours overrides", {
 })
 
 test_that("emit_submission_finding() rejects unknown status", {
-  expect_error(emit_submission_finding(.rule(), status = "error"))
+  expect_error(emit_submission_finding(.rule(), status = "error"), class = "herald_error_runtime")
 })
 
 test_that("emit_submission_finding() falls back on missing rule fields", {

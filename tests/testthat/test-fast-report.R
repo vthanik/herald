@@ -51,14 +51,14 @@ mk_result_fixture <- function(findings = mk_findings_fixture()) {
 # ---- dispatcher + input validation ----------------------------------------
 
 test_that("report() rejects non-herald_result inputs", {
-  expect_error(report(list(), tempfile(fileext = ".json")), "herald_result")
+  expect_error(report(list(), tempfile(fileext = ".json")), class = "herald_error_report")
 })
 
 test_that("report() rejects unknown formats", {
   r <- mk_result_fixture()
   expect_error(
     report(r, tempfile(fileext = ".pdf")),
-    "Unknown report format"
+    class = "herald_error_report"
   )
 })
 
@@ -66,7 +66,7 @@ test_that("report() errors when path directory is missing", {
   r <- mk_result_fixture()
   expect_error(
     report(r, "/no/such/dir/out.json"),
-    "does not exist"
+    class = "herald_error_file"
   )
 })
 

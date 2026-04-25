@@ -1,8 +1,7 @@
 # Tests for R/read-xpt.R — XPT reader (round-trip with write_xpt)
 
 test_that("read_xpt preserves dataset_name attribute", {
-  tmp <- file.path(tempdir(), "dm_attr.xpt")
-  on.exit(unlink(tmp))
+  tmp <- file.path(withr::local_tempdir(), "dm_attr.xpt")
 
   df <- data.frame(X = 1L)
   write_xpt(df, tmp, dataset = "DM")
@@ -11,8 +10,7 @@ test_that("read_xpt preserves dataset_name attribute", {
 })
 
 test_that("read_xpt sets sas.length on columns", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(NAME = c("Alice", "Bob"), X = c(1.0, 2.0), stringsAsFactors = FALSE)
   write_xpt(df, tmp)
@@ -23,8 +21,7 @@ test_that("read_xpt sets sas.length on columns", {
 })
 
 test_that("read_xpt round-trips numeric data", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = c(1, 2.5, 0, -100))
   write_xpt(df, tmp)
@@ -38,8 +35,7 @@ test_that("read_xpt round-trips numeric data", {
 })
 
 test_that("read_xpt round-trips character data", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(NAME = c("Alice", "Bob", "C"), stringsAsFactors = FALSE)
   write_xpt(df, tmp)
@@ -50,8 +46,7 @@ test_that("read_xpt round-trips character data", {
 })
 
 test_that("read_xpt round-trips mixed data", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(
     ID = c(1, 2, 3),
@@ -68,8 +63,7 @@ test_that("read_xpt round-trips mixed data", {
 })
 
 test_that("read_xpt handles numeric NA as SAS missing", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = c(1, NA, 3))
   write_xpt(df, tmp)
@@ -81,8 +75,7 @@ test_that("read_xpt handles numeric NA as SAS missing", {
 })
 
 test_that("read_xpt converts character blanks to NA", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(Y = c("a", NA, "c"), stringsAsFactors = FALSE)
   write_xpt(df, tmp)
@@ -94,8 +87,7 @@ test_that("read_xpt converts character blanks to NA", {
 })
 
 test_that("read_xpt preserves column labels", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(AGE = c(25, 30))
   attr(df$AGE, "label") <- "Subject Age"
@@ -106,8 +98,7 @@ test_that("read_xpt preserves column labels", {
 })
 
 test_that("read_xpt handles zero-row data frame", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = numeric(0), Y = character(0))
   write_xpt(df, tmp)
@@ -118,8 +109,7 @@ test_that("read_xpt handles zero-row data frame", {
 })
 
 test_that("read_xpt supports col_select", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(A = 1:3, B = c("x", "y", "z"), C = 4:6)
   write_xpt(df, tmp)
@@ -130,8 +120,7 @@ test_that("read_xpt supports col_select", {
 })
 
 test_that("read_xpt supports n_max", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = seq_len(10))
   write_xpt(df, tmp)
@@ -142,12 +131,11 @@ test_that("read_xpt supports n_max", {
 })
 
 test_that("read_xpt errors on non-existent file", {
-  expect_error(read_xpt("/no/such/file.xpt"), "does not exist")
+  expect_error(read_xpt("/no/such/file.xpt"), class = "herald_error_xpt")
 })
 
 test_that("read_xpt round-trips V8 format", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(LongVarName = c(1, 2, 3))
   write_xpt(df, tmp, version = 8)
@@ -159,8 +147,7 @@ test_that("read_xpt round-trips V8 format", {
 })
 
 test_that("read_xpt V5 uppercases column names", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(age = c(25, 30))
   write_xpt(df, tmp, version = 5)
@@ -170,8 +157,7 @@ test_that("read_xpt V5 uppercases column names", {
 })
 
 test_that("read_xpt round-trips typical clinical data", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(
     SUBJID = c(1001, 1002, 1003),
@@ -198,8 +184,7 @@ test_that("read_xpt round-trips typical clinical data", {
 })
 
 test_that("read_xpt handles multiple members", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   data_list <- list(
     DM = data.frame(ID = c(1, 2)),
@@ -217,8 +202,7 @@ test_that("read_xpt handles multiple members", {
 })
 
 test_that("read_xpt preserves dataset label", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = 1)
   write_xpt(df, tmp, label = "My Dataset")
@@ -230,8 +214,7 @@ test_that("read_xpt preserves dataset label", {
 # ---- Encoding tests ----
 
 test_that("read_xpt emits message for non-UTF-8 bytes when encoding = NULL", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   # Write a file with a non-UTF-8 byte (0x92 = right single quote in Windows-1252)
   df <- data.frame(X = 1, Y = "test")
@@ -256,8 +239,7 @@ test_that("read_xpt emits message for non-UTF-8 bytes when encoding = NULL", {
 })
 
 test_that("read_xpt default encoding handles non-ASCII without message", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   # Write a file then patch in a Windows-1252 byte
 
@@ -280,8 +262,7 @@ test_that("read_xpt default encoding handles non-ASCII without message", {
 })
 
 test_that("read_xpt converts encoding when encoding is specified", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   # Write a file, then patch in a Latin-1 byte
 
@@ -307,8 +288,7 @@ test_that("read_xpt converts encoding when encoding is specified", {
 })
 
 test_that("read_xpt with encoding = NULL passes bytes through (like haven)", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = 1, Y = "hello")
   write_xpt(df, tmp)
@@ -319,8 +299,7 @@ test_that("read_xpt with encoding = NULL passes bytes through (like haven)", {
 })
 
 test_that("write_xpt encoding converts UTF-8 to target encoding", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   # Write UTF-8 data with encoding conversion to latin1
   df <- data.frame(X = 1, Y = "caf\u00e9")
@@ -332,8 +311,7 @@ test_that("write_xpt encoding converts UTF-8 to target encoding", {
 })
 
 test_that("read_xpt/write_xpt round-trip with default wlatin1 encoding", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   # UTF-8 right single quote → WLATIN1 byte 0x92 → back to UTF-8
   df <- data.frame(X = 1, Y = "Alzheimer\u2019s Disease")
@@ -344,8 +322,7 @@ test_that("read_xpt/write_xpt round-trip with default wlatin1 encoding", {
 })
 
 test_that("read_xpt accepts SAS encoding names", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = 1, Y = "hello")
   write_xpt(df, tmp)
@@ -363,8 +340,7 @@ test_that("read_xpt accepts SAS encoding names", {
 # path in parse_label_extension().
 
 test_that("V8 XPT roundtrip preserves data values", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(
     STUDYID = c("S1", "S1"),
@@ -379,8 +355,7 @@ test_that("V8 XPT roundtrip preserves data values", {
 })
 
 test_that("V8 XPT roundtrip preserves variable labels", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(AGE = c(25L, 40L), stringsAsFactors = FALSE)
   attr(df$AGE, "label") <- "Age in Years"
@@ -390,8 +365,7 @@ test_that("V8 XPT roundtrip preserves variable labels", {
 })
 
 test_that("V8 XPT roundtrip preserves long variable names (>8 chars)", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(LONGVARNAME = c("X", "Y"), stringsAsFactors = FALSE)
   write_xpt(df, tmp, dataset = "DM", version = 8)
@@ -400,8 +374,7 @@ test_that("V8 XPT roundtrip preserves long variable names (>8 chars)", {
 })
 
 test_that("V8 XPT roundtrip works with a numeric column", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(VALUE = c(1.1, 2.2, 3.3), stringsAsFactors = FALSE)
   write_xpt(df, tmp, dataset = "LB", version = 8)
@@ -410,8 +383,7 @@ test_that("V8 XPT roundtrip works with a numeric column", {
 })
 
 test_that("V8 XPT roundtrip for 0-row data frame works", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(
     STUDYID = character(0),

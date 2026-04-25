@@ -18,11 +18,10 @@ test_that("parquet round-trip preserves labels / formats / lengths / type", {
   attr(dm$AGE,     "sas.length")   <- 8L
   attr(dm$AGE,     "xpt_type")     <- "integer"
 
-  f <- tempfile(fileext = ".parquet")
+  f <- withr::local_tempfile(fileext = ".parquet")
   write_parquet(dm, f)
   expect_true(file.exists(f))
   out <- read_parquet(f)
-  unlink(f)
 
   expect_equal(attr(out, "label"), "Demographics")
   expect_equal(attr(out$USUBJID, "label"), "Unique Subject Identifier")
@@ -33,16 +32,15 @@ test_that("parquet round-trip preserves labels / formats / lengths / type", {
   expect_equal(attr(out$AGE, "sas.length"),  8L)
   expect_equal(attr(out$AGE, "xpt_type"),    "integer")
 
-  expect_equal(out$USUBJID, c("S1", "S2"))
-  expect_equal(out$AGE,     c(65L, 72L))
+  expect_equal(out$USUBJID, c("S1", "S2"), ignore_attr = TRUE)
+  expect_equal(out$AGE,     c(65L, 72L),   ignore_attr = TRUE)
 })
 
 test_that("write_parquet with dataset param round-trips dataset_name", {
   skip_if_not_installed("arrow")
 
   dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
-  f  <- tempfile(fileext = ".parquet")
-  on.exit(unlink(f))
+  f  <- withr::local_tempfile(fileext = ".parquet")
   write_parquet(dm, f, dataset = "DM", label = "Demographics")
   out <- read_parquet(f)
 
@@ -54,8 +52,7 @@ test_that("write_parquet infers dataset_name from file stem when no param", {
   skip_if_not_installed("arrow")
 
   dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
-  f  <- tempfile(pattern = "ae", fileext = ".parquet")
-  on.exit(unlink(f))
+  f  <- withr::local_tempfile(pattern = "ae", fileext = ".parquet")
   write_parquet(dm, f)
   out <- read_parquet(f)
 
@@ -64,7 +61,7 @@ test_that("write_parquet infers dataset_name from file stem when no param", {
 
 test_that("read_parquet errors when the file is missing", {
   skip_if_not_installed("arrow")
-  expect_error(read_parquet("/definitely/not/here.parquet"))
+  expect_error(read_parquet("/definitely/not/here.parquet"), class = "herald_error_io")
 })
 
 # Note: a mocked-requireNamespace() test was considered for the "arrow not

@@ -56,14 +56,13 @@ test_that(".parse_nci_evs_txt handles a minimal tab-delimited fixture", {
 })
 
 test_that(".parse_nci_evs_txt flags missing required columns", {
-  tmp <- tempfile(fileext = ".txt")
+  tmp <- withr::local_tempfile(fileext = ".txt")
   writeLines("Foo\tBar\n1\t2", tmp)
   expect_error(
     herald:::.parse_nci_evs_txt(tmp, "sdtm", "2024-01-01",
                                  "https://example/none.txt"),
     class = "herald_error_runtime"
   )
-  unlink(tmp)
 })
 
 test_that("download_ct rejects malformed version strings", {
@@ -75,8 +74,7 @@ test_that("download_ct rejects malformed version strings", {
 })
 
 test_that("download_ct returns existing RDS without re-fetching (force=FALSE)", {
-  dest <- tempfile("ct-dest-"); dir.create(dest)
-  on.exit(unlink(dest, recursive = TRUE), add = TRUE)
+  dest <- withr::local_tempdir(pattern = "ct-dest-")
   # Pre-plant the expected output so the function short-circuits.
   rds <- file.path(dest, "sdtm-ct-2024-01-01.rds")
   saveRDS(list(), rds)

@@ -191,12 +191,11 @@ test_that("detect_xpt_version identifies V8", {
 })
 
 test_that("detect_xpt_version rejects invalid header", {
-  expect_error(detect_xpt_version("GARBAGE"), "unrecognised")
+  expect_error(detect_xpt_version("GARBAGE"), class = "herald_error_xpt")
 })
 
 test_that("parse_library_header round-trips with build for V5", {
-  tmp <- tempfile()
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile()
 
   header <- build_library_header(version = 5L)
   writeBin(header, tmp)
@@ -210,8 +209,7 @@ test_that("parse_library_header round-trips with build for V5", {
 })
 
 test_that("parse_library_header round-trips with build for V8", {
-  tmp <- tempfile()
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile()
 
   header <- build_library_header(version = 8L)
   writeBin(header, tmp)
@@ -263,8 +261,7 @@ test_that("parse_namestr_block reads correct number of vars", {
   df <- data.frame(X = 1:3, Y = c("a", "b", "c"))
   block <- build_namestr_block(df, version = 5L)
 
-  tmp <- tempfile()
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile()
   writeBin(block, tmp)
 
   con <- file(tmp, "rb")
@@ -575,8 +572,7 @@ test_that("parse_namestr_block V8 reads multiple variables", {
   df <- data.frame(STUDYID = "S1", AGE = 65L, stringsAsFactors = FALSE)
   block <- herald:::build_namestr_block(df, version = 8L)
 
-  tmp <- tempfile()
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile()
   writeBin(block, tmp)
 
   con <- file(tmp, "rb")
@@ -672,8 +668,7 @@ test_that("parse_label_extension returns namestrs unchanged for non-label record
     80L
   ))
 
-  tmp <- tempfile()
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile()
   writeBin(as.raw(0x00), tmp) # dummy content
   con <- file(tmp, "rb")
   on.exit(close(con), add = TRUE)
@@ -696,8 +691,7 @@ test_that("LABELV9 round-trip: long format name is preserved", {
   attr(dm$RFSTDTC, "label") <- "Reference Start Date/Time"
   attr(dm$RFSTDTC, "format.sas") <- "DATETIME26.6" # > 8 chars
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   write_xpt(dm, tmp, dataset = "DM", version = 8L)
   expect_true(file.exists(tmp))
@@ -719,8 +713,7 @@ test_that("LABELV9 round-trip: multiple columns with long formats", {
   attr(dm$RFSTDTC, "label") <- "Reference Start Date/Time"
   attr(dm$RFENDTC, "label") <- "Reference End Date/Time"
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   write_xpt(dm, tmp, dataset = "DM", version = 8L)
   dm2 <- read_xpt(tmp)
@@ -734,7 +727,7 @@ test_that("LABELV9 round-trip: multiple columns with long formats", {
 test_that("detect_xpt_version errors on unrecognised header", {
   expect_error(
     herald:::detect_xpt_version("HEADER RECORD*******UNKNOWN HEADER RECORD"),
-    "unrecognised"
+    class = "herald_error_xpt"
   )
 })
 

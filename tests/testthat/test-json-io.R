@@ -17,8 +17,7 @@ test_that("write_json() creates valid JSON", {
   attr(dm$USUBJID, "label") <- "Unique Subject Identifier"
   attr(dm$AGE, "label") <- "Age"
 
-  path <- tempfile(fileext = ".json")
-  withr::defer(unlink(path))
+  path <- withr::local_tempfile(fileext = ".json")
 
   result <- write_json(dm, path, dataset = "DM", label = "Demographics")
   # write_json returns x invisibly (not the path)
@@ -64,8 +63,7 @@ test_that("read_json() round-trips correctly", {
   attr(dm$STUDYID, "label") <- "Study Identifier"
   attr(dm$AGE, "label") <- "Age"
 
-  path <- tempfile(fileext = ".json")
-  withr::defer(unlink(path))
+  path <- withr::local_tempfile(fileext = ".json")
 
   write_json(dm, path, dataset = "DM")
   dm2 <- read_json(path)
@@ -91,8 +89,7 @@ test_that("write_json() handles NA values", {
     stringsAsFactors = FALSE
   )
 
-  path <- tempfile(fileext = ".json")
-  withr::defer(unlink(path))
+  path <- withr::local_tempfile(fileext = ".json")
 
   write_json(df, path, dataset = "TEST")
   df2 <- read_json(path)
@@ -110,8 +107,7 @@ test_that("read_json() handles empty dataset", {
     stringsAsFactors = FALSE
   )
 
-  path <- tempfile(fileext = ".json")
-  withr::defer(unlink(path))
+  path <- withr::local_tempfile(fileext = ".json")
 
   write_json(df, path, dataset = "EMPTY")
   df2 <- read_json(path)
@@ -125,13 +121,12 @@ test_that("read_json() errors on invalid input", {
   skip_if_not_installed("jsonlite")
 
   # Non-existent file
-  expect_error(read_json("nonexistent.json"), "does not exist")
+  expect_error(read_json("nonexistent.json"), class = "herald_error_io")
 
   # Invalid JSON structure
-  path <- tempfile(fileext = ".json")
-  withr::defer(unlink(path))
+  path <- withr::local_tempfile(fileext = ".json")
   writeLines('{"foo": "bar"}', path)
-  expect_error(read_json(path), "Dataset-JSON")
+  expect_error(read_json(path), class = "herald_error_io")
 })
 
 test_that("write_json() errors on non-data.frame", {
@@ -139,7 +134,7 @@ test_that("write_json() errors on non-data.frame", {
 
   expect_error(
     write_json("not a data frame", tempfile()),
-    "data frame"
+    class = "herald_error_input"
   )
 })
 
@@ -147,8 +142,7 @@ test_that("write_json() infers dataset name from path", {
   skip_if_not_installed("jsonlite")
 
   df <- data.frame(X = 1L, stringsAsFactors = FALSE)
-  path <- tempfile(pattern = "adsl", fileext = ".json")
-  withr::defer(unlink(path))
+  path <- withr::local_tempfile(pattern = "adsl", fileext = ".json")
 
   write_json(df, path)
   raw <- jsonlite::fromJSON(path, simplifyVector = FALSE)
@@ -160,7 +154,7 @@ test_that("write_json() infers dataset name from path", {
 # -- read_json: error cases --------------------------------------------------
 
 test_that("read_json errors for non-existent file", {
-  expect_error(read_json("/no/such/file.json"), "does not exist")
+  expect_error(read_json("/no/such/file.json"), class = "herald_error_io")
 })
 
 test_that("read_json errors for non-character path", {
@@ -170,19 +164,17 @@ test_that("read_json errors for non-character path", {
 
 test_that("read_json errors for invalid Dataset-JSON structure", {
   skip_if_not_installed("jsonlite")
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
   # Missing 'rows' and 'columns'
   writeLines('{"name": "DM", "label": "Demographics"}', tmp)
-  expect_error(read_json(tmp), "Unrecognised")
+  expect_error(read_json(tmp), class = "herald_error_io")
 })
 
 # -- read_json: dataset with zero rows ----------------------------------------
 
 test_that("read_json handles dataset with zero rows", {
   skip_if_not_installed("jsonlite")
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(STUDYID = character(0L), stringsAsFactors = FALSE)
   write_json(dm, tmp, dataset = "DM", label = "Demographics")
@@ -197,8 +189,7 @@ test_that("read_json handles dataset with zero rows", {
 
 test_that("write_json handles Date column as date dataType", {
   skip_if_not_installed("jsonlite")
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(
     STUDYID = "S1",
@@ -214,8 +205,7 @@ test_that("write_json handles Date column as date dataType", {
 
 test_that("write_json handles POSIXct column as datetime dataType", {
   skip_if_not_installed("jsonlite")
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(
     STUDYID = "S1",
@@ -234,8 +224,7 @@ test_that("write_json handles POSIXct column as datetime dataType", {
 
 test_that("write_json with herald.sort_keys sorts rows before writing", {
   skip_if_not_installed("jsonlite")
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(
     STUDYID = c("S1", "S1", "S1"),
@@ -254,8 +243,7 @@ test_that("write_json with herald.sort_keys sorts rows before writing", {
 
 test_that("write_json infers dataset name from dataset_name attribute", {
   skip_if_not_installed("jsonlite")
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(X = 1L, stringsAsFactors = FALSE)
   attr(dm, "dataset_name") <- "MYDS"
@@ -272,8 +260,7 @@ test_that("write_json infers dataset name from dataset_name attribute", {
 
 test_that("write_json infers dataset name from filename when no attribute", {
   skip_if_not_installed("jsonlite")
-  tmp <- file.path(tempdir(), "dm_test.json")
-  on.exit(unlink(tmp))
+  tmp <- file.path(withr::local_tempdir(), "dm_test.json")
 
   dm <- data.frame(X = 1L, stringsAsFactors = FALSE)
   write_json(dm, tmp) # no dataset=, no attribute
@@ -286,8 +273,7 @@ test_that("write_json infers dataset name from filename when no attribute", {
 
 test_that("write_json with metadata_ref includes it in output", {
   skip_if_not_installed("jsonlite")
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   dm <- data.frame(X = 1L, stringsAsFactors = FALSE)
   write_json(dm, tmp, dataset = "DM", metadata_ref = "define.xml")
@@ -304,8 +290,7 @@ test_that("write_json with metadata_ref includes it in output", {
 
 test_that("read_json preserves sas.length attribute from JSON", {
   skip_if_not_installed("jsonlite")
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   # Write JSON with a column that has length attribute
   dm <- data.frame(STUDYID = "S1", stringsAsFactors = FALSE)
@@ -322,8 +307,7 @@ test_that("read_json preserves sas.length attribute from JSON", {
 
 test_that("read_json handles null values in rows (sparse rows)", {
   skip_if_not_installed("jsonlite")
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   # Create JSON with sparse rows (some cells missing)
   json_content <- jsonlite::toJSON(
@@ -361,8 +345,7 @@ test_that("write_json handles logical column as boolean dataType", {
     FLAG = TRUE,
     stringsAsFactors = FALSE
   )
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   write_json(dm, tmp, dataset = "DM")
   expect_true(file.exists(tmp))
@@ -376,8 +359,7 @@ test_that("write_json handles difftime column as time dataType via SAS format", 
   dm <- data.frame(RFTM = "12:30:00", stringsAsFactors = FALSE)
   attr(dm$RFTM, "format.sas") <- "TIME"
 
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   write_json(dm, tmp, dataset = "DM")
   expect_true(file.exists(tmp))
@@ -391,8 +373,7 @@ test_that("write_json handles SAS datetime format string as datetime", {
   dm <- data.frame(RFSTDTC = "2020-01-01T00:00:00", stringsAsFactors = FALSE)
   attr(dm$RFSTDTC, "format.sas") <- "DATETIME"
 
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   write_json(dm, tmp, dataset = "DM")
   content <- readLines(tmp)
@@ -405,8 +386,7 @@ test_that("write_json handles SAS date format string as date", {
   dm <- data.frame(RFSTDTC = "2020-01-01", stringsAsFactors = FALSE)
   attr(dm$RFSTDTC, "format.sas") <- "DATE"
 
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   write_json(dm, tmp, dataset = "DM")
   content <- readLines(tmp)
@@ -420,8 +400,7 @@ test_that("write_json includes studyOID when study_oid specified", {
   skip_if_not_installed("jsonlite")
 
   dm <- data.frame(STUDYID = "S1", stringsAsFactors = FALSE)
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
 
   write_json(
     dm,
@@ -440,11 +419,10 @@ test_that("write_json includes studyOID when study_oid specified", {
 test_that("read_json errors when columns and rows fields missing", {
   skip_if_not_installed("jsonlite")
 
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
   writeLines('{"name":"DM","label":"Demographics"}', tmp)
 
-  expect_error(read_json(tmp), "Unrecognised")
+  expect_error(read_json(tmp), class = "herald_error_io")
 })
 
 # -- .build_dataframe: empty rows with numeric type --------------------------
@@ -462,8 +440,7 @@ test_that("read_json handles zero-row dataset with numeric columns", {
     auto_unbox = TRUE
   )
 
-  tmp <- tempfile(fileext = ".json")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".json")
   writeLines(json_content, tmp)
 
   result <- read_json(tmp)

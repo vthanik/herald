@@ -1,8 +1,7 @@
 # Tests for R/write-xpt.R — XPT writer
 
 test_that("write_xpt creates a file", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = c(1, 2, 3))
   write_xpt(df, tmp)
@@ -12,8 +11,7 @@ test_that("write_xpt creates a file", {
 })
 
 test_that("write_xpt output is a multiple of 80 bytes", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = c(1, 2, 3), Y = c("a", "b", "c"))
   write_xpt(df, tmp)
@@ -24,8 +22,7 @@ test_that("write_xpt output is a multiple of 80 bytes", {
 })
 
 test_that("write_xpt handles numeric data", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(A = c(1.5, 0, -42.195))
   write_xpt(df, tmp)
@@ -33,8 +30,7 @@ test_that("write_xpt handles numeric data", {
 })
 
 test_that("write_xpt handles character data", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(
     NAME = c("Alice", "Bob", "Charlie"),
@@ -45,8 +41,7 @@ test_that("write_xpt handles character data", {
 })
 
 test_that("write_xpt handles mixed data", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(
     ID = c(1, 2, 3),
@@ -58,8 +53,7 @@ test_that("write_xpt handles mixed data", {
 })
 
 test_that("write_xpt handles NA values", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = c(1, NA, 3), Y = c("a", NA, "c"))
   write_xpt(df, tmp)
@@ -67,8 +61,7 @@ test_that("write_xpt handles NA values", {
 })
 
 test_that("write_xpt handles zero-row data frame", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = numeric(0), Y = character(0))
   write_xpt(df, tmp)
@@ -78,8 +71,7 @@ test_that("write_xpt handles zero-row data frame", {
 })
 
 test_that("write_xpt returns path invisibly", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = 1)
   result <- write_xpt(df, tmp)
@@ -89,16 +81,14 @@ test_that("write_xpt returns path invisibly", {
 })
 
 test_that("write_xpt errors on factor columns", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = factor(c("a", "b")))
-  expect_error(write_xpt(df, tmp), "factor")
+  expect_error(write_xpt(df, tmp), class = "herald_error_xpt")
 })
 
 test_that("write_xpt supports V8 format", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(LongVarName = c(1, 2))
   write_xpt(df, tmp, version = 8)
@@ -111,13 +101,12 @@ test_that("write_xpt rejects V5 with long names", {
   df <- data.frame(TOOLONGVAR = 1)
   expect_error(
     write_xpt(df, tempfile(), version = 5),
-    "8.*characters"
+    class = "herald_error_xpt"
   )
 })
 
 test_that("write_xpt derives dataset name from file path when dataset=NULL", {
-  tmp <- file.path(tempdir(), "ae.xpt")
-  on.exit(unlink(tmp))
+  tmp <- file.path(withr::local_tempdir(), "ae.xpt")
 
   df <- data.frame(X = 1)
   write_xpt(df, tmp)
@@ -129,8 +118,7 @@ test_that("write_xpt derives dataset name from file path when dataset=NULL", {
 })
 
 test_that("write_xpt uses dataset_name attribute when dataset=NULL", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = 1)
   attr(df, "dataset_name") <- "VS"
@@ -143,8 +131,7 @@ test_that("write_xpt uses dataset_name attribute when dataset=NULL", {
 })
 
 test_that("write_xpt handles custom name and label", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(X = 1)
   write_xpt(df, tmp, dataset = "MYDS", label = "My dataset")
@@ -159,8 +146,7 @@ test_that("write_xpt handles custom name and label", {
 })
 
 test_that("write_xpt preserves column labels in namestr", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(AGE = c(25, 30))
   attr(df$AGE, "label") <- "Subject Age"
@@ -176,8 +162,7 @@ test_that("write_xpt preserves column labels in namestr", {
 })
 
 test_that("write_xpt handles multiple members (list input)", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   data_list <- list(
     DM = data.frame(ID = c(1, 2)),
@@ -189,8 +174,7 @@ test_that("write_xpt handles multiple members (list input)", {
 })
 
 test_that("write_xpt handles Date columns", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(DT = as.Date(c("2024-01-15", "2024-06-30")))
   write_xpt(df, tmp)
@@ -198,8 +182,7 @@ test_that("write_xpt handles Date columns", {
 })
 
 test_that("write_xpt handles POSIXct columns", {
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   df <- data.frame(
     DTM = as.POSIXct(
@@ -223,8 +206,7 @@ test_that("write_xpt sorts by herald.sort_keys attribute", {
   )
   attr(df, "herald.sort_keys") <- c("STUDYID", "USUBJID")
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   write_xpt(df, tmp, dataset = "DM")
   result <- read_xpt(tmp)
@@ -237,8 +219,7 @@ test_that("write_xpt with sort_keys that are not in data still writes", {
   df <- data.frame(STUDYID = "S1", stringsAsFactors = FALSE)
   attr(df, "herald.sort_keys") <- c("NONEXISTENT_KEY")
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   expect_no_error(write_xpt(df, tmp, dataset = "DM"))
 })
@@ -251,8 +232,7 @@ test_that("write_xpt converts logical columns to numeric", {
     stringsAsFactors = FALSE
   )
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   write_xpt(df, tmp, dataset = "TEST")
   result <- read_xpt(tmp)
@@ -269,8 +249,7 @@ test_that("write_xpt converts difftime (time) columns to numeric seconds", {
   t1 <- as.difftime(3600, units = "secs") # 1 hour = 3600 secs
   df <- data.frame(TMVAL = t1, stringsAsFactors = FALSE)
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   write_xpt(df, tmp, dataset = "TEST")
   result <- read_xpt(tmp)
@@ -298,8 +277,7 @@ test_that("write_xpt uses dataset_name attribute when dataset=NULL", {
   df <- data.frame(STUDYID = "S1", stringsAsFactors = FALSE)
   attr(df, "dataset_name") <- "VS"
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   write_xpt(df, tmp)
   result <- read_xpt(tmp)
@@ -312,10 +290,9 @@ test_that("write_xpt errors when list element is not a data frame", {
   dm <- data.frame(STUDYID = "S1", stringsAsFactors = FALSE)
   bad_list <- list(DM = dm, BAD = "not a data frame")
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
-  expect_error(write_xpt(bad_list, tmp), "must be a data frame")
+  expect_error(write_xpt(bad_list, tmp), class = "herald_error_xpt")
 })
 
 # -- write_xpt_multi: unnamed list gets auto-names ---------------------------
@@ -324,8 +301,7 @@ test_that("write_xpt with unnamed list assigns DATA1, DATA2 names", {
   dm <- data.frame(STUDYID = "S1", stringsAsFactors = FALSE)
   ae <- data.frame(AETERM = "H", stringsAsFactors = FALSE)
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   # Unnamed list
   expect_no_error(write_xpt(list(dm, ae), tmp))
@@ -336,8 +312,7 @@ test_that("write_xpt with unnamed list assigns DATA1, DATA2 names", {
 test_that("write_xpt V5 truncates dataset name to 8 chars", {
   df <- data.frame(X = 1L, stringsAsFactors = FALSE)
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   write_xpt(df, tmp, dataset = "TOOLONGNAME", version = 5L)
   result <- read_xpt(tmp)
@@ -350,8 +325,7 @@ test_that("write_xpt V5 truncates dataset name to 8 chars", {
 test_that("write_xpt V8 truncates dataset name to 32 chars", {
   df <- data.frame(X = 1L, stringsAsFactors = FALSE)
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   long_name <- paste(rep("A", 40L), collapse = "")
   write_xpt(df, tmp, dataset = long_name, version = 8L)
@@ -365,8 +339,7 @@ test_that("write_xpt uses label attribute when label=NULL", {
   df <- data.frame(STUDYID = "S1", stringsAsFactors = FALSE)
   attr(df, "label") <- "Demographics"
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   expect_no_error(write_xpt(df, tmp, dataset = "DM"))
 })
@@ -376,8 +349,7 @@ test_that("write_xpt uses label attribute when label=NULL", {
 test_that("write_xpt handles zero-row data frame without error", {
   df <- data.frame(STUDYID = character(0L), stringsAsFactors = FALSE)
 
-  tmp <- tempfile(fileext = ".xpt")
-  on.exit(unlink(tmp))
+  tmp <- withr::local_tempfile(fileext = ".xpt")
 
   expect_no_error(write_xpt(df, tmp, dataset = "DM"))
   expect_true(file.exists(tmp))
