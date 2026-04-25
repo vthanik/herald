@@ -21,6 +21,7 @@ Other spec:
 \code{\link{as_herald_spec}()},
 \code{\link{herald_spec}()},
 \code{\link{read_define_xml}()},
+\code{\link{validate_spec}()},
 \code{\link{write_define_html}()},
 \code{\link{write_define_xml}()}
 }

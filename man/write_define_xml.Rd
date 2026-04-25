@@ -58,6 +58,7 @@ Other spec:
 \code{\link{herald_spec}()},
 \code{\link{is_herald_spec}()},
 \code{\link{read_define_xml}()},
+\code{\link{validate_spec}()},
 \code{\link{write_define_html}()}
 }
 \concept{spec}
