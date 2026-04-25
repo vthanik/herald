@@ -176,8 +176,7 @@ herald_error_missing_pkg <- function(pkg, purpose, call = caller_env()) {
     ),
     pkg = pkg,
     class = "herald_error_missing_pkg",
-    call = call,
-    .envir = parent.frame()
+    call = call
   )
 }
 
