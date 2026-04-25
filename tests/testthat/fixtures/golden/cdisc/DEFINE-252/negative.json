@@ -1,0 +1,15 @@
+{
+  "rule_id": "DEFINE-252",
+  "fixture_type": "negative",
+  "datasets": {
+    "Define_Dataset_Metadata": {
+      "purpose": ""
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): non_empty (should not fire)",
+  "authored": "auto-seed@4"
+}

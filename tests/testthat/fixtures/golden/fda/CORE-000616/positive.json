@@ -1,0 +1,17 @@
+{
+  "rule_id": "CORE-000616",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "_placeholder_": "x",
+      "DMSTINT": "value",
+      "DMTPTREF": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 4 leaf op(s): exists,exists,non_empty,empty",
+  "authored": "auto-seed@4"
+}

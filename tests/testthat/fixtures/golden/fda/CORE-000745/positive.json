@@ -1,0 +1,22 @@
+{
+  "rule_id": "CORE-000745",
+  "fixture_type": "positive",
+  "datasets": {
+    "OI": {
+      "_placeholder_": "x",
+      "OIPARM": ["a", "a"],
+      "OIPARMCD": ["1", "2"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": [1, 2]
+  },
+  "notes": "auto-seeded; 3 leaf op(s): exists,exists,is_not_unique_relationship",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "OI": "STUDY REFERENCE"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "rule_id": "DEFINE-092",
+  "fixture_type": "negative",
+  "datasets": {
+    "Define_ValueLevel_Metadata": {
+      "oid": ""
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): non_empty (should not fire)",
+  "authored": "auto-seed@4"
+}

@@ -1,0 +1,22 @@
+{
+  "rule_id": "586",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "PBCHG": 99,
+      "BASE": 12,
+      "AVAL": 10
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): is_not_pct_diff",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "BASIC DATA STRUCTURE"
+    }
+  }
+}

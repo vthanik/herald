@@ -1,0 +1,15 @@
+{
+  "rule_id": "DEFINE-115",
+  "fixture_type": "positive",
+  "datasets": {
+    "Define_Dataset_Metadata": {
+      "is_referencedata": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): non_empty",
+  "authored": "auto-seed@4"
+}

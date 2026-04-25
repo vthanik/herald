@@ -1,0 +1,20 @@
+{
+  "rule_id": "CG0382",
+  "fixture_type": "negative",
+  "datasets": {
+    "AE": {
+      "AEHLTCD": "VALID"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): value_in_dictionary (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "AE": "EVT"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "rule_id": "478",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "STRAT1V": "value",
+      "STRAT1VN": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,empty",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "SUBJECT LEVEL ANALYSIS DATASET"
+    }
+  }
+}

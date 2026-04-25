@@ -1,0 +1,21 @@
+{
+  "rule_id": "337",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADSL": {
+      "_placeholder_": "x",
+      "MCRIT1": "value"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): exists,not_exists (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "BASIC DATA STRUCTURE"
+    }
+  }
+}

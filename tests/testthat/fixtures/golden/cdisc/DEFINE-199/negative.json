@@ -1,0 +1,15 @@
+{
+  "rule_id": "DEFINE-199",
+  "fixture_type": "negative",
+  "datasets": {
+    "Define_Codelist_Metadata": {
+      "oid": ""
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): non_empty (should not fire)",
+  "authored": "auto-seed@4"
+}

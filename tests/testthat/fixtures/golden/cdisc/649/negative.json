@@ -1,0 +1,21 @@
+{
+  "rule_id": "649",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADSL": {
+      "ONTR01FL": "NOT_IN_Y",
+      "ONTRTFL": "Y"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): is_contained_by,is_not_contained_by (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "OCCURRENCE DATA STRUCTURE"
+    }
+  }
+}

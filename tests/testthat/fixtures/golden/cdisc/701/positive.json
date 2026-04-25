@@ -1,0 +1,22 @@
+{
+  "rule_id": "701",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "PCHG": 99,
+      "AVAL": 12,
+      "BASE": 10
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): is_not_pct_diff",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "MEDICAL DEVICE BASIC DATA STRUCTURE"
+    }
+  }
+}

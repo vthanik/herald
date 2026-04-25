@@ -1,0 +1,25 @@
+{
+  "rule_id": "209",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "SITEID": "DIFF",
+      "USUBJID": "K1"
+    },
+    "DM": {
+      "SITEID": "SAME",
+      "USUBJID": "K1"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded (+1 ref ds); 1 leaf op(s): differs_by_key",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "SUBJECT LEVEL ANALYSIS DATASET"
+    }
+  }
+}

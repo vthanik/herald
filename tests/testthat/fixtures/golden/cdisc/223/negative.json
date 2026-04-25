@@ -1,0 +1,22 @@
+{
+  "rule_id": "223",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADSL": {
+      "CHG": 7,
+      "AVAL": 10,
+      "BASE": 3
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): is_not_diff (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "BASIC DATA STRUCTURE"
+    }
+  }
+}

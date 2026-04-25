@@ -1,0 +1,15 @@
+{
+  "rule_id": "DEFINE-174",
+  "fixture_type": "positive",
+  "datasets": {
+    "Define_Codelist_Metadata": {
+      "data_type": "value"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): non_empty",
+  "authored": "auto-seed@4"
+}

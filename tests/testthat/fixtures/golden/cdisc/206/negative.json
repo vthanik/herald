@@ -1,0 +1,25 @@
+{
+  "rule_id": "206",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADSL": {
+      "SEX": "SAME",
+      "USUBJID": "K1"
+    },
+    "DM": {
+      "SEX": "SAME",
+      "USUBJID": "K1"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded (+1 ref ds); 1 leaf op(s): differs_by_key (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "SUBJECT LEVEL ANALYSIS DATASET"
+    }
+  }
+}

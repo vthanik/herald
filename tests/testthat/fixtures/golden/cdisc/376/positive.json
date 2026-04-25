@@ -1,0 +1,16 @@
+{
+  "rule_id": "376",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "PARAMGR1": "value",
+      "PARAMGR1N": ""
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,empty",
+  "authored": "auto-seed@4"
+}
