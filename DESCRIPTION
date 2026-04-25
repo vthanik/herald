@@ -32,7 +32,6 @@ Imports:
     vctrs
 Suggests:
     arrow,
-    hedgehog,
     htmltools,
     knitr,
     pharmaversesdtm,
