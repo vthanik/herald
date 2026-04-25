@@ -22,8 +22,9 @@
 #'
 #' @param file Path to a `.parquet` file.
 #'
-#' @return A data.frame with `attr(col, "label")`, `attr(col, "format.sas")`,
-#'   `attr(col, "sas.length")`, and `attr(col, "xpt_type")` populated from
+#' @return A data.frame with `attr(df, "label")`, `attr(df, "dataset_name")`,
+#'   and per-column `attr(col, "label")`, `attr(col, "format.sas")`,
+#'   `attr(col, "sas.length")`, `attr(col, "xpt_type")` populated from
 #'   the file's key/value metadata when present.
 #'
 #' @examples
@@ -48,8 +49,10 @@ read_parquet <- function(file) {
   meta <- tbl$schema$metadata %||% list()
   df   <- as.data.frame(tbl, stringsAsFactors = FALSE)
 
-  ds_lbl <- meta[["herald.dataset.label"]]
-  if (!is.null(ds_lbl) && nzchar(ds_lbl)) attr(df, "label") <- ds_lbl
+  ds_lbl  <- meta[["herald.dataset.label"]]
+  ds_name <- meta[["herald.dataset.name"]]
+  if (!is.null(ds_lbl) && nzchar(ds_lbl)) attr(df, "label")        <- ds_lbl
+  if (!is.null(ds_name) && nzchar(ds_name)) attr(df, "dataset_name") <- ds_name
 
   for (nm in names(df)) {
     col <- df[[nm]]

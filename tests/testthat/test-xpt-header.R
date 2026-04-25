@@ -317,7 +317,7 @@ test_that("parse_member_section V5: dataset name and row count round-trip", {
   expect_equal(nrow(result), 1L)
   expect_true("STUDYID" %in% names(result))
   expect_true("AGE" %in% names(result))
-  expect_equal(result$STUDYID, "S1")
+  expect_equal(result$STUDYID, "S1", ignore_attr = TRUE)
 })
 
 test_that("parse_member_section V5: multiple rows round-trip", {
@@ -334,7 +334,7 @@ test_that("parse_member_section V5: multiple rows round-trip", {
 
   result <- suppressMessages(suppressWarnings(read_xpt(tmp)))
   expect_equal(nrow(result), 3L)
-  expect_equal(result$USUBJID, c("S1-001", "S1-002", "S1-003"))
+  expect_equal(result$USUBJID, c("S1-001", "S1-002", "S1-003"), ignore_attr = TRUE)
 })
 
 # -- parse_member_section: V8 (ds_name bytes 9:40) ----------------------------

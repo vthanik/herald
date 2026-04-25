@@ -230,7 +230,7 @@ test_that("write_xpt sorts by herald.sort_keys attribute", {
   result <- read_xpt(tmp)
 
   # After sorting, USUBJID should be in order
-  expect_equal(result$USUBJID, c("S1-001", "S1-002", "S1-003"))
+  expect_equal(result$USUBJID, c("S1-001", "S1-002", "S1-003"), ignore_attr = TRUE)
 })
 
 test_that("write_xpt with sort_keys that are not in data still writes", {

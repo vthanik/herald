@@ -4,7 +4,7 @@
 \alias{write_parquet}
 \title{Write a data frame to Apache Parquet with CDISC column attributes}
 \usage{
-write_parquet(x, file)
+write_parquet(x, file, dataset = NULL, label = NULL)
 }
 \arguments{
 \item{x}{A data frame. Column and dataset attributes
@@ -12,6 +12,12 @@ write_parquet(x, file)
 the file's key/value metadata when present.}
 
 \item{file}{Output path (should end in \code{.parquet}).}
+
+\item{dataset}{Dataset name (e.g., \code{"DM"}). Default: the
+\code{"dataset_name"} attribute of \code{x}, then the uppercase file stem,
+then \code{NULL} (omitted from metadata).}
+
+\item{label}{Dataset label. Default: the \code{"label"} attribute of \code{x}.}
 }
 \value{
 \code{x} invisibly.

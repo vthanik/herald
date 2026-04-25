@@ -10,8 +10,9 @@ read_parquet(file)
 \item{file}{Path to a \code{.parquet} file.}
 }
 \value{
-A data.frame with \code{attr(col, "label")}, \code{attr(col, "format.sas")},
-\code{attr(col, "sas.length")}, and \code{attr(col, "xpt_type")} populated from
+A data.frame with \code{attr(df, "label")}, \code{attr(df, "dataset_name")},
+and per-column \code{attr(col, "label")}, \code{attr(col, "format.sas")},
+\code{attr(col, "sas.length")}, \code{attr(col, "xpt_type")} populated from
 the file's key/value metadata when present.
 }
 \description{

@@ -12,20 +12,43 @@
 #'   (`label`, `format.sas`, `sas.length`, `xpt_type`) are serialised to
 #'   the file's key/value metadata when present.
 #' @param file Output path (should end in `.parquet`).
+#' @param dataset Dataset name (e.g., `"DM"`). Default: the
+#'   `"dataset_name"` attribute of `x`, then the uppercase file stem,
+#'   then `NULL` (omitted from metadata).
+#' @param label Dataset label. Default: the `"label"` attribute of `x`.
 #'
 #' @return `x` invisibly.
 #'
 #' @seealso [read_parquet()], [write_xpt()], [write_json()].
 #' @family io
 #' @export
-write_parquet <- function(x, file) {
+write_parquet <- function(x, file, dataset = NULL, label = NULL) {
   call <- rlang::caller_env()
   check_data_frame(x, call = call)
   check_scalar_chr(file, call = call)
   .require_arrow(call)
 
+  if (is.null(dataset)) {
+    ds_attr <- attr(x, "dataset_name")
+    dataset <- if (!is.null(ds_attr) && length(ds_attr) == 1L && nzchar(ds_attr)) {
+      toupper(ds_attr)
+    } else {
+      stem <- tools::file_path_sans_ext(basename(file))
+      if (nzchar(stem)) toupper(stem) else NULL
+    }
+  } else {
+    dataset <- toupper(dataset)
+  }
+
+  if (is.null(label)) {
+    label <- attr(x, "label") %||% NULL
+  }
+
   meta <- list()
-  ds_lbl <- attr(x, "label")
+  if (!is.null(dataset) && nzchar(dataset)) {
+    meta[["herald.dataset.name"]] <- as.character(dataset)
+  }
+  ds_lbl <- label
   if (!is.null(ds_lbl) && length(ds_lbl) == 1L && nzchar(ds_lbl)) {
     meta[["herald.dataset.label"]] <- as.character(ds_lbl)
   }

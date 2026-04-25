@@ -361,6 +361,11 @@ set_column_attrs <- function(df, namestrs, col_select) {
       attr(df[[nm]], "label") <- ns$label
     }
 
+    # Set sas.length
+    if (ns$length > 0L) {
+      attr(df[[nm]], "sas.length") <- ns$length
+    }
+
     # Set format / informat
     fmt_str <- build_format_string(ns$format_name, ns$formatl, ns$formatd)
     if (nzchar(fmt_str)) {

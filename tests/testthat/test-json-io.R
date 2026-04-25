@@ -163,7 +163,7 @@ test_that("json_to_xpt() converts Dataset-JSON to XPT", {
   expect_true(file.exists(xpt))
   dm2 <- read_xpt(xpt)
   expect_equal(nrow(dm2), 2L)
-  expect_equal(dm2$STUDYID, c("S1", "S1"))
+  expect_equal(dm2$STUDYID, c("S1", "S1"), ignore_attr = TRUE)
 })
 
 test_that("XPT -> JSON -> XPT round-trip preserves data", {

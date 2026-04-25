@@ -37,6 +37,31 @@ test_that("parquet round-trip preserves labels / formats / lengths / type", {
   expect_equal(out$AGE,     c(65L, 72L))
 })
 
+test_that("write_parquet with dataset param round-trips dataset_name", {
+  skip_if_not_installed("arrow")
+
+  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  f  <- tempfile(fileext = ".parquet")
+  on.exit(unlink(f))
+  write_parquet(dm, f, dataset = "DM", label = "Demographics")
+  out <- read_parquet(f)
+
+  expect_equal(attr(out, "dataset_name"), "DM")
+  expect_equal(attr(out, "label"),        "Demographics")
+})
+
+test_that("write_parquet infers dataset_name from file stem when no param", {
+  skip_if_not_installed("arrow")
+
+  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  f  <- tempfile(pattern = "ae", fileext = ".parquet")
+  on.exit(unlink(f))
+  write_parquet(dm, f)
+  out <- read_parquet(f)
+
+  expect_equal(attr(out, "dataset_name"), toupper(tools::file_path_sans_ext(basename(f))))
+})
+
 test_that("read_parquet errors when the file is missing", {
   skip_if_not_installed("arrow")
   expect_error(read_parquet("/definitely/not/here.parquet"))
