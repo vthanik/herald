@@ -29,28 +29,24 @@ XPT and Dataset-JSON readers already set these attributes at ingest,
 so \code{apply_spec()} is optional there.
 }
 \examples{
-dm <- data.frame(
-  USUBJID = c("S1", "S2"),
-  AGE     = c(65L, 72L),
-  stringsAsFactors = FALSE
-)
-spec <- as_herald_spec(
-  ds_spec = data.frame(
-    dataset = "DM", label = "Demographics",
-    stringsAsFactors = FALSE
-  ),
-  var_spec = data.frame(
-    dataset  = c("DM", "DM"),
-    variable = c("USUBJID", "AGE"),
-    type     = c("text", "integer"),
-    label    = c("Unique Subject Identifier", "Age at Screening"),
-    length   = c(40L, 8L),
-    stringsAsFactors = FALSE
+if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+  dm   <- pharmaversesdtm::dm
+  spec <- as_herald_spec(
+    ds_spec = data.frame(dataset = "DM", label = "Demographics",
+                         stringsAsFactors = FALSE),
+    var_spec = data.frame(
+      dataset  = c("DM", "DM"),
+      variable = c("USUBJID", "AGE"),
+      type     = c("text", "integer"),
+      label    = c("Unique Subject Identifier", "Age"),
+      length   = c(40L, 8L),
+      stringsAsFactors = FALSE
+    )
   )
-)
-out <- apply_spec(list(DM = dm), spec)
-attr(out$DM, "label")
-attr(out$DM$USUBJID, "label")
+  out <- apply_spec(list(DM = dm), spec)
+  attr(out$DM, "label")
+  attr(out$DM$USUBJID, "label")
+}
 
 }
 \seealso{

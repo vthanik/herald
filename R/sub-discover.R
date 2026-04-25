@@ -259,11 +259,11 @@ detect_standard <- function(names) {
 #' }
 #'
 #' @examples
-#' detect_adam_class(c("STUDYID", "USUBJID", "AGE", "SEX", "RACE"))         # "ADSL"
-#' detect_adam_class(c("USUBJID", "PARAMCD", "PARAM", "AVAL",  "BASE"))     # "BDS"
-#' detect_adam_class(c("USUBJID", "PARAMCD", "PARAM", "AVALC", "DTYPE"))    # "BDS"
-#' detect_adam_class(c("USUBJID", "PARAMCD", "AVAL", "CNSR", "STARTDT"))    # "TTE"
-#' detect_adam_class(c("USUBJID", "AETERM", "AEDECOD", "AESTDTC"))          # "OCCDS"
+#' if (requireNamespace("pharmaverseadam", quietly = TRUE)) {
+#'   detect_adam_class(names(pharmaverseadam::adsl))          # "ADSL"
+#'   detect_adam_class(names(pharmaverseadam::advs))          # "BDS"
+#'   detect_adam_class(names(pharmaverseadam::adae))          # "OCCDS"
+#' }
 #'
 #' @family specification
 #' @export
@@ -313,12 +313,13 @@ detect_adam_class <- function(vars) {
 #' @return A named character vector mapping dataset name → ADaM class.
 #'
 #' @examples
-#' adsl <- data.frame(STUDYID = "S1", USUBJID = "S1-001", AGE = 65L)
-#' advs <- data.frame(USUBJID = "S1-001", PARAMCD = "SYSBP", AVAL = 120)
-#' adae <- data.frame(USUBJID = "S1-001", AETERM = "Headache", AEDECOD = "Headache")
-#' adtte <- data.frame(USUBJID = "S1-001", PARAMCD = "OS", AVAL = 180, CNSR = 0L)
-#'
-#' detect_adam_classes(list(ADSL = adsl, ADVS = advs, ADAE = adae, ADTTE = adtte))
+#' if (requireNamespace("pharmaverseadam", quietly = TRUE)) {
+#'   detect_adam_classes(list(
+#'     ADSL = pharmaverseadam::adsl,
+#'     ADVS = pharmaverseadam::advs,
+#'     ADAE = pharmaverseadam::adae
+#'   ))
+#' }
 #'
 #' @family specification
 #' @export

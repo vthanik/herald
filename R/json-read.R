@@ -19,17 +19,14 @@
 #' }
 #'
 #' @examples
-#' dm <- data.frame(
-#'   STUDYID = c("STUDY1", "STUDY1"),
-#'   USUBJID = c("SUBJ01", "SUBJ02"),
-#'   AGE = c(65L, 72L),
-#'   stringsAsFactors = FALSE
-#' )
-#' file <- tempfile(fileext = ".json")
-#' write_json(dm, file, dataset = "DM", label = "Demographics")
-#' dm2 <- read_json(file)
-#' dm2
-#' unlink(file)
+#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+#'   dm   <- pharmaversesdtm::dm
+#'   file <- tempfile(fileext = ".json")
+#'   on.exit(unlink(file))
+#'   write_json(dm, file, dataset = "DM", label = "Demographics")
+#'   dm2  <- read_json(file)
+#'   dm2
+#' }
 #'
 #' @seealso [write_json()] for writing, [read_xpt()] for XPT I/O.
 #'
@@ -203,13 +200,15 @@ read_json <- function(file) {
 #' @return The output path, invisibly.
 #'
 #' @examples
-#' dm <- data.frame(STUDYID = "S1", AGE = 65L, stringsAsFactors = FALSE)
-#' json <- tempfile(fileext = ".json")
-#' xpt <- tempfile(fileext = ".xpt")
-#' write_json(dm, json, dataset = "DM", label = "Demographics")
-#' json_to_xpt(json, xpt)
-#' read_xpt(xpt)
-#' unlink(c(json, xpt))
+#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+#'   dm   <- pharmaversesdtm::dm
+#'   json <- tempfile(fileext = ".json")
+#'   xpt  <- tempfile(fileext = ".xpt")
+#'   on.exit(unlink(c(json, xpt)))
+#'   write_json(dm, json, dataset = "DM", label = "Demographics")
+#'   json_to_xpt(json, xpt)
+#'   read_xpt(xpt)
+#' }
 #'
 #' @seealso [xpt_to_json()] for the reverse, [write_xpt()], [read_json()].
 #'

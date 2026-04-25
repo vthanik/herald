@@ -28,10 +28,14 @@
 #'   the file's key/value metadata when present.
 #'
 #' @examples
-#' \dontrun{
-#' dm <- read_parquet("path/to/dm.parquet")
-#' attr(dm, "label")
-#' attr(dm$USUBJID, "label")
+#' if (requireNamespace("arrow", quietly = TRUE) &&
+#'     requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+#'   dm  <- pharmaversesdtm::dm
+#'   out <- tempfile(fileext = ".parquet")
+#'   on.exit(unlink(out))
+#'   write_parquet(dm, out, dataset = "DM", label = "Demographics")
+#'   dm2 <- read_parquet(out)
+#'   attr(dm2, "label")
 #' }
 #'
 #' @seealso [write_parquet()], [read_xpt()], [read_json()].

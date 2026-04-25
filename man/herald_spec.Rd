@@ -52,13 +52,16 @@ Assembles a \code{herald_spec} that carries all Define-XML 2.1 slots:
 \code{write_define_xml()} and round-trip tests.
 }
 \examples{
-spec <- herald_spec(
-  ds_spec  = data.frame(dataset = "DM", label = "Demographics",
-                        stringsAsFactors = FALSE),
-  var_spec = data.frame(dataset = "DM", variable = "STUDYID",
-                        stringsAsFactors = FALSE)
-)
-is_herald_spec(spec)
+if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+  dm_vars <- names(pharmaversesdtm::dm)
+  spec <- herald_spec(
+    ds_spec  = data.frame(dataset = "DM", label = "Demographics",
+                          stringsAsFactors = FALSE),
+    var_spec = data.frame(dataset = "DM", variable = dm_vars,
+                          stringsAsFactors = FALSE)
+  )
+  is_herald_spec(spec)
+}
 
 }
 \seealso{

@@ -108,12 +108,13 @@ See the full WLATIN1 map at
 }
 }
 \examples{
-dm <- data.frame(STUDYID = "S01", USUBJID = "S01-001", AGE = 63L,
-                 stringsAsFactors = FALSE)
-tmp <- tempfile(fileext = ".xpt")
-on.exit(unlink(tmp))
-write_xpt(dm, tmp, dataset = "DM")
-read_xpt(tmp)
+if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+  dm  <- pharmaversesdtm::dm
+  tmp <- tempfile(fileext = ".xpt")
+  on.exit(unlink(tmp))
+  write_xpt(dm, tmp, dataset = "DM")
+  read_xpt(tmp)
+}
 
 }
 \references{

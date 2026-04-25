@@ -44,11 +44,11 @@ matching \code{*FL} but no PARAMCD.
 }
 }
 \examples{
-detect_adam_class(c("STUDYID", "USUBJID", "AGE", "SEX", "RACE"))         # "ADSL"
-detect_adam_class(c("USUBJID", "PARAMCD", "PARAM", "AVAL",  "BASE"))     # "BDS"
-detect_adam_class(c("USUBJID", "PARAMCD", "PARAM", "AVALC", "DTYPE"))    # "BDS"
-detect_adam_class(c("USUBJID", "PARAMCD", "AVAL", "CNSR", "STARTDT"))    # "TTE"
-detect_adam_class(c("USUBJID", "AETERM", "AEDECOD", "AESTDTC"))          # "OCCDS"
+if (requireNamespace("pharmaverseadam", quietly = TRUE)) {
+  detect_adam_class(names(pharmaverseadam::adsl))          # "ADSL"
+  detect_adam_class(names(pharmaverseadam::advs))          # "BDS"
+  detect_adam_class(names(pharmaverseadam::adae))          # "OCCDS"
+}
 
 }
 \seealso{

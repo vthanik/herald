@@ -22,27 +22,28 @@ Reads a CDISC Dataset-JSON v1.1 file and returns a data frame with
 metadata preserved as attributes (labels, lengths).
 }
 \examples{
-dm <- data.frame(
-  STUDYID = c("STUDY1", "STUDY1"),
-  USUBJID = c("SUBJ01", "SUBJ02"),
-  AGE = c(65L, 72L),
-  stringsAsFactors = FALSE
-)
-file <- tempfile(fileext = ".json")
-write_json(dm, file, dataset = "DM", label = "Demographics")
-dm2 <- read_json(file)
-dm2
-unlink(file)
+if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+  dm   <- pharmaversesdtm::dm
+  file <- tempfile(fileext = ".json")
+  on.exit(unlink(file))
+  write_json(dm, file, dataset = "DM", label = "Demographics")
+  dm2  <- read_json(file)
+  dm2
+}
 
 }
 \seealso{
 \code{\link[=write_json]{write_json()}} for writing, \code{\link[=read_xpt]{read_xpt()}} for XPT I/O.
 
 Other io: 
+\code{\link{json_to_parquet}()},
 \code{\link{json_to_xpt}()},
+\code{\link{parquet_to_json}()},
+\code{\link{parquet_to_xpt}()},
 \code{\link{read_parquet}()},
 \code{\link{write_json}()},
 \code{\link{write_parquet}()},
-\code{\link{xpt_to_json}()}
+\code{\link{xpt_to_json}()},
+\code{\link{xpt_to_parquet}()}
 }
 \concept{io}

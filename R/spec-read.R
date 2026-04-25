@@ -35,23 +35,24 @@
 #'   and (if supplied) `var_spec`.
 #'
 #' @examples
-#' spec <- as_herald_spec(
-#'   ds_spec = data.frame(
-#'     dataset = c("ADSL", "ADAE"),
-#'     class   = c("SUBJECT LEVEL ANALYSIS DATASET", "BASIC DATA STRUCTURE"),
-#'     label   = c("Subject-Level Analysis Dataset", "Adverse Events"),
-#'     stringsAsFactors = FALSE
-#'   ),
-#'   var_spec = data.frame(
-#'     dataset  = c("ADSL", "ADSL"),
-#'     variable = c("USUBJID", "AGE"),
-#'     type     = c("text", "integer"),
-#'     label    = c("Unique Subject Identifier", "Age"),
-#'     length   = c(40L, 8L),
-#'     stringsAsFactors = FALSE
+#' if (requireNamespace("pharmaverseadam", quietly = TRUE)) {
+#'   adsl_vars <- names(pharmaverseadam::adsl)
+#'   adae_vars <- names(pharmaverseadam::adae)
+#'   spec <- as_herald_spec(
+#'     ds_spec = data.frame(
+#'       dataset = c("ADSL", "ADAE"),
+#'       class   = c("SUBJECT LEVEL ANALYSIS DATASET", "BASIC DATA STRUCTURE"),
+#'       label   = c("Subject-Level Analysis Dataset", "Adverse Events"),
+#'       stringsAsFactors = FALSE
+#'     ),
+#'     var_spec = data.frame(
+#'       dataset  = c(rep("ADSL", length(adsl_vars)), rep("ADAE", length(adae_vars))),
+#'       variable = c(adsl_vars, adae_vars),
+#'       stringsAsFactors = FALSE
+#'     )
 #'   )
-#' )
-#' is_herald_spec(spec)
+#'   is_herald_spec(spec)
+#' }
 #'
 #' @seealso [apply_spec()] for the pre-validation step that stamps column
 #'   attributes from a `herald_spec`.
@@ -108,13 +109,16 @@ as_herald_spec <- function(ds_spec, var_spec = NULL) {
 #' @return A list with class \code{c("herald_spec", "list")}.
 #'
 #' @examples
-#' spec <- herald_spec(
-#'   ds_spec  = data.frame(dataset = "DM", label = "Demographics",
-#'                         stringsAsFactors = FALSE),
-#'   var_spec = data.frame(dataset = "DM", variable = "STUDYID",
-#'                         stringsAsFactors = FALSE)
-#' )
-#' is_herald_spec(spec)
+#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+#'   dm_vars <- names(pharmaversesdtm::dm)
+#'   spec <- herald_spec(
+#'     ds_spec  = data.frame(dataset = "DM", label = "Demographics",
+#'                           stringsAsFactors = FALSE),
+#'     var_spec = data.frame(dataset = "DM", variable = dm_vars,
+#'                           stringsAsFactors = FALSE)
+#'   )
+#'   is_herald_spec(spec)
+#' }
 #'
 #' @seealso [as_herald_spec()] for the simpler two-arg constructor.
 #' @family spec
@@ -164,9 +168,18 @@ herald_spec <- function(
 #' @return `TRUE` if `x` inherits from `herald_spec`, else `FALSE`.
 #'
 #' @examples
-#' spec <- as_herald_spec(data.frame(dataset = "DM", stringsAsFactors = FALSE))
-#' is_herald_spec(spec)
-#' is_herald_spec(list())
+#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
+#'   spec <- as_herald_spec(
+#'     ds_spec = data.frame(dataset = "DM", stringsAsFactors = FALSE),
+#'     var_spec = data.frame(
+#'       dataset  = "DM",
+#'       variable = names(pharmaversesdtm::dm),
+#'       stringsAsFactors = FALSE
+#'     )
+#'   )
+#'   is_herald_spec(spec)
+#'   is_herald_spec(list())
+#' }
 #'
 #' @family spec
 #' @export

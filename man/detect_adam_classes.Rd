@@ -19,12 +19,13 @@ Applies \code{\link{detect_adam_class}} to every dataset, accepting either
 a named list of data frames or a \code{herald_spec} object.
 }
 \examples{
-adsl <- data.frame(STUDYID = "S1", USUBJID = "S1-001", AGE = 65L)
-advs <- data.frame(USUBJID = "S1-001", PARAMCD = "SYSBP", AVAL = 120)
-adae <- data.frame(USUBJID = "S1-001", AETERM = "Headache", AEDECOD = "Headache")
-adtte <- data.frame(USUBJID = "S1-001", PARAMCD = "OS", AVAL = 180, CNSR = 0L)
-
-detect_adam_classes(list(ADSL = adsl, ADVS = advs, ADAE = adae, ADTTE = adtte))
+if (requireNamespace("pharmaverseadam", quietly = TRUE)) {
+  detect_adam_classes(list(
+    ADSL = pharmaverseadam::adsl,
+    ADVS = pharmaverseadam::advs,
+    ADAE = pharmaverseadam::adae
+  ))
+}
 
 }
 \seealso{

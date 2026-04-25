@@ -35,6 +35,8 @@ Suggests:
     hedgehog,
     htmltools,
     knitr,
+    pharmaversesdtm,
+    pharmaverseadam,
     rmarkdown,
     testthat (>= 3.0.0),
     withr,
