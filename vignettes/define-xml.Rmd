@@ -124,10 +124,10 @@ metadata that is not present in datasets alone.
 
 ```{r validate-define, eval = requireNamespace("xml2", quietly = TRUE)}
 dm <- readRDS(extdata("dm.rds"))
-dm <- apply_spec(list(DM = dm), spec)$DM
+dm <- apply_spec(dm, spec)
 
 result <- validate(
-  files  = list(DM = dm, define = define),
+  files  = list(dm, define = define),
   define = define,
   rules  = character(0),
   quiet  = TRUE

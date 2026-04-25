@@ -44,7 +44,7 @@ Datasets are normal R data frames. Metadata is carried in attributes:
 ```{r attrs}
 dm <- readRDS(extdata("dm.rds"))
 spec <- readRDS(extdata("sdtm-spec.rds"))
-dm <- apply_spec(list(DM = dm), spec)$DM
+dm <- apply_spec(dm, spec)
 
 attr(dm, "label")
 attr(dm$USUBJID, "label")

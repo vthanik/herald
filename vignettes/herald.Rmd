@@ -61,7 +61,7 @@ spec
 still a regular data frame, so existing R code keeps working.
 
 ```{r apply-spec}
-dm <- apply_spec(list(DM = dm), spec)$DM
+dm <- apply_spec(dm, spec)
 
 attr(dm, "label")
 attr(dm$USUBJID, "label")
@@ -77,7 +77,7 @@ object and reporting path without running the full compiled corpus.
 
 ```{r validate-smoke}
 result <- validate(
-  files = list(DM = dm),
+  files = list(dm),
   rules = character(0),
   quiet = TRUE
 )
@@ -97,7 +97,7 @@ selected <- head(catalog$rule_id[catalog$has_predicate], 3)
 selected
 
 selected_result <- validate(
-  files = list(DM = dm),
+  files = list(dm),
   rules = selected,
   quiet = TRUE
 )

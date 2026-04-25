@@ -67,7 +67,7 @@ One-run registration avoids session state:
 dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
 
 result <- validate(
-  files = list(DM = dm),
+  files = list(dm),
   rules = character(0),
   dictionaries = list("ct-sdtm" = ct_provider("sdtm")),
   quiet = TRUE

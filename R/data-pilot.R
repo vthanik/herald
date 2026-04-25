@@ -22,12 +22,12 @@
 #' @examples
 #' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
 #' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
-#' dm   <- apply_spec(list(DM = dm), spec)$DM
+#' dm   <- apply_spec(dm, spec)
 #' attr(dm$USUBJID, "label")  # stamped from define.xml
 #'
-#' adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
+#' adsl  <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
 #' aspec <- readRDS(system.file("extdata", "adam-spec.rds", package = "herald"))
-#' adsl  <- apply_spec(list(ADSL = adsl), aspec)$ADSL
+#' adsl  <- apply_spec(adsl, aspec)
 #' attr(adsl$USUBJID, "label")
 #' @name pilot-data
 NULL

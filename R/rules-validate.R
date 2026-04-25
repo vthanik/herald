@@ -19,8 +19,12 @@
 #'
 #' @param path Directory path containing `.xpt` or `.json` datasets.
 #'   Mutually exclusive with `files`.
-#' @param files Named list of data frames (e.g.
-#'   `list(DM = dm, AE = ae)`). Mutually exclusive with `path`.
+#' @param files A single data frame or a list of data frames. When a
+#'   bare variable is passed as a list element (e.g. `list(dm)`) or
+#'   directly (e.g. `files = dm`), the dataset name is inferred from
+#'   the variable name and uppercased (`dm` -> `"DM"`). Explicit names
+#'   are required when the variable name does not match the domain (e.g.
+#'   `list(DM = dm_loaded)`). Mutually exclusive with `path`.
 #' @param spec Optional `herald_spec` from [as_herald_spec()] or
 #'   [read_define_xml()]. Used for class resolution and anchor variables.
 #' @param rules Character vector of rule IDs to run (e.g.
@@ -84,7 +88,7 @@
 #'   AETERM  = "HEADACHE", AEDECOD = "Headache",
 #'   stringsAsFactors = FALSE
 #' )
-#' result <- validate(files = list(AE = ae), quiet = TRUE)
+#' result <- validate(files = list(ae), quiet = TRUE)
 #' result
 #'
 #' # Inspect findings
@@ -94,7 +98,8 @@
 #' dm   <- readRDS(system.file("extdata", "dm.rds",        package = "herald"))
 #' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
 #' dm   <- apply_spec(dm, spec)
-#' result2 <- validate(files = list(DM = dm), quiet = TRUE)
+#' # single data frame -- name inferred from variable (dm -> "DM")
+#' result2 <- validate(files = dm, quiet = TRUE)
 #' result2
 #'
 #' @seealso [apply_spec()] to stamp CDISC attributes before validation,
@@ -134,7 +139,15 @@ validate <- function(path = NULL,
 
   # ---- assemble dataset map ------------------------------------------------
   if (!is.null(files)) {
-    files    <- .infer_file_names(files, files_exp, call)
+    # Single data frame shortcut: validate(files = dm) works like list(dm).
+    if (is.data.frame(files)) {
+      ds_name <- if (is.symbol(files_exp)) toupper(as.character(files_exp)) else
+        attr(files, "dataset_name") %||% "DATA"
+      files     <- stats::setNames(list(files), ds_name)
+      files_exp <- call("list", files_exp)
+    } else {
+      files <- .infer_file_names(files, files_exp, call)
+    }
     # Lift out any Define-XML entry (path or herald_define object) from files.
     define   <- define %||% .extract_define_from_files(files, call)
     files    <- .drop_define_entries(files)

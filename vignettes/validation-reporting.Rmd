@@ -35,10 +35,10 @@ Validation can start from in-memory data frames:
 dm <- readRDS(extdata("dm.rds"))
 spec <- readRDS(extdata("sdtm-spec.rds"))
 
-dm <- apply_spec(list(DM = dm), spec)$DM
+dm <- apply_spec(dm, spec)
 
 r0 <- validate(
-  files = list(DM = dm),
+  files = list(dm),
   rules = character(0),
   quiet = TRUE
 )
@@ -77,7 +77,7 @@ head(catalog[catalog$has_predicate, c("rule_id", "standard", "severity", "messag
 rule_ids <- head(catalog$rule_id[catalog$has_predicate], 5)
 
 r2 <- validate(
-  files = list(DM = dm),
+  files = list(dm),
   rules = rule_ids,
   quiet = TRUE
 )
@@ -124,7 +124,7 @@ override by exact rule ID, by regular expression, or by severity category.
 
 ```{r severity-map}
 r3 <- validate(
-  files = list(DM = dm),
+  files = list(dm),
   rules = rule_ids,
   severity_map = c("Medium" = "High"),
   quiet = TRUE

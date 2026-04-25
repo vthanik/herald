@@ -68,7 +68,7 @@ Dataset-JSON, Define-XML, and reports.
 dm <- readRDS(extdata("dm.rds"))
 spec <- readRDS(extdata("sdtm-spec.rds"))
 
-dm <- apply_spec(list(DM = dm), spec)$DM
+dm <- apply_spec(dm, spec)
 
 attr(dm, "label")
 attr(dm$USUBJID, "label")
