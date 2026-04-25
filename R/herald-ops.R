@@ -132,3 +132,24 @@
   }
   NA_character_
 }
+
+# --- cross-dataset reference resolver ---------------------------------------
+
+#' Resolve a reference dataset from ctx$datasets
+#'
+#' Used by cross-dataset operators. Returns NULL when the dataset is absent
+#' and records the miss to `ctx$missing_refs` so the caller can surface it
+#' as a skipped_refs banner item.
+#' @noRd
+.ref_ds <- function(ctx, ref_name) {
+  if (is.null(ctx) || is.null(ctx$datasets)) return(NULL)
+  up  <- toupper(as.character(ref_name))
+  hit <- ctx$datasets[[up]]
+  if (is.null(hit)) {
+    .record_missing_ref(ctx,
+      rule_id = ctx$current_rule_id,
+      kind    = "dataset",
+      name    = up)
+  }
+  hit
+}

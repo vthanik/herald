@@ -58,19 +58,20 @@ op_assigned_value_matches_data_type <- function(data, ctx, ...) {
                       "partialDatetime", "incompleteDatetime",
                       "durationDatetime", "intervalDatetime")
 
-  vapply(seq_len(nrow(data)), function(i) {
-    av <- assigned[i]
-    dt <- dtype[i]
-    if (!nzchar(av)) return(FALSE)
-    if (dt %in% numeric_types) {
-      return(is.na(suppressWarnings(as.numeric(av))))
-    }
-    if (dt %in% datetime_types) {
-      # ISO 8601 starts with a digit (date) or 'P' (duration)
-      return(!grepl("^[0-9]|^P", av))
-    }
-    FALSE
-  }, logical(1L))
+  has_value <- nzchar(assigned) & !is.na(dtype)
+  result    <- rep(FALSE, nrow(data))
+
+  num_idx <- has_value & dtype %in% numeric_types
+  if (any(num_idx)) {
+    result[num_idx] <- is.na(suppressWarnings(as.numeric(assigned[num_idx])))
+  }
+
+  dt_idx <- has_value & dtype %in% datetime_types
+  if (any(dt_idx)) {
+    result[dt_idx] <- !grepl("^[0-9]|^P", assigned[dt_idx])
+  }
+
+  result
 }
 .register_op("assigned_value_matches_data_type",
   op_assigned_value_matches_data_type, meta = list(
@@ -91,13 +92,9 @@ op_assigned_value_length_le_var_length <- function(data, ctx, ...) {
   assigned   <- data$assigned_value
   length_col <- data$length
 
-  vapply(seq_len(nrow(data)), function(i) {
-    av <- assigned[i]
-    if (!nzchar(av)) return(FALSE)
-    max_len <- suppressWarnings(as.integer(length_col[i]))
-    if (is.na(max_len)) return(FALSE)
-    nchar(av, type = "bytes") > max_len
-  }, logical(1L))
+  max_len  <- suppressWarnings(as.integer(length_col))
+  byte_len <- nchar(assigned, type = "bytes")
+  nzchar(assigned) & !is.na(max_len) & byte_len > max_len
 }
 .register_op("assigned_value_length_le_var_length",
   op_assigned_value_length_le_var_length, meta = list(
