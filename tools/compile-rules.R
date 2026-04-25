@@ -93,6 +93,9 @@ row_from_core_yaml <- function(yml, path) {
     operations     = operations,
     check_tree     = check_tree,
     message        = as.character(message),
+    description    = trimws(as.character(
+      yml$Description %||% yml$description %||% ""
+    )),
     source_document = paste0(cite_block$Document %||% "", " ",
                              cite_block$Section %||% ""),
     source_url     = yml$herald$source %||% "CDISC Library API",
@@ -239,6 +242,8 @@ row_from_herald_yaml <- function(yml, path) {
     standard_ver <- as.character(yml$standard_version)
   }
 
+  description <- trimws(as.character(yml$description %||% ""))
+
   list(
     id             = as.character(id),
     authority      = as.character(declared_authority),
@@ -249,6 +254,7 @@ row_from_herald_yaml <- function(yml, path) {
     operations     = operations,
     check_tree     = check_tree,
     message        = as.character(message),
+    description    = description,
     source_document = as.character(source_doc),
     source_url     = as.character(source_url),
     source_version = as.character(yml$provenance$source_version %||% yml$version %||% "1"),
@@ -310,7 +316,7 @@ if (length(rows) == 0L) {
 
 scalar_cols <- c(
   "id", "authority", "standard", "standard_ver", "severity",
-  "message", "source_document", "source_url", "source_version",
+  "message", "description", "source_document", "source_url", "source_version",
   "content_hash", "license", "p21_id_equivalent"
 )
 
@@ -369,6 +375,17 @@ if (any(invalid_sev)) {
   warning(sum(invalid_sev), " rules have invalid severity")
 }
 
+# ---- split herald-spec rules into their own artifact -----------------------
+
+is_spec <- !is.na(rules$standard) & rules$standard == "herald-spec"
+spec_rules <- rules[is_spec,  , drop = FALSE]
+rules      <- rules[!is_spec, , drop = FALSE]
+
+if (nrow(spec_rules) > 0L) {
+  saveRDS(spec_rules, file.path(out_dir, "spec_rules.rds"), version = 3)
+  cat("Wrote ", nrow(spec_rules), " spec rules to spec_rules.rds\n", sep = "")
+}
+
 # ---- write outputs ---------------------------------------------------------
 
 saveRDS(rules, file.path(out_dir, "rules.rds"), version = 3)
@@ -410,7 +427,8 @@ writeLines(
 
 cat("\n")
 cat("===== compile-rules.R done =====\n")
-cat("  total rules      : ", nrow(rules), "\n", sep = "")
+cat("  conformance rules: ", nrow(rules), "\n", sep = "")
+cat("  spec rules       : ", nrow(spec_rules), "\n", sep = "")
 cat("  by authority     : ",
     paste(sprintf("%s=%d", names(by_authority), by_authority),
           collapse = ", "),
