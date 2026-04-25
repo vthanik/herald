@@ -633,11 +633,17 @@ print.herald_define <- function(x, ...) {
       next
     }
 
-    # KeyVariables is a space-separated list of ItemOIDs in Define-XML 2.1
-    kv_raw <- xml2::xml_attr(ign, "def:KeyVariables") %||% ""
-    # Also try without namespace prefix
-    if (!nzchar(kv_raw)) {
-      kv_raw <- xml2::xml_attr(ign, "KeyVariables") %||% ""
+    # KeyVariables is a space-separated list of ItemOIDs in Define-XML 2.1.
+    # xml2::xml_attr() does not resolve namespace prefixes on attributes, so
+    # scan all attributes and match by local name (strips any "prefix:" part).
+    kv_raw <- ""
+    all_attrs <- xml2::xml_attrs(ign)
+    for (nm in names(all_attrs)) {
+      local_nm <- sub("^.*:", "", nm)
+      if (identical(local_nm, "KeyVariables")) {
+        kv_raw <- all_attrs[[nm]]
+        break
+      }
     }
 
     if (!nzchar(kv_raw)) {
@@ -659,7 +665,7 @@ print.herald_define <- function(x, ...) {
       next
     }
 
-    oids <- trimws(strsplit(kv_raw, "\\s+")[[1L]])
+    oids <- trimws(strsplit(kv_raw, "[[:space:],]+")[[1L]])
     oids <- oids[nzchar(oids)]
     if (length(oids) == 0L) {
       next
