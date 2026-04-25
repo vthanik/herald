@@ -117,6 +117,12 @@ input validation via `check_scalar_chr`, `check_scalar_int`,
 `check_data_frame`, `check_herald_spec`, `check_file_exists`.
 always pass `call = rlang::caller_env()`.
 
+cli bullet keys: `"x"` error, `"!"` warn, `"i"` info, `"v"` success.
+markup tokens: `{.arg}` param name, `{.fn}` function name, `{.cls}` class,
+`{.val}` value, `{.path}` path, `{.field}` field name,
+`{.obj_type_friendly {x}}` readable type with article.
+pluralise: `{?s}` (file{?s}), `{?y/ies}` (director{?y/ies}).
+
 ## code conventions
 
 - no `|>` / `%>%`. explicit function composition.
@@ -132,11 +138,18 @@ always pass `call = rlang::caller_env()`.
 
 - testthat edition 3. one `test-<source>.R` per R/ file.
 - inline `data.frame()` fixtures; RDS only for real CDISC data.
-- `withr::defer(unlink(...))` for temp files.
 - no snapshots. no mocks. hermetic.
 - error tests pin the class: `expect_error(..., class = "herald_error_input")`.
 - reach internals via `herald:::.fn` so tests survive R CMD check.
 - no `helper-*.R` / `setup-*.R`.
+- temp files: `withr::local_tempfile(fileext = ".html")` (auto-cleanup).
+- temp state: `withr::local_options(list(warn = 2))`,
+  `withr::local_envvar(MY_VAR = "x")`.
+- new expectations (testthat >= 3.2): `expect_in(x, set)`,
+  `expect_contains(haystack, needles)`, `expect_no_error()`,
+  `expect_no_warning()`.
+- debug slow tests: `devtools::test(reporter = "slow")`.
+- catch dependent tests: `devtools::test(shuffle = TRUE)`.
 
 log + grep the output on failures:
 
@@ -144,6 +157,20 @@ log + grep the output on failures:
 Rscript -e 'devtools::test()' > /tmp/t.log 2>&1
 grep -E "FAIL [0-9]|PASS [0-9]" /tmp/t.log | tail -3
 grep -nB1 -A15 "Failure|Error" /tmp/t.log | head -60
+```
+
+## performance
+
+profile first, then optimise. use `profvis::profvis({ ... })` to find
+bottlenecks. benchmark alternatives for any hot-path change (rules engine,
+spec validation, CT lookups):
+
+```r
+bench::mark(
+  approach_a = method_a(data),
+  approach_b = method_b(data),
+  check = FALSE
+)
 ```
 
 ## git hygiene
@@ -210,7 +237,7 @@ scoped rules live at `.claude/rules/r-code.md` (R/**/*.R) and
 
 ## skills
 
-none yet. on-demand skills (e.g. heraldrules-style) can land at
-`~/.claude/skills/` when a reusable workflow crystallises. do
-not auto-invoke; user must type `/skill-name` or say "use the
-X skill".
+local skill repo: `~/.claude/skills/`. invoke with `/skill-name` only.
+
+- `cli` -- full cli inline-markup + conditions reference (Posit, MIT).
+  use when writing error messages or progress output.
