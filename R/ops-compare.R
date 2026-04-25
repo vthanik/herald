@@ -66,7 +66,19 @@ op_equal_to <- function(data, ctx, name, value, value_is_literal = TRUE) {
 
 op_not_equal_to <- function(data, ctx, name, value, value_is_literal = TRUE) {
   m <- op_equal_to(data, ctx, name, value, value_is_literal)
-  !m
+  result <- !m
+  # Column-vs-column: op_equal_to returns raw col == other, so NA where either
+  # side is NA. !NA gives NA -- but P21 NullComparison fires when exactly one
+  # side is missing (null != populated). Both-NA stays NA (advisory).
+  # The literal branch is already corrected inside op_equal_to (NA -> FALSE -> TRUE).
+  if (!isTRUE(value_is_literal)) {
+    col   <- data[[name]]
+    other <- data[[as.character(value)]]
+    if (!is.null(col) && !is.null(other)) {
+      result[is.na(col) != is.na(other)] <- TRUE
+    }
+  }
+  result
 }
 .register_op(
   "not_equal_to", op_not_equal_to,
@@ -122,7 +134,17 @@ op_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) {
 
 op_not_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) {
   m <- op_equal_to_ci(data, ctx, name, value, value_is_literal)
-  !m
+  result <- !m
+  # Same NullComparison correction as op_not_equal_to: column-vs-column mode
+  # needs explicit one-NA-side -> TRUE mapping.
+  if (!isTRUE(value_is_literal)) {
+    col   <- data[[name]]
+    other <- data[[as.character(value)]]
+    if (!is.null(col) && !is.null(other)) {
+      result[is.na(col) != is.na(other)] <- TRUE
+    }
+  }
+  result
 }
 .register_op(
   "not_equal_to_case_insensitive", op_not_equal_to_ci,

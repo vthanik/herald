@@ -357,7 +357,10 @@ validate <- function(path = NULL,
     profile          = NA_character_,
     config_hash      = NA_character_,
     dataset_meta     = dataset_meta,
-    rule_catalog     = tibble::as_tibble(catalog[, c("id","authority","standard","severity","message")]),
+    rule_catalog     = tibble::as_tibble(catalog[, intersect(
+      c("id", "authority", "standard", "severity", "message", "source_url"),
+      names(catalog)
+    )]),
     op_errors        = ctx$op_errors,
     skipped_refs     = .finalize_skipped_refs(ctx)
   )
