@@ -129,3 +129,29 @@ test_that("explicitly anchored patterns are left untouched", {
   expect_equal(op_matches_regex(d, NULL, "x", "^[A-Z]+$"),
                op_matches_regex(d, NULL, "x", "[A-Z]+"))
 })
+
+test_that("longer_than / shorter_than", {
+  d <- data.frame(X = c("abc", "abcdefgh", NA_character_),
+                  stringsAsFactors = FALSE)
+  expect_equal(op_longer_than(d, NULL, "X", 5), c(FALSE, TRUE, NA))
+  expect_equal(op_shorter_than(d, NULL, "X", 5), c(TRUE, FALSE, NA))
+})
+
+test_that("not_matches_regex inverts", {
+  d <- data.frame(X = c("AE-001", "XX-002"),
+                  stringsAsFactors = FALSE)
+  expect_equal(op_not_matches_regex(d, NULL, "X", "^AE"),
+               c(FALSE, TRUE))
+})
+
+test_that("starts_with / ends_with", {
+  d <- data.frame(X = c("AEHEAD", "HEADAE", "NAUSEA"),
+                  stringsAsFactors = FALSE)
+  expect_equal(op_starts_with(d, NULL, "X", "AE"), c(TRUE, FALSE, FALSE))
+  expect_equal(op_ends_with(d, NULL, "X", "AE"),   c(FALSE, TRUE, FALSE))
+})
+
+test_that("does_not_contain", {
+  d <- data.frame(X = c("HEADACHE", "NAUSEA"), stringsAsFactors = FALSE)
+  expect_equal(op_does_not_contain(d, NULL, "X", "HEAD"), c(FALSE, TRUE))
+})
