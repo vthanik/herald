@@ -28,7 +28,7 @@ archiving without external dependencies.
 \examples{
 ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
                   stringsAsFactors = FALSE)
-r   <- validate(files = list(AE = ae), quiet = TRUE)
+r   <- validate(files = list(ae), quiet = TRUE)
 out <- tempfile(fileext = ".html")
 on.exit(unlink(out))
 write_report_html(r, out)

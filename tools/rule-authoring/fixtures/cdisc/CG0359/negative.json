@@ -3,7 +3,7 @@
   "fixture_type": "negative",
   "datasets": {
     "DM": {
-      "variable_label": "TESTvalue"
+      "variable_label": "AE"
     }
   },
   "expected": {

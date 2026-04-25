@@ -4,7 +4,7 @@
   "datasets": {
     "TS": {
       "TSPARMCD": "PLANSUB",
-      "TSVAL": "!!!"
+      "TSVAL": "AE"
     }
   },
   "expected": {

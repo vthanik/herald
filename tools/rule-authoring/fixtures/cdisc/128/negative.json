@@ -1,0 +1,23 @@
+{
+  "rule_id": "128",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADVS": {
+      "BASEC": ["v1", "v1"],
+      "ABLFL": ["Y", "N"],
+      "PARAMCD": ["G1", "G1"],
+      "USUBJID": ["G1", "G1"]
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): no_baseline_record (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADVS": "BASIC DATA STRUCTURE"
+    }
+  }
+}

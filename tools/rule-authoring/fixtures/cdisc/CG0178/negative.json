@@ -1,0 +1,23 @@
+{
+  "rule_id": "CG0178",
+  "fixture_type": "negative",
+  "datasets": {
+    "IE": {
+      "IETEST": "SAME_VAL"
+    },
+    "TI": {
+      "IETEST": "SAME_VAL"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded (+1 ref ds); 1 leaf op(s): is_not_contained_by (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "IE": "FND"
+    }
+  }
+}

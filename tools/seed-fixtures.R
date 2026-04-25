@@ -61,10 +61,11 @@ WHITELIST_OPS <- c(
   "prefix_equal_to", "prefix_not_equal_to",
   "prefix_matches_regex", "not_prefix_matches_regex",
   "suffix_matches_regex", "not_suffix_matches_regex",
+  "prefix_is_not_contained_by", "suffix_is_not_contained_by",
   # set membership
   "is_contained_by", "is_not_contained_by",
   "is_contained_by_case_insensitive", "is_not_contained_by_case_insensitive",
-  "value_in_codelist", "value_in_dictionary",
+  "value_in_codelist", "value_in_dictionary", "value_in_srs_table",
   # structural (multi-row)
   "is_unique_set", "is_not_unique_set",
   "is_unique_relationship", "is_not_unique_relationship",
@@ -72,11 +73,19 @@ WHITELIST_OPS <- c(
   "less_than_by_key", "less_than_or_equal_by_key",
   "greater_than_by_key", "greater_than_or_equal_by_key",
   "missing_in_ref", "subject_has_matching_row",
+  "is_inconsistent_across_dataset",
+  "max_n_records_per_group_matching",
+  "any_index_missing_ref_var",
   # temporal / format
   "iso8601", "is_complete_date", "is_incomplete_date",
   "invalid_date", "value_not_iso8601", "invalid_duration",
   # token/arithmetic
-  "not_contains_all", "is_not_diff", "is_not_pct_diff"
+  "not_contains_all", "is_not_diff", "is_not_pct_diff",
+  # metadata / structural
+  "label_by_suffix_missing", "var_by_suffix_not_numeric",
+  "dataset_name_length_not_in_range",
+  # ADaM baseline
+  "no_baseline_record", "base_not_equal_abl_row"
 )
 
 # Canonical SDTM class -> representative domain for --VAR wildcard expansion.
@@ -261,6 +270,45 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
   )
 }
 
+#' Return a literal value that satisfies (or fails) a regex.
+#'
+#' The CDISC corpus uses a small set of patterns: alphabetic prefixes
+#' (`^[A-Z]+$`), 2-3 char domains (`^[A-Z]{2,3}$`), digit strings, anchored
+#' integer matches (`^-?[0-9]+$`), and a few permissive `.*[a-z].*` style
+#' regexes. We try a fixed pool of candidates against the regex and pick
+#' the first that matches (or doesn't, depending on `want_match`).
+#'
+#' Returns NULL when no candidate satisfies the constraint -- the caller
+#' falls back to skipping the leaf.
+.sample_regex_match <- function(rx, want_match = TRUE) {
+  if (is.null(rx) || is.na(rx) || !nzchar(rx)) return(NULL)
+  candidates <- c(
+    "AE", "DM", "LB", "VS", "ADAE", "ADSL",
+    "TESTvalue", "test", "value123", "Heart Rate", "BMI",
+    "1", "12", "123", "1234", "12345",
+    "0", "-1", "-12",
+    "X", "XX", "XXX",
+    "abc", "ABC", "abcdef",
+    "VAR_NAME", "VAR1", "VAR_1",
+    "!!!", "%%%", "@@@",
+    "  ", "", "?",
+    "Y", "N", "U",
+    "a", "Z",
+    "Q1", "ABC123",
+    "1.0", "1.5", "0.0",
+    "AS01", "VAR01"
+  )
+  for (cand in candidates) {
+    matched <- tryCatch(
+      grepl(rx, cand, perl = TRUE),
+      error = function(e) NA
+    )
+    if (is.na(matched)) next
+    if (isTRUE(matched) == isTRUE(want_match)) return(cand)
+  }
+  NULL
+}
+
 .shift_date <- function(date_str, days) {
   # Accept YYYY-MM-DD; return shifted date string. Any parse error -> NA.
   d <- tryCatch(
@@ -322,6 +370,22 @@ DOLLAR_ALIASES <- list(
   dom <- toupper(substring(low, 2L, 3L))
   col <- toupper(substring(low, 5L))
   if (!nzchar(dom) || !nzchar(col)) return(NULL)
+  list(dataset = dom, column = col)
+}
+
+#' Parse a `<DS>.<COL>` token (e.g. "DM.USUBJID") into `list(dataset, column)`.
+#' Returns NULL when the token is not a literal cross-dataset column reference.
+.parse_dotted_ref <- function(token) {
+  if (!is.character(token) || length(token) != 1L) return(NULL)
+  if (!nzchar(token) || !grepl("\\.", token)) return(NULL)
+  if (startsWith(token, "$")) return(NULL)
+  parts <- strsplit(token, ".", fixed = TRUE)[[1L]]
+  if (length(parts) != 2L) return(NULL)
+  dom <- toupper(parts[[1L]])
+  col <- toupper(parts[[2L]])
+  # Domain must be alphanumeric, 2-8 chars; column likewise.
+  if (!grepl("^[A-Z][A-Z0-9]{1,7}$", dom)) return(NULL)
+  if (!grepl("^[A-Z][A-Z0-9_]*$", col))    return(NULL)
   list(dataset = dom, column = col)
 }
 
@@ -421,12 +485,155 @@ DOLLAR_ALIASES <- list(
   )
 }
 
+# Build A/B variants for `value_is_literal: FALSE` leaves where the value
+# refers to another column in the same dataset. Both columns live in the
+# main dataset; A side fires the leaf, B side does not.
+.cross_col_variant <- function(op, name, other_col) {
+  mk2 <- function(a, b) stats::setNames(list(a, b), c(name, other_col))
+  switch(
+    op,
+    equal_to = list(
+      A = mk2("SAME", "SAME"),
+      B = mk2("DIFF", "SAME")
+    ),
+    not_equal_to = list(
+      A = mk2("DIFF", "SAME"),
+      B = mk2("SAME", "SAME")
+    ),
+    equal_to_case_insensitive = list(
+      A = mk2("same", "SAME"),
+      B = mk2("diff", "SAME")
+    ),
+    not_equal_to_case_insensitive = list(
+      A = mk2("diff", "SAME"),
+      B = mk2("same", "SAME")
+    ),
+    greater_than = list(
+      A = mk2(2, 1),
+      B = mk2(1, 2)
+    ),
+    less_than = list(
+      A = mk2(1, 2),
+      B = mk2(2, 1)
+    ),
+    greater_than_or_equal_to = list(
+      A = mk2(2, 2),
+      B = mk2(1, 2)
+    ),
+    less_than_or_equal_to = list(
+      A = mk2(1, 1),
+      B = mk2(2, 1)
+    ),
+    date_greater_than = list(
+      A = mk2("2026-01-16", "2026-01-15"),
+      B = mk2("2026-01-14", "2026-01-15")
+    ),
+    date_less_than = list(
+      A = mk2("2026-01-14", "2026-01-15"),
+      B = mk2("2026-01-16", "2026-01-15")
+    ),
+    date_greater_than_or_equal_to = list(
+      A = mk2("2026-01-15", "2026-01-15"),
+      B = mk2("2026-01-14", "2026-01-15")
+    ),
+    date_less_than_or_equal_to = list(
+      A = mk2("2026-01-15", "2026-01-15"),
+      B = mk2("2026-01-16", "2026-01-15")
+    ),
+    NULL
+  )
+}
+
 # -- per-op seed variants ---------------------------------------------------
 # Each case returns either a flat {A = cols, B = cols} (no extras) or the
 # richer {A = {main, extras}, B = {main, extras}} shape used by $-ref ops.
 # `.normalize_variant` downstream collapses both into the rich shape.
 
+# Variants for ops that don't use a `name` arg. Each derives its target
+# column(s) from suffix / b_var+a_var / etc.
+.no_name_variant <- function(op, leaf, domain) {
+  switch(
+    op,
+    label_by_suffix_missing = {
+      suffix <- as.character(leaf[["suffix"]] %||% "")
+      phrase <- as.character(leaf[["value"]] %||% "")
+      if (!nzchar(suffix) || !nzchar(phrase)) return(NULL)
+      good_label <- paste0("Some ", phrase, " value")
+      bad_label  <- "Mismatched Label"
+      col <- paste0("X", toupper(suffix))
+      mk_col <- function(label) {
+        v <- "v1"
+        attr(v, "label") <- label
+        stats::setNames(list(v), col)
+      }
+      list(A = mk_col(bad_label), B = mk_col(good_label))
+    },
+    dataset_name_length_not_in_range = NULL,
+    base_not_equal_abl_row = {
+      b_var   <- as.character(leaf[["b_var"]] %||% "")
+      a_var   <- as.character(leaf[["a_var"]] %||% "")
+      abl_col <- as.character(leaf[["abl_col"]] %||% "ABLFL")
+      abl_value <- as.character(leaf[["abl_value"]] %||% "Y")
+      group_by  <- as.character(unlist(leaf[["group_by"]] %||% character(0)))
+      gate <- as.character(leaf[["basetype_gate"]] %||% "any")
+      if (!nzchar(b_var) || !nzchar(a_var) || length(group_by) == 0L) return(NULL)
+      group_by <- .expand_wildcard(group_by, domain)
+      A <- list()
+      B <- list()
+      A[[b_var]] <- c("X", "Y")
+      A[[a_var]] <- c("X", "Y")
+      A[[abl_col]] <- c(abl_value, "N")
+      B[[b_var]] <- c("Y", "Y")
+      B[[a_var]] <- c("Y", "Y")
+      B[[abl_col]] <- c(abl_value, "N")
+      for (g in group_by) {
+        if (g == b_var || g == a_var || g == abl_col) next
+        A[[g]] <- c("G1", "G1")
+        B[[g]] <- c("G1", "G1")
+      }
+      if (gate == "populated") {
+        A[["BASETYPE"]] <- c("BTYPE", "BTYPE")
+        B[["BASETYPE"]] <- c("BTYPE", "BTYPE")
+      }
+      list(A = A, B = B)
+    },
+    no_baseline_record = {
+      nm <- as.character(leaf[["name"]] %||% "")
+      flag_var <- as.character(leaf[["flag_var"]] %||% "")
+      flag_value <- as.character(leaf[["flag_value"]] %||% "")
+      group_by <- as.character(unlist(leaf[["group_by"]] %||% character(0)))
+      if (!nzchar(nm) || !nzchar(flag_var) || !nzchar(flag_value)) return(NULL)
+      if (length(group_by) == 0L) return(NULL)
+      nm <- .expand_wildcard(nm, domain)[[1L]]
+      group_by <- .expand_wildcard(group_by, domain)
+      A <- list()
+      B <- list()
+      A[[nm]] <- c("v1", "v1")
+      A[[flag_var]] <- c("N", "N")
+      B[[nm]] <- c("v1", "v1")
+      B[[flag_var]] <- c(flag_value, "N")
+      for (g in group_by) {
+        if (g == nm || g == flag_var) next
+        A[[g]] <- c("G1", "G1")
+        B[[g]] <- c("G1", "G1")
+      }
+      list(A = A, B = B)
+    },
+    NULL
+  )
+}
+
 .leaf_variants <- function(op, leaf, domain, main_dataset = NULL) {
+  # Some ops do not use a `name` field. They derive their target column(s)
+  # from other args (suffix / b_var+a_var / dataset_name). Handle them up
+  # front so we don't reject them on the missing-name guard below.
+  if (op %in% c("label_by_suffix_missing",
+                "dataset_name_length_not_in_range",
+                "base_not_equal_abl_row",
+                "no_baseline_record")) {
+    return(.no_name_variant(op, leaf, domain))
+  }
+
   raw_name <- leaf[["name"]]
   if (is.null(raw_name)) return(NULL)
   raw_vec <- as.character(unlist(raw_name))
@@ -444,6 +651,33 @@ DOLLAR_ALIASES <- list(
     main_up <- toupper(as.character(main_dataset %||% ""))
     if (identical(ref$dataset, main_up)) return(NULL)
     return(.dollar_variant(op, name, ref))
+  }
+
+  # `value_is_literal: FALSE` -- the value is a column name in the current
+  # dataset, not a literal. Seed both columns so the leaf has somewhere to
+  # compare against. Only supported for simple compare ops.
+  vis_lit <- leaf[["value_is_literal"]]
+  if (!is.null(vis_lit) && isFALSE(as.logical(vis_lit))) {
+    other_col <- .expand_wildcard(val1, domain)[[1L]]
+    if (!is.na(other_col) && nzchar(other_col) && other_col != name) {
+      return(.cross_col_variant(op, name, other_col))
+    }
+    return(NULL)
+  }
+
+  # Dotted cross-dataset reference: value like "DM.USUBJID" means the column
+  # USUBJID in the DM dataset. Same semantics as `$dm_usubjid`. The validator
+  # treats some ops differently (matches_by_key vs is_not_contained_by) so
+  # we only auto-route ops that .dollar_variant knows how to seed.
+  if (!is.na(val1)) {
+    dref <- .parse_dotted_ref(val1)
+    if (!is.null(dref)) {
+      main_up <- toupper(as.character(main_dataset %||% ""))
+      if (!identical(dref$dataset, main_up)) {
+        v <- .dollar_variant(op, name, dref)
+        if (!is.null(v)) return(v)
+      }
+    }
   }
 
   # Cross-dataset column presence: exists("AE.AESTDY") means column AESTDY
@@ -584,8 +818,21 @@ DOLLAR_ALIASES <- list(
            B = .mk(name, strrep("x", n + 2L)))
     },
 
-    matches_regex     = list(A = .mk(name, "TESTvalue"), B = .mk(name, "!!!")),
-    not_matches_regex = list(A = .mk(name, "!!!"), B = .mk(name, "TESTvalue")),
+    matches_regex     = {
+      rx <- as.character(val1)
+      pos_val <- .sample_regex_match(rx, want_match = TRUE)
+      neg_val <- .sample_regex_match(rx, want_match = FALSE)
+      if (is.null(pos_val) || is.null(neg_val)) return(NULL)
+      list(A = .mk(name, pos_val), B = .mk(name, neg_val))
+    },
+    not_matches_regex = {
+      rx <- as.character(val1)
+      # Positive (fires when value does NOT match): pick a non-matching value.
+      neg_val <- .sample_regex_match(rx, want_match = FALSE)
+      pos_val <- .sample_regex_match(rx, want_match = TRUE)
+      if (is.null(pos_val) || is.null(neg_val)) return(NULL)
+      list(A = .mk(name, neg_val), B = .mk(name, pos_val))
+    },
 
     # -- prefix / suffix ---------------------------------------------------
     prefix_equal_to = {
@@ -824,6 +1071,209 @@ DOLLAR_ALIASES <- list(
            B = c(.mk(name, 20), .mk(minuend, 12), .mk(subtrahend, 10), .mk(denom, 10)))
     },
 
+    # -- prefix / suffix set membership ------------------------------------
+    # First N (or last N) chars of value not in allowed set -> fires.
+    prefix_is_not_contained_by = {
+      allowed <- .vals_all(leaf[["value"]])
+      pfx_len <- as.integer(leaf[["prefix"]] %||% 2L)
+      if (length(allowed) == 0L) return(NULL)
+      good <- toupper(substring(allowed[[1L]], 1L, pfx_len))
+      bad  <- "ZZ"
+      if (nchar(bad) < pfx_len) bad <- strrep("Z", pfx_len)
+      bad <- substring(bad, 1L, pfx_len)
+      list(A = .mk(name, paste0(bad, "TAIL")),
+           B = .mk(name, paste0(good, "TAIL")))
+    },
+    suffix_is_not_contained_by = {
+      allowed <- .vals_all(leaf[["value"]])
+      sfx_len <- as.integer(leaf[["suffix"]] %||% 2L)
+      if (length(allowed) == 0L) return(NULL)
+      a1 <- allowed[[1L]]
+      good <- toupper(substring(a1, max(1L, nchar(a1) - sfx_len + 1L)))
+      bad  <- strrep("Z", sfx_len)
+      list(A = .mk(name, paste0("HEAD", bad)),
+           B = .mk(name, paste0("HEAD", good)))
+    },
+
+    # -- label / metadata --------------------------------------------------
+    # label_by_suffix_missing: fires when any column whose name ends in
+    # `suffix` has a non-empty label that does NOT contain `value`.
+    # The leaf's `name` is unused; the op derives column names from `suffix`.
+    label_by_suffix_missing = {
+      suffix <- as.character(leaf[["suffix"]] %||% "")
+      phrase <- as.character(leaf[["value"]] %||% "")
+      if (!nzchar(suffix) || !nzchar(phrase)) return(NULL)
+      good_label <- paste0("This is a ", phrase)
+      bad_label  <- "Something Else"
+      col <- paste0("X", toupper(suffix))
+      mk_col <- function(label) {
+        v <- "v1"
+        attr(v, "label") <- label
+        stats::setNames(list(v), col)
+      }
+      list(A = mk_col(bad_label), B = mk_col(good_label))
+    },
+
+    # var_by_suffix_not_numeric: fires when the column is non-numeric.
+    # The op uses the leaf's `name` directly (no wildcard expansion to
+    # other domains). Negative needs a numeric column.
+    var_by_suffix_not_numeric = {
+      list(A = .mk(name, "abc"), B = .mk(name, 1))
+    },
+
+    # dataset_name_length_not_in_range: fires when nchar(ctx$current_dataset)
+    # is outside [min_len, max_len]. Cannot toggle via row data; we change
+    # the dataset name itself. Skip auto-seeding -- the seeder's main name
+    # is fixed at ds_info$name.
+    dataset_name_length_not_in_range = NULL,
+
+    # -- ADaM baseline ------------------------------------------------------
+    # no_baseline_record: fires when group has populated `name` but no
+    # row with flag_var == flag_value.
+    no_baseline_record = {
+      flag_var <- as.character(leaf[["flag_var"]] %||% "")
+      flag_value <- as.character(leaf[["flag_value"]] %||% "")
+      group_by <- as.character(unlist(leaf[["group_by"]] %||% character(0)))
+      if (!nzchar(flag_var) || !nzchar(flag_value)) return(NULL)
+      if (length(group_by) == 0L) return(NULL)
+      group_by <- .expand_wildcard(group_by, domain)
+      n_grp <- length(group_by)
+      A <- c(
+        .mk(name, c("v1", "v1")),
+        .mk(flag_var, c("N", "N"))
+      )
+      B <- c(
+        .mk(name, c("v1", "v1")),
+        .mk(flag_var, c(flag_value, "N"))
+      )
+      for (g in group_by) {
+        A[[g]] <- c("G1", "G1")
+        B[[g]] <- c("G1", "G1")
+      }
+      list(A = A, B = B)
+    },
+
+    # base_not_equal_abl_row: fires when b_var on b_var-populated rows
+    # differs from a_var on the row where abl_col == abl_value (per group).
+    # basetype_gate "absent" skips if BASETYPE column is present.
+    base_not_equal_abl_row = {
+      b_var <- as.character(leaf[["b_var"]] %||% "")
+      a_var <- as.character(leaf[["a_var"]] %||% "")
+      abl_col <- as.character(leaf[["abl_col"]] %||% "ABLFL")
+      abl_value <- as.character(leaf[["abl_value"]] %||% "Y")
+      group_by <- as.character(unlist(leaf[["group_by"]] %||% character(0)))
+      gate <- as.character(leaf[["basetype_gate"]] %||% "any")
+      if (!nzchar(b_var) || !nzchar(a_var) || length(group_by) == 0L) return(NULL)
+      group_by <- .expand_wildcard(group_by, domain)
+      A <- c(
+        .mk(b_var, c("X", "Y")),
+        .mk(a_var, c("X", "Y")),
+        .mk(abl_col, c(abl_value, "N"))
+      )
+      B <- c(
+        .mk(b_var, c("Y", "Y")),
+        .mk(a_var, c("Y", "Y")),
+        .mk(abl_col, c(abl_value, "N"))
+      )
+      for (g in group_by) {
+        A[[g]] <- c("G1", "G1")
+        B[[g]] <- c("G1", "G1")
+      }
+      # If gate is "populated", BASETYPE must be populated for the rows.
+      if (gate == "populated") {
+        A[["BASETYPE"]] <- c("BTYPE", "BTYPE")
+        B[["BASETYPE"]] <- c("BTYPE", "BTYPE")
+      }
+      list(A = A, B = B)
+    },
+
+    # max_n_records_per_group_matching: more than max_n rows per group
+    # match a value -> fires.
+    max_n_records_per_group_matching = {
+      val <- as.character(leaf[["value"]] %||% "")
+      group_keys <- as.character(unlist(leaf[["group_keys"]] %||% character(0)))
+      max_n <- as.integer(leaf[["max_n"]] %||% 1L)
+      if (!nzchar(val) || length(group_keys) == 0L) return(NULL)
+      group_keys <- .expand_wildcard(group_keys, domain)
+      # Need (max_n + 1) rows matching, all in same group, to fire.
+      n_match <- max_n + 1L
+      n_neg   <- max_n
+      A <- list()
+      A[[name]] <- rep(val, n_match)
+      B <- list()
+      B[[name]] <- rep(val, n_neg)
+      for (g in group_keys) {
+        A[[g]] <- rep("G1", n_match)
+        B[[g]] <- rep("G1", n_neg)
+      }
+      list(A = A, B = B)
+    },
+
+    # is_inconsistent_across_dataset: row's value differs from same-key
+    # value in a reference dataset.
+    is_inconsistent_across_dataset = {
+      val <- leaf[["value"]]
+      if (is.list(val)) {
+        ref_ds <- as.character(val$reference_dataset %||% "")
+        by_key <- as.character(val$by %||% name)
+        ref_col <- as.character(val$column %||% name)
+      } else if (is.character(val) && length(val) == 1L && grepl("\\.", val)) {
+        parts <- strsplit(val, ".", fixed = TRUE)[[1L]]
+        ref_ds <- parts[[1L]]
+        ref_col <- parts[[2L]]
+        by_key <- name
+      } else {
+        return(NULL)
+      }
+      if (!nzchar(ref_ds) || !nzchar(ref_col)) return(NULL)
+      if (length(by_key) != 1L || !nzchar(by_key)) return(NULL)
+      by_key  <- .expand_wildcard(by_key,  domain)[[1L]]
+      ref_col <- .expand_wildcard(ref_col, domain)[[1L]]
+      if (identical(toupper(ref_ds), toupper(main_dataset %||% ""))) return(NULL)
+      list(
+        A = list(
+          main = c(.mk(name, "DIFF"), .mk(by_key, "K1")),
+          extras = stats::setNames(list(c(.mk(ref_col, "SAME"), .mk(by_key, "K1"))), ref_ds)
+        ),
+        B = list(
+          main = c(.mk(name, "SAME"), .mk(by_key, "K1")),
+          extras = stats::setNames(list(c(.mk(ref_col, "SAME"), .mk(by_key, "K1"))), ref_ds)
+        )
+      )
+    },
+
+    # any_index_missing_ref_var: for each unique index value in `name`, the
+    # reference dataset must contain the templated variable. Fires when
+    # ANY index value's templated column is missing.
+    any_index_missing_ref_var = {
+      ref_ds <- as.character(leaf[["reference_dataset"]] %||% "")
+      tmpl <- as.character(leaf[["name_template"]] %||% "")
+      ph <- as.character(leaf[["placeholder"]] %||% "xx")
+      if (!nzchar(ref_ds) || !nzchar(tmpl)) return(NULL)
+      fmt <- switch(ph, "xx" = "%02d", "zz" = "%02d", "y" = "%d", "w" = "%d", "%02d")
+      idx_val <- 1L
+      formatted <- sprintf(fmt, idx_val)
+      tmpl_col <- gsub(ph, formatted, tmpl, fixed = TRUE)
+      list(
+        A = list(
+          main = .mk(name, idx_val),
+          extras = stats::setNames(list(list(`_placeholder_` = "x")), ref_ds)
+        ),
+        B = list(
+          main = .mk(name, idx_val),
+          extras = stats::setNames(list(stats::setNames(list("x"), tmpl_col)), ref_ds)
+        )
+      )
+    },
+
+    # value_in_srs_table: fires when a non-empty value is NOT in the SRS
+    # registry. The seeder's .dummy_dictionaries() injects a provider whose
+    # every field returns "VALID" via contains(). Negative variant uses
+    # "VALID"; positive uses anything else.
+    value_in_srs_table = {
+      list(A = .mk(name, "INVALID"), B = .mk(name, "VALID"))
+    },
+
     NULL
   )
 }
@@ -996,6 +1446,63 @@ for (i in seq_len(n_total)) {
     n_skipped <- n_skipped + 1L
     reasons <- c(reasons, "no-dataset-name")
     next
+  }
+
+  # Submission-scope dataset existence rules: a single-leaf
+  # `exists(<DSNAME>)` or `not_exists(<DSNAME>)` against the submission stub
+  # is satisfied or violated by whether <DSNAME> appears in the file map
+  # at all. Seed by swapping which datasets are present.
+  is_sub <- isTRUE(as.logical(rule$scope$submission %||% FALSE))
+  if (is_sub && length(leaves_info) == 1L &&
+      ops[[1L]] %in% c("exists", "not_exists")) {
+    leaf <- leaves_info[[1L]]$leaf
+    target_ds <- toupper(as.character(leaf$name %||% ""))
+    if (nzchar(target_ds) && !grepl("\\.", target_ds)) {
+      # Build positive (rule fires) and negative (rule does not fire) maps.
+      # `exists`     fires when target dataset is present.
+      # `not_exists` fires when target dataset is absent.
+      placeholder_ds <- if (target_ds == "DM") "AE" else "DM"
+      placeholder_cols <- list(USUBJID = "S1")
+      target_cols <- list(USUBJID = "S1")
+      with_target <- stats::setNames(list(target_cols), target_ds)
+      without_target <- stats::setNames(list(placeholder_cols), placeholder_ds)
+      inverted_outer <- isTRUE(leaves_info[[1L]]$inverted)
+      base_op <- ops[[1L]]
+      effective_fires_when_present <- (base_op == "exists") != inverted_outer
+      pos_map <- if (effective_fires_when_present) with_target else without_target
+      neg_map <- if (effective_fires_when_present) without_target else with_target
+
+      paths <- .fx_paths(rule$authority %||% "unknown", rule_id)
+      if (!isTRUE(force) &&
+          (.is_manual(paths$positive) || .is_manual(paths$negative))) {
+        n_skipped <- n_skipped + 1L
+        reasons <- c(reasons, "manual-fixture-present")
+        next
+      }
+
+      out_pos <- .run_rule(rule_id, pos_map, spec = NULL)
+      out_neg <- .run_rule(rule_id, neg_map, spec = NULL)
+      if (!isTRUE(out_pos$fires) || isTRUE(out_neg$fires)) {
+        n_skipped <- n_skipped + 1L
+        reasons <- c(reasons,
+          if (!out_pos$fires && !out_neg$fires) "neither-fires"
+          else if (out_pos$fires && out_neg$fires) "both-fire"
+          else "positive-no-fire")
+        next
+      }
+
+      notes_pos <- sprintf("auto-seeded submission-scope %s; target dataset %s",
+                           base_op, target_ds)
+      notes_neg <- sprintf("auto-seeded submission-scope %s; target dataset %s (should not fire)",
+                           base_op, target_ds)
+      .write_fixture(paths$positive, rule_id, "positive", pos_map,
+                     out_pos, notes_pos)
+      .write_fixture(paths$negative, rule_id, "negative", neg_map,
+                     out_neg, notes_neg)
+      written_paths <- c(written_paths, paths$positive, paths$negative)
+      n_seeded <- n_seeded + 1L
+      next
+    }
   }
 
   seed_tuple <- .seed_expand_tuple(rule$check_tree$expand)

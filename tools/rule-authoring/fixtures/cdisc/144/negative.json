@@ -3,7 +3,7 @@
   "fixture_type": "negative",
   "datasets": {
     "ADVS": {
-      "PARAMCD": "TESTvalue"
+      "PARAMCD": "AE"
     }
   },
   "expected": {

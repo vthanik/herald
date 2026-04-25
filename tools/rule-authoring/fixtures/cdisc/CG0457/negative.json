@@ -4,7 +4,7 @@
   "datasets": {
     "TS": {
       "TSPARMCD": "NOT_IN_ACTSUB",
-      "TSVAL": "TESTvalue"
+      "TSVAL": "1"
     }
   },
   "expected": {

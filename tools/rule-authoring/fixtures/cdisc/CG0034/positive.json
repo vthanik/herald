@@ -1,0 +1,18 @@
+{
+  "rule_id": "CG0034",
+  "fixture_type": "positive",
+  "datasets": {
+    "DM": {
+      "VISITNUM": "TARGET_X"
+    },
+    "SV": {
+      "VISITNUM": "OTHER_001"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded (+1 ref ds); 1 leaf op(s): is_not_contained_by",
+  "authored": "auto-seed@4"
+}

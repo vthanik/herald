@@ -1,0 +1,15 @@
+{
+  "rule_id": "58",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "stemDT": "abc"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): var_by_suffix_not_numeric",
+  "authored": "auto-seed@4"
+}

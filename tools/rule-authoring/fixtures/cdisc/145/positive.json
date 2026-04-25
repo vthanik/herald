@@ -3,7 +3,7 @@
   "fixture_type": "positive",
   "datasets": {
     "ADVS": {
-      "PARAMCD": "!!!"
+      "PARAMCD": "Heart Rate"
     }
   },
   "expected": {

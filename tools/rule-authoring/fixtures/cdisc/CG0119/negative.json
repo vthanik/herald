@@ -1,0 +1,21 @@
+{
+  "rule_id": "CG0119",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "ACTARM": "NOT_IN_Screen Failure",
+      "ARM": "SAME"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): is_contained_by,not_equal_to (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "DM": "SPC"
+    }
+  }
+}

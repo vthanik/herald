@@ -3,7 +3,7 @@
   "fixture_type": "positive",
   "datasets": {
     "DM": {
-      "variable_label": "!!!"
+      "variable_label": "test"
     }
   },
   "expected": {

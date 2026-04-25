@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000863",
+  "fixture_type": "negative",
+  "datasets": {
+    "LB": {
+      "LBSTRESC": "AE",
+      "LBSTRESN": "value"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 3 leaf op(s): non_empty,matches_regex,empty (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "LB": "FINDINGS"
+    }
+  }
+}

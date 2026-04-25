@@ -37,7 +37,7 @@ Requires the \code{openxlsx2} package.
 \dontshow{if (requireNamespace("openxlsx2", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
                   stringsAsFactors = FALSE)
-r   <- validate(files = list(AE = ae), quiet = TRUE)
+r   <- validate(files = list(ae), quiet = TRUE)
 out <- tempfile(fileext = ".xlsx")
 on.exit(unlink(out))
 write_report_xlsx(r, out)

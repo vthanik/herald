@@ -1,0 +1,15 @@
+{
+  "rule_id": "CG0309",
+  "fixture_type": "positive",
+  "datasets": {
+    "AP--": {
+      "DOMAIN": "AE"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): not_matches_regex",
+  "authored": "auto-seed@4"
+}

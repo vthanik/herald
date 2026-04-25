@@ -1,0 +1,24 @@
+{
+  "rule_id": "692",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "BASEC": ["v1", "v1"],
+      "ABLFL": ["N", "N"],
+      "PARAMCD": ["G1", "G1"],
+      "USUBJID": ["G1", "G1"],
+      "SPDEVID": ["G1", "G1"]
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": [1, 2]
+  },
+  "notes": "auto-seeded; 1 leaf op(s): no_baseline_record",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADSL": "MEDICAL DEVICE BASIC DATA STRUCTURE"
+    }
+  }
+}

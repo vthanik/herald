@@ -1,6 +1,6 @@
 # Golden-fixture coverage
 
-_generated 2026-04-25T21:34:51Z by tools/fixture-coverage.R_
+_generated 2026-04-25T22:33:18Z by tools/fixture-coverage.R_
 
 | metric | count |
 |---|---:|

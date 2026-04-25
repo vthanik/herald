@@ -1,0 +1,15 @@
+{
+  "rule_id": "1",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADSL": {
+      "USUBJID": "S1"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded submission-scope not_exists; target dataset ADSL (should not fire)",
+  "authored": "auto-seed@4"
+}

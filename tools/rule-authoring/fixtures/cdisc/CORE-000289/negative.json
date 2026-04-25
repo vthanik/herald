@@ -3,7 +3,7 @@
   "fixture_type": "negative",
   "datasets": {
     "LB": {
-      "LBORRES": "TESTvalue",
+      "LBORRES": "1",
       "LBORNRHI": ""
     }
   },

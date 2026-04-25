@@ -1,0 +1,15 @@
+{
+  "rule_id": "CG0368",
+  "fixture_type": "positive",
+  "datasets": {
+    "AE": {
+      "USUBJID": "S1"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": []
+  },
+  "notes": "auto-seeded submission-scope not_exists; target dataset DM",
+  "authored": "auto-seed@4"
+}
