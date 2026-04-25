@@ -1,12 +1,12 @@
 # -----------------------------------------------------------------------------
-# test-fast-rules-walk.R — rule-tree walker
+# test-fast-rules-walk.R  --  rule-tree walker
 # -----------------------------------------------------------------------------
 
 fixture <- function() {
   data.frame(
-    USUBJID  = c("S1", "S2", "S3", "S4"),
-    AESTDTC  = c("2026-01-15", "2024---15", "", "not-a-date"),
-    AETERM   = c("HEADACHE", "HEADACHE", NA_character_, ""),
+    USUBJID = c("S1", "S2", "S3", "S4"),
+    AESTDTC = c("2026-01-15", "2024---15", "", "not-a-date"),
+    AETERM = c("HEADACHE", "HEADACHE", NA_character_, ""),
     stringsAsFactors = FALSE
   )
 }
@@ -33,31 +33,43 @@ test_that("leaf operator evaluates and returns logical mask", {
 test_that("{all} combinator ANDs children with short-circuit", {
   d <- fixture()
   # Both checks must pass: iso8601(AESTDTC) AND matches_regex(AETERM, 'HEAD.*')
-  node <- list(all = list(
-    list(operator = "iso8601", name = "AESTDTC", allow_missing = FALSE),
-    list(operator = "matches_regex", name = "AETERM", value = "^HEAD.*$",
-         allow_missing = FALSE)
-  ))
+  node <- list(
+    all = list(
+      list(operator = "iso8601", name = "AESTDTC", allow_missing = FALSE),
+      list(
+        operator = "matches_regex",
+        name = "AETERM",
+        value = "^HEAD.*$",
+        allow_missing = FALSE
+      )
+    )
+  )
   out <- walk_tree(node, d)
-  # Row 1: iso ok + HEAD → TRUE
-  # Row 2: iso ok + HEAD → TRUE
-  # Row 3: iso fail (NA empty) → FALSE (short-circuited before AETERM check)
-  # Row 4: iso fail → FALSE
+  # Row 1: iso ok + HEAD -> TRUE
+  # Row 2: iso ok + HEAD -> TRUE
+  # Row 3: iso fail (NA empty) -> FALSE (short-circuited before AETERM check)
+  # Row 4: iso fail -> FALSE
   expect_equal(out, c(TRUE, TRUE, FALSE, FALSE))
 })
 
 test_that("{any} combinator ORs children with short-circuit", {
   d <- fixture()
-  node <- list(any = list(
-    list(operator = "iso8601", name = "AESTDTC", allow_missing = FALSE),
-    list(operator = "matches_regex", name = "AETERM", value = "^HEAD.*$",
-         allow_missing = FALSE)
-  ))
+  node <- list(
+    any = list(
+      list(operator = "iso8601", name = "AESTDTC", allow_missing = FALSE),
+      list(
+        operator = "matches_regex",
+        name = "AETERM",
+        value = "^HEAD.*$",
+        allow_missing = FALSE
+      )
+    )
+  )
   out <- walk_tree(node, d)
-  # Row 1: iso TRUE → short-circuit TRUE
-  # Row 2: iso TRUE → TRUE
-  # Row 3: iso FALSE, AETERM NA (regex fails) → FALSE
-  # Row 4: iso FALSE, AETERM empty (regex fails) → FALSE
+  # Row 1: iso TRUE -> short-circuit TRUE
+  # Row 2: iso TRUE -> TRUE
+  # Row 3: iso FALSE, AETERM NA (regex fails) -> FALSE
+  # Row 4: iso FALSE, AETERM empty (regex fails) -> FALSE
   expect_equal(out, c(TRUE, TRUE, FALSE, FALSE))
 })
 
@@ -99,10 +111,12 @@ test_that("empty dataset yields empty mask", {
 test_that("nested combinators compose correctly", {
   d <- fixture()
   # (iso8601 AND (NOT contains(AETERM, 'HEAD')))
-  node <- list(all = list(
-    list(operator = "iso8601", name = "AESTDTC", allow_missing = FALSE),
-    list(`not` = list(operator = "contains", name = "AETERM", value = "HEAD"))
-  ))
+  node <- list(
+    all = list(
+      list(operator = "iso8601", name = "AESTDTC", allow_missing = FALSE),
+      list(`not` = list(operator = "contains", name = "AETERM", value = "HEAD"))
+    )
+  )
   out <- walk_tree(node, d)
   # Row 1: iso TRUE, contains HEAD TRUE -> not FALSE -> all TRUE AND FALSE = FALSE
   # Row 2: iso TRUE, contains HEAD TRUE -> not FALSE -> FALSE
@@ -118,7 +132,7 @@ test_that("nested combinators compose correctly", {
 test_that("SDTM: --DY resolves to AEDY in AE domain", {
   ctx <- new_herald_ctx()
   ctx$current_dataset <- "AE"
-  ctx$current_domain  <- "AE"
+  ctx$current_domain <- "AE"
   d <- data.frame(
     AEDY = c(1L, 2L, 3L),
     stringsAsFactors = FALSE
@@ -138,26 +152,29 @@ test_that("ADaM: --DY is NOT expanded (ADaMIG uses explicit names)", {
   ctx <- new_herald_ctx()
   ctx$current_dataset <- "ADAE"
   d <- data.frame(
-    AEDY     = c(1L, 2L, 3L),
-    ADY      = c(1L, 2L, 3L),
-    USUBJID  = c("S1","S2","S3"),
+    AEDY = c(1L, 2L, 3L),
+    ADY = c(1L, 2L, 3L),
+    USUBJID = c("S1", "S2", "S3"),
     stringsAsFactors = FALSE
   )
   cands <- .domain_prefix_candidates(ctx, d)
   expect_equal(cands, character(0))
   resolved <- .resolve_wildcard("--DY", d, cands)
-  expect_equal(resolved, "--DY")  # unchanged
+  expect_equal(resolved, "--DY") # unchanged
 })
 
 test_that("ADaM: all AD* datasets skip wildcard expansion", {
   ctx <- new_herald_ctx()
   for (ds in c("ADSL", "ADAE", "ADCM", "ADLB", "ADVS", "ADTTE")) {
     ctx$current_dataset <- ds
-    ctx$current_domain  <- NULL
+    ctx$current_domain <- NULL
     d <- data.frame(X = 1, stringsAsFactors = FALSE)
     cands <- .domain_prefix_candidates(ctx, d)
-    expect_equal(cands, character(0),
-                 info = sprintf("ADaM dataset %s must produce no candidates", ds))
+    expect_equal(
+      cands,
+      character(0),
+      info = sprintf("ADaM dataset %s must produce no candidates", ds)
+    )
   }
 })
 
@@ -165,7 +182,7 @@ test_that("SUPP: --VAR resolves to parent domain's prefix", {
   ctx <- new_herald_ctx()
   ctx$current_dataset <- "SUPPAE"
   d <- data.frame(
-    AEDY = c(1L, 2L),  # SUPPAE probably wouldn't have this, but the test is about resolution
+    AEDY = c(1L, 2L), # SUPPAE probably wouldn't have this, but the test is about resolution
     stringsAsFactors = FALSE
   )
   cands <- .domain_prefix_candidates(ctx, d)
@@ -175,7 +192,7 @@ test_that("SUPP: --VAR resolves to parent domain's prefix", {
 test_that("No candidate matches -> use primary (first) candidate", {
   ctx <- new_herald_ctx()
   ctx$current_dataset <- "AE"
-  ctx$current_domain  <- "AE"
+  ctx$current_domain <- "AE"
   d <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
   cands <- .domain_prefix_candidates(ctx, d)
   resolved <- .resolve_wildcard("--NONEXISTENT", d, cands)
@@ -194,7 +211,7 @@ test_that("DOMAIN column provides fallback prefix", {
   ctx <- new_herald_ctx()
   d <- data.frame(
     DOMAIN = c("AE", "AE", "AE"),
-    AEDY   = c(1L, 2L, 3L),
+    AEDY = c(1L, 2L, 3L),
     stringsAsFactors = FALSE
   )
   cands <- .domain_prefix_candidates(ctx, d)
@@ -204,11 +221,16 @@ test_that("DOMAIN column provides fallback prefix", {
 test_that("end-to-end: check_tree with --VAR in ADaM stays unresolved (advisory)", {
   # --DY in an ADaM context: column won't resolve, op sees "--DY"
   # which doesn't exist -> returns NA mask.
-  tree <- list(all = list(
-    list(name = "--DY", operator = "non_empty")
-  ))
-  d <- data.frame(AEDY = c(1L, NA_integer_, 3L), ADY = c(NA, 2L, 3L),
-                  stringsAsFactors = FALSE)
+  tree <- list(
+    all = list(
+      list(name = "--DY", operator = "non_empty")
+    )
+  )
+  d <- data.frame(
+    AEDY = c(1L, NA_integer_, 3L),
+    ADY = c(NA, 2L, 3L),
+    stringsAsFactors = FALSE
+  )
   ctx <- new_herald_ctx()
   ctx$current_dataset <- "ADAE"
   mask <- walk_tree(tree, d, ctx)
@@ -216,13 +238,15 @@ test_that("end-to-end: check_tree with --VAR in ADaM stays unresolved (advisory)
 })
 
 test_that("end-to-end: SDTM --VAR resolves and fires normally", {
-  tree <- list(all = list(
-    list(name = "--DY", operator = "non_empty")
-  ))
+  tree <- list(
+    all = list(
+      list(name = "--DY", operator = "non_empty")
+    )
+  )
   d <- data.frame(AEDY = c(1L, NA_integer_, 3L), stringsAsFactors = FALSE)
   ctx <- new_herald_ctx()
   ctx$current_dataset <- "AE"
-  ctx$current_domain  <- "AE"
+  ctx$current_domain <- "AE"
   mask <- walk_tree(tree, d, ctx)
   expect_equal(mask, c(TRUE, FALSE, TRUE))
 })

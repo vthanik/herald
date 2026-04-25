@@ -1,4 +1,4 @@
-# Tests for R/ieee-ibm.R — IEEE 754 <-> IBM 370 float conversion
+# Tests for R/ieee-ibm.R  --  IEEE 754 <-> IBM 370 float conversion
 
 # Known IBM 370 representations:
 # 1.0  = 0x41 0x10 0x00 0x00 0x00 0x00 0x00 0x00

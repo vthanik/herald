@@ -12,7 +12,11 @@
 #' @noRd
 scan_folder_datasets <- function(path, call = rlang::caller_env()) {
   if (!dir.exists(path)) {
-    herald_error_io("Directory {.path {path}} does not exist.", path = path, call = call)
+    herald_error_io(
+      "Directory {.path {path}} does not exist.",
+      path = path,
+      call = call
+    )
   }
 
   xpt_files <- list.files(path, pattern = "\\.(xpt|XPT)$", full.names = TRUE)
@@ -218,7 +222,7 @@ detect_standard <- function(names) {
 }
 
 # --------------------------------------------------------------------------
-# ADaM class detection — variable-signature approach
+# ADaM class detection  --  variable-signature approach
 # --------------------------------------------------------------------------
 
 #' Detect the ADaM dataset class from column names
@@ -290,7 +294,7 @@ detect_adam_class <- function(vars) {
   #    ADSL has population/analysis flags (SAFFL, ITTFL, PPROTFL) but no
   #    domain-specific term or occurrence variables.
   #    OCCDS is identified by:
-  #      a) term/decode variables (AETERM, AEDECOD, CMDECOD, MHDECOD, …)
+  #      a) term/decode variables (AETERM, AEDECOD, CMDECOD, MHDECOD, ...)
   #      b) occurrence-specific flags: AOC*FL, TRTEMFL, or any *EMFL pattern
   if (has_usubjid && !has_paramcd && !has_aval) {
     term_vars <- grep("TERM$|DECOD$", vars, value = TRUE)
@@ -327,29 +331,43 @@ detect_adam_class <- function(vars) {
 #' @export
 detect_adam_classes <- function(..., call = rlang::caller_env()) {
   .exprs <- rlang::enexprs(...)
-  .vals  <- list(...)
+  .vals <- list(...)
 
   # Single herald_spec or named list passed as the only argument
-  if (length(.vals) == 1L && (inherits(.vals[[1L]], "herald_spec") ||
-                               (is.list(.vals[[1L]]) && !is.data.frame(.vals[[1L]])))) {
+  if (
+    length(.vals) == 1L &&
+      (inherits(.vals[[1L]], "herald_spec") ||
+        (is.list(.vals[[1L]]) && !is.data.frame(.vals[[1L]])))
+  ) {
     x <- .vals[[1L]]
     if (inherits(x, "herald_spec")) {
       vs <- x$var_spec
-      if (is.null(vs) || !"dataset" %in% names(vs)) return(character(0L))
+      if (is.null(vs) || !"dataset" %in% names(vs)) {
+        return(character(0L))
+      }
       datasets <- unique(vs[["dataset"]])
-      return(vapply(datasets, function(ds) {
-        detect_adam_class(vs[vs[["dataset"]] == ds, "variable"])
-      }, character(1L)))
+      return(vapply(
+        datasets,
+        function(ds) {
+          detect_adam_class(vs[vs[["dataset"]] == ds, "variable"])
+        },
+        character(1L)
+      ))
     }
     if (is.list(x) && !is.null(names(x))) {
-      return(vapply(names(x), function(nm) detect_adam_class(names(x[[nm]])),
-                    character(1L)))
+      return(vapply(
+        names(x),
+        function(nm) detect_adam_class(names(x[[nm]])),
+        character(1L)
+      ))
     }
   }
 
   # One or more data frames passed directly (bare or named)
   nms <- names(.vals)
-  if (is.null(nms)) nms <- character(length(.vals))
+  if (is.null(nms)) {
+    nms <- character(length(.vals))
+  }
   for (i in seq_along(.vals)) {
     if (!nzchar(nms[[i]]) && is.symbol(.exprs[[i]])) {
       nms[[i]] <- toupper(as.character(.exprs[[i]]))
@@ -359,8 +377,11 @@ detect_adam_classes <- function(..., call = rlang::caller_env()) {
   names(.vals) <- nms
 
   if (length(.vals) > 0L && all(vapply(.vals, is.data.frame, logical(1L)))) {
-    return(vapply(nms, function(nm) detect_adam_class(names(.vals[[nm]])),
-                  character(1L)))
+    return(vapply(
+      nms,
+      function(nm) detect_adam_class(names(.vals[[nm]])),
+      character(1L)
+    ))
   }
 
   herald_error_io(

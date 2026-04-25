@@ -23,23 +23,25 @@ test_that("validate() surfaces missing datasets in result$skipped_refs", {
   # references ADSL. Running it against a BDS-classed dataset without
   # ADSL in the submission must record ADSL as a missing ref.
 
-  bds <- data.frame(USUBJID = "S1", AEDECOD = "X",
-                    stringsAsFactors = FALSE)
+  bds <- data.frame(USUBJID = "S1", AEDECOD = "X", stringsAsFactors = FALSE)
   spec <- as_herald_spec(
     ds_spec = data.frame(
       dataset = "ADAE",
-      class   = "BASIC DATA STRUCTURE",
+      class = "BASIC DATA STRUCTURE",
       stringsAsFactors = FALSE
     )
   )
-  r <- validate(files = list(ADAE = bds), spec = spec,
-                rules = "581", quiet = TRUE)
+  r <- validate(
+    files = list(ADAE = bds),
+    spec = spec,
+    rules = "581",
+    quiet = TRUE
+  )
 
   expect_s3_class(r, "herald_result")
   expect_true("skipped_refs" %in% names(r))
   expect_true("ADSL" %in% names(r$skipped_refs$datasets))
-  expect_match(r$skipped_refs$datasets$ADSL$hint,
-               "Provide dataset ADSL")
+  expect_match(r$skipped_refs$datasets$ADSL$hint, "Provide dataset ADSL")
   expect_true("581" %in% r$skipped_refs$datasets$ADSL$rule_ids)
 })
 
@@ -53,14 +55,18 @@ test_that(".html_skipped_refs emits empty string when nothing is missing", {
 test_that(".html_skipped_refs renders both kinds with rule lists", {
   sk <- list(
     datasets = list(
-      DM = list(kind = "dataset",
-                rule_ids = c("CG0069", "ADaM-204"),
-                hint = "Provide dataset DM to evaluate these rules.")
+      DM = list(
+        kind = "dataset",
+        rule_ids = c("CG0069", "ADaM-204"),
+        hint = "Provide dataset DM to evaluate these rules."
+      )
     ),
     dictionaries = list(
-      srs = list(kind = "dictionary",
-                 rule_ids = c("CG0442", "CG0443"),
-                 hint = "Run `herald::download_srs()` to populate the cache.")
+      srs = list(
+        kind = "dictionary",
+        rule_ids = c("CG0442", "CG0443"),
+        hint = "Run `herald::download_srs()` to populate the cache."
+      )
     )
   )
   out <- herald:::.html_skipped_refs(sk)
@@ -78,23 +84,28 @@ test_that("write_report_html() includes the skipped_refs banner + header cell", 
   # Synthesise a herald_result with populated skipped_refs.
   empty_findings <- herald:::empty_findings()
   r <- new_herald_result(
-    findings         = empty_findings,
-    rules_applied    = 0L,
-    rules_total      = 2L,
+    findings = empty_findings,
+    rules_applied = 0L,
+    rules_total = 2L,
     datasets_checked = c("ADSL"),
-    duration         = as.difftime(0.1, units = "secs"),
-    dataset_meta     = list(
-      ADSL = list(rows = 1L, cols = 1L, label = "Subject-Level",
-                  class = "ADSL")
+    duration = as.difftime(0.1, units = "secs"),
+    dataset_meta = list(
+      ADSL = list(rows = 1L, cols = 1L, label = "Subject-Level", class = "ADSL")
     ),
     skipped_refs = list(
       datasets = list(
-        DM = list(kind = "dataset", rule_ids = "ADaM-204",
-                  hint = "Provide dataset DM to evaluate these rules.")
+        DM = list(
+          kind = "dataset",
+          rule_ids = "ADaM-204",
+          hint = "Provide dataset DM to evaluate these rules."
+        )
       ),
       dictionaries = list(
-        srs = list(kind = "dictionary", rule_ids = c("CG0442"),
-                   hint = "Run `herald::download_srs()` to populate the cache.")
+        srs = list(
+          kind = "dictionary",
+          rule_ids = c("CG0442"),
+          hint = "Run `herald::download_srs()` to populate the cache."
+        )
       )
     )
   )
@@ -104,7 +115,7 @@ test_that("write_report_html() includes the skipped_refs banner + header cell", 
 
   html <- paste(readLines(path, warn = FALSE), collapse = "\n")
   expect_match(html, "Missing reference data")
-  expect_match(html, "Skipped \\(ref data\\)")   # header cell
+  expect_match(html, "Skipped \\(ref data\\)") # header cell
   expect_match(html, "Dataset: DM")
   expect_match(html, "Dictionary: srs")
 })

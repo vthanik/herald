@@ -54,18 +54,26 @@ read_parquet <- function(file) {
   call <- rlang::caller_env()
   check_scalar_chr(file, call = call)
   if (!file.exists(file)) {
-    herald_error_io("File {.path {file}} does not exist.", path = file, call = call)
+    herald_error_io(
+      "File {.path {file}} does not exist.",
+      path = file,
+      call = call
+    )
   }
   .require_arrow(call)
 
-  tbl  <- arrow::read_parquet(file, as_data_frame = FALSE)
+  tbl <- arrow::read_parquet(file, as_data_frame = FALSE)
   meta <- tbl$schema$metadata %||% list()
-  df   <- as.data.frame(tbl, stringsAsFactors = FALSE)
+  df <- as.data.frame(tbl, stringsAsFactors = FALSE)
 
-  ds_lbl  <- meta[["herald.dataset.label"]]
+  ds_lbl <- meta[["herald.dataset.label"]]
   ds_name <- meta[["herald.dataset.name"]]
-  if (!is.null(ds_lbl) && nzchar(ds_lbl)) attr(df, "label")        <- ds_lbl
-  if (!is.null(ds_name) && nzchar(ds_name)) attr(df, "dataset_name") <- ds_name
+  if (!is.null(ds_lbl) && nzchar(ds_lbl)) {
+    attr(df, "label") <- ds_lbl
+  }
+  if (!is.null(ds_name) && nzchar(ds_name)) {
+    attr(df, "dataset_name") <- ds_name
+  }
 
   for (nm in names(df)) {
     col <- df[[nm]]
@@ -73,13 +81,19 @@ read_parquet <- function(file) {
     fmt <- meta[[paste0("herald.col.", nm, ".format")]]
     len <- meta[[paste0("herald.col.", nm, ".length")]]
     typ <- meta[[paste0("herald.col.", nm, ".type")]]
-    if (!is.null(lbl) && nzchar(lbl)) attr(col, "label")      <- lbl
-    if (!is.null(fmt) && nzchar(fmt)) attr(col, "format.sas") <- fmt
+    if (!is.null(lbl) && nzchar(lbl)) {
+      attr(col, "label") <- lbl
+    }
+    if (!is.null(fmt) && nzchar(fmt)) {
+      attr(col, "format.sas") <- fmt
+    }
     if (!is.null(len) && nzchar(len)) {
       n <- suppressWarnings(as.integer(len))
       if (!is.na(n)) attr(col, "sas.length") <- n
     }
-    if (!is.null(typ) && nzchar(typ)) attr(col, "xpt_type")   <- typ
+    if (!is.null(typ) && nzchar(typ)) {
+      attr(col, "xpt_type") <- typ
+    }
     df[[nm]] <- col
   }
   df

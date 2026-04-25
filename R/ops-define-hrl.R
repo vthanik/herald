@@ -9,21 +9,25 @@
 
 #' @noRd
 op_iso8601_data_type_match <- function(data, ctx, ...) {
-  var   <- data$variable
+  var <- data$variable
   dtype <- data$data_type
   # Variables whose names end with DTC or DUR represent ISO 8601 values.
   is_iso_var <- grepl("(DTC|DUR)$", var, perl = TRUE)
   # Fires when the variable is an ISO 8601 type but DataType is "text".
   is_iso_var & !is.na(dtype) & dtype == "text"
 }
-.register_op("iso8601_data_type_match", op_iso8601_data_type_match, meta = list(
-  kind          = "compare",
-  summary       = "--DTC/--DUR variables must not have DataType 'text'",
-  arg_schema    = list(),
-  cost_hint     = "O(n)",
-  column_arg    = "variable",
-  returns_na_ok = FALSE
-))
+.register_op(
+  "iso8601_data_type_match",
+  op_iso8601_data_type_match,
+  meta = list(
+    kind = "compare",
+    summary = "--DTC/--DUR variables must not have DataType 'text'",
+    arg_schema = list(),
+    cost_hint = "O(n)",
+    column_arg = "variable",
+    returns_na_ok = FALSE
+  )
+)
 
 # ---- define_version_matches_schema -------------------------------------------
 # def:DefineVersion must be "2.0.0" or "2.1.0".
@@ -34,13 +38,15 @@ op_define_version_matches_schema <- function(data, ctx, ...) {
   v <- data$def_version
   !is.na(v) & !v %in% valid
 }
-.register_op("define_version_matches_schema", op_define_version_matches_schema,
+.register_op(
+  "define_version_matches_schema",
+  op_define_version_matches_schema,
   meta = list(
-    kind          = "compare",
-    summary       = "def:DefineVersion must be 2.0.0 or 2.1.0",
-    arg_schema    = list(),
-    cost_hint     = "O(n)",
-    column_arg    = "def_version",
+    kind = "compare",
+    summary = "def:DefineVersion must be 2.0.0 or 2.1.0",
+    arg_schema = list(),
+    cost_hint = "O(n)",
+    column_arg = "def_version",
     returns_na_ok = FALSE
   )
 )
@@ -52,14 +58,22 @@ op_define_version_matches_schema <- function(data, ctx, ...) {
 #' @noRd
 op_assigned_value_matches_data_type <- function(data, ctx, ...) {
   assigned <- data$assigned_value
-  dtype    <- data$data_type
-  numeric_types  <- c("integer", "float", "decimal", "double")
-  datetime_types <- c("datetime", "date", "time", "partialDate", "partialTime",
-                      "partialDatetime", "incompleteDatetime",
-                      "durationDatetime", "intervalDatetime")
+  dtype <- data$data_type
+  numeric_types <- c("integer", "float", "decimal", "double")
+  datetime_types <- c(
+    "datetime",
+    "date",
+    "time",
+    "partialDate",
+    "partialTime",
+    "partialDatetime",
+    "incompleteDatetime",
+    "durationDatetime",
+    "intervalDatetime"
+  )
 
   has_value <- nzchar(assigned) & !is.na(dtype)
-  result    <- rep(FALSE, nrow(data))
+  result <- rep(FALSE, nrow(data))
 
   num_idx <- has_value & dtype %in% numeric_types
   if (any(num_idx)) {
@@ -73,13 +87,15 @@ op_assigned_value_matches_data_type <- function(data, ctx, ...) {
 
   result
 }
-.register_op("assigned_value_matches_data_type",
-  op_assigned_value_matches_data_type, meta = list(
-    kind          = "compare",
-    summary       = "Assigned value type must match variable DataType",
-    arg_schema    = list(),
-    cost_hint     = "O(n)",
-    column_arg    = "assigned_value",
+.register_op(
+  "assigned_value_matches_data_type",
+  op_assigned_value_matches_data_type,
+  meta = list(
+    kind = "compare",
+    summary = "Assigned value type must match variable DataType",
+    arg_schema = list(),
+    cost_hint = "O(n)",
+    column_arg = "assigned_value",
     returns_na_ok = FALSE
   )
 )
@@ -89,20 +105,22 @@ op_assigned_value_matches_data_type <- function(data, ctx, ...) {
 
 #' @noRd
 op_assigned_value_length_le_var_length <- function(data, ctx, ...) {
-  assigned   <- data$assigned_value
+  assigned <- data$assigned_value
   length_col <- data$length
 
-  max_len  <- suppressWarnings(as.integer(length_col))
+  max_len <- suppressWarnings(as.integer(length_col))
   byte_len <- nchar(assigned, type = "bytes")
   nzchar(assigned) & !is.na(max_len) & byte_len > max_len
 }
-.register_op("assigned_value_length_le_var_length",
-  op_assigned_value_length_le_var_length, meta = list(
-    kind          = "compare",
-    summary       = "Assigned value length must not exceed variable Length",
-    arg_schema    = list(),
-    cost_hint     = "O(n)",
-    column_arg    = "assigned_value",
+.register_op(
+  "assigned_value_length_le_var_length",
+  op_assigned_value_length_le_var_length,
+  meta = list(
+    kind = "compare",
+    summary = "Assigned value length must not exceed variable Length",
+    arg_schema = list(),
+    cost_hint = "O(n)",
+    column_arg = "assigned_value",
     returns_na_ok = FALSE
   )
 )
@@ -114,25 +132,39 @@ op_assigned_value_length_le_var_length <- function(data, ctx, ...) {
 #' @noRd
 op_valid_codelist_term <- function(data, ctx, ...) {
   cl_meta <- .ref_ds(ctx, "Define_Codelist_Metadata")
-  if (is.null(cl_meta)) return(rep(NA_integer_, nrow(data)) == 1L)
+  if (is.null(cl_meta)) {
+    return(rep(NA_integer_, nrow(data)) == 1L)
+  }
 
   has_assigned <- nzchar(data$assigned_value)
   has_codelist <- nzchar(data$codelist_oid)
 
-  vapply(seq_len(nrow(data)), function(i) {
-    if (!has_assigned[i] || !has_codelist[i]) return(FALSE)
-    cl_items <- cl_meta$coded_value[cl_meta$codelist_oid == data$codelist_oid[i]]
-    !data$assigned_value[i] %in% cl_items
-  }, logical(1L))
+  vapply(
+    seq_len(nrow(data)),
+    function(i) {
+      if (!has_assigned[i] || !has_codelist[i]) {
+        return(FALSE)
+      }
+      cl_items <- cl_meta$coded_value[
+        cl_meta$codelist_oid == data$codelist_oid[i]
+      ]
+      !data$assigned_value[i] %in% cl_items
+    },
+    logical(1L)
+  )
 }
-.register_op("valid_codelist_term", op_valid_codelist_term, meta = list(
-  kind          = "cross",
-  summary       = "Assigned value must be a valid codelist term",
-  arg_schema    = list(),
-  cost_hint     = "O(n*m)",
-  column_arg    = "assigned_value",
-  returns_na_ok = TRUE
-))
+.register_op(
+  "valid_codelist_term",
+  op_valid_codelist_term,
+  meta = list(
+    kind = "cross",
+    summary = "Assigned value must be a valid codelist term",
+    arg_schema = list(),
+    cost_hint = "O(n*m)",
+    column_arg = "assigned_value",
+    returns_na_ok = TRUE
+  )
+)
 
 # ---- where_clause_value_in_codelist ------------------------------------------
 # A WhereClauseDef RangeCheck value must be a term in the variable's codelist.
@@ -140,30 +172,42 @@ op_valid_codelist_term <- function(data, ctx, ...) {
 #' @noRd
 op_where_clause_value_in_codelist <- function(data, ctx, ...) {
   var_meta <- .ref_ds(ctx, "Define_Variable_Metadata")
-  cl_meta  <- .ref_ds(ctx, "Define_Codelist_Metadata")
+  cl_meta <- .ref_ds(ctx, "Define_Codelist_Metadata")
   if (is.null(var_meta) || is.null(cl_meta)) {
     return(rep(NA_integer_, nrow(data)) == 1L)
   }
 
-  vapply(seq_len(nrow(data)), function(i) {
-    cv    <- data$check_value[i]
-    c_var <- data$check_var[i]
-    if (!nzchar(cv) || !nzchar(c_var)) return(FALSE)
-    var_row <- var_meta[var_meta$oid == c_var, , drop = FALSE]
-    if (nrow(var_row) == 0L) return(NA)
-    cl_oid <- var_row$codelist_oid[1L]
-    if (!nzchar(cl_oid)) return(NA)
-    cl_items <- cl_meta$coded_value[cl_meta$codelist_oid == cl_oid]
-    !cv %in% cl_items
-  }, logical(1L))
+  vapply(
+    seq_len(nrow(data)),
+    function(i) {
+      cv <- data$check_value[i]
+      c_var <- data$check_var[i]
+      if (!nzchar(cv) || !nzchar(c_var)) {
+        return(FALSE)
+      }
+      var_row <- var_meta[var_meta$oid == c_var, , drop = FALSE]
+      if (nrow(var_row) == 0L) {
+        return(NA)
+      }
+      cl_oid <- var_row$codelist_oid[1L]
+      if (!nzchar(cl_oid)) {
+        return(NA)
+      }
+      cl_items <- cl_meta$coded_value[cl_meta$codelist_oid == cl_oid]
+      !cv %in% cl_items
+    },
+    logical(1L)
+  )
 }
-.register_op("where_clause_value_in_codelist",
-  op_where_clause_value_in_codelist, meta = list(
-    kind          = "cross",
-    summary       = "Where clause check value must be in the variable's codelist",
-    arg_schema    = list(),
-    cost_hint     = "O(n*m)",
-    column_arg    = "check_value",
+.register_op(
+  "where_clause_value_in_codelist",
+  op_where_clause_value_in_codelist,
+  meta = list(
+    kind = "cross",
+    summary = "Where clause check value must be in the variable's codelist",
+    arg_schema = list(),
+    cost_hint = "O(n*m)",
+    column_arg = "check_value",
     returns_na_ok = TRUE
   )
 )
@@ -181,13 +225,15 @@ op_arm_absent_in_non_adam_define <- function(data, ctx, ...) {
   is_adam <- isTRUE(study_meta$is_adam[1L])
   rep(!is_adam, nrow(data))
 }
-.register_op("arm_absent_in_non_adam_define",
-  op_arm_absent_in_non_adam_define, meta = list(
-    kind          = "cross",
-    summary       = "ARM metadata must not appear in non-ADaM defines",
-    arg_schema    = list(),
-    cost_hint     = "O(n)",
-    column_arg    = "display_oid",
+.register_op(
+  "arm_absent_in_non_adam_define",
+  op_arm_absent_in_non_adam_define,
+  meta = list(
+    kind = "cross",
+    summary = "ARM metadata must not appear in non-ADaM defines",
+    arg_schema = list(),
+    cost_hint = "O(n)",
+    column_arg = "display_oid",
     returns_na_ok = FALSE
   )
 )
@@ -200,14 +246,18 @@ op_arm_oid_unique <- function(data, ctx, ...) {
   oids <- data$display_oid
   duplicated(oids) | duplicated(oids, fromLast = TRUE)
 }
-.register_op("arm_oid_unique", op_arm_oid_unique, meta = list(
-  kind          = "compare",
-  summary       = "arm:ResultDisplay OID must be unique",
-  arg_schema    = list(),
-  cost_hint     = "O(n)",
-  column_arg    = "display_oid",
-  returns_na_ok = FALSE
-))
+.register_op(
+  "arm_oid_unique",
+  op_arm_oid_unique,
+  meta = list(
+    kind = "compare",
+    summary = "arm:ResultDisplay OID must be unique",
+    arg_schema = list(),
+    cost_hint = "O(n)",
+    column_arg = "display_oid",
+    returns_na_ok = FALSE
+  )
+)
 
 # ---- arm_name_unique ---------------------------------------------------------
 # arm:ResultDisplay Name must be unique across all displays.
@@ -217,14 +267,18 @@ op_arm_name_unique <- function(data, ctx, ...) {
   nms <- data$display_name
   duplicated(nms) | duplicated(nms, fromLast = TRUE)
 }
-.register_op("arm_name_unique", op_arm_name_unique, meta = list(
-  kind          = "compare",
-  summary       = "arm:ResultDisplay Name must be unique",
-  arg_schema    = list(),
-  cost_hint     = "O(n)",
-  column_arg    = "display_name",
-  returns_na_ok = FALSE
-))
+.register_op(
+  "arm_name_unique",
+  op_arm_name_unique,
+  meta = list(
+    kind = "compare",
+    summary = "arm:ResultDisplay Name must be unique",
+    arg_schema = list(),
+    cost_hint = "O(n)",
+    column_arg = "display_name",
+    returns_na_ok = FALSE
+  )
+)
 
 # ---- arm_description_required ------------------------------------------------
 # Each arm:ResultDisplay must have a Description child.
@@ -233,14 +287,18 @@ op_arm_name_unique <- function(data, ctx, ...) {
 op_arm_description_required <- function(data, ctx, ...) {
   !data$has_description
 }
-.register_op("arm_description_required", op_arm_description_required, meta = list(
-  kind          = "existence",
-  summary       = "arm:ResultDisplay must have a Description",
-  arg_schema    = list(),
-  cost_hint     = "O(n)",
-  column_arg    = "has_description",
-  returns_na_ok = FALSE
-))
+.register_op(
+  "arm_description_required",
+  op_arm_description_required,
+  meta = list(
+    kind = "existence",
+    summary = "arm:ResultDisplay must have a Description",
+    arg_schema = list(),
+    cost_hint = "O(n)",
+    column_arg = "has_description",
+    returns_na_ok = FALSE
+  )
+)
 
 # ---- arm_analysisresult_oid_unique -------------------------------------------
 # arm:AnalysisResult OID must be unique within its parent arm:ResultDisplay.
@@ -250,13 +308,15 @@ op_arm_analysisresult_oid_unique <- function(data, ctx, ...) {
   key <- paste(data$display_oid, data$result_oid, sep = "|")
   duplicated(key) | duplicated(key, fromLast = TRUE)
 }
-.register_op("arm_analysisresult_oid_unique",
-  op_arm_analysisresult_oid_unique, meta = list(
-    kind          = "compare",
-    summary       = "arm:AnalysisResult OID must be unique within its ResultDisplay",
-    arg_schema    = list(),
-    cost_hint     = "O(n)",
-    column_arg    = "result_oid",
+.register_op(
+  "arm_analysisresult_oid_unique",
+  op_arm_analysisresult_oid_unique,
+  meta = list(
+    kind = "compare",
+    summary = "arm:AnalysisResult OID must be unique within its ResultDisplay",
+    arg_schema = list(),
+    cost_hint = "O(n)",
+    column_arg = "result_oid",
     returns_na_ok = FALSE
   )
 )
@@ -286,16 +346,20 @@ op_arm_analysisresult_oid_unique <- function(data, ctx, ...) {
 #' @noRd
 op_key_not_unique_per_define <- function(data, ctx) {
   n <- nrow(data)
-  if (n == 0L) return(logical(0L))
+  if (n == 0L) {
+    return(logical(0L))
+  }
 
   # Obtain define metadata
   def <- if (!is.null(ctx)) ctx$define else NULL
   if (is.null(def)) {
-    .record_missing_ref(ctx,
+    .record_missing_ref(
+      ctx,
       rule_id = ctx$current_rule_id %||% "",
-      kind    = "define",
-      name    = "define.xml")
-    return(rep(NA_integer_, n) != 0L)  # NA logical
+      kind = "define",
+      name = "define.xml"
+    )
+    return(rep(NA_integer_, n) != 0L) # NA logical
   }
 
   ds_name <- toupper(ctx$current_dataset %||% "")
@@ -315,19 +379,20 @@ op_key_not_unique_per_define <- function(data, ctx) {
 
   # Check uniqueness of the composite key
   key <- do.call(paste, c(data[, available, drop = FALSE], list(sep = "\x1f")))
-  counts    <- table(key)
+  counts <- table(key)
   rep_count <- as.integer(counts[key])
   # fires (TRUE) when duplicated
   rep_count > 1L
 }
 .register_op(
-  "key_not_unique_per_define", op_key_not_unique_per_define,
+  "key_not_unique_per_define",
+  op_key_not_unique_per_define,
   meta = list(
-    kind          = "cross",
-    summary       = "Record not unique per sponsor-defined key variables from define.xml",
-    arg_schema    = list(),
-    cost_hint     = "O(n)",
-    column_arg    = NA_character_,
+    kind = "cross",
+    summary = "Record not unique per sponsor-defined key variables from define.xml",
+    arg_schema = list(),
+    cost_hint = "O(n)",
+    column_arg = NA_character_,
     returns_na_ok = TRUE
   )
 )

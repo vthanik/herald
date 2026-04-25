@@ -1,5 +1,5 @@
 # --------------------------------------------------------------------------
-# herald-utils.R — shared internal utilities
+# herald-utils.R  --  shared internal utilities
 # --------------------------------------------------------------------------
 # Consolidates helpers.R + validate-input.R into one file.
 # XPT binary helpers, byte conversion, SAS datetime, file I/O.
@@ -66,7 +66,7 @@ s370fpib4_to_int <- function(raw4) {
 
 # -- Raw -> string conversion ------------------------------------------------
 
-#' Convert raw bytes to trimmed character string (headers — always ASCII)
+#' Convert raw bytes to trimmed character string (headers  --  always ASCII)
 #' @noRd
 raw_to_str <- function(raw_vec) {
   raw_vec <- raw_vec[raw_vec != as.raw(0x00)]
@@ -93,7 +93,7 @@ raw_to_str_enc <- function(raw_vec, encoding = NULL) {
   }
 }
 
-#' Vectorised conversion: raw matrix (var_len × nobs) → character vector
+#' Vectorised conversion: raw matrix (var_len x nobs) -> character vector
 #'
 #' Encoding path: one `rawToChar` of the flat byte array, marked as `"latin1"`
 #' so `substring` uses byte offsets (1 byte = 1 char in single-byte encodings).
@@ -101,7 +101,7 @@ raw_to_str_enc <- function(raw_vec, encoding = NULL) {
 #' quadratic UTF-8 char-scanning of `substring()` on an iconv'd UTF-8 string,
 #' and avoids O(nobs) R-level dispatch of `apply(rawToChar)`.
 #'
-#' No-encoding path: `apply(raw_mat, 2L, rawToChar)` — safe for non-UTF-8 bytes.
+#' No-encoding path: `apply(raw_mat, 2L, rawToChar)`  --  safe for non-UTF-8 bytes.
 #' @noRd
 .raw_mat_to_strvec <- function(raw_mat, encoding = NULL) {
   var_len <- nrow(raw_mat)
@@ -124,7 +124,7 @@ raw_to_str_enc <- function(raw_vec, encoding = NULL) {
     out <- iconv(out, from = encoding, to = "UTF-8", sub = "byte")
     sub(" +$", "", out)
   } else {
-    # No encoding conversion — pass bytes through unchanged.
+    # No encoding conversion  --  pass bytes through unchanged.
     # apply gives one rawToChar per observation, safe for non-UTF-8 bytes.
     out <- apply(raw_mat, 2L, rawToChar)
     sub(" +$", "", out, useBytes = TRUE)

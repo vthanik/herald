@@ -121,31 +121,31 @@ read_define_xml <- function(path, call = rlang::caller_env()) {
     )
   }
 
-  study       <- .define_extract_study(doc, ns)
-  ds_spec     <- .define_extract_datasets(mdv, ns)
-  var_spec    <- .define_extract_variables(mdv, ns)
-  codelist    <- .define_extract_codelists(mdv, ns)
-  methods     <- .define_extract_methods(mdv, ns)
-  comments    <- .define_extract_comments(mdv, ns)
-  arm         <- .define_extract_arm(mdv, ns)
-  key_vars    <- .define_extract_key_vars(mdv, ns, ds_spec)
-  loinc_ver   <- .define_extract_loinc_version(mdv, ns)
+  study <- .define_extract_study(doc, ns)
+  ds_spec <- .define_extract_datasets(mdv, ns)
+  var_spec <- .define_extract_variables(mdv, ns)
+  codelist <- .define_extract_codelists(mdv, ns)
+  methods <- .define_extract_methods(mdv, ns)
+  comments <- .define_extract_comments(mdv, ns)
+  arm <- .define_extract_arm(mdv, ns)
+  key_vars <- .define_extract_key_vars(mdv, ns, ds_spec)
+  loinc_ver <- .define_extract_loinc_version(mdv, ns)
 
   structure(
     list(
-      ds_spec       = ds_spec,
-      var_spec      = var_spec,
-      study         = study,
-      codelist      = codelist,
-      methods       = methods,
-      comments      = comments,
-      arm_displays  = arm$displays,
-      arm_results   = arm$results,
-      key_vars      = key_vars,
+      ds_spec = ds_spec,
+      var_spec = var_spec,
+      study = study,
+      codelist = codelist,
+      methods = methods,
+      comments = comments,
+      arm_displays = arm$displays,
+      arm_results = arm$results,
+      key_vars = key_vars,
       loinc_version = loinc_ver,
-      xml_doc       = doc,
-      xml_mdv       = mdv,
-      xml_ns        = ns
+      xml_doc = doc,
+      xml_mdv = mdv,
+      xml_ns = ns
     ),
     class = c("herald_define", "list")
   )
@@ -157,14 +157,19 @@ read_define_xml <- function(path, call = rlang::caller_env()) {
 #' @return `x` invisibly.
 #' @export
 print.herald_define <- function(x, ...) {
-  n_ds  <- if (is.data.frame(x$ds_spec))  nrow(x$ds_spec)  else 0L
+  n_ds <- if (is.data.frame(x$ds_spec)) nrow(x$ds_spec) else 0L
   n_var <- if (is.data.frame(x$var_spec)) nrow(x$var_spec) else 0L
-  n_kv  <- length(x$key_vars)
+  n_kv <- length(x$key_vars)
   cat("<herald_define>\n")
-  cat(sprintf("  %d dataset%s, %d variable%s, %d key-var mapping%s\n",
-              n_ds,  if (n_ds  == 1L) "" else "s",
-              n_var, if (n_var == 1L) "" else "s",
-              n_kv,  if (n_kv  == 1L) "" else "s"))
+  cat(sprintf(
+    "  %d dataset%s, %d variable%s, %d key-var mapping%s\n",
+    n_ds,
+    if (n_ds == 1L) "" else "s",
+    n_var,
+    if (n_var == 1L) "" else "s",
+    n_kv,
+    if (n_kv == 1L) "" else "s"
+  ))
   if (!is.na(x$loinc_version)) {
     cat(sprintf("  LOINC version: %s\n", x$loinc_version))
   }
@@ -182,16 +187,22 @@ print.herald_define <- function(x, ...) {
     gv <- xml2::xml_find_first(doc, ".//GlobalVariables")
   }
   if (is.na(gv)) {
-    return(data.frame(attribute = character(), value = character(),
-                      stringsAsFactors = FALSE))
+    return(data.frame(
+      attribute = character(),
+      value = character(),
+      stringsAsFactors = FALSE
+    ))
   }
   children <- xml2::xml_children(gv)
   if (length(children) == 0L) {
-    return(data.frame(attribute = character(), value = character(),
-                      stringsAsFactors = FALSE))
+    return(data.frame(
+      attribute = character(),
+      value = character(),
+      stringsAsFactors = FALSE
+    ))
   }
   attrs <- vapply(children, function(x) xml2::xml_name(x), character(1L))
-  vals  <- vapply(children, function(x) xml2::xml_text(x), character(1L))
+  vals <- vapply(children, function(x) xml2::xml_text(x), character(1L))
   data.frame(attribute = attrs, value = vals, stringsAsFactors = FALSE)
 }
 
@@ -202,22 +213,35 @@ print.herald_define <- function(x, ...) {
     igd_nodes <- xml2::xml_find_all(mdv, ".//ItemGroupDef")
   }
   if (length(igd_nodes) == 0L) {
-    return(data.frame(dataset = character(), label = character(),
-                      stringsAsFactors = FALSE))
+    return(data.frame(
+      dataset = character(),
+      label = character(),
+      stringsAsFactors = FALSE
+    ))
   }
 
-  datasets <- vapply(igd_nodes, function(n) {
-    xml2::xml_attr(n, "Name") %||% ""
-  }, character(1L))
+  datasets <- vapply(
+    igd_nodes,
+    function(n) {
+      xml2::xml_attr(n, "Name") %||% ""
+    },
+    character(1L)
+  )
 
-  labels <- vapply(igd_nodes, function(n) {
-    desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
-    if (is.na(desc)) {
-      desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
-    }
-    if (is.na(desc)) return(xml2::xml_attr(n, "def:Label") %||% "")
-    xml2::xml_text(desc)
-  }, character(1L))
+  labels <- vapply(
+    igd_nodes,
+    function(n) {
+      desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
+      if (is.na(desc)) {
+        desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
+      }
+      if (is.na(desc)) {
+        return(xml2::xml_attr(n, "def:Label") %||% "")
+      }
+      xml2::xml_text(desc)
+    },
+    character(1L)
+  )
 
   data.frame(dataset = datasets, label = labels, stringsAsFactors = FALSE)
 }
@@ -230,8 +254,8 @@ print.herald_define <- function(x, ...) {
     igd_nodes <- xml2::xml_find_all(mdv, ".//ItemGroupDef")
   }
 
-  oid_dataset   <- list()
-  oid_order     <- list()
+  oid_dataset <- list()
+  oid_order <- list()
   oid_mandatory <- list()
 
   for (ign in igd_nodes) {
@@ -243,8 +267,8 @@ print.herald_define <- function(x, ...) {
     for (ref in refs) {
       item_oid <- xml2::xml_attr(ref, "ItemOID") %||% ""
       if (nzchar(item_oid)) {
-        oid_dataset[[item_oid]]   <- ds_name
-        oid_order[[item_oid]]     <- xml2::xml_attr(ref, "OrderNumber") %||% ""
+        oid_dataset[[item_oid]] <- ds_name
+        oid_order[[item_oid]] <- xml2::xml_attr(ref, "OrderNumber") %||% ""
         oid_mandatory[[item_oid]] <- xml2::xml_attr(ref, "Mandatory") %||% ""
       }
     }
@@ -257,79 +281,125 @@ print.herald_define <- function(x, ...) {
 
   if (length(item_nodes) == 0L) {
     return(data.frame(
-      dataset = character(), variable = character(), label = character(),
-      data_type = character(), length = character(), origin = character(),
-      codelist = character(), mandatory = character(), order = character(),
-      format = character(), stringsAsFactors = FALSE
+      dataset = character(),
+      variable = character(),
+      label = character(),
+      data_type = character(),
+      length = character(),
+      origin = character(),
+      codelist = character(),
+      mandatory = character(),
+      order = character(),
+      format = character(),
+      stringsAsFactors = FALSE
     ))
   }
 
-  oids <- vapply(item_nodes, function(n) xml2::xml_attr(n, "OID") %||% "",
-                 character(1L))
-  names_vec  <- vapply(item_nodes,
-                       function(n) xml2::xml_attr(n, "Name") %||% "",
-                       character(1L))
-  data_types <- vapply(item_nodes,
-                       function(n) xml2::xml_attr(n, "DataType") %||% "",
-                       character(1L))
-  lengths    <- vapply(item_nodes,
-                       function(n) xml2::xml_attr(n, "Length") %||% "",
-                       character(1L))
+  oids <- vapply(
+    item_nodes,
+    function(n) xml2::xml_attr(n, "OID") %||% "",
+    character(1L)
+  )
+  names_vec <- vapply(
+    item_nodes,
+    function(n) xml2::xml_attr(n, "Name") %||% "",
+    character(1L)
+  )
+  data_types <- vapply(
+    item_nodes,
+    function(n) xml2::xml_attr(n, "DataType") %||% "",
+    character(1L)
+  )
+  lengths <- vapply(
+    item_nodes,
+    function(n) xml2::xml_attr(n, "Length") %||% "",
+    character(1L)
+  )
 
-  labels <- vapply(item_nodes, function(n) {
-    desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
-    if (is.na(desc)) {
-      desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
-    }
-    if (is.na(desc)) return("")
-    xml2::xml_text(desc)
-  }, character(1L))
+  labels <- vapply(
+    item_nodes,
+    function(n) {
+      desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
+      if (is.na(desc)) {
+        desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
+      }
+      if (is.na(desc)) {
+        return("")
+      }
+      xml2::xml_text(desc)
+    },
+    character(1L)
+  )
 
   # Origin: <def:Origin Type="CRF"/> child element (namespace-agnostic)
-  origins <- vapply(item_nodes, function(n) {
-    orig <- xml2::xml_find_first(n, "*[local-name()='Origin']")
-    if (is.na(orig)) return("")
-    xml2::xml_attr(orig, "Type") %||% ""
-  }, character(1L))
+  origins <- vapply(
+    item_nodes,
+    function(n) {
+      orig <- xml2::xml_find_first(n, "*[local-name()='Origin']")
+      if (is.na(orig)) {
+        return("")
+      }
+      xml2::xml_attr(orig, "Type") %||% ""
+    },
+    character(1L)
+  )
 
   # CodeListRef
-  codelist_refs <- vapply(item_nodes, function(n) {
-    clr <- xml2::xml_find_first(n, "*[local-name()='CodeListRef']")
-    if (is.na(clr)) return("")
-    xml2::xml_attr(clr, "CodeListOID") %||% ""
-  }, character(1L))
+  codelist_refs <- vapply(
+    item_nodes,
+    function(n) {
+      clr <- xml2::xml_find_first(n, "*[local-name()='CodeListRef']")
+      if (is.na(clr)) {
+        return("")
+      }
+      xml2::xml_attr(clr, "CodeListOID") %||% ""
+    },
+    character(1L)
+  )
 
   # DisplayFormat (may appear as def:DisplayFormat attribute)
-  formats <- vapply(item_nodes, function(n) {
-    all_attrs <- xml2::xml_attrs(n)
-    idx <- which(grepl("DisplayFormat", names(all_attrs), fixed = TRUE))
-    if (length(idx) > 0L) all_attrs[[idx[[1L]]]] else ""
-  }, character(1L))
+  formats <- vapply(
+    item_nodes,
+    function(n) {
+      all_attrs <- xml2::xml_attrs(n)
+      idx <- which(grepl("DisplayFormat", names(all_attrs), fixed = TRUE))
+      if (length(idx) > 0L) all_attrs[[idx[[1L]]]] else ""
+    },
+    character(1L)
+  )
 
   # Dataset: prefer ItemRef map, fallback to OID convention IT.DATASET.VARIABLE
-  datasets <- vapply(oids, function(oid) {
-    d <- oid_dataset[[oid]]
-    if (!is.null(d) && nzchar(d)) return(d)
-    parts <- strsplit(oid, ".", fixed = TRUE)[[1L]]
-    if (length(parts) >= 2L) parts[2L] else ""
-  }, character(1L))
+  datasets <- vapply(
+    oids,
+    function(oid) {
+      d <- oid_dataset[[oid]]
+      if (!is.null(d) && nzchar(d)) {
+        return(d)
+      }
+      parts <- strsplit(oid, ".", fixed = TRUE)[[1L]]
+      if (length(parts) >= 2L) parts[2L] else ""
+    },
+    character(1L)
+  )
 
-  orders     <- vapply(oids, function(oid) oid_order[[oid]] %||% "",
-                       character(1L))
-  mandatories <- vapply(oids, function(oid) oid_mandatory[[oid]] %||% "",
-                        character(1L))
+  orders <- vapply(oids, function(oid) oid_order[[oid]] %||% "", character(1L))
+  mandatories <- vapply(
+    oids,
+    function(oid) oid_mandatory[[oid]] %||% "",
+    character(1L)
+  )
 
   data.frame(
-    dataset   = datasets,
-    variable  = names_vec,
-    label     = labels,
+    dataset = datasets,
+    variable = names_vec,
+    label = labels,
     data_type = data_types,
-    length    = lengths,
-    origin    = origins,
-    codelist  = codelist_refs,
+    length = lengths,
+    origin = origins,
+    codelist = codelist_refs,
     mandatory = mandatories,
-    order     = orders,
-    format    = formats,
+    order = orders,
+    format = formats,
     stringsAsFactors = FALSE
   )
 }
@@ -340,12 +410,14 @@ print.herald_define <- function(x, ...) {
   if (length(cl_nodes) == 0L) {
     cl_nodes <- xml2::xml_find_all(mdv, ".//CodeList")
   }
-  if (length(cl_nodes) == 0L) return(NULL)
+  if (length(cl_nodes) == 0L) {
+    return(NULL)
+  }
 
   rows <- list()
   for (cl in cl_nodes) {
-    cl_oid   <- xml2::xml_attr(cl, "OID")   %||% ""
-    cl_name  <- xml2::xml_attr(cl, "Name")  %||% ""
+    cl_oid <- xml2::xml_attr(cl, "OID") %||% ""
+    cl_name <- xml2::xml_attr(cl, "Name") %||% ""
     cl_dtype <- xml2::xml_attr(cl, "DataType") %||% ""
 
     items <- xml2::xml_find_all(cl, ".//d1:CodeListItem", ns)
@@ -359,26 +431,30 @@ print.herald_define <- function(x, ...) {
 
     all_items <- c(items, enum_items)
     for (item in all_items) {
-      term   <- xml2::xml_attr(item, "CodedValue") %||% ""
-      decode <- xml2::xml_find_first(item,
-                                     ".//d1:Decode/d1:TranslatedText", ns)
+      term <- xml2::xml_attr(item, "CodedValue") %||% ""
+      decode <- xml2::xml_find_first(item, ".//d1:Decode/d1:TranslatedText", ns)
       if (is.na(decode)) {
         decode <- xml2::xml_find_first(item, ".//Decode/TranslatedText")
       }
       decoded_val <- if (!is.na(decode)) xml2::xml_text(decode) else ""
 
-      rows <- c(rows, list(data.frame(
-        codelist_id   = cl_oid,
-        name          = cl_name,
-        data_type     = cl_dtype,
-        term          = term,
-        decoded_value = decoded_val,
-        stringsAsFactors = FALSE
-      )))
+      rows <- c(
+        rows,
+        list(data.frame(
+          codelist_id = cl_oid,
+          name = cl_name,
+          data_type = cl_dtype,
+          term = term,
+          decoded_value = decoded_val,
+          stringsAsFactors = FALSE
+        ))
+      )
     }
   }
 
-  if (length(rows) == 0L) return(NULL)
+  if (length(rows) == 0L) {
+    return(NULL)
+  }
   do.call(rbind, rows)
 }
 
@@ -388,28 +464,47 @@ print.herald_define <- function(x, ...) {
   if (length(meth_nodes) == 0L) {
     meth_nodes <- xml2::xml_find_all(mdv, ".//MethodDef")
   }
-  if (length(meth_nodes) == 0L) return(NULL)
+  if (length(meth_nodes) == 0L) {
+    return(NULL)
+  }
 
-  method_ids   <- vapply(meth_nodes,
-                         function(n) xml2::xml_attr(n, "OID") %||% "",
-                         character(1L))
-  names_vec    <- vapply(meth_nodes,
-                         function(n) xml2::xml_attr(n, "Name") %||% "",
-                         character(1L))
-  types        <- vapply(meth_nodes,
-                         function(n) xml2::xml_attr(n, "Type") %||% "",
-                         character(1L))
-  descriptions <- vapply(meth_nodes, function(n) {
-    desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
-    if (is.na(desc)) {
-      desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
-    }
-    if (is.na(desc)) return("")
-    xml2::xml_text(desc)
-  }, character(1L))
+  method_ids <- vapply(
+    meth_nodes,
+    function(n) xml2::xml_attr(n, "OID") %||% "",
+    character(1L)
+  )
+  names_vec <- vapply(
+    meth_nodes,
+    function(n) xml2::xml_attr(n, "Name") %||% "",
+    character(1L)
+  )
+  types <- vapply(
+    meth_nodes,
+    function(n) xml2::xml_attr(n, "Type") %||% "",
+    character(1L)
+  )
+  descriptions <- vapply(
+    meth_nodes,
+    function(n) {
+      desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
+      if (is.na(desc)) {
+        desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
+      }
+      if (is.na(desc)) {
+        return("")
+      }
+      xml2::xml_text(desc)
+    },
+    character(1L)
+  )
 
-  data.frame(method_id = method_ids, name = names_vec, type = types,
-             description = descriptions, stringsAsFactors = FALSE)
+  data.frame(
+    method_id = method_ids,
+    name = names_vec,
+    type = types,
+    description = descriptions,
+    stringsAsFactors = FALSE
+  )
 }
 
 #' @noRd
@@ -418,57 +513,82 @@ print.herald_define <- function(x, ...) {
   if (length(com_nodes) == 0L) {
     com_nodes <- xml2::xml_find_all(mdv, ".//CommentDef")
   }
-  if (length(com_nodes) == 0L) return(NULL)
+  if (length(com_nodes) == 0L) {
+    return(NULL)
+  }
 
-  comment_ids  <- vapply(com_nodes,
-                         function(n) xml2::xml_attr(n, "OID") %||% "",
-                         character(1L))
-  descriptions <- vapply(com_nodes, function(n) {
-    desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
-    if (is.na(desc)) {
-      desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
-    }
-    if (is.na(desc)) return("")
-    xml2::xml_text(desc)
-  }, character(1L))
+  comment_ids <- vapply(
+    com_nodes,
+    function(n) xml2::xml_attr(n, "OID") %||% "",
+    character(1L)
+  )
+  descriptions <- vapply(
+    com_nodes,
+    function(n) {
+      desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
+      if (is.na(desc)) {
+        desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
+      }
+      if (is.na(desc)) {
+        return("")
+      }
+      xml2::xml_text(desc)
+    },
+    character(1L)
+  )
 
-  data.frame(comment_id = comment_ids, description = descriptions,
-             stringsAsFactors = FALSE)
+  data.frame(
+    comment_id = comment_ids,
+    description = descriptions,
+    stringsAsFactors = FALSE
+  )
 }
 
 #' @noRd
 .define_extract_arm <- function(mdv, ns) {
   # Use local-name() to be namespace-agnostic for the arm namespace
   displays_node <- xml2::xml_find_all(
-    mdv, ".//*[local-name()='ResultDisplay']"
+    mdv,
+    ".//*[local-name()='ResultDisplay']"
   )
 
   if (length(displays_node) == 0L) {
     return(list(displays = NULL, results = NULL))
   }
 
-  display_ids   <- vapply(displays_node,
-                          function(n) xml2::xml_attr(n, "OID") %||% "",
-                          character(1L))
-  display_names <- vapply(displays_node,
-                          function(n) xml2::xml_attr(n, "Name") %||% "",
-                          character(1L))
+  display_ids <- vapply(
+    displays_node,
+    function(n) xml2::xml_attr(n, "OID") %||% "",
+    character(1L)
+  )
+  display_names <- vapply(
+    displays_node,
+    function(n) xml2::xml_attr(n, "Name") %||% "",
+    character(1L)
+  )
 
-  displays <- data.frame(display_id = display_ids, title = display_names,
-                         stringsAsFactors = FALSE)
+  displays <- data.frame(
+    display_id = display_ids,
+    title = display_names,
+    stringsAsFactors = FALSE
+  )
 
   result_rows <- list()
   for (i in seq_along(displays_node)) {
     ar_nodes <- xml2::xml_find_all(
-      displays_node[[i]], ".//*[local-name()='AnalysisResult']"
+      displays_node[[i]],
+      ".//*[local-name()='AnalysisResult']"
     )
     for (ar in ar_nodes) {
-      result_rows <- c(result_rows, list(data.frame(
-        display_id  = display_ids[i],
-        result_id   = xml2::xml_attr(ar, "OID")  %||% "",
-        description = xml2::xml_attr(ar, "Name") %||% "",
-        stringsAsFactors = FALSE
-      )))
+      result_rows <- c(
+        result_rows,
+        list(data.frame(
+          display_id = display_ids[i],
+          result_id = xml2::xml_attr(ar, "OID") %||% "",
+          description = xml2::xml_attr(ar, "Name") %||% "",
+          stringsAsFactors = FALSE
+        ))
+      )
     }
   }
 
@@ -488,7 +608,9 @@ print.herald_define <- function(x, ...) {
   if (length(igd_nodes) == 0L) {
     igd_nodes <- xml2::xml_find_all(mdv, ".//ItemGroupDef")
   }
-  if (length(igd_nodes) == 0L) return(list())
+  if (length(igd_nodes) == 0L) {
+    return(list())
+  }
 
   # Build OID -> variable name map from ItemDef
   item_nodes <- xml2::xml_find_all(mdv, ".//d1:ItemDef", ns)
@@ -497,7 +619,7 @@ print.herald_define <- function(x, ...) {
   }
   oid_to_name <- list()
   for (n in item_nodes) {
-    oid  <- xml2::xml_attr(n, "OID")  %||% ""
+    oid <- xml2::xml_attr(n, "OID") %||% ""
     name <- xml2::xml_attr(n, "Name") %||% ""
     if (nzchar(oid) && nzchar(name)) {
       oid_to_name[[oid]] <- name
@@ -507,7 +629,9 @@ print.herald_define <- function(x, ...) {
   key_vars <- list()
   for (ign in igd_nodes) {
     ds_name <- xml2::xml_attr(ign, "Name") %||% ""
-    if (!nzchar(ds_name)) next
+    if (!nzchar(ds_name)) {
+      next
+    }
 
     # KeyVariables is a space-separated list of ItemOIDs in Define-XML 2.1
     kv_raw <- xml2::xml_attr(ign, "def:KeyVariables") %||% ""
@@ -521,24 +645,34 @@ print.herald_define <- function(x, ...) {
       kv_nodes <- xml2::xml_find_all(ign, ".//*[local-name()='KeyVariable']")
       if (length(kv_nodes) > 0L) {
         kv_raw <- paste(
-          vapply(kv_nodes,
-                 function(n) xml2::xml_attr(n, "OID") %||% "",
-                 character(1L)),
+          vapply(
+            kv_nodes,
+            function(n) xml2::xml_attr(n, "OID") %||% "",
+            character(1L)
+          ),
           collapse = " "
         )
       }
     }
 
-    if (!nzchar(kv_raw)) next
+    if (!nzchar(kv_raw)) {
+      next
+    }
 
     oids <- trimws(strsplit(kv_raw, "\\s+")[[1L]])
     oids <- oids[nzchar(oids)]
-    if (length(oids) == 0L) next
+    if (length(oids) == 0L) {
+      next
+    }
 
     # Resolve OIDs to variable names
-    var_names <- vapply(oids, function(oid) {
-      oid_to_name[[oid]] %||% ""
-    }, character(1L))
+    var_names <- vapply(
+      oids,
+      function(oid) {
+        oid_to_name[[oid]] %||% ""
+      },
+      character(1L)
+    )
     var_names <- var_names[nzchar(var_names)]
 
     if (length(var_names) > 0L) {
@@ -559,12 +693,13 @@ print.herald_define <- function(x, ...) {
 .define_extract_loinc_version <- function(mdv, ns) {
   # Strategy 1: def:Standard element with Name="LOINC"
   std_nodes <- xml2::xml_find_all(
-    mdv, ".//*[local-name()='Standard']"
+    mdv,
+    ".//*[local-name()='Standard']"
   )
   for (n in std_nodes) {
-    nm   <- toupper(xml2::xml_attr(n, "Name")    %||% "")
-    type <- toupper(xml2::xml_attr(n, "Type")    %||% "")
-    ver  <- xml2::xml_attr(n, "Version")         %||% ""
+    nm <- toupper(xml2::xml_attr(n, "Name") %||% "")
+    type <- toupper(xml2::xml_attr(n, "Type") %||% "")
+    ver <- xml2::xml_attr(n, "Version") %||% ""
     if ((nm == "LOINC" || type == "LOINC") && nzchar(ver)) {
       return(ver)
     }
@@ -572,11 +707,12 @@ print.herald_define <- function(x, ...) {
 
   # Strategy 2: def:ExternalCodeList with Dictionary="LOINC"
   ecl_nodes <- xml2::xml_find_all(
-    mdv, ".//*[local-name()='ExternalCodeList']"
+    mdv,
+    ".//*[local-name()='ExternalCodeList']"
   )
   for (n in ecl_nodes) {
     dict <- toupper(xml2::xml_attr(n, "Dictionary") %||% "")
-    ver  <- xml2::xml_attr(n, "Version") %||% ""
+    ver <- xml2::xml_attr(n, "Version") %||% ""
     if (dict == "LOINC" && nzchar(ver)) {
       return(ver)
     }

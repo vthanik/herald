@@ -76,7 +76,7 @@ test_that("ieee_to_ibm handles subnormal (denormalized) double as zero", {
 
 test_that("ieee_to_ibm handles very large float as SAS missing (overflow)", {
   # IBM 370 can't represent numbers with exponent > 127 in its base-16 scheme
-  # 16^(127-64) = 16^63 ≈ 2e75; .Machine$double.xmax is ~1.8e308
+  # 16^(127-64) = 16^63 ~= 2e75; .Machine$double.xmax is ~1.8e308
   result <- herald:::ieee_to_ibm(.Machine$double.xmax)
   # Should be SAS missing (overflow)
   expect_equal(length(result), 8L)

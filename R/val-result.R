@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# val-result.R — herald_result S3 + print/format
+# val-result.R  --  herald_result S3 + print/format
 # -----------------------------------------------------------------------------
 # validate() returns a herald_result. Users access fields via $. HTML/XLSX/JSON
 # renderers consume this object.
@@ -26,32 +26,32 @@
 #'   Populated from `ctx$missing_refs` by `.finalize_skipped_refs()`.
 #' @noRd
 new_herald_result <- function(
-  findings         = empty_findings(),
-  rules_applied    = 0L,
-  rules_total      = 0L,
+  findings = empty_findings(),
+  rules_applied = 0L,
+  rules_total = 0L,
   datasets_checked = character(),
-  duration         = as.difftime(0, units = "secs"),
-  profile          = NA_character_,
-  config_hash      = NA_character_,
-  dataset_meta     = list(),
-  rule_catalog     = tibble::tibble(),
-  op_errors        = list(),
-  skipped_refs     = list(datasets = list(), dictionaries = list())
+  duration = as.difftime(0, units = "secs"),
+  profile = NA_character_,
+  config_hash = NA_character_,
+  dataset_meta = list(),
+  rule_catalog = tibble::tibble(),
+  op_errors = list(),
+  skipped_refs = list(datasets = list(), dictionaries = list())
 ) {
   structure(
     list(
-      findings         = findings,
-      rules_applied    = as.integer(rules_applied),
-      rules_total      = as.integer(rules_total),
+      findings = findings,
+      rules_applied = as.integer(rules_applied),
+      rules_total = as.integer(rules_total),
       datasets_checked = datasets_checked,
-      duration         = duration,
-      timestamp        = Sys.time(),
-      profile          = profile,
-      config_hash      = config_hash,
-      dataset_meta     = dataset_meta,
-      rule_catalog     = rule_catalog,
-      op_errors        = op_errors,
-      skipped_refs     = skipped_refs
+      duration = duration,
+      timestamp = Sys.time(),
+      profile = profile,
+      config_hash = config_hash,
+      dataset_meta = dataset_meta,
+      rule_catalog = rule_catalog,
+      op_errors = op_errors,
+      skipped_refs = skipped_refs
     ),
     class = c("herald_result", "list")
   )
@@ -61,14 +61,20 @@ new_herald_result <- function(
 #' @noRd
 readiness_state <- function(r) {
   rules_applied <- r$rules_applied
-  rules_total   <- r$rules_total
-  if (rules_total == 0L) return("Spec Checks Only")
-  if (rules_applied < rules_total * 0.9) return("Incomplete")
+  rules_total <- r$rules_total
+  if (rules_total == 0L) {
+    return("Spec Checks Only")
+  }
+  if (rules_applied < rules_total * 0.9) {
+    return("Incomplete")
+  }
 
   sev <- r$findings$severity[r$findings$status == "fired"]
   n_reject <- sum(sev == "Reject", na.rm = TRUE)
-  n_high   <- sum(sev == "High",   na.rm = TRUE)
-  if (n_reject + n_high > 0L) return("Issues Found")
+  n_high <- sum(sev == "High", na.rm = TRUE)
+  if (n_reject + n_high > 0L) {
+    return("Issues Found")
+  }
   "Submission Ready"
 }
 
@@ -79,17 +85,19 @@ readiness_state <- function(r) {
 #' @export
 print.herald_result <- function(x, ...) {
   state <- readiness_state(x)
-  col   <- switch(state,
-    "Submission Ready"   = "green",
-    "Issues Found"       = "red",
-    "Spec Checks Only"   = "grey",
-    "Incomplete"         = "yellow"
+  col <- switch(
+    state,
+    "Submission Ready" = "green",
+    "Issues Found" = "red",
+    "Spec Checks Only" = "grey",
+    "Incomplete" = "yellow"
   )
-  banner <- switch(state,
-    "Submission Ready"   = cli::col_green(state),
-    "Issues Found"       = cli::col_red(state),
-    "Spec Checks Only"   = cli::col_grey(state),
-    "Incomplete"         = cli::col_yellow(state)
+  banner <- switch(
+    state,
+    "Submission Ready" = cli::col_green(state),
+    "Issues Found" = cli::col_red(state),
+    "Spec Checks Only" = cli::col_grey(state),
+    "Incomplete" = cli::col_yellow(state)
   )
 
   cli::cli_rule(left = paste0("herald validation -- ", banner))
@@ -99,8 +107,10 @@ print.herald_result <- function(x, ...) {
   # Finding counts by severity
   if (nrow(x$findings) > 0L) {
     fired <- x$findings[x$findings$status == "fired", , drop = FALSE]
-    adv   <- x$findings[x$findings$status == "advisory", , drop = FALSE]
-    cli::cli_text("{.strong Findings:} {nrow(fired)} fired, {nrow(adv)} advisory")
+    adv <- x$findings[x$findings$status == "advisory", , drop = FALSE]
+    cli::cli_text(
+      "{.strong Findings:} {nrow(fired)} fired, {nrow(adv)} advisory"
+    )
     if (nrow(fired) > 0L) {
       counts <- sort(table(fired$severity), decreasing = TRUE)
       for (s in names(counts)) {
@@ -116,7 +126,9 @@ print.herald_result <- function(x, ...) {
     cli::cli_text("{.strong Profile:} {x$profile}")
   }
   if (length(x$op_errors) > 0L) {
-    cli::cli_alert_warning("{length(x$op_errors)} operator error{?s} during run")
+    cli::cli_alert_warning(
+      "{length(x$op_errors)} operator error{?s} during run"
+    )
   }
   invisible(x)
 }
@@ -130,14 +142,16 @@ print.herald_result <- function(x, ...) {
 #' @export
 summary.herald_result <- function(object, ...) {
   list(
-    state            = readiness_state(object),
-    rules_applied    = object$rules_applied,
-    rules_total      = object$rules_total,
+    state = readiness_state(object),
+    rules_applied = object$rules_applied,
+    rules_total = object$rules_total,
     datasets_checked = object$datasets_checked,
-    n_findings_fired    = sum(object$findings$status == "fired"),
+    n_findings_fired = sum(object$findings$status == "fired"),
     n_findings_advisory = sum(object$findings$status == "advisory"),
-    severity_counts  = table(object$findings$severity[object$findings$status == "fired"]),
-    duration         = object$duration,
-    timestamp        = object$timestamp
+    severity_counts = table(object$findings$severity[
+      object$findings$status == "fired"
+    ]),
+    duration = object$duration,
+    timestamp = object$timestamp
   )
 }

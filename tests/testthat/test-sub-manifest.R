@@ -5,8 +5,7 @@
 # ---- file_sha256 -----------------------------------------------------------
 
 test_that("file_sha256 returns NA for nonexistent file", {
-  expect_equal(herald:::file_sha256("/nonexistent/path.xpt"),
-               NA_character_)
+  expect_equal(herald:::file_sha256("/nonexistent/path.xpt"), NA_character_)
 })
 
 test_that("file_sha256 matches digest::digest", {

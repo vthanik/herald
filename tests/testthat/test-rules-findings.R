@@ -2,11 +2,11 @@
 
 .rule <- function(...) {
   list(
-    id         = "TEST0001",
-    authority  = "CDISC",
-    standard   = "SDTM-IG",
-    severity   = "High",
-    message    = "Sample message",
+    id = "TEST0001",
+    authority = "CDISC",
+    standard = "SDTM-IG",
+    severity = "High",
+    message = "Sample message",
     source_url = "https://example.org/rule",
     ...
   )
@@ -34,11 +34,11 @@ test_that("emit_submission_finding() matches empty_findings() schema", {
 test_that("emit_submission_finding() honours overrides", {
   f <- emit_submission_finding(
     .rule(),
-    status   = "advisory",
-    message  = "ADSL dataset not found",
+    status = "advisory",
+    message = "ADSL dataset not found",
     severity = "Reject",
     variable = "ADSL",
-    value    = NA_character_
+    value = NA_character_
   )
   expect_equal(f$status, "advisory")
   expect_equal(f$message, "ADSL dataset not found")
@@ -47,14 +47,17 @@ test_that("emit_submission_finding() honours overrides", {
 })
 
 test_that("emit_submission_finding() rejects unknown status", {
-  expect_error(emit_submission_finding(.rule(), status = "error"), class = "herald_error_runtime")
+  expect_error(
+    emit_submission_finding(.rule(), status = "error"),
+    class = "herald_error_runtime"
+  )
 })
 
 test_that("emit_submission_finding() falls back on missing rule fields", {
   f <- emit_submission_finding(list(id = "X"))
   expect_equal(f$rule_id, "X")
   expect_true(is.na(f$authority))
-  expect_equal(f$severity, "Medium")  # default when rule lacks severity
+  expect_equal(f$severity, "Medium") # default when rule lacks severity
   expect_true(is.na(f$message))
 })
 
@@ -64,26 +67,34 @@ test_that("emit_submission_finding() falls back on missing rule fields", {
 
 mk_rule <- function(...) {
   base <- list(
-    id = "TEST-001", authority = "CDISC", standard = "SDTM-IG",
-    severity = "High", message = "must be X",
-    source_url = "herald-own", license = "MIT",
+    id = "TEST-001",
+    authority = "CDISC",
+    standard = "SDTM-IG",
+    severity = "High",
+    message = "must be X",
+    source_url = "herald-own",
+    license = "MIT",
     p21_id_equivalent = NA_character_
   )
   utils::modifyList(base, list(...))
 }
 
 mk_data <- function(n = 4L) {
-  data.frame(USUBJID = sprintf("S%d", seq_len(n)),
-             AESTDTC = as.character(seq_len(n)),
-             stringsAsFactors = FALSE)
+  data.frame(
+    USUBJID = sprintf("S%d", seq_len(n)),
+    AESTDTC = as.character(seq_len(n)),
+    stringsAsFactors = FALSE
+  )
 }
 
 test_that("empty_findings() returns tibble with canonical columns", {
   f <- empty_findings()
   expect_s3_class(f, "tbl_df")
   expect_equal(nrow(f), 0L)
-  expect_true(all(c("rule_id","status","dataset","row","severity","message")
-                  %in% names(f)))
+  expect_true(all(
+    c("rule_id", "status", "dataset", "row", "severity", "message") %in%
+      names(f)
+  ))
 })
 
 test_that("emit_findings fires on TRUE rows (CDISC violation semantics)", {
@@ -116,8 +127,13 @@ test_that("all-NA mask produces one advisory row", {
 
 test_that("mixed NA + TRUE mask emits only 'fired' rows (advisory suppressed)", {
   rule <- mk_rule()
-  f <- emit_findings(rule, "AE", c(TRUE, NA, FALSE, NA), mk_data(4),
-                     variable = "USUBJID")
+  f <- emit_findings(
+    rule,
+    "AE",
+    c(TRUE, NA, FALSE, NA),
+    mk_data(4),
+    variable = "USUBJID"
+  )
   expect_equal(nrow(f), 1L)
   expect_equal(f$status, "fired")
   expect_equal(f$row, 1L)
@@ -132,13 +148,17 @@ test_that("variable=NA omits the value column data", {
 })
 
 test_that("primary_variable() picks first leaf with a name", {
-  tree <- list(all = list(
-    list(all = list(
-      list(operator = "iso8601", name = "AESTDTC"),
-      list(operator = "non_empty", name = "AETERM")
-    )),
-    list(operator = "length_le", name = "AEDECOD", value = 200L)
-  ))
+  tree <- list(
+    all = list(
+      list(
+        all = list(
+          list(operator = "iso8601", name = "AESTDTC"),
+          list(operator = "non_empty", name = "AETERM")
+        )
+      ),
+      list(operator = "length_le", name = "AEDECOD", value = 200L)
+    )
+  )
   expect_equal(primary_variable(tree), "AESTDTC")
 })
 

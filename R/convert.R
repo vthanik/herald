@@ -73,13 +73,13 @@ convert_dataset <- function(
   check_scalar_chr(input, call = call)
   check_scalar_chr(output, call = call)
 
-  from <- .resolve_io_format(from, input,  "from", call = call)
-  to   <- .resolve_io_format(to,   output, "to",   call = call)
+  from <- .resolve_io_format(from, input, "from", call = call)
+  to <- .resolve_io_format(to, output, "to", call = call)
 
   data <- switch(
     from,
-    xpt     = read_xpt(input),
-    json    = read_json(input),
+    xpt = read_xpt(input),
+    json = read_json(input),
     parquet = read_parquet(input)
   )
 
@@ -93,9 +93,14 @@ convert_dataset <- function(
 
   switch(
     to,
-    xpt     = write_xpt(data, output, version = version,
-                        dataset = dataset, label = label),
-    json    = write_json(data, output, dataset = dataset, label = label),
+    xpt = write_xpt(
+      data,
+      output,
+      version = version,
+      dataset = dataset,
+      label = label
+    ),
+    json = write_json(data, output, dataset = dataset, label = label),
     parquet = write_parquet(data, output, dataset = dataset, label = label)
   )
 

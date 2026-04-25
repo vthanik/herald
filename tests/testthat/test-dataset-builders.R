@@ -1,7 +1,9 @@
 # test-dataset-builders.R -- Define-XML tabularization builder layer
 
 .make_minimal_define <- function() {
-  if (!requireNamespace("xml2", quietly = TRUE)) return(NULL)
+  if (!requireNamespace("xml2", quietly = TRUE)) {
+    return(NULL)
+  }
   xml_str <- paste0(
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"',
@@ -47,10 +49,10 @@
 
 test_that(".list_builders() returns all 6 builders", {
   bs <- herald:::.list_builders()
-  expect_true("Define_Study_Metadata"     %in% bs)
-  expect_true("Define_Dataset_Metadata"   %in% bs)
-  expect_true("Define_Variable_Metadata"  %in% bs)
-  expect_true("Define_Codelist_Metadata"  %in% bs)
+  expect_true("Define_Study_Metadata" %in% bs)
+  expect_true("Define_Dataset_Metadata" %in% bs)
+  expect_true("Define_Variable_Metadata" %in% bs)
+  expect_true("Define_Codelist_Metadata" %in% bs)
   expect_true("Define_Standards_Metadata" %in% bs)
   expect_true("Define_ValueLevel_Metadata" %in% bs)
 })
@@ -59,13 +61,17 @@ test_that(".list_builders() returns all 6 builders", {
 
 test_that(".build_define_datasets returns named list of data.frames", {
   def <- .make_minimal_define()
-  if (is.null(def)) skip("xml2 not available")
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
   frames <- herald:::.build_define_datasets(def)
   expect_type(frames, "list")
   expect_true(length(frames) > 0L)
   for (nm in names(frames)) {
-    expect_true(is.data.frame(frames[[nm]]),
-                info = paste("builder", nm, "should return a data.frame"))
+    expect_true(
+      is.data.frame(frames[[nm]]),
+      info = paste("builder", nm, "should return a data.frame")
+    )
   }
 })
 
@@ -73,7 +79,9 @@ test_that(".build_define_datasets returns named list of data.frames", {
 
 test_that("Define_Study_Metadata captures ODM + GlobalVariables fields", {
   def <- .make_minimal_define()
-  if (is.null(def)) skip("xml2 not available")
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
   frames <- herald:::.build_define_datasets(def)
   sm <- frames[["Define_Study_Metadata"]]
   expect_equal(nrow(sm), 1L)
@@ -88,7 +96,9 @@ test_that("Define_Study_Metadata captures ODM + GlobalVariables fields", {
 
 test_that("Define_Dataset_Metadata has one row per ItemGroupDef", {
   def <- .make_minimal_define()
-  if (is.null(def)) skip("xml2 not available")
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
   frames <- herald:::.build_define_datasets(def)
   dm_meta <- frames[["Define_Dataset_Metadata"]]
   expect_equal(nrow(dm_meta), 1L)
@@ -102,7 +112,9 @@ test_that("Define_Dataset_Metadata has one row per ItemGroupDef", {
 
 test_that("Define_Variable_Metadata has one row per ItemDef", {
   def <- .make_minimal_define()
-  if (is.null(def)) skip("xml2 not available")
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
   frames <- herald:::.build_define_datasets(def)
   vm <- frames[["Define_Variable_Metadata"]]
   expect_equal(nrow(vm), 2L)
@@ -118,10 +130,12 @@ test_that("Define_Variable_Metadata has one row per ItemDef", {
 
 test_that("Define_Codelist_Metadata has one row per codelist item", {
   def <- .make_minimal_define()
-  if (is.null(def)) skip("xml2 not available")
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
   frames <- herald:::.build_define_datasets(def)
   cl <- frames[["Define_Codelist_Metadata"]]
-  expect_equal(nrow(cl), 2L)  # M and F
+  expect_equal(nrow(cl), 2L) # M and F
   expect_true("M" %in% cl$coded_value)
   expect_true("F" %in% cl$coded_value)
   expect_equal(cl$codelist_name[1L], "Sex")
@@ -131,7 +145,9 @@ test_that("Define_Codelist_Metadata has one row per codelist item", {
 
 test_that("Define_Standards_Metadata has one row per def:Standard", {
   def <- .make_minimal_define()
-  if (is.null(def)) skip("xml2 not available")
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
   frames <- herald:::.build_define_datasets(def)
   sm <- frames[["Define_Standards_Metadata"]]
   expect_equal(nrow(sm), 1L)
@@ -144,9 +160,16 @@ test_that("Define_Standards_Metadata has one row per def:Standard", {
 
 test_that("validate() injects Define builder frames when define= is supplied", {
   def <- .make_minimal_define()
-  if (is.null(def)) skip("xml2 not available")
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
   # Just verify validate() runs without error and datasets include builder frames
   # Use a DEFINE rule known to target Define_Dataset_Metadata
-  r <- validate(files = list(), define = def, rules = "DEFINE-093", quiet = TRUE)
+  r <- validate(
+    files = list(),
+    define = def,
+    rules = "DEFINE-093",
+    quiet = TRUE
+  )
   expect_s3_class(r, "herald_result")
 })

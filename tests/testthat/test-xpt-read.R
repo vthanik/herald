@@ -1,4 +1,4 @@
-# Tests for R/read-xpt.R — XPT reader (round-trip with write_xpt)
+# Tests for R/read-xpt.R  --  XPT reader (round-trip with write_xpt)
 
 test_that("read_xpt preserves dataset_name attribute", {
   tmp <- file.path(withr::local_tempdir(), "dm_attr.xpt")
@@ -12,11 +12,15 @@ test_that("read_xpt preserves dataset_name attribute", {
 test_that("read_xpt sets sas.length on columns", {
   tmp <- withr::local_tempfile(fileext = ".xpt")
 
-  df <- data.frame(NAME = c("Alice", "Bob"), X = c(1.0, 2.0), stringsAsFactors = FALSE)
+  df <- data.frame(
+    NAME = c("Alice", "Bob"),
+    X = c(1.0, 2.0),
+    stringsAsFactors = FALSE
+  )
   write_xpt(df, tmp)
   result <- read_xpt(tmp)
   expect_true(is.integer(attr(result$NAME, "sas.length")))
-  expect_true(is.integer(attr(result$X,    "sas.length")))
+  expect_true(is.integer(attr(result$X, "sas.length")))
   expect_true(attr(result$NAME, "sas.length") > 0L)
 })
 
@@ -143,7 +147,12 @@ test_that("read_xpt round-trips V8 format", {
 
   expect_equal(nrow(result), 3L)
   expect_equal(names(result), "LongVarName")
-  expect_equal(result$LongVarName, c(1, 2, 3), tolerance = 1e-10, ignore_attr = TRUE)
+  expect_equal(
+    result$LongVarName,
+    c(1, 2, 3),
+    tolerance = 1e-10,
+    ignore_attr = TRUE
+  )
 })
 
 test_that("read_xpt V5 uppercases column names", {
@@ -293,7 +302,7 @@ test_that("read_xpt with encoding = NULL passes bytes through (like haven)", {
   df <- data.frame(X = 1, Y = "hello")
   write_xpt(df, tmp)
 
-  # No encoding conversion — just read as-is
+  # No encoding conversion  --  just read as-is
   suppressMessages(result <- read_xpt(tmp, encoding = NULL))
   expect_equal(result$Y, "hello", ignore_attr = TRUE)
 })
@@ -305,7 +314,7 @@ test_that("write_xpt encoding converts UTF-8 to target encoding", {
   df <- data.frame(X = 1, Y = "caf\u00e9")
   write_xpt(df, tmp, encoding = "latin1")
 
-  # Read back with matching encoding — should round-trip
+  # Read back with matching encoding  --  should round-trip
   result <- read_xpt(tmp, encoding = "latin1")
   expect_equal(result$Y, "caf\u00e9", ignore_attr = TRUE)
 })
@@ -313,7 +322,7 @@ test_that("write_xpt encoding converts UTF-8 to target encoding", {
 test_that("read_xpt/write_xpt round-trip with default wlatin1 encoding", {
   tmp <- withr::local_tempfile(fileext = ".xpt")
 
-  # UTF-8 right single quote → WLATIN1 byte 0x92 → back to UTF-8
+  # UTF-8 right single quote -> WLATIN1 byte 0x92 -> back to UTF-8
   df <- data.frame(X = 1, Y = "Alzheimer\u2019s Disease")
   write_xpt(df, tmp)
   result <- read_xpt(tmp)
@@ -328,7 +337,11 @@ test_that("read_xpt accepts SAS encoding names", {
   write_xpt(df, tmp)
 
   # All these should work without error
-  expect_equal(read_xpt(tmp, encoding = "wlatin1")$Y, "hello", ignore_attr = TRUE)
+  expect_equal(
+    read_xpt(tmp, encoding = "wlatin1")$Y,
+    "hello",
+    ignore_attr = TRUE
+  )
   expect_equal(read_xpt(tmp, encoding = "wlt1")$Y, "hello", ignore_attr = TRUE)
   expect_equal(read_xpt(tmp, encoding = "utf-8")$Y, "hello", ignore_attr = TRUE)
   expect_equal(read_xpt(tmp, encoding = "ascii")$Y, "hello", ignore_attr = TRUE)
@@ -379,7 +392,12 @@ test_that("V8 XPT roundtrip works with a numeric column", {
   df <- data.frame(VALUE = c(1.1, 2.2, 3.3), stringsAsFactors = FALSE)
   write_xpt(df, tmp, dataset = "LB", version = 8)
   result <- read_xpt(tmp)
-  expect_equal(result$VALUE, c(1.1, 2.2, 3.3), tolerance = 1e-6, ignore_attr = TRUE)
+  expect_equal(
+    result$VALUE,
+    c(1.1, 2.2, 3.3),
+    tolerance = 1e-6,
+    ignore_attr = TRUE
+  )
 })
 
 test_that("V8 XPT roundtrip for 0-row data frame works", {

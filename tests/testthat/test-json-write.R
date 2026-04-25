@@ -1,7 +1,6 @@
 # Tests for R/json-write.R -- write_json()
 
 test_that("write_json() creates valid JSON", {
-
   dm <- data.frame(
     STUDYID = c("STUDY1", "STUDY1"),
     USUBJID = c("SUBJ01", "SUBJ02"),
@@ -45,7 +44,6 @@ test_that("write_json() creates valid JSON", {
 })
 
 test_that("write_json() errors on non-data.frame", {
-
   expect_error(
     write_json("not a data frame", tempfile()),
     class = "herald_error_input"
@@ -53,9 +51,8 @@ test_that("write_json() errors on non-data.frame", {
 })
 
 test_that("write_json() infers dataset name from path", {
-
   path <- withr::local_tempfile(pattern = "adsl", fileext = ".json")
-  write_json(data.frame(X = 1L, stringsAsFactors = FALSE), path)  # inline -> no capture
+  write_json(data.frame(X = 1L, stringsAsFactors = FALSE), path) # inline -> no capture
   raw <- jsonlite::fromJSON(path, simplifyVector = FALSE)
   expect_true(grepl("ADSL", raw$name, ignore.case = TRUE))
 })
@@ -131,7 +128,7 @@ test_that("write_json falls through symbol capture for inline expression", {
 test_that("write_json infers dataset name from filename when no attribute", {
   tmp <- file.path(withr::local_tempdir(), "dm_test.json")
 
-  write_json(data.frame(X = 1L, stringsAsFactors = FALSE), tmp)  # inline -> no capture
+  write_json(data.frame(X = 1L, stringsAsFactors = FALSE), tmp) # inline -> no capture
 
   raw <- jsonlite::fromJSON(tmp, simplifyVector = FALSE)
   expect_equal(raw$name, "DM_TEST")
@@ -152,7 +149,6 @@ test_that("write_json with metadata_ref includes it in output", {
 })
 
 test_that("write_json handles logical column as boolean dataType", {
-
   dm <- data.frame(
     STUDYID = "S1",
     FLAG = TRUE,
@@ -167,7 +163,6 @@ test_that("write_json handles logical column as boolean dataType", {
 })
 
 test_that("write_json handles difftime column as time dataType via SAS format", {
-
   dm <- data.frame(RFTM = "12:30:00", stringsAsFactors = FALSE)
   attr(dm$RFTM, "format.sas") <- "TIME"
 
@@ -180,7 +175,6 @@ test_that("write_json handles difftime column as time dataType via SAS format", 
 })
 
 test_that("write_json handles SAS datetime format string as datetime", {
-
   dm <- data.frame(RFSTDTC = "2020-01-01T00:00:00", stringsAsFactors = FALSE)
   attr(dm$RFSTDTC, "format.sas") <- "DATETIME"
 
@@ -192,7 +186,6 @@ test_that("write_json handles SAS datetime format string as datetime", {
 })
 
 test_that("write_json handles SAS date format string as date", {
-
   dm <- data.frame(RFSTDTC = "2020-01-01", stringsAsFactors = FALSE)
   attr(dm$RFSTDTC, "format.sas") <- "DATE"
 
@@ -204,7 +197,6 @@ test_that("write_json handles SAS date format string as date", {
 })
 
 test_that("write_json includes studyOID when study_oid specified", {
-
   dm <- data.frame(STUDYID = "S1", stringsAsFactors = FALSE)
   tmp <- withr::local_tempfile(fileext = ".json")
 

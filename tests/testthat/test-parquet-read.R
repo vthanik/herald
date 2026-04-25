@@ -2,7 +2,10 @@
 
 test_that("read_parquet errors when the file is missing", {
   skip_if_not_installed("arrow")
-  expect_error(read_parquet("/definitely/not/here.parquet"), class = "herald_error_io")
+  expect_error(
+    read_parquet("/definitely/not/here.parquet"),
+    class = "herald_error_io"
+  )
 })
 
 # Note: a mocked-requireNamespace() test was considered for the "arrow not

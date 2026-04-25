@@ -1,7 +1,7 @@
 #' Read a SAS Transport (XPT) file into a data frame
 #'
 #' Reads V5 (FDA standard) or V8 (extended) XPT transport files into R data
-#' frames. Pure R implementation — no SAS or haven dependency.
+#' frames. Pure R implementation  --  no SAS or haven dependency.
 #'
 #' @param file File path to an \code{.xpt} file.
 #' @param col_select Character vector of column names to read. `NULL` (default)
@@ -122,7 +122,7 @@ read_xpt <- function(
 ) {
   call <- rlang::caller_env()
   encoding <- resolve_encoding(encoding)
-  path <- file # internal alias — internal helpers use 'path'
+  path <- file # internal alias  --  internal helpers use 'path'
 
   if (!file.exists(file)) {
     herald_error_xpt(
@@ -292,10 +292,10 @@ read_observations <- function(
   cols <- vector("list", nvars)
   col_names <- character(nvars)
 
-  # Reshape the flat byte stream into a matrix (obs_length rows × nobs_to_read
+  # Reshape the flat byte stream into a matrix (obs_length rows x nobs_to_read
   # columns). Each column is one observation record. Row-slice extraction then
   # replaces per-column strided index vectors, eliminating large integer
-  # allocations that scale with nobs × var_len.
+  # allocations that scale with nobs x var_len.
   raw_mat <- matrix(all_data, nrow = obs_length, ncol = nobs_to_read)
 
   for (j in seq_len(nvars)) {
@@ -308,7 +308,7 @@ read_observations <- function(
 
     if (ns$vartype == 1L) {
       # Numeric: extract var_len bytes per observation and zero-pad to 8 bytes.
-      # as.vector() unrolls column-major → [b0..bN 0..0 b0..bN 0..0 ...],
+      # as.vector() unrolls column-major -> [b0..bN 0..0 b0..bN 0..0 ...],
       # which is the flat layout expected by ibm_to_ieee().
       var_rows <- raw_mat[row_from:row_to, , drop = FALSE]
       if (var_len < 8L) {

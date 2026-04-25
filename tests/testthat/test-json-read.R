@@ -1,7 +1,6 @@
 # Tests for R/json-read.R -- read_json()
 
 test_that("read_json() round-trips correctly", {
-
   dm <- data.frame(
     STUDYID = c("STUDY1", "STUDY1"),
     USUBJID = c("SUBJ01", "SUBJ02"),
@@ -31,7 +30,6 @@ test_that("read_json() round-trips correctly", {
 })
 
 test_that("write_json() handles NA values", {
-
   df <- data.frame(
     X = c("a", NA, "c"),
     Y = c(1L, NA, 3L),
@@ -48,7 +46,6 @@ test_that("write_json() handles NA values", {
 })
 
 test_that("read_json() handles empty dataset", {
-
   df <- data.frame(
     STUDYID = character(0),
     AGE = integer(0),
@@ -66,7 +63,6 @@ test_that("read_json() handles empty dataset", {
 })
 
 test_that("read_json() errors on invalid input", {
-
   # Non-existent file
   expect_error(read_json("nonexistent.json"), class = "herald_error_io")
 
@@ -161,7 +157,6 @@ test_that("read_json handles null values in rows (sparse rows)", {
 })
 
 test_that("read_json errors when columns and rows fields missing", {
-
   tmp <- withr::local_tempfile(fileext = ".json")
   writeLines('{"name":"DM","label":"Demographics"}', tmp)
 
@@ -169,7 +164,6 @@ test_that("read_json errors when columns and rows fields missing", {
 })
 
 test_that("read_json handles zero-row dataset with numeric columns", {
-
   json_content <- jsonlite::toJSON(
     list(
       datasetJSONVersion = "1.1",

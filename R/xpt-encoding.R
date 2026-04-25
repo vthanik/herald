@@ -1,5 +1,5 @@
 # --------------------------------------------------------------------------
-# xpt-encoding.R — SAS encoding map and format classification
+# xpt-encoding.R  --  SAS encoding map and format classification
 # --------------------------------------------------------------------------
 # Consolidates encoding resolution from helpers.R and all SAS format
 # classification from sas-formats.R into one cohesive module.
@@ -75,7 +75,7 @@ resolve_encoding <- function(encoding) {
 .sas_env$epoch_date <- as.Date("1960-01-01")
 .sas_env$epoch_posixct <- as.POSIXct("1960-01-01 00:00:00", tz = "UTC")
 
-# Date formats (days since 1960-01-01) — uppercase for case-insensitive match
+# Date formats (days since 1960-01-01)  --  uppercase for case-insensitive match
 .sas_date_formats <- c(
   "DATE",
   # Day-Month-Year

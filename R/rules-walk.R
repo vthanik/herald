@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# rules-walk.R — data-driven rule-tree walker
+# rules-walk.R  --  data-driven rule-tree walker
 # -----------------------------------------------------------------------------
 # Walks a rule's check_tree (nested list from YAML/JSON) against a dataset
 # and returns a logical mask of length nrow(data):
@@ -21,12 +21,14 @@
 #'
 #' @param node  the check_tree fragment (named list)
 #' @param data  the scoped data frame
-#' @param ctx   a herald_ctx (list) — carries op_cache, op_errors, etc.
+#' @param ctx   a herald_ctx (list)  --  carries op_cache, op_errors, etc.
 #' @return logical vector of length `nrow(data)`
 #' @noRd
 walk_tree <- function(node, data, ctx = NULL) {
   n <- nrow(data)
-  if (is.null(n) || n == 0L) return(logical(0))
+  if (is.null(n) || n == 0L) {
+    return(logical(0))
+  }
 
   # --- empty / narrative / missing ---
   if (is.null(node) || length(node) == 0L) {
@@ -44,19 +46,28 @@ walk_tree <- function(node, data, ctx = NULL) {
   }
 
   # --- combinators ---
-  if (!is.null(node[["all"]])) return(.walk_all(node[["all"]], data, ctx))
-  if (!is.null(node[["any"]])) return(.walk_any(node[["any"]], data, ctx))
-  if (!is.null(node[["not"]])) return(!walk_tree(node[["not"]], data, ctx))
+  if (!is.null(node[["all"]])) {
+    return(.walk_all(node[["all"]], data, ctx))
+  }
+  if (!is.null(node[["any"]])) {
+    return(.walk_any(node[["any"]], data, ctx))
+  }
+  if (!is.null(node[["not"]])) {
+    return(!walk_tree(node[["not"]], data, ctx))
+  }
 
   # --- leaf ---
   if (!is.null(node[["operator"]])) {
     return(.eval_leaf(node, data, ctx))
   }
 
-  # Unknown shape — record as advisory
-  if (!is.null(ctx)) ctx$op_errors <- c(
-    ctx$op_errors, list(list(kind = "unknown_node", node = node))
-  )
+  # Unknown shape  --  record as advisory
+  if (!is.null(ctx)) {
+    ctx$op_errors <- c(
+      ctx$op_errors,
+      list(list(kind = "unknown_node", node = node))
+    )
+  }
   rep(NA, n)
 }
 
@@ -64,23 +75,27 @@ walk_tree <- function(node, data, ctx = NULL) {
 
 .walk_all <- function(children, data, ctx) {
   n <- nrow(data)
-  if (length(children) == 0L) return(rep(TRUE, n))
+  if (length(children) == 0L) {
+    return(rep(TRUE, n))
+  }
 
-  pass       <- rep(TRUE, n)   # all children so far returned TRUE
-  false_seen <- rep(FALSE, n)  # at least one child explicitly returned FALSE
-  na_seen    <- rep(FALSE, n)  # at least one child returned NA
-  active     <- rep(TRUE, n)   # rows still in the running (not yet failed)
+  pass <- rep(TRUE, n) # all children so far returned TRUE
+  false_seen <- rep(FALSE, n) # at least one child explicitly returned FALSE
+  na_seen <- rep(FALSE, n) # at least one child returned NA
+  active <- rep(TRUE, n) # rows still in the running (not yet failed)
 
   for (child in children) {
-    if (!any(active)) break
+    if (!any(active)) {
+      break
+    }
     sub <- walk_tree(child, data[active, , drop = FALSE], ctx)
     full <- rep(NA, n)
     full[active] <- sub
 
     false_seen <- false_seen | (!is.na(full) & !full)
-    na_seen    <- na_seen    | is.na(full)
-    pass       <- pass & (full %in% TRUE)
-    active     <- active & (full %in% TRUE)
+    na_seen <- na_seen | is.na(full)
+    pass <- pass & (full %in% TRUE)
+    active <- active & (full %in% TRUE)
   }
 
   # Resolve per row:
@@ -95,23 +110,27 @@ walk_tree <- function(node, data, ctx = NULL) {
 
 .walk_any <- function(children, data, ctx) {
   n <- nrow(data)
-  if (length(children) == 0L) return(rep(FALSE, n))
+  if (length(children) == 0L) {
+    return(rep(FALSE, n))
+  }
 
-  any_true   <- rep(FALSE, n)  # at least one child returned TRUE
-  false_seen <- rep(FALSE, n)  # at least one child explicitly returned FALSE
-  na_seen    <- rep(FALSE, n)  # at least one child returned NA
-  active     <- rep(TRUE, n)   # rows still in the running (not yet succeeded)
+  any_true <- rep(FALSE, n) # at least one child returned TRUE
+  false_seen <- rep(FALSE, n) # at least one child explicitly returned FALSE
+  na_seen <- rep(FALSE, n) # at least one child returned NA
+  active <- rep(TRUE, n) # rows still in the running (not yet succeeded)
 
   for (child in children) {
-    if (!any(active)) break
+    if (!any(active)) {
+      break
+    }
     sub <- walk_tree(child, data[active, , drop = FALSE], ctx)
     full <- rep(NA, n)
     full[active] <- sub
 
     false_seen <- false_seen | (!is.na(full) & !full)
-    na_seen    <- na_seen    | is.na(full)
-    any_true   <- any_true   | (full %in% TRUE)
-    active     <- active & !(full %in% TRUE)
+    na_seen <- na_seen | is.na(full)
+    any_true <- any_true | (full %in% TRUE)
+    active <- active & !(full %in% TRUE)
   }
 
   # Resolve per row:
@@ -128,12 +147,14 @@ walk_tree <- function(node, data, ctx = NULL) {
 
 .eval_leaf <- function(node, data, ctx) {
   op_name <- node[["operator"]]
-  fn <- tryCatch(.get_op(op_name),
-                 error = function(e) NULL)
+  fn <- tryCatch(.get_op(op_name), error = function(e) NULL)
   if (is.null(fn)) {
-    if (!is.null(ctx)) ctx$op_errors <- c(
-      ctx$op_errors, list(list(kind = "unknown_operator", operator = op_name))
-    )
+    if (!is.null(ctx)) {
+      ctx$op_errors <- c(
+        ctx$op_errors,
+        list(list(kind = "unknown_operator", operator = op_name))
+      )
+    }
     return(rep(NA, nrow(data)))
   }
 
@@ -155,8 +176,9 @@ walk_tree <- function(node, data, ctx = NULL) {
   # case-insensitively before handing off to the operator.
   for (arg_name in intersect(names(args), c("name", "key", "reference_key"))) {
     v <- args[[arg_name]]
-    if (is.character(v) && length(v) == 1L && nzchar(v) &&
-        !v %in% names(data)) {
+    if (
+      is.character(v) && length(v) == 1L && nzchar(v) && !v %in% names(data)
+    ) {
       hit <- which(toupper(as.character(names(data))) == toupper(v))
       if (length(hit) > 0L) args[[arg_name]] <- names(data)[[hit[[1L]]]]
     }
@@ -176,11 +198,16 @@ walk_tree <- function(node, data, ctx = NULL) {
   tryCatch(
     do.call(fn, c(list(data = data, ctx = ctx), args)),
     error = function(e) {
-      if (!is.null(ctx)) ctx$op_errors <- c(
-        ctx$op_errors,
-        list(list(kind = "op_error", operator = op_name,
-                  message = conditionMessage(e)))
-      )
+      if (!is.null(ctx)) {
+        ctx$op_errors <- c(
+          ctx$op_errors,
+          list(list(
+            kind = "op_error",
+            operator = op_name,
+            message = conditionMessage(e)
+          ))
+        )
+      }
       rep(NA, nrow(data))
     }
   )
@@ -189,7 +216,7 @@ walk_tree <- function(node, data, ctx = NULL) {
 #' Candidate domain prefixes for --VAR wildcard resolution
 #'
 #' The `--VAR` wildcard is an **SDTM-IG convention only** (SDTMIG s.2.5.1).
-#' ADaMIG does not use it — ADaM variables are explicitly named
+#' ADaMIG does not use it  --  ADaM variables are explicitly named
 #' (AVAL, AVALC, PARAM, PARAMCD, ADT, ADY, ASTDY, AENDY, TRTEMFL, etc.).
 #' So our resolver returns candidates only for SDTM + SEND datasets and
 #' returns an empty list for ADaM. SUPP-- domains keep parent-domain
@@ -204,7 +231,11 @@ walk_tree <- function(node, data, ctx = NULL) {
 #'                                            returns NA -> advisory)
 #' @noRd
 .domain_prefix_candidates <- function(ctx, data) {
-  ds <- if (!is.null(ctx$current_dataset)) toupper(ctx$current_dataset) else NA_character_
+  ds <- if (!is.null(ctx$current_dataset)) {
+    toupper(ctx$current_dataset)
+  } else {
+    NA_character_
+  }
 
   # ADaM datasets use explicit naming, no `--` convention.
   if (!is.na(ds) && startsWith(ds, "AD") && nchar(ds) >= 3L) {
@@ -228,7 +259,7 @@ walk_tree <- function(node, data, ctx = NULL) {
     candidates <- c(candidates, substr(ds, 1L, 2L))
   }
 
-  # DOMAIN column fallback (rare — mostly for synthetic tests)
+  # DOMAIN column fallback (rare  --  mostly for synthetic tests)
   if (!is.null(data$DOMAIN)) {
     u <- unique(as.character(data$DOMAIN))
     u <- u[nzchar(u)]
@@ -241,7 +272,9 @@ walk_tree <- function(node, data, ctx = NULL) {
 #' Resolve a `--VAR` wildcard against a dataset's actual columns
 #' @noRd
 .resolve_wildcard <- function(var_wildcard, data, candidates) {
-  if (length(candidates) == 0L) return(var_wildcard)
+  if (length(candidates) == 0L) {
+    return(var_wildcard)
+  }
   tail <- substr(var_wildcard, 3L, nchar(var_wildcard))
   # First candidate that produces a column actually in data wins
   for (cand in candidates) {
@@ -254,7 +287,9 @@ walk_tree <- function(node, data, ctx = NULL) {
 }
 
 .expand_wildcard_args <- function(args, data, candidates) {
-  if (length(candidates) == 0L) return(args)
+  if (length(candidates) == 0L) {
+    return(args)
+  }
   for (nm in names(args)) {
     v <- args[[nm]]
     if (is.character(v) && length(v) == 1L && startsWith(v, "--")) {
@@ -266,9 +301,14 @@ walk_tree <- function(node, data, ctx = NULL) {
       args[[nm]] <- .expand_wildcard_args(v, data, candidates)
     } else if (is.character(v) && length(v) > 1L) {
       # Vector of names (e.g. composite key `name: [--A, --B]`).
-      args[[nm]] <- vapply(v, function(x)
-        if (startsWith(x, "--")) .resolve_wildcard(x, data, candidates) else x,
-        character(1L), USE.NAMES = FALSE)
+      args[[nm]] <- vapply(
+        v,
+        function(x) {
+          if (startsWith(x, "--")) .resolve_wildcard(x, data, candidates) else x
+        },
+        character(1L),
+        USE.NAMES = FALSE
+      )
     }
   }
   args
@@ -278,25 +318,43 @@ walk_tree <- function(node, data, ctx = NULL) {
 
 .eval_r_expression <- function(expr_str, data, ctx) {
   n <- nrow(data)
-  mask_env <- tryCatch(rlang::new_data_mask(rlang::as_environment(data)),
-                       error = function(e) NULL)
-  if (is.null(mask_env)) return(rep(NA, n))
+  mask_env <- tryCatch(
+    rlang::new_data_mask(rlang::as_environment(data)),
+    error = function(e) NULL
+  )
+  if (is.null(mask_env)) {
+    return(rep(NA, n))
+  }
 
-  result <- tryCatch({
-    ex <- rlang::parse_expr(expr_str)
-    rlang::eval_tidy(ex, data = mask_env)
-  }, error = function(e) {
-    if (!is.null(ctx)) ctx$op_errors <- c(
-      ctx$op_errors,
-      list(list(kind = "r_expression_error",
-                expr = expr_str, message = conditionMessage(e)))
-    )
-    NULL
-  })
+  result <- tryCatch(
+    {
+      ex <- rlang::parse_expr(expr_str)
+      rlang::eval_tidy(ex, data = mask_env)
+    },
+    error = function(e) {
+      if (!is.null(ctx)) {
+        ctx$op_errors <- c(
+          ctx$op_errors,
+          list(list(
+            kind = "r_expression_error",
+            expr = expr_str,
+            message = conditionMessage(e)
+          ))
+        )
+      }
+      NULL
+    }
+  )
 
-  if (is.null(result)) return(rep(NA, n))
-  if (length(result) == 1L) result <- rep(result, n)
-  if (length(result) != n) return(rep(NA, n))
+  if (is.null(result)) {
+    return(rep(NA, n))
+  }
+  if (length(result) == 1L) {
+    result <- rep(result, n)
+  }
+  if (length(result) != n) {
+    return(rep(NA, n))
+  }
   as.logical(result)
 }
 
@@ -311,8 +369,8 @@ walk_tree <- function(node, data, ctx = NULL) {
 #' @noRd
 new_herald_ctx <- function() {
   e <- new.env(parent = emptyenv())
-  e$op_errors  <- list()
-  e$op_cache   <- new.env(parent = emptyenv())
-  e$op_results <- list()    # Operations pre-compute results: "$id" -> value
+  e$op_errors <- list()
+  e$op_cache <- new.env(parent = emptyenv())
+  e$op_results <- list() # Operations pre-compute results: "$id" -> value
   e
 }

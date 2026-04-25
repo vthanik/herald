@@ -5,9 +5,11 @@
 mk_ctx <- function(datasets, spec = NULL, current = NULL) {
   ctx <- new_herald_ctx()
   ctx$datasets <- datasets
-  ctx$spec     <- spec
+  ctx$spec <- spec
   ctx$crossrefs <- build_crossrefs(datasets, spec)
-  if (!is.null(current)) ctx$current_dataset <- current
+  if (!is.null(current)) {
+    ctx$current_dataset <- current
+  }
   ctx
 }
 
@@ -32,8 +34,10 @@ test_that("$list_dataset_names returns uppercase dataset names", {
 test_that("$usubjids_in_<dom> is an alias for $<dom>_usubjid", {
   ex <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
   ctx <- mk_ctx(list(EX = ex))
-  expect_equal(resolve_ref("$usubjids_in_ex", ctx),
-               resolve_ref("$ex_usubjid", ctx))
+  expect_equal(
+    resolve_ref("$usubjids_in_ex", ctx),
+    resolve_ref("$ex_usubjid", ctx)
+  )
 })
 
 test_that("Missing dataset returns NULL and logs an op_errors entry", {
@@ -47,8 +51,11 @@ test_that("Unknown token returns NULL + logs", {
   ctx <- mk_ctx(list(DM = data.frame(USUBJID = "S1", stringsAsFactors = FALSE)))
   expect_null(resolve_ref("$totally_made_up", ctx))
   expect_true(any(
-    vapply(ctx$op_errors, function(e) identical(e$token, "$totally_made_up"),
-           logical(1))
+    vapply(
+      ctx$op_errors,
+      function(e) identical(e$token, "$totally_made_up"),
+      logical(1)
+    )
   ))
 })
 
@@ -67,26 +74,31 @@ test_that("$domain_label for a dataset with no label is unresolved", {
 
 test_that("substitute_crossrefs flags unresolved refs", {
   ctx <- mk_ctx(list(DM = data.frame(USUBJID = "S1", stringsAsFactors = FALSE)))
-  out <- substitute_crossrefs(list(name = "USUBJID",
-                                   value = "$totally_made_up"), ctx)
+  out <- substitute_crossrefs(
+    list(name = "USUBJID", value = "$totally_made_up"),
+    ctx
+  )
   expect_true(isTRUE(out$unresolved))
 })
 
 test_that("substitute_crossrefs expands a resolvable value in place", {
   dm <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
   ctx <- mk_ctx(list(DM = dm))
-  out <- substitute_crossrefs(list(name = "USUBJID",
-                                   value = "$dm_usubjid"), ctx)
+  out <- substitute_crossrefs(
+    list(name = "USUBJID", value = "$dm_usubjid"),
+    ctx
+  )
   expect_false(out$unresolved)
   expect_setequal(out$args$value, c("S1", "S2"))
 })
 
 test_that("end-to-end: CG0029 fires exactly on AE rows not in DM", {
   dm <- data.frame(USUBJID = c("S1-001", "S1-002"), stringsAsFactors = FALSE)
-  ae <- data.frame(USUBJID = c("S1-001", "S1-XXX", "S1-002"),
-                   stringsAsFactors = FALSE)
-  r <- validate(files = list(dm, ae),
-                rules = "CG0029", quiet = TRUE)
+  ae <- data.frame(
+    USUBJID = c("S1-001", "S1-XXX", "S1-002"),
+    stringsAsFactors = FALSE
+  )
+  r <- validate(files = list(dm, ae), rules = "CG0029", quiet = TRUE)
   fired <- r$findings[r$findings$status == "fired", , drop = FALSE]
   # Only AE row 2 should fire; DM rows and AE rows 1 + 3 are all in DM.USUBJID.
   expect_true(all(fired$dataset == "AE"))
@@ -96,8 +108,7 @@ test_that("end-to-end: CG0029 fires exactly on AE rows not in DM", {
 test_that("end-to-end: CG0029 without the ref target -> advisory only", {
   # DM missing entirely -> $dm_usubjid unresolved -> leaf NA -> advisory.
   ae <- data.frame(USUBJID = c("S1-001"), stringsAsFactors = FALSE)
-  r <- validate(files = list(ae),
-                rules = "CG0029", quiet = TRUE)
+  r <- validate(files = list(ae), rules = "CG0029", quiet = TRUE)
   expect_true(nrow(r$findings[r$findings$status == "fired", ]) == 0L)
   # Some advisory emission expected on the unresolved ref.
   expect_true(nrow(r$findings[r$findings$status == "advisory", ]) >= 1L)

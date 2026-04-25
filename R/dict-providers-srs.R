@@ -51,34 +51,38 @@
 #' @seealso [srs_provider()], [download_ct()].
 #' @family ct
 #' @export
-download_srs <- function(version = format(Sys.Date(), "%Y-%m-%d"),
-                         dest    = .ct_cache_dir(),
-                         force   = FALSE,
-                         timeout = 180L,
-                         quiet   = FALSE) {
+download_srs <- function(
+  version = format(Sys.Date(), "%Y-%m-%d"),
+  dest = .ct_cache_dir(),
+  force = FALSE,
+  timeout = 180L,
+  quiet = FALSE
+) {
   call <- rlang::caller_env()
   check_scalar_chr(version, call = call)
   check_scalar_chr(dest, call = call)
-  if (!dir.exists(dest)) dir.create(dest, recursive = TRUE)
+  if (!dir.exists(dest)) {
+    dir.create(dest, recursive = TRUE)
+  }
 
   rds_path <- file.path(dest, sprintf("srs-%s.rds", version))
 
   .download_and_cache(
-    url            = .SRS_URL,
-    rds_path       = rds_path,
-    fetch_ext      = ".zip",
-    parser         = function(tmp, info) .parse_srs_zip(tmp, info$version),
-    parser_info    = list(version = version),
+    url = .SRS_URL,
+    rds_path = rds_path,
+    fetch_ext = ".zip",
+    parser = function(tmp, info) .parse_srs_zip(tmp, info$version),
+    parser_info = list(version = version),
     manifest_entry = list(
-      package      = "srs",
-      version      = version,
+      package = "srs",
+      version = version,
       release_date = version,
-      path         = rds_path
+      path = rds_path
     ),
-    force   = force,
+    force = force,
     timeout = timeout,
-    quiet   = quiet,
-    dest    = dest
+    quiet = quiet,
+    dest = dest
   )
 }
 
@@ -113,22 +117,31 @@ download_srs <- function(version = format(Sys.Date(), "%Y-%m-%d"),
 srs_provider <- function(version = "latest-cache") {
   call <- rlang::caller_env()
   path <- .resolve_srs_rds(version, call)
-  if (is.null(path)) return(NULL)
+  if (is.null(path)) {
+    return(NULL)
+  }
 
   srs <- readRDS(path)
   n_rows <- nrow(srs)
   ver <- if (!is.null(attr(srs, "version"))) attr(srs, "version") else version
 
-  contains_fn <- function(value, field = "preferred_name",
-                          ignore_case = FALSE) {
+  contains_fn <- function(
+    value,
+    field = "preferred_name",
+    ignore_case = FALSE
+  ) {
     field <- as.character(field %||% "preferred_name")
-    col <- switch(field,
-                  "preferred_name" = "PT",
-                  "pt"             = "PT",
-                  "unii"           = "UNII",
-                  "code"           = "UNII",
-                  "PT")
-    if (!col %in% names(srs)) return(rep(NA, length(value)))
+    col <- switch(
+      field,
+      "preferred_name" = "PT",
+      "pt" = "PT",
+      "unii" = "UNII",
+      "code" = "UNII",
+      "PT"
+    )
+    if (!col %in% names(srs)) {
+      return(rep(NA, length(value)))
+    }
     pool <- as.character(srs[[col]])
     v <- sub(" +$", "", as.character(value))
     if (isTRUE(ignore_case)) {
@@ -139,26 +152,34 @@ srs_provider <- function(version = "latest-cache") {
 
   lookup_fn <- function(value, field = "preferred_name") {
     field <- as.character(field %||% "preferred_name")
-    col <- switch(field,
-                  "preferred_name" = "PT", "pt" = "PT",
-                  "unii" = "UNII", "code" = "UNII",
-                  "PT")
-    if (!col %in% names(srs)) return(NULL)
+    col <- switch(
+      field,
+      "preferred_name" = "PT",
+      "pt" = "PT",
+      "unii" = "UNII",
+      "code" = "UNII",
+      "PT"
+    )
+    if (!col %in% names(srs)) {
+      return(NULL)
+    }
     hits <- srs[srs[[col]] %in% as.character(value), , drop = FALSE]
-    if (nrow(hits) == 0L) return(NULL)
+    if (nrow(hits) == 0L) {
+      return(NULL)
+    }
     hits
   }
 
   new_dict_provider(
-    name         = "srs",
-    version      = as.character(ver),
-    source       = "cache",
-    license      = "public",
+    name = "srs",
+    version = as.character(ver),
+    source = "cache",
+    license = "public",
     license_note = "FDA Substance Registration System (public; not bundled)",
-    size_rows    = n_rows,
-    fields       = c("preferred_name", "unii"),
-    contains     = contains_fn,
-    lookup       = lookup_fn
+    size_rows = n_rows,
+    fields = c("preferred_name", "unii"),
+    contains = contains_fn,
+    lookup = lookup_fn
   )
 }
 
@@ -171,17 +192,23 @@ srs_provider <- function(version = "latest-cache") {
 #' @noRd
 .resolve_srs_rds <- function(version, call) {
   if (grepl("\\.rds$", version, ignore.case = TRUE)) {
-    if (!file.exists(version)) return(NULL)
+    if (!file.exists(version)) {
+      return(NULL)
+    }
     return(normalizePath(version, winslash = "/", mustWork = TRUE))
   }
   cached <- .list_cached_ct()
   cached <- cached[cached$package == "srs", , drop = FALSE]
-  if (nrow(cached) == 0L) return(NULL)
+  if (nrow(cached) == 0L) {
+    return(NULL)
+  }
   if (identical(version, "latest-cache")) {
     hit <- cached[order(cached$release_date, decreasing = TRUE)[1L], ]
   } else {
     hit <- cached[cached$version == version, , drop = FALSE]
-    if (nrow(hit) == 0L) return(NULL)
+    if (nrow(hit) == 0L) {
+      return(NULL)
+    }
     hit <- hit[1L, ]
   }
   hit$path
@@ -207,22 +234,30 @@ srs_provider <- function(version = "latest-cache") {
   utils::unzip(path, files = txt, exdir = ex_dir, junkpaths = TRUE)
   ex_path <- file.path(ex_dir, basename(txt))
 
-  raw <- utils::read.delim(ex_path, sep = "\t", quote = "",
-                           stringsAsFactors = FALSE,
-                           check.names = FALSE, na.strings = "",
-                           fileEncoding = "UTF-8")
-  keep <- intersect(c("UNII", "PT", "RN", "NCIT", "RXCUI",
-                      "UNII_TYPE", "NAME_TYPE"),
-                    names(raw))
+  raw <- utils::read.delim(
+    ex_path,
+    sep = "\t",
+    quote = "",
+    stringsAsFactors = FALSE,
+    check.names = FALSE,
+    na.strings = "",
+    fileEncoding = "UTF-8"
+  )
+  keep <- intersect(
+    c("UNII", "PT", "RN", "NCIT", "RXCUI", "UNII_TYPE", "NAME_TYPE"),
+    names(raw)
+  )
   if (!all(c("UNII", "PT") %in% keep)) {
     herald_error_runtime(
-      c("SRS file missing required columns UNII / PT.",
-        "i" = "Got columns: {.val {names(raw)}}")
+      c(
+        "SRS file missing required columns UNII / PT.",
+        "i" = "Got columns: {.val {names(raw)}}"
+      )
     )
   }
   out <- tibble::as_tibble(raw[, keep, drop = FALSE])
-  attr(out, "version")     <- version
-  attr(out, "source_url")  <- .SRS_URL
-  attr(out, "release_date")<- version
+  attr(out, "version") <- version
+  attr(out, "source_url") <- .SRS_URL
+  attr(out, "release_date") <- version
   out
 }

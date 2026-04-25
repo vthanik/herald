@@ -40,11 +40,13 @@ build_crossrefs <- function(datasets, spec = NULL) {
   if (length(datasets) > 0L) {
     ds_names <- toupper(names(datasets))
     out[["$list_dataset_names"]] <- ds_names
-    out[["$study_domains"]]      <- ds_names
+    out[["$study_domains"]] <- ds_names
 
     for (ds_name in ds_names) {
       d <- datasets[[ds_name]]
-      if (!is.data.frame(d)) next
+      if (!is.data.frame(d)) {
+        next
+      }
       for (col in names(d)) {
         values <- unique(as.character(d[[col]]))
         values <- values[!is.na(values) & nzchar(values)]
@@ -69,9 +71,13 @@ build_crossrefs <- function(datasets, spec = NULL) {
   # Dynamic: $domain_label depends on ctx$current_dataset.
   out[["$domain_label"]] <- function(ctx) {
     ds <- ctx$current_dataset
-    if (is.null(ds) || is.null(ctx$datasets[[ds]])) return(character(0))
+    if (is.null(ds) || is.null(ctx$datasets[[ds]])) {
+      return(character(0))
+    }
     lbl <- attr(ctx$datasets[[ds]], "label")
-    if (is.null(lbl)) return(character(0))
+    if (is.null(lbl)) {
+      return(character(0))
+    }
     as.character(lbl)
   }
 
@@ -86,8 +92,11 @@ build_crossrefs <- function(datasets, spec = NULL) {
         .spec_cols(spec, ctx$current_dataset, c("required", "Required"))
       }
       out[["$allowed_variables"]] <- function(ctx) {
-        .spec_cols(spec, ctx$current_dataset, c("allowed", "Allowed",
-                                                "permissible", "Permissible"))
+        .spec_cols(
+          spec,
+          ctx$current_dataset,
+          c("allowed", "Allowed", "permissible", "Permissible")
+        )
       }
     }
   }
@@ -101,17 +110,30 @@ build_crossrefs <- function(datasets, spec = NULL) {
 #' @noRd
 .spec_cols <- function(spec, ds_name, col_names) {
   v <- spec[["var_spec"]]
-  if (!is.data.frame(v)) return(character(0))
+  if (!is.data.frame(v)) {
+    return(character(0))
+  }
   ds_col <- v[["dataset"]] %||% v[["Dataset"]] %||% rep(NA_character_, nrow(v))
-  hits <- toupper(as.character(ds_col)) == toupper(as.character(ds_name %||% ""))
-  if (!any(hits, na.rm = TRUE)) return(character(0))
+  hits <- toupper(as.character(ds_col)) ==
+    toupper(as.character(ds_name %||% ""))
+  if (!any(hits, na.rm = TRUE)) {
+    return(character(0))
+  }
   sub <- v[which(hits), , drop = FALSE]
   # Find a flag column in col_names; values are logical or truthy strings
   flag_col <- intersect(col_names, names(sub))
-  if (length(flag_col) == 0L) return(character(0))
+  if (length(flag_col) == 0L) {
+    return(character(0))
+  }
   mark <- sub[[flag_col[[1L]]]]
-  keep <- if (is.logical(mark)) mark else toupper(as.character(mark)) %in% c("Y","YES","TRUE","1")
-  name_col <- sub[["variable"]] %||% sub[["Variable"]] %||% rep(NA_character_, nrow(sub))
+  keep <- if (is.logical(mark)) {
+    mark
+  } else {
+    toupper(as.character(mark)) %in% c("Y", "YES", "TRUE", "1")
+  }
+  name_col <- sub[["variable"]] %||%
+    sub[["Variable"]] %||%
+    rep(NA_character_, nrow(sub))
   as.character(name_col[keep])
 }
 
@@ -128,7 +150,9 @@ build_crossrefs <- function(datasets, spec = NULL) {
 #' unknown/unresolved. Always logs a ctx$op_errors entry on miss.
 #' @noRd
 resolve_ref <- function(token, ctx) {
-  if (!is.character(token) || length(token) != 1L) return(NULL)
+  if (!is.character(token) || length(token) != 1L) {
+    return(NULL)
+  }
 
   if (startsWith(token, "$")) {
     key <- tolower(token)
@@ -164,8 +188,8 @@ resolve_ref <- function(token, ctx) {
   # plain dotted strings like "v2.0" or "foo.bar" don't accidentally match.
   if (grepl("^[A-Z][A-Z0-9]{1,7}\\.[A-Z][A-Z0-9_]*$", token)) {
     parts <- strsplit(token, ".", fixed = TRUE)[[1L]]
-    dom   <- parts[[1L]]
-    col   <- parts[[2L]]
+    dom <- parts[[1L]]
+    col <- parts[[2L]]
     ds <- ctx$datasets[[dom]]
     if (is.null(ds) || !col %in% names(ds)) {
       .log_unresolved(ctx, token)
@@ -202,9 +226,13 @@ substitute_crossrefs <- function(args, ctx) {
     # Only handle plain character values here. Structured list values
     # (e.g. {reference_dataset, by, column} for is_inconsistent_across_dataset)
     # are handled inside their own operators.
-    if (!is.character(v)) next
+    if (!is.character(v)) {
+      next
+    }
     hits <- startsWith(v, "$") | grepl(dotted_pat, v)
-    if (!any(hits)) next
+    if (!any(hits)) {
+      next
+    }
     for (i in which(hits)) {
       resolved <- resolve_ref(v[[i]], ctx)
       if (is.null(resolved)) {
@@ -215,7 +243,9 @@ substitute_crossrefs <- function(args, ctx) {
       # holds a mix of refs and literals, unroll into the final set.
       v <- c(v[-i], resolved)
     }
-    if (unresolved) break
+    if (unresolved) {
+      break
+    }
     args[[k]] <- v
   }
   list(args = args, unresolved = unresolved)
@@ -224,12 +254,17 @@ substitute_crossrefs <- function(args, ctx) {
 # -- internals --------------------------------------------------------------
 
 .log_unresolved <- function(ctx, token) {
-  if (is.null(ctx)) return(invisible(NULL))
-  ctx$op_errors <- c(ctx$op_errors, list(list(
-    kind     = "unresolved_crossref",
-    token    = token,
-    dataset  = ctx$current_dataset %||% NA_character_,
-    rule_id  = ctx$current_rule_id %||% NA_character_
-  )))
+  if (is.null(ctx)) {
+    return(invisible(NULL))
+  }
+  ctx$op_errors <- c(
+    ctx$op_errors,
+    list(list(
+      kind = "unresolved_crossref",
+      token = token,
+      dataset = ctx$current_dataset %||% NA_character_,
+      rule_id = ctx$current_rule_id %||% NA_character_
+    ))
+  )
   invisible(NULL)
 }

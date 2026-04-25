@@ -39,15 +39,16 @@
 #' @seealso [load_ct()], [register_dictionary()].
 #' @family dict
 #' @export
-ct_provider <- function(package = c("sdtm", "adam"),
-                        version = "bundled") {
+ct_provider <- function(package = c("sdtm", "adam"), version = "bundled") {
   package <- match.arg(package)
   ct <- load_ct(package, version = version)
 
   n_codelists <- length(ct)
-  n_terms <- sum(vapply(ct,
+  n_terms <- sum(vapply(
+    ct,
     function(e) nrow(e$terms %||% data.frame()),
-    integer(1L)))
+    integer(1L)
+  ))
 
   prov_name <- paste0("ct-", package)
 
@@ -56,7 +57,9 @@ ct_provider <- function(package = c("sdtm", "adam"),
       return(rep(NA, length(value)))
     }
     entry <- .lookup_codelist(ct, field)
-    if (is.null(entry)) return(rep(NA, length(value)))
+    if (is.null(entry)) {
+      return(rep(NA, length(value)))
+    }
     accepted <- as.character(entry$terms$submissionValue %||% character())
     v <- as.character(value)
     v <- sub(" +$", "", v)
@@ -67,32 +70,40 @@ ct_provider <- function(package = c("sdtm", "adam"),
   }
 
   lookup_fn <- function(value, field = NULL) {
-    if (is.null(field) || !nzchar(as.character(field))) return(NULL)
+    if (is.null(field) || !nzchar(as.character(field))) {
+      return(NULL)
+    }
     entry <- .lookup_codelist(ct, field)
-    if (is.null(entry)) return(NULL)
+    if (is.null(entry)) {
+      return(NULL)
+    }
     tms <- entry$terms
     hits <- tms[tms$submissionValue %in% as.character(value), , drop = FALSE]
-    if (nrow(hits) == 0L) return(NULL)
+    if (nrow(hits) == 0L) {
+      return(NULL)
+    }
     hits
   }
 
   src_path <- attr(ct, "source_path") %||% ""
   bundled_root <- system.file("rules", "ct", package = "herald")
-  inst_root    <- file.path("inst", "rules", "ct")
+  inst_root <- file.path("inst", "rules", "ct")
   is_bundled <- (nzchar(bundled_root) &&
-                 startsWith(normalizePath(src_path, winslash = "/", mustWork = FALSE),
-                            normalizePath(bundled_root, winslash = "/", mustWork = FALSE))) ||
-                startsWith(src_path, inst_root)
+    startsWith(
+      normalizePath(src_path, winslash = "/", mustWork = FALSE),
+      normalizePath(bundled_root, winslash = "/", mustWork = FALSE)
+    )) ||
+    startsWith(src_path, inst_root)
 
   new_dict_provider(
-    name         = prov_name,
-    version      = attr(ct, "version")      %||% NA_character_,
-    source       = if (is_bundled) "bundled" else "cache",
-    license      = "CC-BY-4.0",
+    name = prov_name,
+    version = attr(ct, "version") %||% NA_character_,
+    source = if (is_bundled) "bundled" else "cache",
+    license = "CC-BY-4.0",
     license_note = "CDISC NCI Thesaurus CT (NCI EVS, public domain)",
-    size_rows    = n_terms,
-    fields       = names(ct),
-    contains     = contains_fn,
-    lookup       = lookup_fn
+    size_rows = n_terms,
+    fields = names(ct),
+    contains = contains_fn,
+    lookup = lookup_fn
   )
 }

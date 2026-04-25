@@ -28,30 +28,42 @@
 #' @return data with `$id` columns appended for each successful operation.
 #' @noRd
 .apply_operations <- function(rule_ops, data, datasets, ctx) {
-  if (is.null(rule_ops) || length(rule_ops) == 0L) return(data)
-  if (!is.data.frame(data)) return(data)
+  if (is.null(rule_ops) || length(rule_ops) == 0L) {
+    return(data)
+  }
+  if (!is.data.frame(data)) {
+    return(data)
+  }
   n <- nrow(data)
-  if (n == 0L) return(data)
+  if (n == 0L) {
+    return(data)
+  }
 
   for (op_entry in rule_ops) {
-    op_id   <- op_entry[["id"]] %||% NA_character_
+    op_id <- op_entry[["id"]] %||% NA_character_
     op_name <- op_entry[["operator"]] %||% NA_character_
-    if (is.na(op_id) || is.na(op_name) || !nzchar(op_id)) next
+    if (is.na(op_id) || is.na(op_name) || !nzchar(op_id)) {
+      next
+    }
 
     fn <- .get_operation(op_name)
     if (is.null(fn)) {
       # Unknown operation: record error, leave $id out (leaf -> NA advisory)
-      if (!is.null(ctx)) ctx$op_errors <- c(
-        ctx$op_errors,
-        list(list(kind = "unknown_operation", operator = op_name, id = op_id))
-      )
+      if (!is.null(ctx)) {
+        ctx$op_errors <- c(
+          ctx$op_errors,
+          list(list(kind = "unknown_operation", operator = op_name, id = op_id))
+        )
+      }
       next
     }
 
     # Resolve the target dataset: op_entry$domain overrides the current one.
     target_ds_name <- toupper(op_entry[["domain"]] %||% "")
-    target_data <- if (nzchar(target_ds_name) &&
-                       !is.null(datasets[[target_ds_name]])) {
+    target_data <- if (
+      nzchar(target_ds_name) &&
+        !is.null(datasets[[target_ds_name]])
+    ) {
       datasets[[target_ds_name]]
     } else {
       data
@@ -60,19 +72,29 @@
     result <- tryCatch(
       fn(target_data, ctx, op_entry),
       error = function(e) {
-        if (!is.null(ctx)) ctx$op_errors <- c(
-          ctx$op_errors,
-          list(list(kind = "operation_error", operator = op_name,
-                    id = op_id, message = conditionMessage(e)))
-        )
+        if (!is.null(ctx)) {
+          ctx$op_errors <- c(
+            ctx$op_errors,
+            list(list(
+              kind = "operation_error",
+              operator = op_name,
+              id = op_id,
+              message = conditionMessage(e)
+            ))
+          )
+        }
         NULL
       }
     )
-    if (is.null(result)) next
+    if (is.null(result)) {
+      next
+    }
 
     # Cache in ctx so substitute_crossrefs() finds it via resolve_ref().
     if (!is.null(ctx)) {
-      if (is.null(ctx$op_results)) ctx$op_results <- list()
+      if (is.null(ctx$op_results)) {
+        ctx$op_results <- list()
+      }
       ctx$op_results[[op_id]] <- result
     }
 
@@ -91,7 +113,7 @@
 #' @noRd
 .stamp_op_result <- function(data, col_name, result, n) {
   if (length(result) == 1L) {
-    data[[col_name]] <- result          # recycled by data.frame
+    data[[col_name]] <- result # recycled by data.frame
   } else if (length(result) == n) {
     data[[col_name]] <- result
   } else {

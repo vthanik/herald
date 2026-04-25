@@ -60,10 +60,16 @@
 as_herald_spec <- function(ds_spec, var_spec = NULL) {
   call <- rlang::caller_env()
   check_data_frame(ds_spec, call = call)
-  if (!is.null(var_spec)) check_data_frame(var_spec, call = call)
+  if (!is.null(var_spec)) {
+    check_data_frame(var_spec, call = call)
+  }
 
-  ds_spec <- .normalise_spec_frame(ds_spec, required = "dataset",
-                                   arg = "ds_spec", call = call)
+  ds_spec <- .normalise_spec_frame(
+    ds_spec,
+    required = "dataset",
+    arg = "ds_spec",
+    call = call
+  )
   ds_spec$dataset <- toupper(as.character(ds_spec$dataset))
 
   if (!is.null(var_spec)) {
@@ -73,7 +79,7 @@ as_herald_spec <- function(ds_spec, var_spec = NULL) {
       arg = "var_spec",
       call = call
     )
-    var_spec$dataset  <- toupper(as.character(var_spec$dataset))
+    var_spec$dataset <- toupper(as.character(var_spec$dataset))
     var_spec$variable <- toupper(as.character(var_spec$variable))
   }
 
@@ -121,38 +127,52 @@ as_herald_spec <- function(ds_spec, var_spec = NULL) {
 #' @export
 herald_spec <- function(
   ds_spec,
-  var_spec      = data.frame(dataset = character(), variable = character(),
-                              stringsAsFactors = FALSE),
-  study         = data.frame(attribute = character(), value = character(),
-                              stringsAsFactors = FALSE),
-  value_spec    = NULL,
-  codelist      = NULL,
-  methods       = NULL,
-  comments      = NULL,
-  documents     = NULL,
-  arm_displays  = NULL,
-  arm_results   = NULL
+  var_spec = data.frame(
+    dataset = character(),
+    variable = character(),
+    stringsAsFactors = FALSE
+  ),
+  study = data.frame(
+    attribute = character(),
+    value = character(),
+    stringsAsFactors = FALSE
+  ),
+  value_spec = NULL,
+  codelist = NULL,
+  methods = NULL,
+  comments = NULL,
+  documents = NULL,
+  arm_displays = NULL,
+  arm_results = NULL
 ) {
   call <- rlang::caller_env()
   check_data_frame(ds_spec, call = call)
 
-  ds_spec  <- .normalise_spec_frame(ds_spec,  required = "dataset",
-                                    arg = "ds_spec",  call = call)
-  var_spec <- .normalise_spec_frame(var_spec, required = c("dataset", "variable"),
-                                    arg = "var_spec", call = call)
+  ds_spec <- .normalise_spec_frame(
+    ds_spec,
+    required = "dataset",
+    arg = "ds_spec",
+    call = call
+  )
+  var_spec <- .normalise_spec_frame(
+    var_spec,
+    required = c("dataset", "variable"),
+    arg = "var_spec",
+    call = call
+  )
 
   structure(
     list(
-      ds_spec      = ds_spec,
-      var_spec     = var_spec,
-      study        = study,
-      value_spec   = value_spec,
-      codelist     = codelist,
-      methods      = methods,
-      comments     = comments,
-      documents    = documents,
+      ds_spec = ds_spec,
+      var_spec = var_spec,
+      study = study,
+      value_spec = value_spec,
+      codelist = codelist,
+      methods = methods,
+      comments = comments,
+      documents = documents,
       arm_displays = arm_displays,
-      arm_results  = arm_results
+      arm_results = arm_results
     ),
     class = c("herald_spec", "list")
   )
@@ -183,12 +203,16 @@ is_herald_spec <- function(x) inherits(x, "herald_spec")
 #' @return `x` invisibly.
 #' @export
 print.herald_spec <- function(x, ...) {
-  n_ds  <- if (is.data.frame(x$ds_spec))  nrow(x$ds_spec)  else 0L
+  n_ds <- if (is.data.frame(x$ds_spec)) nrow(x$ds_spec) else 0L
   n_var <- if (is.data.frame(x$var_spec)) nrow(x$var_spec) else 0L
   cat("<herald_spec>\n")
-  cat(sprintf("  %d dataset%s, %d variable%s\n",
-              n_ds,  if (n_ds  == 1L) "" else "s",
-              n_var, if (n_var == 1L) "" else "s"))
+  cat(sprintf(
+    "  %d dataset%s, %d variable%s\n",
+    n_ds,
+    if (n_ds == 1L) "" else "s",
+    n_var,
+    if (n_var == 1L) "" else "s"
+  ))
   invisible(x)
 }
 
@@ -202,14 +226,20 @@ print.herald_spec <- function(x, ...) {
 #' Lookup is case-insensitive on both keys.
 #' @noRd
 .spec_var <- function(spec, dataset, variable) {
-  if (!is_herald_spec(spec)) return(NULL)
+  if (!is_herald_spec(spec)) {
+    return(NULL)
+  }
   v <- spec[["var_spec"]]
-  if (!is.data.frame(v) || nrow(v) == 0L) return(NULL)
+  if (!is.data.frame(v) || nrow(v) == 0L) {
+    return(NULL)
+  }
   ds_key <- toupper(as.character(dataset %||% ""))
   vr_key <- toupper(as.character(variable %||% ""))
   hit <- toupper(as.character(v$dataset)) == ds_key &
-         toupper(as.character(v$variable)) == vr_key
-  if (!any(hit, na.rm = TRUE)) return(NULL)
+    toupper(as.character(v$variable)) == vr_key
+  if (!any(hit, na.rm = TRUE)) {
+    return(NULL)
+  }
   v[which(hit)[[1L]], , drop = FALSE]
 }
 
@@ -218,12 +248,18 @@ print.herald_spec <- function(x, ...) {
 #' Returns a one-row data.frame, or NULL if not found.
 #' @noRd
 .spec_ds <- function(spec, dataset) {
-  if (!is_herald_spec(spec)) return(NULL)
+  if (!is_herald_spec(spec)) {
+    return(NULL)
+  }
   d <- spec[["ds_spec"]]
-  if (!is.data.frame(d) || nrow(d) == 0L) return(NULL)
+  if (!is.data.frame(d) || nrow(d) == 0L) {
+    return(NULL)
+  }
   ds_key <- toupper(as.character(dataset %||% ""))
   hit <- toupper(as.character(d$dataset)) == ds_key
-  if (!any(hit, na.rm = TRUE)) return(NULL)
+  if (!any(hit, na.rm = TRUE)) {
+    return(NULL)
+  }
   d[which(hit)[[1L]], , drop = FALSE]
 }
 

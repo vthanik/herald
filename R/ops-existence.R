@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# ops-existence.R — variable / value presence operators
+# ops-existence.R  --  variable / value presence operators
 # -----------------------------------------------------------------------------
 # These are the most-used operators in the CDISC corpus (~610 occurrences).
 # Two distinct kinds:
@@ -18,21 +18,31 @@
 # uppercase), NOT be a column in `data`, and ctx$datasets must be populated
 # so we don't hide legitimate column checks when no submission context exists.
 .is_dataset_ref <- function(name, data, ctx) {
-  if (!is.character(name) || length(name) != 1L) return(FALSE)
-  if (!grepl("^[A-Z][A-Z0-9]{1,3}$", name)) return(FALSE)
-  if (name %in% names(data)) return(FALSE)
+  if (!is.character(name) || length(name) != 1L) {
+    return(FALSE)
+  }
+  if (!grepl("^[A-Z][A-Z0-9]{1,3}$", name)) {
+    return(FALSE)
+  }
+  if (name %in% names(data)) {
+    return(FALSE)
+  }
   # Require a submission-level context. Without ctx$datasets we can't tell
   # a dataset ref from a column whose name happens to match the pattern.
   !is.null(ctx) && !is.null(ctx$datasets) && length(ctx$datasets) > 0L
 }
 
 .ds_present <- function(name, ctx) {
-  if (is.null(ctx) || is.null(ctx$datasets)) return(FALSE)
+  if (is.null(ctx) || is.null(ctx$datasets)) {
+    return(FALSE)
+  }
   toupper(name) %in% toupper(names(ctx$datasets))
 }
 
 .dataset_level_mask <- function(violated, n) {
-  if (n == 0L) return(logical(0))
+  if (n == 0L) {
+    return(logical(0))
+  }
   c(isTRUE(violated), rep(FALSE, n - 1L))
 }
 
@@ -41,12 +51,20 @@ op_exists <- function(data, ctx, name) {
   # "exists(DS.VAR)" -- cross-dataset column presence.
   # If name contains exactly one ".", split into (ds, col) and check
   # whether col exists in the reference dataset.
-  if (is.character(name) && length(name) == 1L && grepl("^[A-Z][A-Z0-9]{1,3}\\.[A-Z][A-Z0-9_]*$", name)) {
+  if (
+    is.character(name) &&
+      length(name) == 1L &&
+      grepl("^[A-Z][A-Z0-9]{1,3}\\.[A-Z][A-Z0-9_]*$", name)
+  ) {
     parts <- strsplit(name, ".", fixed = TRUE)[[1L]]
     ref_ds <- .ref_ds(ctx, parts[[1L]])
-    if (is.null(ref_ds)) return(.dataset_level_mask(FALSE, n))
+    if (is.null(ref_ds)) {
+      return(.dataset_level_mask(FALSE, n))
+    }
     return(.dataset_level_mask(
-      isTRUE(toupper(parts[[2L]]) %in% toupper(names(ref_ds))), n))
+      isTRUE(toupper(parts[[2L]]) %in% toupper(names(ref_ds))),
+      n
+    ))
   }
   if (.is_dataset_ref(name, data, ctx)) {
     # "exists(<DS>)" in a check_tree fires when the dataset IS present.
@@ -55,12 +73,13 @@ op_exists <- function(data, ctx, name) {
   rep(isTRUE(name %in% names(data)), n)
 }
 .register_op(
-  "exists", op_exists,
+  "exists",
+  op_exists,
   meta = list(
-    kind       = "existence",
-    summary    = "Column is present in dataset (dataset-wide assertion)",
+    kind = "existence",
+    summary = "Column is present in dataset (dataset-wide assertion)",
     arg_schema = list(name = list(type = "string", required = TRUE)),
-    cost_hint  = "O(1)",
+    cost_hint = "O(1)",
     column_arg = "name",
     returns_na_ok = FALSE,
     examples = list(list(name = "AESTDTC"))
@@ -76,7 +95,8 @@ op_not_exists <- function(data, ctx, name) {
   rep(!(name %in% names(data)), n)
 }
 .register_op(
-  "not_exists", op_not_exists,
+  "not_exists",
+  op_not_exists,
   meta = list(
     kind = "existence",
     summary = "Column is absent from dataset",
@@ -92,7 +112,9 @@ op_not_exists <- function(data, ctx, name) {
 
 op_non_empty <- function(data, ctx, name) {
   values <- data[[name]]
-  if (is.null(values)) return(rep(NA, nrow(data)))
+  if (is.null(values)) {
+    return(rep(NA, nrow(data)))
+  }
   # "non_empty" means: not NA AND (for character) the right-trimmed value
   # is not "". Mirrors Pinnacle 21's rtrim-then-null-check convention
   # (DataEntryFactory.java:70-71): trailing whitespace collapses a string
@@ -106,7 +128,8 @@ op_non_empty <- function(data, ctx, name) {
   }
 }
 .register_op(
-  "non_empty", op_non_empty,
+  "non_empty",
+  op_non_empty,
   meta = list(
     kind = "existence",
     summary = "Column value is not NA and not empty string",
@@ -120,7 +143,9 @@ op_non_empty <- function(data, ctx, name) {
 
 op_empty <- function(data, ctx, name) {
   values <- data[[name]]
-  if (is.null(values)) return(rep(NA, nrow(data)))
+  if (is.null(values)) {
+    return(rep(NA, nrow(data)))
+  }
   if (is.character(values)) {
     # Mirror P21's right-trim-then-null-check: "   " counts as empty,
     # "   text" is populated, "text   " is populated (the trimmed value
@@ -132,7 +157,8 @@ op_empty <- function(data, ctx, name) {
   }
 }
 .register_op(
-  "empty", op_empty,
+  "empty",
+  op_empty,
   meta = list(
     kind = "existence",
     summary = "Column value is NA or empty string",
@@ -151,7 +177,8 @@ op_empty <- function(data, ctx, name) {
 
 op_is_missing <- function(data, ctx, name) op_empty(data, ctx, name)
 .register_op(
-  "is_missing", op_is_missing,
+  "is_missing",
+  op_is_missing,
   meta = list(
     kind = "existence",
     summary = "Synonym of empty: value is NA or empty string",
@@ -164,7 +191,8 @@ op_is_missing <- function(data, ctx, name) op_empty(data, ctx, name)
 
 op_is_present <- function(data, ctx, name) op_non_empty(data, ctx, name)
 .register_op(
-  "is_present", op_is_present,
+  "is_present",
+  op_is_present,
   meta = list(
     kind = "existence",
     summary = "Synonym of non_empty: value is not NA and not empty",
@@ -220,7 +248,9 @@ op_label_by_suffix_missing <- function(data, ctx, suffix, value) {
     # P21 rtrim: trailing spaces (ASCII 0x20) only; an all-spaces label
     # becomes null and the rule skips rather than fires.
     lbl <- sub(" +$", "", lbl)
-    if (is.na(lbl) || !nzchar(lbl)) next
+    if (is.na(lbl) || !nzchar(lbl)) {
+      next
+    }
     if (!grepl(phrase, lbl, fixed = TRUE)) {
       violated <- TRUE
       break
@@ -229,13 +259,14 @@ op_label_by_suffix_missing <- function(data, ctx, suffix, value) {
   .dataset_level_mask(violated, n)
 }
 .register_op(
-  "label_by_suffix_missing", op_label_by_suffix_missing,
+  "label_by_suffix_missing",
+  op_label_by_suffix_missing,
   meta = list(
     kind = "existence",
     summary = "Fires when any variable whose name ends in `suffix` has a label that does not contain `value`",
     arg_schema = list(
       suffix = list(type = "string", required = TRUE),
-      value  = list(type = "string", required = TRUE)
+      value = list(type = "string", required = TRUE)
     ),
     cost_hint = "O(1)",
     column_arg = NA_character_,
@@ -257,14 +288,19 @@ op_label_by_suffix_missing <- function(data, ctx, suffix, value) {
 op_any_var_name_exceeds_length <- function(data, ctx, value) {
   n <- nrow(data)
   cols <- names(data)
-  if (length(cols) == 0L) return(.dataset_level_mask(FALSE, n))
+  if (length(cols) == 0L) {
+    return(.dataset_level_mask(FALSE, n))
+  }
   lim <- suppressWarnings(as.integer(value))
-  if (is.na(lim) || lim < 0L) return(.dataset_level_mask(FALSE, n))
+  if (is.na(lim) || lim < 0L) {
+    return(.dataset_level_mask(FALSE, n))
+  }
   violated <- any(nchar(cols, type = "bytes") > lim, na.rm = TRUE)
   .dataset_level_mask(isTRUE(violated), n)
 }
 .register_op(
-  "any_var_name_exceeds_length", op_any_var_name_exceeds_length,
+  "any_var_name_exceeds_length",
+  op_any_var_name_exceeds_length,
   meta = list(
     kind = "existence",
     summary = "Fires when any variable name exceeds the byte-length cap",
@@ -286,25 +322,35 @@ op_any_var_name_exceeds_length <- function(data, ctx, value) {
 op_any_var_label_exceeds_length <- function(data, ctx, value) {
   n <- nrow(data)
   cols <- names(data)
-  if (length(cols) == 0L) return(.dataset_level_mask(FALSE, n))
+  if (length(cols) == 0L) {
+    return(.dataset_level_mask(FALSE, n))
+  }
   lim <- suppressWarnings(as.integer(value))
-  if (is.na(lim) || lim < 0L) return(.dataset_level_mask(FALSE, n))
+  if (is.na(lim) || lim < 0L) {
+    return(.dataset_level_mask(FALSE, n))
+  }
   violated <- FALSE
   for (col in cols) {
     lbl <- attr(data[[col]], "label")
-    if (is.null(lbl)) next
+    if (is.null(lbl)) {
+      next
+    }
     lbl <- as.character(lbl)[[1L]]
     # rtrim P21-parity: all-spaces label becomes null and skips.
     lbl <- sub(" +$", "", lbl)
-    if (is.na(lbl) || !nzchar(lbl)) next
+    if (is.na(lbl) || !nzchar(lbl)) {
+      next
+    }
     if (nchar(lbl, type = "bytes") > lim) {
-      violated <- TRUE; break
+      violated <- TRUE
+      break
     }
   }
   .dataset_level_mask(isTRUE(violated), n)
 }
 .register_op(
-  "any_var_label_exceeds_length", op_any_var_label_exceeds_length,
+  "any_var_label_exceeds_length",
+  op_any_var_label_exceeds_length,
   meta = list(
     kind = "existence",
     summary = "Fires when any variable label exceeds the byte-length cap",
@@ -328,11 +374,15 @@ op_any_var_label_exceeds_length <- function(data, ctx, value) {
 op_any_value_exceeds_length <- function(data, ctx, value) {
   n <- nrow(data)
   lim <- suppressWarnings(as.integer(value))
-  if (is.na(lim) || lim < 0L || n == 0L) return(rep(FALSE, n))
+  if (is.na(lim) || lim < 0L || n == 0L) {
+    return(rep(FALSE, n))
+  }
   out <- rep(FALSE, n)
   for (col in names(data)) {
     v <- data[[col]]
-    if (!is.character(v)) next
+    if (!is.character(v)) {
+      next
+    }
     # rtrim trailing spaces per P21 parity; count remaining bytes.
     vv <- sub("\\s+$", "", v)
     too_long <- !is.na(vv) & nchar(vv, type = "bytes") > lim
@@ -341,7 +391,8 @@ op_any_value_exceeds_length <- function(data, ctx, value) {
   out
 }
 .register_op(
-  "any_value_exceeds_length", op_any_value_exceeds_length,
+  "any_value_exceeds_length",
+  op_any_value_exceeds_length,
   meta = list(
     kind = "existence",
     summary = "Per row: at least one character column has a value longer than the byte-length cap",
@@ -359,25 +410,34 @@ op_any_value_exceeds_length <- function(data, ctx, value) {
 # stored as numeric. `exclude_prefix` allows a specific stem to be skipped
 # (ADaM-716: exclude ELTM whose stem is "EL").
 
-op_var_by_suffix_not_numeric <- function(data, ctx, name,
-                                         exclude_prefix = NULL) {
+op_var_by_suffix_not_numeric <- function(
+  data,
+  ctx,
+  name,
+  exclude_prefix = NULL
+) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
   excl <- as.character(exclude_prefix %||% "")
-  if (nzchar(excl) && startsWith(name, excl)) return(rep(FALSE, nrow(data)))
+  if (nzchar(excl) && startsWith(name, excl)) {
+    return(rep(FALSE, nrow(data)))
+  }
   rep(!is.numeric(col), nrow(data))
 }
 .register_op(
-  "var_by_suffix_not_numeric", op_var_by_suffix_not_numeric,
+  "var_by_suffix_not_numeric",
+  op_var_by_suffix_not_numeric,
   meta = list(
     kind = "existence",
     summary = "Column resolved by suffix wildcard is not a numeric variable",
     arg_schema = list(
-      name           = list(type = "string", required = TRUE),
+      name = list(type = "string", required = TRUE),
       exclude_prefix = list(type = "string", default = NULL)
     ),
-    cost_hint     = "O(1)",
-    column_arg    = "name",
+    cost_hint = "O(1)",
+    column_arg = "name",
     returns_na_ok = TRUE
   )
 )
@@ -390,12 +450,15 @@ op_var_by_suffix_not_numeric <- function(data, ctx, name,
 op_no_var_with_suffix <- function(data, ctx, suffix) {
   n <- nrow(data)
   s <- toupper(as.character(suffix %||% ""))
-  if (!nzchar(s)) return(.dataset_level_mask(FALSE, n))
+  if (!nzchar(s)) {
+    return(.dataset_level_mask(FALSE, n))
+  }
   any_present <- any(endsWith(toupper(names(data)), s))
   .dataset_level_mask(!any_present, n)
 }
 .register_op(
-  "no_var_with_suffix", op_no_var_with_suffix,
+  "no_var_with_suffix",
+  op_no_var_with_suffix,
   meta = list(
     kind = "existence",
     summary = "No column in the dataset has a name ending with the given suffix",
@@ -419,11 +482,14 @@ op_no_var_with_suffix <- function(data, ctx, suffix) {
 #
 # Class is resolved via .ds_class() / infer_class(); NA or "" counts as missing.
 
-op_dataset_name_prefix_not <- function(data, ctx,
-                                       prefix,
-                                       when_class_is_missing = FALSE) {
-  n    <- nrow(data)
-  pfx  <- as.character(prefix %||% "")
+op_dataset_name_prefix_not <- function(
+  data,
+  ctx,
+  prefix,
+  when_class_is_missing = FALSE
+) {
+  n <- nrow(data)
+  pfx <- as.character(prefix %||% "")
   mode_missing <- isTRUE(as.logical(when_class_is_missing))
 
   # Derive current dataset name and its class from ctx.
@@ -436,17 +502,28 @@ op_dataset_name_prefix_not <- function(data, ctx,
   # in the submission's Define-XML, not as inferred from the name.
   cls <- NA_character_
   if (nzchar(ds_name)) {
-    spec_cls <- tryCatch({
-      sp <- ctx$spec
-      if (!is.null(sp) && !is.null(sp$ds_spec)) {
-        ds_col  <- sp$ds_spec[["dataset"]] %||% sp$ds_spec[["Dataset"]]
-        cls_col <- sp$ds_spec[["class"]]   %||% sp$ds_spec[["Class"]]
-        if (!is.null(ds_col) && !is.null(cls_col)) {
-          hit <- which(toupper(as.character(ds_col)) == toupper(ds_name))
-          if (length(hit) > 0L) as.character(cls_col[hit[[1L]]]) else NA_character_
-        } else NA_character_
-      } else NA_character_
-    }, error = function(e) NA_character_)
+    spec_cls <- tryCatch(
+      {
+        sp <- ctx$spec
+        if (!is.null(sp) && !is.null(sp$ds_spec)) {
+          ds_col <- sp$ds_spec[["dataset"]] %||% sp$ds_spec[["Dataset"]]
+          cls_col <- sp$ds_spec[["class"]] %||% sp$ds_spec[["Class"]]
+          if (!is.null(ds_col) && !is.null(cls_col)) {
+            hit <- which(toupper(as.character(ds_col)) == toupper(ds_name))
+            if (length(hit) > 0L) {
+              as.character(cls_col[hit[[1L]]])
+            } else {
+              NA_character_
+            }
+          } else {
+            NA_character_
+          }
+        } else {
+          NA_character_
+        }
+      },
+      error = function(e) NA_character_
+    )
     cls <- spec_cls
   }
   class_missing <- is.null(cls) || is.na(cls) || !nzchar(trimws(cls))
@@ -461,16 +538,17 @@ op_dataset_name_prefix_not <- function(data, ctx,
   .dataset_level_mask(isTRUE(violated), n)
 }
 .register_op(
-  "dataset_name_prefix_not", op_dataset_name_prefix_not,
+  "dataset_name_prefix_not",
+  op_dataset_name_prefix_not,
   meta = list(
-    kind    = "existence",
+    kind = "existence",
     summary = "Dataset name prefix vs class check (ADaM-496 / ADaM-497 pattern)",
     arg_schema = list(
-      prefix              = list(type = "string",  required = TRUE),
-      when_class_is_missing = list(type = "boolean", default  = FALSE)
+      prefix = list(type = "string", required = TRUE),
+      when_class_is_missing = list(type = "boolean", default = FALSE)
     ),
-    cost_hint     = "O(1)",
-    column_arg    = NA_character_,
+    cost_hint = "O(1)",
+    column_arg = NA_character_,
     returns_na_ok = FALSE
   )
 )
@@ -488,33 +566,51 @@ op_dataset_name_prefix_not <- function(data, ctx,
 # Name length is measured in Unicode characters (nchar type="chars"), matching
 # the SDTM dataset-naming convention (all ASCII names in practice).
 
-op_dataset_name_length_not_in_range <- function(data, ctx,
-                                                 min_len = NULL,
-                                                 max_len = NULL) {
-  n       <- nrow(data)
+op_dataset_name_length_not_in_range <- function(
+  data,
+  ctx,
+  min_len = NULL,
+  max_len = NULL
+) {
+  n <- nrow(data)
   ds_name <- as.character(ctx$current_dataset %||% "")
-  if (!nzchar(ds_name)) return(.dataset_level_mask(FALSE, n))
+  if (!nzchar(ds_name)) {
+    return(.dataset_level_mask(FALSE, n))
+  }
 
-  len     <- nchar(ds_name, type = "chars")
-  lo      <- if (!is.null(min_len)) suppressWarnings(as.integer(min_len)) else NA_integer_
-  hi      <- if (!is.null(max_len)) suppressWarnings(as.integer(max_len)) else NA_integer_
+  len <- nchar(ds_name, type = "chars")
+  lo <- if (!is.null(min_len)) {
+    suppressWarnings(as.integer(min_len))
+  } else {
+    NA_integer_
+  }
+  hi <- if (!is.null(max_len)) {
+    suppressWarnings(as.integer(max_len))
+  } else {
+    NA_integer_
+  }
 
   violated <- FALSE
-  if (!is.na(lo) && len < lo) violated <- TRUE
-  if (!is.na(hi) && len > hi) violated <- TRUE
+  if (!is.na(lo) && len < lo) {
+    violated <- TRUE
+  }
+  if (!is.na(hi) && len > hi) {
+    violated <- TRUE
+  }
   .dataset_level_mask(isTRUE(violated), n)
 }
 .register_op(
-  "dataset_name_length_not_in_range", op_dataset_name_length_not_in_range,
+  "dataset_name_length_not_in_range",
+  op_dataset_name_length_not_in_range,
   meta = list(
-    kind    = "existence",
+    kind = "existence",
     summary = "Dataset name length is outside the required [min_len, max_len] range",
     arg_schema = list(
       min_len = list(type = "integer", default = NULL),
       max_len = list(type = "integer", default = NULL)
     ),
-    cost_hint     = "O(1)",
-    column_arg    = NA_character_,
+    cost_hint = "O(1)",
+    column_arg = NA_character_,
     returns_na_ok = FALSE
   )
 )
@@ -537,11 +633,15 @@ op_dataset_name_length_not_in_range <- function(data, ctx,
 # should write the pattern for uppercase names.
 
 op_any_var_name_not_matching_regex <- function(data, ctx, value) {
-  n    <- nrow(data)
+  n <- nrow(data)
   cols <- names(data)
-  if (length(cols) == 0L) return(.dataset_level_mask(FALSE, n))
+  if (length(cols) == 0L) {
+    return(.dataset_level_mask(FALSE, n))
+  }
   rx <- as.character(value %||% "")
-  if (!nzchar(rx)) return(.dataset_level_mask(FALSE, n))
+  if (!nzchar(rx)) {
+    return(.dataset_level_mask(FALSE, n))
+  }
   violated <- any(
     !grepl(rx, toupper(cols), perl = TRUE),
     na.rm = TRUE
@@ -549,13 +649,14 @@ op_any_var_name_not_matching_regex <- function(data, ctx, value) {
   .dataset_level_mask(isTRUE(violated), n)
 }
 .register_op(
-  "any_var_name_not_matching_regex", op_any_var_name_not_matching_regex,
+  "any_var_name_not_matching_regex",
+  op_any_var_name_not_matching_regex,
   meta = list(
-    kind    = "existence",
+    kind = "existence",
     summary = "Fires when any variable name does not match the required regex",
     arg_schema = list(value = list(type = "string", required = TRUE)),
-    cost_hint     = "O(1)",
-    column_arg    = NA_character_,
+    cost_hint = "O(1)",
+    column_arg = NA_character_,
     returns_na_ok = FALSE
   )
 )
@@ -588,13 +689,18 @@ op_any_var_name_not_matching_regex <- function(data, ctx, value) {
 # Missing ctx$datasets (no submission context): returns NA (advisory) --
 # cannot determine cross-dataset presence without a submission-level context.
 
-op_var_present_in_any_other_dataset <- function(data, ctx,
-                                                 name,
-                                                 exclude_current     = TRUE,
-                                                 required_dataset_classes = NULL) {
+op_var_present_in_any_other_dataset <- function(
+  data,
+  ctx,
+  name,
+  exclude_current = TRUE,
+  required_dataset_classes = NULL
+) {
   n <- nrow(data)
   col <- as.character(name %||% "")
-  if (!nzchar(col)) return(.dataset_level_mask(FALSE, n))
+  if (!nzchar(col)) {
+    return(.dataset_level_mask(FALSE, n))
+  }
 
   if (is.null(ctx) || is.null(ctx$datasets) || length(ctx$datasets) == 0L) {
     # No submission context: advisory
@@ -634,14 +740,23 @@ op_var_present_in_any_other_dataset <- function(data, ctx,
 
   # Class filter: when required_dataset_classes is supplied, only search
   # datasets whose class attribute matches one of the requested classes.
-  if (!is.null(required_dataset_classes) && length(required_dataset_classes) > 0L) {
+  if (
+    !is.null(required_dataset_classes) && length(required_dataset_classes) > 0L
+  ) {
     classes <- as.character(required_dataset_classes)
-    ds_names <- Filter(function(nm) {
-      ds <- ctx$datasets[[nm]]
-      cls <- attr(ds, "class_label") %||% attr(ds, "herald_class") %||% NA_character_
-      if (is.null(cls) || is.na(cls) || !nzchar(cls)) return(FALSE)
-      toupper(cls) %in% toupper(classes)
-    }, ds_names)
+    ds_names <- Filter(
+      function(nm) {
+        ds <- ctx$datasets[[nm]]
+        cls <- attr(ds, "class_label") %||%
+          attr(ds, "herald_class") %||%
+          NA_character_
+        if (is.null(cls) || is.na(cls) || !nzchar(cls)) {
+          return(FALSE)
+        }
+        toupper(cls) %in% toupper(classes)
+      },
+      ds_names
+    )
   }
 
   if (length(ds_names) == 0L) {
@@ -652,19 +767,23 @@ op_var_present_in_any_other_dataset <- function(data, ctx,
   present_in_any <- FALSE
   for (nm in ds_names) {
     ds <- ctx$datasets[[nm]]
-    if (is.null(ds)) next
+    if (is.null(ds)) {
+      next
+    }
     other_cols <- toupper(names(ds))
     if (!is.null(suffix_to_match)) {
       # Suffix-based match: any column in the other dataset ending with the
       # same suffix (case-insensitive). This handles --LNKGRP across domains
       # (AE -> AELNKGRP, MH -> MHLNKGRP, etc.).
       if (any(endsWith(other_cols, suffix_to_match))) {
-        present_in_any <- TRUE; break
+        present_in_any <- TRUE
+        break
       }
     }
     # Exact match as well (non-domain-expanded columns or explicit names)
     if (col_up %in% other_cols) {
-      present_in_any <- TRUE; break
+      present_in_any <- TRUE
+      break
     }
   }
   .dataset_level_mask(isTRUE(present_in_any), n)
@@ -673,15 +792,15 @@ op_var_present_in_any_other_dataset <- function(data, ctx,
   "var_present_in_any_other_dataset",
   op_var_present_in_any_other_dataset,
   meta = list(
-    kind    = "cross",
+    kind = "cross",
     summary = "TRUE when the named column exists in at least one other dataset in the submission (metadata-level)",
     arg_schema = list(
-      name                     = list(type = "string",  required = TRUE),
-      exclude_current          = list(type = "boolean", default  = TRUE),
-      required_dataset_classes = list(type = "array",   default  = NULL)
+      name = list(type = "string", required = TRUE),
+      exclude_current = list(type = "boolean", default = TRUE),
+      required_dataset_classes = list(type = "array", default = NULL)
     ),
-    cost_hint     = "O(1)",
-    column_arg    = "name",
+    cost_hint = "O(1)",
+    column_arg = "name",
     returns_na_ok = TRUE
   )
 )

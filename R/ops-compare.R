@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# ops-compare.R — equality and ordinal comparison operators
+# ops-compare.R  --  equality and ordinal comparison operators
 # -----------------------------------------------------------------------------
 # ~270 CDISC rule uses. Comparisons on column values against literals
 # or against other columns. NA propagates to NA (advisory) unless the
@@ -26,10 +26,14 @@
 
 op_equal_to <- function(data, ctx, name, value, value_is_literal = TRUE) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
   if (isTRUE(value_is_literal)) {
     g <- .scalar_compare_guard(value, nrow(data))
-    if (!is.null(g)) return(g)
+    if (!is.null(g)) {
+      return(g)
+    }
     p <- .coerce_compare(col, value)
     result <- p$col == p$value
     # P21 NullComparison parity (Comparison.java:92-108 +
@@ -44,21 +48,24 @@ op_equal_to <- function(data, ctx, name, value, value_is_literal = TRUE) {
     result
   } else {
     other <- data[[as.character(value)]]
-    if (is.null(other)) return(rep(NA, nrow(data)))
+    if (is.null(other)) {
+      return(rep(NA, nrow(data)))
+    }
     col == other
   }
 }
 .register_op(
-  "equal_to", op_equal_to,
+  "equal_to",
+  op_equal_to,
   meta = list(
     kind = "compare",
     summary = "Column value equals a literal or another column",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
-      value = list(type = "any",     required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "any", required = TRUE),
       value_is_literal = list(type = "logical", default = TRUE)
     ),
-    cost_hint  = "O(n)",
+    cost_hint = "O(n)",
     column_arg = "name",
     returns_na_ok = TRUE
   )
@@ -72,7 +79,7 @@ op_not_equal_to <- function(data, ctx, name, value, value_is_literal = TRUE) {
   # side is missing (null != populated). Both-NA stays NA (advisory).
   # The literal branch is already corrected inside op_equal_to (NA -> FALSE -> TRUE).
   if (!isTRUE(value_is_literal)) {
-    col   <- data[[name]]
+    col <- data[[name]]
     other <- data[[as.character(value)]]
     if (!is.null(col) && !is.null(other)) {
       result[is.na(col) != is.na(other)] <- TRUE
@@ -81,16 +88,17 @@ op_not_equal_to <- function(data, ctx, name, value, value_is_literal = TRUE) {
   result
 }
 .register_op(
-  "not_equal_to", op_not_equal_to,
+  "not_equal_to",
+  op_not_equal_to,
   meta = list(
     kind = "compare",
     summary = "Column value does not equal literal / column",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
-      value = list(type = "any",     required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "any", required = TRUE),
       value_is_literal = list(type = "logical", default = TRUE)
     ),
-    cost_hint  = "O(n)",
+    cost_hint = "O(n)",
     column_arg = "name",
     returns_na_ok = TRUE
   )
@@ -98,10 +106,14 @@ op_not_equal_to <- function(data, ctx, name, value, value_is_literal = TRUE) {
 
 op_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
   if (isTRUE(value_is_literal)) {
     g <- .scalar_compare_guard(value, nrow(data))
-    if (!is.null(g)) return(g)
+    if (!is.null(g)) {
+      return(g)
+    }
     lc_col <- tolower(as.character(col))
     lc_val <- tolower(as.character(value))
     result <- lc_col == lc_val
@@ -112,33 +124,42 @@ op_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) {
     result
   } else {
     other <- data[[as.character(value)]]
-    if (is.null(other)) return(rep(NA, nrow(data)))
+    if (is.null(other)) {
+      return(rep(NA, nrow(data)))
+    }
     tolower(as.character(col)) == tolower(as.character(other))
   }
 }
 .register_op(
-  "equal_to_case_insensitive", op_equal_to_ci,
+  "equal_to_case_insensitive",
+  op_equal_to_ci,
   meta = list(
     kind = "compare",
     summary = "Case-insensitive equality",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
-      value = list(type = "any",     required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "any", required = TRUE),
       value_is_literal = list(type = "logical", default = TRUE)
     ),
-    cost_hint  = "O(n)",
+    cost_hint = "O(n)",
     column_arg = "name",
     returns_na_ok = TRUE
   )
 )
 
-op_not_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) {
+op_not_equal_to_ci <- function(
+  data,
+  ctx,
+  name,
+  value,
+  value_is_literal = TRUE
+) {
   m <- op_equal_to_ci(data, ctx, name, value, value_is_literal)
   result <- !m
   # Same NullComparison correction as op_not_equal_to: column-vs-column mode
   # needs explicit one-NA-side -> TRUE mapping.
   if (!isTRUE(value_is_literal)) {
-    col   <- data[[name]]
+    col <- data[[name]]
     other <- data[[as.character(value)]]
     if (!is.null(col) && !is.null(other)) {
       result[is.na(col) != is.na(other)] <- TRUE
@@ -147,34 +168,55 @@ op_not_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) 
   result
 }
 .register_op(
-  "not_equal_to_case_insensitive", op_not_equal_to_ci,
+  "not_equal_to_case_insensitive",
+  op_not_equal_to_ci,
   meta = list(
     kind = "compare",
     summary = "Case-insensitive inequality",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
-      value = list(type = "any",     required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "any", required = TRUE),
       value_is_literal = list(type = "logical", default = TRUE)
     ),
-    cost_hint  = "O(n)",
+    cost_hint = "O(n)",
     column_arg = "name",
     returns_na_ok = TRUE
   )
 )
 
 # Short aliases (P21-B: ^= / .= sugar op names used in CONVENTIONS.md)
-.register_op("equal_to_ci",     op_equal_to_ci,     meta = list(
-  kind = "compare", summary = "Case-insensitive equality (short alias)",
-  arg_schema = list(name = list(type = "string", required = TRUE),
-                    value = list(type = "any", required = TRUE),
-                    value_is_literal = list(type = "logical", default = TRUE)),
-  cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE))
-.register_op("not_equal_to_ci", op_not_equal_to_ci, meta = list(
-  kind = "compare", summary = "Case-insensitive inequality (short alias)",
-  arg_schema = list(name = list(type = "string", required = TRUE),
-                    value = list(type = "any", required = TRUE),
-                    value_is_literal = list(type = "logical", default = TRUE)),
-  cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE))
+.register_op(
+  "equal_to_ci",
+  op_equal_to_ci,
+  meta = list(
+    kind = "compare",
+    summary = "Case-insensitive equality (short alias)",
+    arg_schema = list(
+      name = list(type = "string", required = TRUE),
+      value = list(type = "any", required = TRUE),
+      value_is_literal = list(type = "logical", default = TRUE)
+    ),
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
+  )
+)
+.register_op(
+  "not_equal_to_ci",
+  op_not_equal_to_ci,
+  meta = list(
+    kind = "compare",
+    summary = "Case-insensitive inequality (short alias)",
+    arg_schema = list(
+      name = list(type = "string", required = TRUE),
+      value = list(type = "any", required = TRUE),
+      value_is_literal = list(type = "logical", default = TRUE)
+    ),
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
+  )
+)
 
 # --- ordinal comparisons -----------------------------------------------------
 
@@ -186,17 +228,23 @@ op_not_equal_to_ci <- function(data, ctx, name, value, value_is_literal = TRUE) 
 
 op_greater_than <- function(data, ctx, name, value) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
-  g <- .scalar_compare_guard(value, nrow(data)); if (!is.null(g)) return(g)
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
+  g <- .scalar_compare_guard(value, nrow(data))
+  if (!is.null(g)) {
+    return(g)
+  }
   .numeric_compare(col, value, `>`)
 }
 .register_op(
-  "greater_than", op_greater_than,
+  "greater_than",
+  op_greater_than,
   meta = list(
     kind = "compare",
     summary = "Column numeric value is strictly greater than threshold",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
       value = list(type = "numeric", required = TRUE)
     ),
     cost_hint = "O(n)",
@@ -207,17 +255,23 @@ op_greater_than <- function(data, ctx, name, value) {
 
 op_greater_than_or_equal_to <- function(data, ctx, name, value) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
-  g <- .scalar_compare_guard(value, nrow(data)); if (!is.null(g)) return(g)
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
+  g <- .scalar_compare_guard(value, nrow(data))
+  if (!is.null(g)) {
+    return(g)
+  }
   .numeric_compare(col, value, `>=`)
 }
 .register_op(
-  "greater_than_or_equal_to", op_greater_than_or_equal_to,
+  "greater_than_or_equal_to",
+  op_greater_than_or_equal_to,
   meta = list(
     kind = "compare",
     summary = "Column numeric value >= threshold",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
       value = list(type = "numeric", required = TRUE)
     ),
     cost_hint = "O(n)",
@@ -228,17 +282,23 @@ op_greater_than_or_equal_to <- function(data, ctx, name, value) {
 
 op_less_than <- function(data, ctx, name, value) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
-  g <- .scalar_compare_guard(value, nrow(data)); if (!is.null(g)) return(g)
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
+  g <- .scalar_compare_guard(value, nrow(data))
+  if (!is.null(g)) {
+    return(g)
+  }
   .numeric_compare(col, value, `<`)
 }
 .register_op(
-  "less_than", op_less_than,
+  "less_than",
+  op_less_than,
   meta = list(
     kind = "compare",
     summary = "Column numeric value < threshold",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
       value = list(type = "numeric", required = TRUE)
     ),
     cost_hint = "O(n)",
@@ -249,17 +309,23 @@ op_less_than <- function(data, ctx, name, value) {
 
 op_less_than_or_equal_to <- function(data, ctx, name, value) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
-  g <- .scalar_compare_guard(value, nrow(data)); if (!is.null(g)) return(g)
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
+  g <- .scalar_compare_guard(value, nrow(data))
+  if (!is.null(g)) {
+    return(g)
+  }
   .numeric_compare(col, value, `<=`)
 }
 .register_op(
-  "less_than_or_equal_to", op_less_than_or_equal_to,
+  "less_than_or_equal_to",
+  op_less_than_or_equal_to,
   meta = list(
     kind = "compare",
     summary = "Column numeric value <= threshold",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
       value = list(type = "numeric", required = TRUE)
     ),
     cost_hint = "O(n)",

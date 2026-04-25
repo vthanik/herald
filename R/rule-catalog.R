@@ -30,18 +30,20 @@
 #' }
 rule_catalog <- function() {
   rules <- .load_rule_rds("rules.rds")
-  spec  <- .load_rule_rds("spec_rules.rds")
+  spec <- .load_rule_rds("spec_rules.rds")
   combined <- rbind(rules, spec)
   tibble::tibble(
-    rule_id       = as.character(combined$id),
-    standard      = as.character(combined$standard),
-    authority     = as.character(combined$authority),
-    severity      = as.character(combined$severity),
-    message       = as.character(combined$message),
+    rule_id = as.character(combined$id),
+    standard = as.character(combined$standard),
+    authority = as.character(combined$authority),
+    severity = as.character(combined$severity),
+    message = as.character(combined$message),
     source_document = as.character(combined$source_document),
-    has_predicate = vapply(combined$check_tree,
-                           function(ct) !is.null(ct) && length(ct) > 0L,
-                           logical(1L))
+    has_predicate = vapply(
+      combined$check_tree,
+      function(ct) !is.null(ct) && length(ct) > 0L,
+      logical(1L)
+    )
   )
 }
 
@@ -84,26 +86,26 @@ supported_standards <- function() {
     n_pred <- sum(sub$has_predicate)
     n_total <- nrow(sub)
     list(
-      standard     = std,
-      authority    = aut,
-      n_rules      = n_total,
-      n_predicate  = n_pred,
-      n_narrative  = n_total - n_pred,
+      standard = std,
+      authority = aut,
+      n_rules = n_total,
+      n_predicate = n_pred,
+      n_narrative = n_total - n_pred,
       pct_predicate = if (n_total > 0L) n_pred / n_total else NA_real_
     )
   })
 
   out <- tibble::tibble(
-    standard      = vapply(rows, `[[`, character(1L), "standard"),
-    authority     = vapply(rows, `[[`, character(1L), "authority"),
-    n_rules       = vapply(rows, `[[`, integer(1L), "n_rules"),
-    n_predicate   = vapply(rows, `[[`, integer(1L), "n_predicate"),
-    n_narrative   = vapply(rows, `[[`, integer(1L), "n_narrative"),
+    standard = vapply(rows, `[[`, character(1L), "standard"),
+    authority = vapply(rows, `[[`, character(1L), "authority"),
+    n_rules = vapply(rows, `[[`, integer(1L), "n_rules"),
+    n_predicate = vapply(rows, `[[`, integer(1L), "n_predicate"),
+    n_narrative = vapply(rows, `[[`, integer(1L), "n_narrative"),
     pct_predicate = vapply(rows, `[[`, double(1L), "pct_predicate")
   )
 
   manifest <- .read_manifest()
-  attr(out, "compiled_at")    <- manifest$compiled_at %||% NA_character_
+  attr(out, "compiled_at") <- manifest$compiled_at %||% NA_character_
   attr(out, "herald_version") <- manifest$herald_version %||% NA_character_
   out
 }
@@ -123,6 +125,8 @@ supported_standards <- function() {
 
 .read_manifest <- function() {
   path <- system.file("rules", "MANIFEST.json", package = "herald")
-  if (!nzchar(path)) return(list())
+  if (!nzchar(path)) {
+    return(list())
+  }
   jsonlite::fromJSON(path)
 }

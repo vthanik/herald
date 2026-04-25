@@ -133,7 +133,10 @@ test_that("check_scalar_chr errors on non-string", {
 })
 
 test_that("check_scalar_chr errors on length-2 character", {
-  expect_error(herald:::check_scalar_chr(c("a", "b")), class = "herald_error_input")
+  expect_error(
+    herald:::check_scalar_chr(c("a", "b")),
+    class = "herald_error_input"
+  )
 })
 
 # ---- check_scalar_int -------------------------------------------------------
@@ -147,7 +150,10 @@ test_that("check_scalar_int errors on zero", {
 })
 
 test_that("check_scalar_int errors on NA", {
-  expect_error(herald:::check_scalar_int(NA_integer_), class = "herald_error_input")
+  expect_error(
+    herald:::check_scalar_int(NA_integer_),
+    class = "herald_error_input"
+  )
 })
 
 # ---- check_data_frame -------------------------------------------------------
@@ -157,7 +163,10 @@ test_that("check_data_frame passes for a data frame", {
 })
 
 test_that("check_data_frame errors on non-data-frame", {
-  expect_error(herald:::check_data_frame(list(x = 1)), class = "herald_error_input")
+  expect_error(
+    herald:::check_data_frame(list(x = 1)),
+    class = "herald_error_input"
+  )
 })
 
 # ---- check_file_exists ------------------------------------------------------

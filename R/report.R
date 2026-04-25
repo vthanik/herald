@@ -41,7 +41,7 @@
 report <- function(x, path, format = NULL, ...) {
   call <- rlang::caller_env()
   check_report_inputs(x, path, call = call)
-  fmt  <- resolve_report_format(path, format, call = call)
+  fmt <- resolve_report_format(path, format, call = call)
   switch(
     fmt,
     html = write_report_html(x, path, ...),
@@ -85,38 +85,42 @@ write_report_json <- function(x, path, pretty = TRUE, ...) {
   check_report_inputs(x, path, call = call)
   require_pkg("jsonlite", "to write JSON reports", call = call)
 
-  counts   <- summarise_counts(x$findings)
-  ds_meta  <- dataset_meta_tbl(x$dataset_meta, x$findings)
+  counts <- summarise_counts(x$findings)
+  ds_meta <- dataset_meta_tbl(x$dataset_meta, x$findings)
   rules_df <- applied_rules(x$rule_catalog, x$findings)
 
   obj <- list(
-    herald_version   = as.character(utils::packageVersion("herald")),
-    timestamp        = iso_timestamp(x$timestamp %||% Sys.time()),
-    duration_secs    = format_duration_secs(x$duration),
-    profile          = if (is.na(x$profile %||% NA)) NULL else as.character(x$profile),
-    config_hash      = if (is.na(x$config_hash %||% NA)) NULL else as.character(x$config_hash),
-    rules_applied    = as.integer(x$rules_applied %||% 0L),
-    rules_total      = as.integer(x$rules_total   %||% 0L),
+    herald_version = as.character(utils::packageVersion("herald")),
+    timestamp = iso_timestamp(x$timestamp %||% Sys.time()),
+    duration_secs = format_duration_secs(x$duration),
+    profile = if (is.na(x$profile %||% NA)) NULL else as.character(x$profile),
+    config_hash = if (is.na(x$config_hash %||% NA)) {
+      NULL
+    } else {
+      as.character(x$config_hash)
+    },
+    rules_applied = as.integer(x$rules_applied %||% 0L),
+    rules_total = as.integer(x$rules_total %||% 0L),
     datasets_checked = as.character(x$datasets_checked %||% character()),
     counts = list(
-      by_status   = as.list(counts$by_status),
+      by_status = as.list(counts$by_status),
       by_severity = as.list(counts$by_severity),
-      by_dataset  = as.list(counts$by_dataset),
-      by_rule     = as.list(counts$by_rule)
+      by_dataset = as.list(counts$by_dataset),
+      by_rule = as.list(counts$by_rule)
     ),
-    findings     = .findings_as_list(x$findings),
+    findings = .findings_as_list(x$findings),
     dataset_meta = .df_as_list(ds_meta),
     rule_catalog = .df_as_list(rules_df),
-    op_errors    = op_errors_list(x$op_errors)
+    op_errors = op_errors_list(x$op_errors)
   )
 
   json <- jsonlite::toJSON(
     obj,
     auto_unbox = TRUE,
-    null       = "null",
-    na         = "null",
-    pretty     = isTRUE(pretty),
-    digits     = NA
+    null = "null",
+    na = "null",
+    pretty = isTRUE(pretty),
+    digits = NA
   )
   writeLines(json, path, useBytes = TRUE)
   invisible(path)
@@ -125,15 +129,19 @@ write_report_json <- function(x, path, pretty = TRUE, ...) {
 # -- internals ---------------------------------------------------------------
 
 .findings_as_list <- function(findings) {
-  if (!is.data.frame(findings) || nrow(findings) == 0L) return(list())
+  if (!is.data.frame(findings) || nrow(findings) == 0L) {
+    return(list())
+  }
   .df_as_list(findings)
 }
 
 #' Data-frame -> list-of-row-objects for jsonlite::toJSON.
 #' @noRd
 .df_as_list <- function(df) {
-  if (!is.data.frame(df) || nrow(df) == 0L) return(list())
-  n  <- nrow(df)
+  if (!is.data.frame(df) || nrow(df) == 0L) {
+    return(list())
+  }
+  n <- nrow(df)
   nm <- names(df)
   out <- vector("list", n)
   for (i in seq_len(n)) {

@@ -12,13 +12,16 @@
   withr::with_envvar(
     c(R_USER_CACHE_DIR = base),
     {
-      herald:::.ct_cache_write(list(
-        package       = "srs",
-        version       = version,
-        release_date  = version,
-        path          = rds_path,
-        downloaded_at = paste0(version, "T00:00:00Z")
-      ), dir = inner)
+      herald:::.ct_cache_write(
+        list(
+          package = "srs",
+          version = version,
+          release_date = version,
+          path = rds_path,
+          downloaded_at = paste0(version, "T00:00:00Z")
+        ),
+        dir = inner
+      )
       force(code)
     }
   )
@@ -34,7 +37,7 @@ test_that("srs_provider() returns NULL when cache is empty", {
 test_that("srs_provider() reads a stub cache entry and serves contains()", {
   stub <- tibble::tibble(
     UNII = c("R16CO5Y76E", "SPD7XYOC3J"),
-    PT   = c("ASPIRIN",    "IBUPROFEN")
+    PT = c("ASPIRIN", "IBUPROFEN")
   )
   attr(stub, "version") <- "2026-04-15"
 
@@ -45,14 +48,22 @@ test_that("srs_provider() reads a stub cache entry and serves contains()", {
     expect_equal(p$source, "cache")
     expect_equal(p$size_rows, 2L)
 
-    expect_equal(p$contains(c("ASPIRIN", "IBUPROFEN", "CAFFEINE"),
-                            field = "preferred_name"),
-                 c(TRUE, TRUE, FALSE))
-    expect_equal(p$contains(c("R16CO5Y76E", "NOT_A_UNII"),
-                            field = "unii"),
-                 c(TRUE, FALSE))
-    expect_true(p$contains("aspirin", field = "preferred_name",
-                           ignore_case = TRUE))
+    expect_equal(
+      p$contains(
+        c("ASPIRIN", "IBUPROFEN", "CAFFEINE"),
+        field = "preferred_name"
+      ),
+      c(TRUE, TRUE, FALSE)
+    )
+    expect_equal(
+      p$contains(c("R16CO5Y76E", "NOT_A_UNII"), field = "unii"),
+      c(TRUE, FALSE)
+    )
+    expect_true(p$contains(
+      "aspirin",
+      field = "preferred_name",
+      ignore_case = TRUE
+    ))
 
     hits <- p$lookup("ASPIRIN", field = "pt")
     expect_equal(nrow(hits), 1L)
@@ -84,9 +95,11 @@ test_that(".parse_srs_zip handles a stub zipped tab-delim fixture", {
   tmpdir <- withr::local_tempdir(pattern = "srs-zip-")
   txt <- file.path(tmpdir, "UNII.txt")
   writeLines(
-    c("UNII\tPT\tRN",
+    c(
+      "UNII\tPT\tRN",
       "R16CO5Y76E\tASPIRIN\t50-78-2",
-      "SPD7XYOC3J\tIBUPROFEN\t15687-27-1"),
+      "SPD7XYOC3J\tIBUPROFEN\t15687-27-1"
+    ),
     txt
   )
   utils::zip(zipfile = zip_path, files = txt, flags = "-j")

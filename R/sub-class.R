@@ -1,5 +1,5 @@
 # --------------------------------------------------------------------------
-# sub-class.R — herald_submission S7 class
+# sub-class.R  --  herald_submission S7 class
 # --------------------------------------------------------------------------
 
 herald_submission_class <- S7::new_class(

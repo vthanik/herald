@@ -4,9 +4,9 @@
 
 mk_sub <- function() {
   new_herald_submission(
-    output_dir  = "/tmp",
-    xpt_files   = c("/tmp/dm.xpt", "/tmp/ae.xpt"),
-    json_files  = c("/tmp/dm.json"),
+    output_dir = "/tmp",
+    xpt_files = c("/tmp/dm.xpt", "/tmp/ae.xpt"),
+    json_files = c("/tmp/dm.json"),
     define_path = "/tmp/define.xml",
     report_paths = c("/tmp/report.html", "/tmp/report.xlsx")
   )

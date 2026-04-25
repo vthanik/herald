@@ -2,7 +2,7 @@
 #'
 #' Writes a data frame (or named list of data frames) to an XPT transport file
 #' in V5 (FDA submission standard) or V8 (extended) format. Pure R
-#' implementation — no SAS or haven dependency.
+#' implementation  --  no SAS or haven dependency.
 #'
 #' If the \code{herald.sort_keys} attribute is set on \code{x}, the data is
 #' sorted by those keys before writing.
@@ -15,7 +15,7 @@
 #' @param dataset Dataset name (e.g., \code{"DM"}). Default: the
 #'   \code{"dataset_name"} attribute of \code{x} (set by \code{read_xpt()},
 #'   \code{read_json()}, or \code{apply_spec()}), then the uppercase file stem
-#'   (\code{"sdtm/dm.xpt"} → \code{"DM"}), then \code{"DATA"}.
+#'   (\code{"sdtm/dm.xpt"} -> \code{"DM"}), then \code{"DATA"}.
 #'   V5: max 8 characters, uppercased. V8: max 32 characters.
 #' @param label Dataset label. Defaults to \code{attr(x, "label")} or \code{""}.
 #' @param encoding Character encoding for the output file. Defaults to
@@ -248,7 +248,7 @@ coerce_xpt_types <- function(data, version, call) {
       })
       attr(data[[nm]], "format.sas") <- default_fmt
     } else if (inherits(col, "difftime")) {
-      # Time values (e.g. ATM from ADaM) — store as seconds since midnight
+      # Time values (e.g. ATM from ADaM)  --  store as seconds since midnight
       default_fmt <- attr(col, "format.sas") %||% "TIME8."
       data <- convert_preserving_attrs(data, nm, function(x) {
         as.numeric(x, units = "secs")
@@ -283,7 +283,7 @@ write_observations <- function(data, con, version, encoding = NULL) {
       col_info[[j]] <- list(type = "numeric", length = 8L)
       ibm_data[[j]] <- ieee_to_ibm(col)
     } else {
-      # Vectorized iconv — one call per column instead of per cell
+      # Vectorized iconv  --  one call per column instead of per cell
       if (!is.null(encoding) && nzchar(encoding)) {
         col <- iconv(col, from = "UTF-8", to = encoding, sub = "byte")
       }
@@ -293,7 +293,7 @@ write_observations <- function(data, con, version, encoding = NULL) {
       len <- vctrs::vec_cast(max_len, integer())
       col_info[[j]] <- list(type = "character", length = len)
 
-      # Vectorised packing: NA → empty, truncate to len bytes, right-pad with spaces.
+      # Vectorised packing: NA -> empty, truncate to len bytes, right-pad with spaces.
       # One charToRaw call for the whole column; strrep handles variable-width padding.
       col_clean <- col
       col_clean[is.na(col_clean)] <- ""

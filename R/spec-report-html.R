@@ -20,14 +20,14 @@
 write_spec_report_html <- function(findings, path) {
   tmpl <- .spec_report_template()
 
-  n_fired <- sum(findings$status == "fired",    na.rm = TRUE)
-  n_adv   <- sum(findings$status == "advisory", na.rm = TRUE)
+  n_fired <- sum(findings$status == "fired", na.rm = TRUE)
+  n_adv <- sum(findings$status == "advisory", na.rm = TRUE)
 
   subs <- list(
-    "{{TITLE}}"         = htmlesc(paste0("Spec Issues -- ", Sys.Date())),
-    "{{TIMESTAMP}}"     = htmlesc(iso_timestamp(Sys.time())),
-    "{{N_FIRED}}"       = htmlesc(.fmt_int(n_fired)),
-    "{{N_ADVISORY}}"    = htmlesc(.fmt_int(n_adv)),
+    "{{TITLE}}" = htmlesc(paste0("Spec Issues -- ", Sys.Date())),
+    "{{TIMESTAMP}}" = htmlesc(iso_timestamp(Sys.time())),
+    "{{N_FIRED}}" = htmlesc(.fmt_int(n_fired)),
+    "{{N_ADVISORY}}" = htmlesc(.fmt_int(n_adv)),
     "{{FINDINGS_ROWS}}" = .spec_findings_rows(findings)
   )
 
@@ -43,9 +43,13 @@ write_spec_report_html <- function(findings, path) {
 .spec_report_template <- function() {
   call <- rlang::caller_env()
   p <- system.file("report", "spec-template.html", package = "herald")
-  if (nzchar(p) && file.exists(p)) return(paste(readLines(p, warn = FALSE), collapse = "\n"))
+  if (nzchar(p) && file.exists(p)) {
+    return(paste(readLines(p, warn = FALSE), collapse = "\n"))
+  }
   here <- file.path("inst", "report", "spec-template.html")
-  if (file.exists(here)) return(paste(readLines(here, warn = FALSE), collapse = "\n"))
+  if (file.exists(here)) {
+    return(paste(readLines(here, warn = FALSE), collapse = "\n"))
+  }
   herald_error_file(
     "spec-template.html not found in {.pkg herald} installation.",
     call = call
@@ -57,49 +61,75 @@ write_spec_report_html <- function(findings, path) {
     return('<tr><td colspan="5" class="empty-msg">No issues found.</td></tr>')
   }
 
-  fired <- findings[!is.na(findings$status) & findings$status == "fired", , drop = FALSE]
+  fired <- findings[
+    !is.na(findings$status) & findings$status == "fired",
+    ,
+    drop = FALSE
+  ]
   if (nrow(fired) == 0L) {
     return('<tr><td colspan="5" class="empty-msg">No fired issues.</td></tr>')
   }
 
   sev_class <- function(s) {
-    switch(tolower(as.character(s %||% "")),
-      error   = "sev-reject",
-      reject  = "sev-reject",
-      high    = "sev-high",
+    switch(
+      tolower(as.character(s %||% "")),
+      error = "sev-reject",
+      reject = "sev-reject",
+      high = "sev-high",
       warning = "sev-high",
-      medium  = "sev-medium",
+      medium = "sev-medium",
       "sev-low"
     )
   }
 
-  rows <- vapply(seq_len(nrow(fired)), function(i) {
-    r   <- fired[i, , drop = FALSE]
-    sev <- as.character(r$severity %||% "")
-    ds  <- as.character(r$dataset  %||% "")
-    vr  <- as.character(r$variable %||% "")
-    rw  <- as.character(r$row      %||% "")
-    val <- as.character(r$value    %||% "")
-    msg <- as.character(r$message  %||% "")
+  rows <- vapply(
+    seq_len(nrow(fired)),
+    function(i) {
+      r <- fired[i, , drop = FALSE]
+      sev <- as.character(r$severity %||% "")
+      ds <- as.character(r$dataset %||% "")
+      vr <- as.character(r$variable %||% "")
+      rw <- as.character(r$row %||% "")
+      val <- as.character(r$value %||% "")
+      msg <- as.character(r$message %||% "")
 
-    loc <- if (nzchar(ds)) {
-      parts <- ds
-      if (nzchar(vr)) parts <- paste0(parts, " / ", vr)
-      if (nzchar(rw)) parts <- paste0(parts, " row ", rw)
-      parts
-    } else ""
+      loc <- if (nzchar(ds)) {
+        parts <- ds
+        if (nzchar(vr)) {
+          parts <- paste0(parts, " / ", vr)
+        }
+        if (nzchar(rw)) {
+          parts <- paste0(parts, " row ", rw)
+        }
+        parts
+      } else {
+        ""
+      }
 
-    paste0(
-      '<tr>',
-        '<td><span class="sev-badge ', sev_class(sev), '">',
-          htmlesc(toupper(sev)), '</span></td>',
-        '<td class="mono">', htmlesc(as.character(r$rule_id %||% "")), '</td>',
-        '<td>', htmlesc(loc), '</td>',
-        '<td class="val-cell">', htmlesc(val), '</td>',
-        '<td>', htmlesc(msg), '</td>',
-      '</tr>'
-    )
-  }, character(1L))
+      paste0(
+        '<tr>',
+        '<td><span class="sev-badge ',
+        sev_class(sev),
+        '">',
+        htmlesc(toupper(sev)),
+        '</span></td>',
+        '<td class="mono">',
+        htmlesc(as.character(r$rule_id %||% "")),
+        '</td>',
+        '<td>',
+        htmlesc(loc),
+        '</td>',
+        '<td class="val-cell">',
+        htmlesc(val),
+        '</td>',
+        '<td>',
+        htmlesc(msg),
+        '</td>',
+        '</tr>'
+      )
+    },
+    character(1L)
+  )
 
   paste(rows, collapse = "\n")
 }

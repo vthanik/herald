@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# rules-scope.R — which datasets a rule applies to
+# rules-scope.R  --  which datasets a rule applies to
 # -----------------------------------------------------------------------------
 # Ported from herald-v0/R/execute.R::scoped_datasets with small cleanups.
 # Three filters applied in order:
@@ -24,9 +24,13 @@
 #' @noRd
 .is_submission_scope <- function(rule) {
   scope <- rule[["scope"]]
-  if (is.null(scope) || length(scope) == 0L) return(FALSE)
+  if (is.null(scope) || length(scope) == 0L) {
+    return(FALSE)
+  }
   flag <- scope[["submission"]]
-  if (is.null(flag) || length(flag) != 1L) return(FALSE)
+  if (is.null(flag) || length(flag) != 1L) {
+    return(FALSE)
+  }
   isTRUE(as.logical(flag))
 }
 
@@ -39,7 +43,9 @@
 #' @noRd
 scoped_datasets <- function(rule, ctx) {
   all_ds <- names(ctx$datasets %||% list())
-  if (length(all_ds) == 0L) return(character())
+  if (length(all_ds) == 0L) {
+    return(character())
+  }
 
   scope <- rule[["scope"]]
   if (is.null(scope) || length(scope) == 0L) {
@@ -51,10 +57,14 @@ scoped_datasets <- function(rule, ctx) {
   norm_rule <- rule
   norm_rule$scope <- scope
 
-  keep <- vapply(all_ds, function(ds_name) {
-    ds_class <- .ds_class(ds_name, ctx)
-    .rule_scope_matches_ctx(norm_rule, ds_name, ds_class)
-  }, logical(1L))
+  keep <- vapply(
+    all_ds,
+    function(ds_name) {
+      ds_class <- .ds_class(ds_name, ctx)
+      .rule_scope_matches_ctx(norm_rule, ds_name, ds_class)
+    },
+    logical(1L)
+  )
   all_ds[keep]
 }
 
@@ -73,27 +83,40 @@ scoped_datasets <- function(rule, ctx) {
 
 .rule_scope_matches_ctx <- function(rule, ds_name, ds_class = NULL) {
   rule_std <- toupper(rule[["standard"]] %||% "")
-  ds_up    <- toupper(ds_name)
-  is_adam_name  <- grepl("^AD[A-Z]", ds_up)
+  ds_up <- toupper(ds_name)
+  is_adam_name <- grepl("^AD[A-Z]", ds_up)
   adam_classes <- c(
-    "ADSL", "BDS", "OCCDS", "TTE", "ADAM OTHER",
+    "ADSL",
+    "BDS",
+    "OCCDS",
+    "TTE",
+    "ADAM OTHER",
     "SUBJECT LEVEL ANALYSIS DATASET",
     "BASIC DATA STRUCTURE",
     "OCCURRENCE DATA STRUCTURE",
     "TIME-TO-EVENT"
   )
-  is_adam_class <- !is.null(ds_class) && !is.na(ds_class) &&
+  is_adam_class <- !is.null(ds_class) &&
+    !is.na(ds_class) &&
     nzchar(ds_class) &&
-    (toupper(ds_class) %in% toupper(adam_classes) ||
-       startsWith(toupper(ds_class), "AD"))
+    (toupper(ds_class) %in%
+      toupper(adam_classes) ||
+      startsWith(toupper(ds_class), "AD"))
   is_adam_dataset <- is_adam_name || is_adam_class
 
   # SDTM / SEND rules do NOT fire against ADaM datasets (unless they have
   # entirely empty scope -- structural rules that apply universally -- or
   # they are Controlled Terminology rules).
-  if (identical(rule_std, "SDTM") || identical(rule_std, "SDTM-IG") ||
-      identical(rule_std, "SEND") || identical(rule_std, "SEND-IG")) {
-    is_ct <- grepl("^HRL-CT-|^CT[0-9]", rule[["id"]] %||% rule[["rule_id"]] %||% "")
+  if (
+    identical(rule_std, "SDTM") ||
+      identical(rule_std, "SDTM-IG") ||
+      identical(rule_std, "SEND") ||
+      identical(rule_std, "SEND-IG")
+  ) {
+    is_ct <- grepl(
+      "^HRL-CT-|^CT[0-9]",
+      rule[["id"]] %||% rule[["rule_id"]] %||% ""
+    )
     if (!is_ct) {
       scope0 <- rule[["scope"]]
       has_sdtm_scope <- !is.null(scope0) &&
@@ -103,13 +126,19 @@ scoped_datasets <- function(rule, ctx) {
   }
 
   # Symmetric: ADaM-IG rules do NOT fire against SDTM / SEND datasets.
-  if (identical(rule_std, "ADAM") || identical(rule_std, "ADAM-IG") ||
-      identical(rule_std, "ADaM") || identical(rule_std, "ADaM-IG")) {
+  if (
+    identical(rule_std, "ADAM") ||
+      identical(rule_std, "ADAM-IG") ||
+      identical(rule_std, "ADaM") ||
+      identical(rule_std, "ADaM-IG")
+  ) {
     if (!is_adam_dataset) return(FALSE)
   }
 
   scope <- rule[["scope"]]
-  if (is.null(scope) || length(scope) == 0L) return(TRUE)
+  if (is.null(scope) || length(scope) == 0L) {
+    return(TRUE)
+  }
 
   # scope.datasets: explicit virtual dataset names (e.g. Define_Variable_Metadata).
   # When set, the rule only runs against those exact dataset names.
@@ -129,7 +158,7 @@ scoped_datasets <- function(rule, ctx) {
 
   # Domain match
   domain_accepted_via_supp <- FALSE
-  domain_accepted_by_name  <- FALSE
+  domain_accepted_by_name <- FALSE
   domains <- scope[["domains"]]
   if (!is.null(domains) && length(domains) > 0L) {
     dom_up <- toupper(as.character(unlist(domains)))
@@ -137,20 +166,25 @@ scoped_datasets <- function(rule, ctx) {
       # Fall through to class check (ALL means "all domains in class scope")
     } else {
       domain_ok <- ds_up %in% dom_up
-      class_ok  <- !is.null(ds_class) && !is.na(ds_class) &&
+      class_ok <- !is.null(ds_class) &&
+        !is.na(ds_class) &&
         toupper(ds_class) %in% dom_up
       # "SUPP--" is CDISC's wildcard for "any Supplemental Qualifier
       # dataset"; expand it at match time against any SUPP-prefixed
       # dataset name (SUPPAE, SUPPDM, SUPPLB, ...).
       supp_ok <- ("SUPP--" %in% dom_up) && startsWith(ds_up, "SUPP")
-      if (!domain_ok && !class_ok && !supp_ok) return(FALSE)
+      if (!domain_ok && !class_ok && !supp_ok) {
+        return(FALSE)
+      }
       # When the domain matched via the SUPP-- wildcard, the author has
       # explicitly scoped the rule to SUPP datasets, and an accompanying
       # `classes` entry (often "SPC") is a CDISC-catalogue secondary hint
       # rather than a filter. Skip the class check to avoid conflating
       # infer_class()'s RELATIONSHIP inference with the catalogue's SPC
       # hint.
-      if (supp_ok && !domain_ok && !class_ok) domain_accepted_via_supp <- TRUE
+      if (supp_ok && !domain_ok && !class_ok) {
+        domain_accepted_via_supp <- TRUE
+      }
       # When the dataset matched a specifically-named domain in the rule's
       # scope (e.g. rule has `domains: RELREC`), the author has pinned
       # the target by name. An accompanying `classes` entry is a
@@ -178,7 +212,9 @@ scoped_datasets <- function(rule, ctx) {
     # SDTM EVENTS-class rules from firing against every dataset.
     if (is.null(ds_class) || is.na(ds_class) || !nzchar(ds_class)) {
       cls_up <- toupper(as.character(unlist(classes)))
-      if ("ALL" %in% cls_up) return(TRUE)
+      if ("ALL" %in% cls_up) {
+        return(TRUE)
+      }
       return(FALSE)
     }
     # Normalise short ADaM + SDTM class codes to their canonical long
@@ -188,27 +224,29 @@ scoped_datasets <- function(rule, ctx) {
     # codes (ADSL, BDS, OCCDS, TTE) come from ADaMIG appendices.
     class_long <- c(
       # ADaM
-      "ADSL"  = "SUBJECT LEVEL ANALYSIS DATASET",
-      "BDS"   = "BASIC DATA STRUCTURE",
+      "ADSL" = "SUBJECT LEVEL ANALYSIS DATASET",
+      "BDS" = "BASIC DATA STRUCTURE",
       "OCCDS" = "OCCURRENCE DATA STRUCTURE",
-      "TTE"   = "TIME-TO-EVENT",
+      "TTE" = "TIME-TO-EVENT",
       # SDTM
-      "EVT"   = "EVENTS",
-      "INT"   = "INTERVENTIONS",
-      "FND"   = "FINDINGS",
-      "FAB"   = "FINDINGS ABOUT",
-      "SPC"   = "SPECIAL PURPOSE",
-      "TDM"   = "TRIAL DESIGN",
-      "REL"   = "RELATIONSHIP"
+      "EVT" = "EVENTS",
+      "INT" = "INTERVENTIONS",
+      "FND" = "FINDINGS",
+      "FAB" = "FINDINGS ABOUT",
+      "SPC" = "SPECIAL PURPOSE",
+      "TDM" = "TRIAL DESIGN",
+      "REL" = "RELATIONSHIP"
     )
     norm <- function(x) {
-      up  <- toupper(trimws(x))
+      up <- toupper(trimws(x))
       exp <- class_long[up]
       ifelse(is.na(exp), up, exp)
     }
-    ds_norm  <- norm(ds_class)
+    ds_norm <- norm(ds_class)
     cls_norm <- norm(as.character(unlist(classes)))
-    if ("ALL" %in% cls_norm) return(TRUE)
+    if ("ALL" %in% cls_norm) {
+      return(TRUE)
+    }
     if (!any(ds_norm == cls_norm)) return(FALSE)
   }
 

@@ -1,17 +1,19 @@
 # Tests for R/dict-provider.R -- Dictionary Provider Protocol scaffolding.
 
-.minimal_provider <- function(name = "test",
-                              terms = c("A", "B", "C"),
-                              version = "0.1",
-                              source = "sponsor") {
+.minimal_provider <- function(
+  name = "test",
+  terms = c("A", "B", "C"),
+  version = "0.1",
+  source = "sponsor"
+) {
   new_dict_provider(
-    name       = name,
-    version    = version,
-    source     = source,
-    license    = "none",
-    size_rows  = length(terms),
-    fields     = "default",
-    contains   = function(value, field = NULL, ignore_case = FALSE) {
+    name = name,
+    version = version,
+    source = source,
+    license = "none",
+    size_rows = length(terms),
+    fields = "default",
+    contains = function(value, field = NULL, ignore_case = FALSE) {
       v <- as.character(value)
       if (isTRUE(ignore_case)) {
         return(toupper(v) %in% toupper(terms))
@@ -45,8 +47,7 @@ test_that("new_dict_provider() rejects non-function contains", {
 test_that("provider$contains() returns a logical vector", {
   p <- .minimal_provider()
   expect_equal(p$contains(c("A", "Z", "B")), c(TRUE, FALSE, TRUE))
-  expect_equal(p$contains(c("a", "A"), ignore_case = TRUE),
-               c(TRUE, TRUE))
+  expect_equal(p$contains(c("a", "A"), ignore_case = TRUE), c(TRUE, TRUE))
 })
 
 test_that("register_dictionary / unregister_dictionary round-trip", {
@@ -84,14 +85,15 @@ test_that(".populate_dict_registry merges global + explicit overrides", {
 
 test_that(".populate_dict_registry lets explicit arg override a same-named global", {
   on.exit(unregister_dictionary("shared"), add = TRUE)
-  register_dictionary("shared",
-    .minimal_provider("shared", terms = c("A"), version = "global"))
+  register_dictionary(
+    "shared",
+    .minimal_provider("shared", terms = c("A"), version = "global")
+  )
   ctx <- new.env()
   herald:::.populate_dict_registry(
     ctx,
     dictionaries = list(
-      shared = .minimal_provider("shared", terms = c("Z"),
-                                  version = "explicit")
+      shared = .minimal_provider("shared", terms = c("Z"), version = "explicit")
     ),
     call = rlang::caller_env()
   )
@@ -101,20 +103,27 @@ test_that(".populate_dict_registry lets explicit arg override a same-named globa
 test_that(".populate_dict_registry rejects non-list / unnamed input", {
   ctx <- new.env()
   expect_error(
-    herald:::.populate_dict_registry(ctx, dictionaries = "nope",
-      call = rlang::caller_env()),
+    herald:::.populate_dict_registry(
+      ctx,
+      dictionaries = "nope",
+      call = rlang::caller_env()
+    ),
     class = "herald_error_input"
   )
   expect_error(
-    herald:::.populate_dict_registry(ctx,
+    herald:::.populate_dict_registry(
+      ctx,
       dictionaries = list(.minimal_provider()),
-      call = rlang::caller_env()),
+      call = rlang::caller_env()
+    ),
     class = "herald_error_input"
   )
   expect_error(
-    herald:::.populate_dict_registry(ctx,
+    herald:::.populate_dict_registry(
+      ctx,
       dictionaries = list(x = list(not_a_provider = TRUE)),
-      call = rlang::caller_env()),
+      call = rlang::caller_env()
+    ),
     class = "herald_error_input"
   )
 })
@@ -122,8 +131,7 @@ test_that(".populate_dict_registry rejects non-list / unnamed input", {
 test_that(".resolve_provider returns provider or NULL", {
   ctx <- new.env()
   ctx$dict <- list(x = .minimal_provider("x"))
-  expect_s3_class(herald:::.resolve_provider(ctx, "x"),
-                  "herald_dict_provider")
+  expect_s3_class(herald:::.resolve_provider(ctx, "x"), "herald_dict_provider")
   expect_null(herald:::.resolve_provider(ctx, "missing"))
   expect_null(herald:::.resolve_provider(NULL, "anything"))
 })
@@ -167,8 +175,7 @@ test_that(".finalize_skipped_refs emits actionable hints per kind+name", {
 test_that("validate() accepts dictionaries = ... arg and carries skipped_refs", {
   # Minimal smoke: the empty-registry path produces empty skipped_refs.
   dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
-  r <- validate(files = list(DM = dm), rules = character(0),
-                quiet = TRUE)
+  r <- validate(files = list(DM = dm), rules = character(0), quiet = TRUE)
   expect_s3_class(r, "herald_result")
   expect_true("skipped_refs" %in% names(r))
   expect_equal(r$skipped_refs$datasets, list())
@@ -177,8 +184,7 @@ test_that("validate() accepts dictionaries = ... arg and carries skipped_refs", 
 
 test_that("validate() surfaces a recorded missing dict in result$skipped_refs", {
   dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
-  r <- validate(files = list(DM = dm), rules = character(0),
-                quiet = TRUE)
+  r <- validate(files = list(DM = dm), rules = character(0), quiet = TRUE)
   # Manually simulate a missing-ref record by invoking post-finaliser on a
   # synthetic ctx (integration through a real op lands in Phase 2).
   ctx <- new.env()

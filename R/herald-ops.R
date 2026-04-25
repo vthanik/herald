@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# herald-ops.R — operator registry + metadata
+# herald-ops.R  --  operator registry + metadata
 # -----------------------------------------------------------------------------
 # Every operator in R/ops-*.R calls .register_op() at package load. The
 # walker in R/rules-walk.R looks up operators from .OP_TABLE; docs and
@@ -12,11 +12,11 @@
 #     NA    = indeterminate (advisory, no finding)
 #
 # Why two envs instead of S7 per op: operators are a homogeneous catalog of
-# callables — no polymorphism to dispatch on. S7 would tax the hot path
+# callables  --  no polymorphism to dispatch on. S7 would tax the hot path
 # (1500+ rules x N rows) with property lookups for no gain.
 
-.OP_TABLE <- new.env(parent = emptyenv())   # name -> function
-.OP_META  <- new.env(parent = emptyenv())   # name -> metadata list
+.OP_TABLE <- new.env(parent = emptyenv()) # name -> function
+.OP_META <- new.env(parent = emptyenv()) # name -> metadata list
 
 # Metadata schema (all fields optional; defaults shown):
 #   name           chr(1)   the registry key
@@ -29,14 +29,14 @@
 #   examples       list     small examples
 #   registered_in  chr(1)   source file, auto-filled at registration
 .DEFAULT_META <- list(
-  name          = NA_character_,
-  kind          = NA_character_,
-  summary       = "",
-  arg_schema    = list(),
-  cost_hint     = "O(n)",
-  column_arg    = NA_character_,
+  name = NA_character_,
+  kind = NA_character_,
+  summary = "",
+  arg_schema = list(),
+  cost_hint = "O(n)",
+  column_arg = NA_character_,
   returns_na_ok = TRUE,
-  examples      = list(),
+  examples = list(),
   registered_in = NA_character_
 )
 
@@ -96,20 +96,32 @@
   all_names <- sort(ls(.OP_META))
   if (length(all_names) == 0L) {
     return(tibble::tibble(
-      name = character(), kind = character(), summary = character(),
-      cost_hint = character(), column_arg = character(),
-      returns_na_ok = logical(), registered_in = character()
+      name = character(),
+      kind = character(),
+      summary = character(),
+      cost_hint = character(),
+      column_arg = character(),
+      returns_na_ok = logical(),
+      registered_in = character()
     ))
   }
   rows <- lapply(all_names, function(n) get(n, envir = .OP_META))
   tibble::tibble(
-    name          = vapply(rows, `[[`, character(1), "name"),
-    kind          = vapply(rows, function(r) r$kind %||% NA_character_, character(1)),
-    summary       = vapply(rows, `[[`, character(1), "summary"),
-    cost_hint     = vapply(rows, `[[`, character(1), "cost_hint"),
-    column_arg    = vapply(rows, function(r) r$column_arg %||% NA_character_, character(1)),
+    name = vapply(rows, `[[`, character(1), "name"),
+    kind = vapply(rows, function(r) r$kind %||% NA_character_, character(1)),
+    summary = vapply(rows, `[[`, character(1), "summary"),
+    cost_hint = vapply(rows, `[[`, character(1), "cost_hint"),
+    column_arg = vapply(
+      rows,
+      function(r) r$column_arg %||% NA_character_,
+      character(1)
+    ),
     returns_na_ok = vapply(rows, `[[`, logical(1), "returns_na_ok"),
-    registered_in = vapply(rows, function(r) r$registered_in %||% NA_character_, character(1))
+    registered_in = vapply(
+      rows,
+      function(r) r$registered_in %||% NA_character_,
+      character(1)
+    )
   )
 }
 
@@ -123,11 +135,17 @@
   calls <- sys.calls()
   for (i in rev(seq_along(calls))) {
     srcref <- attr(calls[[i]], "srcref")
-    if (is.null(srcref)) next
+    if (is.null(srcref)) {
+      next
+    }
     file <- attr(srcref, "srcfile")$filename
-    if (is.null(file) || !nzchar(file)) next
+    if (is.null(file) || !nzchar(file)) {
+      next
+    }
     bn <- basename(file)
-    if (identical(bn, "herald-ops.R")) next
+    if (identical(bn, "herald-ops.R")) {
+      next
+    }
     return(bn)
   }
   NA_character_
@@ -142,14 +160,18 @@
 #' as a skipped_refs banner item.
 #' @noRd
 .ref_ds <- function(ctx, ref_name) {
-  if (is.null(ctx) || is.null(ctx$datasets)) return(NULL)
-  up  <- toupper(as.character(ref_name))
+  if (is.null(ctx) || is.null(ctx$datasets)) {
+    return(NULL)
+  }
+  up <- toupper(as.character(ref_name))
   hit <- ctx$datasets[[up]]
   if (is.null(hit)) {
-    .record_missing_ref(ctx,
+    .record_missing_ref(
+      ctx,
       rule_id = ctx$current_rule_id,
-      kind    = "dataset",
-      name    = up)
+      kind = "dataset",
+      name = up
+    )
   }
   hit
 }

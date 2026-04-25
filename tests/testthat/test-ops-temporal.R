@@ -2,8 +2,15 @@
 
 test_that("is_complete_date / is_incomplete_date", {
   d <- data.frame(
-    DTC = c("2026-01-15", "2026-01-15T14:30",
-            "2026---15", "--12-15", "2024", "", NA_character_),
+    DTC = c(
+      "2026-01-15",
+      "2026-01-15T14:30",
+      "2026---15",
+      "--12-15",
+      "2024",
+      "",
+      NA_character_
+    ),
     stringsAsFactors = FALSE
   )
   comp <- op_is_complete_date(d, NULL, "DTC")
@@ -17,8 +24,7 @@ test_that("invalid_date", {
     DTC = c("2024-01-15", "not-a-date", "2024/01/15", "", NA_character_),
     stringsAsFactors = FALSE
   )
-  expect_equal(op_invalid_date(d, NULL, "DTC"),
-               c(FALSE, TRUE, TRUE, NA, NA))
+  expect_equal(op_invalid_date(d, NULL, "DTC"), c(FALSE, TRUE, TRUE, NA, NA))
 })
 
 test_that("invalid_duration", {
@@ -26,8 +32,10 @@ test_that("invalid_duration", {
     X = c("P2Y", "P2Y3M", "PT30M", "2 years", "", NA_character_),
     stringsAsFactors = FALSE
   )
-  expect_equal(op_invalid_duration(d, NULL, "X"),
-               c(FALSE, FALSE, FALSE, TRUE, NA, NA))
+  expect_equal(
+    op_invalid_duration(d, NULL, "X"),
+    c(FALSE, FALSE, FALSE, TRUE, NA, NA)
+  )
 })
 
 test_that("date_greater_than vs literal", {
@@ -78,13 +86,18 @@ test_that("op_value_not_iso8601 kind=duration delegates to op_invalid_duration",
 
 test_that("op_value_not_iso8601 default kind is date", {
   d <- data.frame(X = c("2026-01-15", "bad"), stringsAsFactors = FALSE)
-  expect_equal(herald:::op_value_not_iso8601(d, NULL, "X"),
-               herald:::op_invalid_date(d, NULL, "X"))
+  expect_equal(
+    herald:::op_value_not_iso8601(d, NULL, "X"),
+    herald:::op_invalid_date(d, NULL, "X")
+  )
 })
 
 test_that("op_value_not_iso8601 returns NA on absent column", {
   d <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
-  expect_equal(herald:::op_value_not_iso8601(d, NULL, "TSVAL", kind = "date"), NA)
+  expect_equal(
+    herald:::op_value_not_iso8601(d, NULL, "TSVAL", kind = "date"),
+    NA
+  )
 })
 
 test_that("op_value_not_iso8601 is registered", {

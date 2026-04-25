@@ -5,9 +5,9 @@
 # -- Helper: minimal Define-XML fixture ------------------------------------
 
 minimal_define_xml <- function(
-  include_arm       = FALSE,
-  include_itemref   = FALSE,
-  include_keyvar    = FALSE,
+  include_arm = FALSE,
+  include_itemref = FALSE,
+  include_keyvar = FALSE,
   include_loinc_std = FALSE
 ) {
   arm_section <- if (include_arm) {
@@ -110,14 +110,20 @@ minimal_define_xml <- function(
 
 write_test_define <- function(
   path,
-  include_arm       = FALSE,
-  include_itemref   = FALSE,
-  include_keyvar    = FALSE,
+  include_arm = FALSE,
+  include_itemref = FALSE,
+  include_keyvar = FALSE,
   include_loinc_std = FALSE
 ) {
-  writeLines(minimal_define_xml(
-    include_arm, include_itemref, include_keyvar, include_loinc_std
-  ), path)
+  writeLines(
+    minimal_define_xml(
+      include_arm,
+      include_itemref,
+      include_keyvar,
+      include_loinc_std
+    ),
+    path
+  )
 }
 
 # -- read_define_xml: basic parsing ------------------------------------------
@@ -164,8 +170,8 @@ test_that("read_define_xml extracts variables from ItemDef", {
   d <- herald:::read_define_xml(tmp)
   expect_equal(nrow(d$var_spec), 3L)
   expect_true("STUDYID" %in% d$var_spec$variable)
-  expect_true("AGE"     %in% d$var_spec$variable)
-  expect_true("AETERM"  %in% d$var_spec$variable)
+  expect_true("AGE" %in% d$var_spec$variable)
+  expect_true("AETERM" %in% d$var_spec$variable)
   expect_true("data_type" %in% names(d$var_spec))
 })
 
@@ -235,12 +241,12 @@ test_that("read_define_xml extracts order and mandatory from ItemRef", {
   write_test_define(tmp, include_itemref = TRUE)
 
   d <- herald:::read_define_xml(tmp)
-  dm_vars     <- d$var_spec[d$var_spec$dataset == "DM", ]
+  dm_vars <- d$var_spec[d$var_spec$dataset == "DM", ]
   studyid_row <- dm_vars[dm_vars$variable == "STUDYID", ]
-  expect_equal(studyid_row$order,     "1")
+  expect_equal(studyid_row$order, "1")
   expect_equal(studyid_row$mandatory, "Yes")
   age_row <- dm_vars[dm_vars$variable == "AGE", ]
-  expect_equal(age_row$order,     "2")
+  expect_equal(age_row$order, "2")
   expect_equal(age_row$mandatory, "No")
 })
 
@@ -256,7 +262,7 @@ test_that("read_define_xml extracts key_vars from ItemGroupDef", {
   kv <- d$key_vars[["DM"]]
   expect_true(!is.null(kv) && length(kv) > 0L)
   expect_true("STUDYID" %in% kv)
-  expect_true("AGE"     %in% kv)
+  expect_true("AGE" %in% kv)
 })
 
 test_that("read_define_xml key_vars is empty list when no KeyVariables declared", {
@@ -415,15 +421,19 @@ test_that("op_key_not_unique_per_define fires on duplicate composite key", {
   data <- data.frame(
     STUDYID = c("S1", "S1"),
     USUBJID = c("S1-001", "S1-001"),
-    AGE     = c(30L, 30L),
+    AGE = c(30L, 30L),
     stringsAsFactors = FALSE
   )
   define_obj <- structure(
     list(key_vars = list(DM = c("STUDYID", "USUBJID"))),
     class = c("herald_define", "list")
   )
-  ctx <- list(define = define_obj, current_dataset = "DM",
-              current_rule_id = "CG0019", missing_refs = list())
+  ctx <- list(
+    define = define_obj,
+    current_dataset = "DM",
+    current_rule_id = "CG0019",
+    missing_refs = list()
+  )
   result <- herald:::op_key_not_unique_per_define(data, ctx)
   expect_equal(length(result), 2L)
   expect_true(all(result))
@@ -439,46 +449,71 @@ test_that("op_key_not_unique_per_define does not fire on unique composite key", 
     list(key_vars = list(DM = c("STUDYID", "USUBJID"))),
     class = c("herald_define", "list")
   )
-  ctx <- list(define = define_obj, current_dataset = "DM",
-              current_rule_id = "CG0019", missing_refs = list())
+  ctx <- list(
+    define = define_obj,
+    current_dataset = "DM",
+    current_rule_id = "CG0019",
+    missing_refs = list()
+  )
   result <- herald:::op_key_not_unique_per_define(data, ctx)
   expect_equal(length(result), 2L)
   expect_true(all(!result))
 })
 
 test_that("op_key_not_unique_per_define returns NA advisory when no define", {
-  data <- data.frame(STUDYID = c("S1", "S1"), USUBJID = c("S1-001", "S1-001"),
-                     stringsAsFactors = FALSE)
-  ctx <- list(define = NULL, current_dataset = "DM",
-              current_rule_id = "CG0019", missing_refs = list())
+  data <- data.frame(
+    STUDYID = c("S1", "S1"),
+    USUBJID = c("S1-001", "S1-001"),
+    stringsAsFactors = FALSE
+  )
+  ctx <- list(
+    define = NULL,
+    current_dataset = "DM",
+    current_rule_id = "CG0019",
+    missing_refs = list()
+  )
   result <- herald:::op_key_not_unique_per_define(data, ctx)
   expect_equal(length(result), 2L)
   expect_true(all(is.na(result)))
 })
 
 test_that("op_key_not_unique_per_define returns NA when dataset not in define", {
-  data <- data.frame(STUDYID = c("S1"), USUBJID = c("S1-001"),
-                     stringsAsFactors = FALSE)
+  data <- data.frame(
+    STUDYID = c("S1"),
+    USUBJID = c("S1-001"),
+    stringsAsFactors = FALSE
+  )
   define_obj <- structure(
     list(key_vars = list()),
     class = c("herald_define", "list")
   )
-  ctx <- list(define = define_obj, current_dataset = "DM",
-              current_rule_id = "CG0019", missing_refs = list())
+  ctx <- list(
+    define = define_obj,
+    current_dataset = "DM",
+    current_rule_id = "CG0019",
+    missing_refs = list()
+  )
   result <- herald:::op_key_not_unique_per_define(data, ctx)
   expect_equal(length(result), 1L)
   expect_true(is.na(result[[1L]]))
 })
 
 test_that("op_key_not_unique_per_define returns empty logical for zero-row data", {
-  data <- data.frame(STUDYID = character(), USUBJID = character(),
-                     stringsAsFactors = FALSE)
+  data <- data.frame(
+    STUDYID = character(),
+    USUBJID = character(),
+    stringsAsFactors = FALSE
+  )
   define_obj <- structure(
     list(key_vars = list(DM = c("STUDYID", "USUBJID"))),
     class = c("herald_define", "list")
   )
-  ctx <- list(define = define_obj, current_dataset = "DM",
-              current_rule_id = "CG0019", missing_refs = list())
+  ctx <- list(
+    define = define_obj,
+    current_dataset = "DM",
+    current_rule_id = "CG0019",
+    missing_refs = list()
+  )
   result <- herald:::op_key_not_unique_per_define(data, ctx)
   expect_equal(length(result), 0L)
 })
@@ -489,8 +524,12 @@ test_that("op_key_not_unique_per_define returns NA when all key cols absent", {
     list(key_vars = list(DM = c("STUDYID", "USUBJID"))),
     class = c("herald_define", "list")
   )
-  ctx <- list(define = define_obj, current_dataset = "DM",
-              current_rule_id = "CG0019", missing_refs = list())
+  ctx <- list(
+    define = define_obj,
+    current_dataset = "DM",
+    current_rule_id = "CG0019",
+    missing_refs = list()
+  )
   result <- herald:::op_key_not_unique_per_define(data, ctx)
   expect_equal(length(result), 2L)
   expect_true(all(is.na(result)))
@@ -508,21 +547,21 @@ test_that("validate() accepts define parameter without error", {
   dm_data <- data.frame(
     STUDYID = c("S1", "S1"),
     USUBJID = c("S1-001", "S1-002"),
-    AGE     = c(30L, 31L),
+    AGE = c(30L, 31L),
     stringsAsFactors = FALSE
   )
   define_obj <- structure(
     list(
-      key_vars      = list(DM = c("STUDYID", "USUBJID")),
+      key_vars = list(DM = c("STUDYID", "USUBJID")),
       loinc_version = NA_character_
     ),
     class = c("herald_define", "list")
   )
   result <- validate(
-    files  = list(DM = dm_data),
+    files = list(DM = dm_data),
     define = define_obj,
-    rules  = "CG0019",
-    quiet  = TRUE
+    rules = "CG0019",
+    quiet = TRUE
   )
   expect_s3_class(result, "herald_result")
 })

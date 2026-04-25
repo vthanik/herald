@@ -69,11 +69,11 @@ load_ct <- function(package = c("sdtm", "adam"), version = "bundled") {
   }
 
   ct <- readRDS(src$path)
-  attr(ct, "package")      <- package
-  attr(ct, "version")      <- src$version
+  attr(ct, "package") <- package
+  attr(ct, "version") <- src$version
   attr(ct, "release_date") <- src$release_date
-  attr(ct, "source_url")   <- src$source_url
-  attr(ct, "source_path")  <- src$path
+  attr(ct, "source_url") <- src$source_url
+  attr(ct, "source_path") <- src$path
 
   .CT_CACHE[[src$key]] <- ct
   ct
@@ -102,15 +102,19 @@ ct_info <- function(package = c("sdtm", "adam"), version = "bundled") {
   check_scalar_chr(version, call = call)
 
   ct <- load_ct(package, version = version)
-  n_terms <- sum(vapply(ct, function(e) nrow(e$terms %||% data.frame()), integer(1L)))
+  n_terms <- sum(vapply(
+    ct,
+    function(e) nrow(e$terms %||% data.frame()),
+    integer(1L)
+  ))
   list(
-    package        = attr(ct, "package"),
-    version        = attr(ct, "version"),
-    release_date   = attr(ct, "release_date"),
-    row_count      = as.integer(n_terms),
+    package = attr(ct, "package"),
+    version = attr(ct, "version"),
+    release_date = attr(ct, "release_date"),
+    row_count = as.integer(n_terms),
     codelist_count = length(ct),
-    source_path    = attr(ct, "source_path"),
-    source_url     = attr(ct, "source_url")
+    source_path = attr(ct, "source_path"),
+    source_url = attr(ct, "source_url")
   )
 }
 
@@ -139,7 +143,8 @@ ct_info <- function(package = c("sdtm", "adam"), version = "bundled") {
     }
     return(list(
       path = normalizePath(version, winslash = "/", mustWork = TRUE),
-      version = "custom", release_date = NA_character_,
+      version = "custom",
+      release_date = NA_character_,
       source_url = NA_character_,
       key = paste0("file:", version)
     ))
@@ -151,7 +156,9 @@ ct_info <- function(package = c("sdtm", "adam"), version = "bundled") {
     meta <- .bundled_ct_manifest()[[package]] %||% list()
     rel <- sub("^[a-z]+ct-", "", meta$effective %||% "")
     return(list(
-      path = p, version = rel %||% "bundled", release_date = rel,
+      path = p,
+      version = rel %||% "bundled",
+      release_date = rel,
       source_url = meta$source_url %||% NA_character_,
       key = paste0("bundled:", package)
     ))
@@ -192,8 +199,12 @@ ct_info <- function(package = c("sdtm", "adam"), version = "bundled") {
 #' Bundled RDS path for a package; errors informatively if missing.
 #' @noRd
 .bundled_ct_path <- function(package, call) {
-  p <- system.file("rules", "ct", paste0(package, "-ct.rds"),
-                   package = "herald")
+  p <- system.file(
+    "rules",
+    "ct",
+    paste0(package, "-ct.rds"),
+    package = "herald"
+  )
   if (!nzchar(p)) {
     herald_error(
       "Bundled CT for {.pkg {package}} not found. Reinstall herald or run `download_ct()`.",
@@ -208,14 +219,22 @@ ct_info <- function(package = c("sdtm", "adam"), version = "bundled") {
 #' the filesystem for every lookup.
 #' @noRd
 .bundled_ct_manifest <- function() {
-  if (!is.null(.CT_CACHE$manifest)) return(.CT_CACHE$manifest)
+  if (!is.null(.CT_CACHE$manifest)) {
+    return(.CT_CACHE$manifest)
+  }
   p <- system.file("rules", "ct", "CT-MANIFEST.json", package = "herald")
-  if (!nzchar(p)) return(list())
-  m <- tryCatch(jsonlite::fromJSON(p, simplifyVector = FALSE),
-                error = function(e) list())
+  if (!nzchar(p)) {
+    return(list())
+  }
+  m <- tryCatch(
+    jsonlite::fromJSON(p, simplifyVector = FALSE),
+    error = function(e) list()
+  )
   out <- list()
   if (is.list(m$packages)) {
-    for (nm in names(m$packages)) out[[nm]] <- m$packages[[nm]]
+    for (nm in names(m$packages)) {
+      out[[nm]] <- m$packages[[nm]]
+    }
   }
   .CT_CACHE$manifest <- out
   out

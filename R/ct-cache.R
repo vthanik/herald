@@ -31,14 +31,20 @@
 #' downstream `load_ct()`).
 #' @noRd
 .ct_cache_read <- function(dir = .ct_cache_dir(create = FALSE)) {
-  if (!dir.exists(dir)) return(list())
+  if (!dir.exists(dir)) {
+    return(list())
+  }
   path <- .ct_cache_manifest_path(dir)
-  if (!file.exists(path)) return(list())
+  if (!file.exists(path)) {
+    return(list())
+  }
   parsed <- tryCatch(
     jsonlite::fromJSON(path, simplifyVector = FALSE),
     error = function(e) NULL
   )
-  if (!is.list(parsed)) return(list())
+  if (!is.list(parsed)) {
+    return(list())
+  }
   parsed
 }
 
@@ -53,8 +59,12 @@
   m <- .ct_cache_read(dir)
   key <- paste0(entry$package, "@", entry$version)
   m[[key]] <- entry
-  jsonlite::write_json(m, .ct_cache_manifest_path(dir),
-                       pretty = TRUE, auto_unbox = TRUE)
+  jsonlite::write_json(
+    m,
+    .ct_cache_manifest_path(dir),
+    pretty = TRUE,
+    auto_unbox = TRUE
+  )
   invisible(entry)
 }
 
@@ -64,19 +74,19 @@
   m <- .ct_cache_read(dir)
   if (length(m) == 0L) {
     return(tibble::tibble(
-      package       = character(),
-      version       = character(),
-      release_date  = character(),
-      path          = character(),
+      package = character(),
+      version = character(),
+      release_date = character(),
+      path = character(),
       downloaded_at = character()
     ))
   }
   rows <- lapply(m, function(e) {
     data.frame(
-      package       = as.character(e$package %||% NA_character_),
-      version       = as.character(e$version %||% NA_character_),
-      release_date  = as.character(e$release_date %||% NA_character_),
-      path          = as.character(e$path %||% NA_character_),
+      package = as.character(e$package %||% NA_character_),
+      version = as.character(e$version %||% NA_character_),
+      release_date = as.character(e$release_date %||% NA_character_),
+      path = as.character(e$path %||% NA_character_),
       downloaded_at = as.character(e$downloaded_at %||% NA_character_),
       stringsAsFactors = FALSE
     )

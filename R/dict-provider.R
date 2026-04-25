@@ -79,7 +79,8 @@ register_dictionary <- function(name, provider) {
     herald_error(
       "{.arg provider} must be a {.cls herald_dict_provider} \\
        (use ct_provider(), srs_provider(), meddra_provider(), etc.).",
-      class = "herald_error_input", call = call
+      class = "herald_error_input",
+      call = call
     )
   }
   assign(name, provider, envir = .HERALD_DICT_REGISTRY)
@@ -125,8 +126,7 @@ unregister_dictionary <- function(name) {
 #'
 #' @family dict
 #' @export
-list_dictionaries <- function(include_global = TRUE,
-                              include_cache  = TRUE) {
+list_dictionaries <- function(include_global = TRUE, include_cache = TRUE) {
   rows <- list()
   if (isTRUE(include_global)) {
     for (nm in ls(envir = .HERALD_DICT_REGISTRY)) {
@@ -142,8 +142,10 @@ list_dictionaries <- function(include_global = TRUE,
   }
   if (length(rows) == 0L) {
     return(tibble::tibble(
-      name = character(), version = character(),
-      source = character(), license = character(),
+      name = character(),
+      version = character(),
+      source = character(),
+      license = character(),
       size_rows = integer()
     ))
   }
@@ -154,11 +156,11 @@ list_dictionaries <- function(include_global = TRUE,
 .provider_info_row <- function(name, p) {
   info <- tryCatch(p$info(), error = function(e) list())
   data.frame(
-    name      = name,
-    version   = as.character(info$version   %||% NA_character_),
-    source    = as.character(info$source    %||% NA_character_),
-    license   = as.character(info$license   %||% NA_character_),
-    size_rows = as.integer(info$size_rows   %||% NA_integer_),
+    name = name,
+    version = as.character(info$version %||% NA_character_),
+    source = as.character(info$source %||% NA_character_),
+    license = as.character(info$license %||% NA_character_),
+    size_rows = as.integer(info$size_rows %||% NA_integer_),
     stringsAsFactors = FALSE
   )
 }
@@ -197,25 +199,32 @@ list_dictionaries <- function(include_global = TRUE,
 #'
 #' @family dict
 #' @export
-new_dict_provider <- function(name,
-                              version       = NA_character_,
-                              source        = "unknown",
-                              license       = "unknown",
-                              license_note  = "",
-                              size_rows     = NA_integer_,
-                              fields        = character(),
-                              contains,
-                              info          = NULL,
-                              lookup        = NULL) {
+new_dict_provider <- function(
+  name,
+  version = NA_character_,
+  source = "unknown",
+  license = "unknown",
+  license_note = "",
+  size_rows = NA_integer_,
+  fields = character(),
+  contains,
+  info = NULL,
+  lookup = NULL
+) {
   call <- rlang::caller_env()
   check_scalar_chr(name, call = call)
   if (!is.function(contains)) {
-    herald_error("{.arg contains} must be a function.",
-                 class = "herald_error_input", call = call)
+    herald_error(
+      "{.arg contains} must be a function.",
+      class = "herald_error_input",
+      call = call
+    )
   }
   meta <- list(
-    name = name, version = as.character(version),
-    source = as.character(source), license = as.character(license),
+    name = name,
+    version = as.character(version),
+    source = as.character(source),
+    license = as.character(license),
     license_note = as.character(license_note),
     size_rows = as.integer(size_rows),
     fields = as.character(fields)
@@ -237,10 +246,12 @@ print.herald_dict_provider <- function(x, ...) {
   cat("<herald_dict_provider>\n")
   cat(sprintf("  name     : %s\n", i$name %||% "<unnamed>"))
   cat(sprintf("  version  : %s\n", i$version %||% NA))
-  cat(sprintf("  source   : %s\n", i$source  %||% NA))
+  cat(sprintf("  source   : %s\n", i$source %||% NA))
   cat(sprintf("  license  : %s\n", i$license %||% NA))
-  cat(sprintf("  size     : %s rows\n",
-              format(i$size_rows %||% NA, big.mark = ",")))
+  cat(sprintf(
+    "  size     : %s rows\n",
+    format(i$size_rows %||% NA, big.mark = ",")
+  ))
   if (length(i$fields %||% character()) > 0L) {
     cat(sprintf("  fields   : %s\n", paste(i$fields, collapse = ", ")))
   }
@@ -259,8 +270,7 @@ print.herald_dict_provider <- function(x, ...) {
 
   # Layer 2: session registry
   for (nm in ls(envir = .HERALD_DICT_REGISTRY)) {
-    ctx$dict[[nm]] <- get(nm, envir = .HERALD_DICT_REGISTRY,
-                           inherits = FALSE)
+    ctx$dict[[nm]] <- get(nm, envir = .HERALD_DICT_REGISTRY, inherits = FALSE)
   }
 
   # Layer 1: explicit per-validate override (wins)
@@ -269,7 +279,8 @@ print.herald_dict_provider <- function(x, ...) {
       herald_error(
         "{.arg dictionaries} must be a named list of herald_dict_provider \\
          objects.",
-        class = "herald_error_input", call = call
+        class = "herald_error_input",
+        call = call
       )
     }
     for (nm in names(dictionaries)) {
@@ -278,7 +289,8 @@ print.herald_dict_provider <- function(x, ...) {
         herald_error(
           "Entry {.val {nm}} in {.arg dictionaries} must be a \\
            {.cls herald_dict_provider}.",
-          class = "herald_error_input", call = call
+          class = "herald_error_input",
+          call = call
         )
       }
       ctx$dict[[nm]] <- p
@@ -293,9 +305,13 @@ print.herald_dict_provider <- function(x, ...) {
 #' factories learn to auto-register from the user cache.
 #' @noRd
 .resolve_provider <- function(ctx, name) {
-  if (is.null(ctx) || is.null(ctx$dict)) return(NULL)
+  if (is.null(ctx) || is.null(ctx$dict)) {
+    return(NULL)
+  }
   p <- ctx$dict[[name]]
-  if (inherits(p, "herald_dict_provider")) return(p)
+  if (inherits(p, "herald_dict_provider")) {
+    return(p)
+  }
   NULL
 }
 
@@ -319,12 +335,19 @@ print.herald_dict_provider <- function(x, ...) {
 #' @param name       Name of the missing reference.
 #' @noRd
 .record_missing_ref <- function(ctx, rule_id, kind, name) {
-  if (is.null(ctx)) return(invisible(NULL))
-  if (is.null(ctx$missing_refs)) .init_missing_refs(ctx)
+  if (is.null(ctx)) {
+    return(invisible(NULL))
+  }
+  if (is.null(ctx$missing_refs)) {
+    .init_missing_refs(ctx)
+  }
   kind <- match.arg(kind, c("dataset", "dictionary", "define"))
-  slot <- switch(kind, "dataset"    = "datasets",
-                       "dictionary" = "dictionaries",
-                       "define"     = "dictionaries")
+  slot <- switch(
+    kind,
+    "dataset" = "datasets",
+    "dictionary" = "dictionaries",
+    "define" = "dictionaries"
+  )
   nm <- as.character(name)
   rid <- as.character(rule_id %||% NA_character_)
   prev <- ctx$missing_refs[[slot]][[nm]]
@@ -344,7 +367,8 @@ print.herald_dict_provider <- function(x, ...) {
     switch(
       kind,
       "dataset" = sprintf(
-        "Provide dataset %s to evaluate these rules.", name
+        "Provide dataset %s to evaluate these rules.",
+        name
       ),
       "dictionary" = switch(
         name,
@@ -361,7 +385,8 @@ print.herald_dict_provider <- function(x, ...) {
         ),
         sprintf(
           "Register the %s dictionary via `register_dictionary(\"%s\", <provider>)`.",
-          name, name
+          name,
+          name
         )
       )
     )
@@ -369,20 +394,22 @@ print.herald_dict_provider <- function(x, ...) {
 
   build <- function(slot_name, kind) {
     entries <- mr[[slot_name]]
-    if (length(entries) == 0L) return(list())
+    if (length(entries) == 0L) {
+      return(list())
+    }
     out <- list()
     for (nm in names(entries)) {
       out[[nm]] <- list(
-        kind     = kind,
+        kind = kind,
         rule_ids = sort(unique(entries[[nm]])),
-        hint     = hint_for(kind, nm)
+        hint = hint_for(kind, nm)
       )
     }
     out
   }
 
   list(
-    datasets     = build("datasets", "dataset"),
+    datasets = build("datasets", "dataset"),
     dictionaries = build("dictionaries", "dictionary")
   )
 }

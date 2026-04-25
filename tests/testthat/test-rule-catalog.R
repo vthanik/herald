@@ -2,16 +2,31 @@ test_that("rule_catalog() returns a tibble with required columns", {
   cat <- herald:::rule_catalog()
   expect_s3_class(cat, "tbl_df")
   expect_in(
-    c("rule_id", "standard", "authority", "severity", "message",
-      "source_document", "has_predicate"),
+    c(
+      "rule_id",
+      "standard",
+      "authority",
+      "severity",
+      "message",
+      "source_document",
+      "has_predicate"
+    ),
     names(cat)
   )
 })
 
 test_that("rule_catalog() total row count matches rules.rds + spec_rules.rds", {
   cat <- herald:::rule_catalog()
-  n_rules <- nrow(readRDS(system.file("rules", "rules.rds", package = "herald")))
-  n_spec  <- nrow(readRDS(system.file("rules", "spec_rules.rds", package = "herald")))
+  n_rules <- nrow(readRDS(system.file(
+    "rules",
+    "rules.rds",
+    package = "herald"
+  )))
+  n_spec <- nrow(readRDS(system.file(
+    "rules",
+    "spec_rules.rds",
+    package = "herald"
+  )))
   expect_equal(nrow(cat), n_rules + n_spec)
 })
 
@@ -31,8 +46,14 @@ test_that("supported_standards() returns a tibble with required columns", {
   ss <- herald:::supported_standards()
   expect_s3_class(ss, "tbl_df")
   expect_in(
-    c("standard", "authority", "n_rules", "n_predicate", "n_narrative",
-      "pct_predicate"),
+    c(
+      "standard",
+      "authority",
+      "n_rules",
+      "n_predicate",
+      "n_narrative",
+      "pct_predicate"
+    ),
     names(ss)
   )
 })
@@ -75,8 +96,16 @@ test_that("rule catalog loads from inst/rules/rules.rds", {
   expect_gt(nrow(rules), 0)
 
   required_cols <- c(
-    "id", "authority", "standard", "severity", "scope", "check_tree",
-    "message", "source_url", "license", "content_hash"
+    "id",
+    "authority",
+    "standard",
+    "severity",
+    "scope",
+    "check_tree",
+    "message",
+    "source_url",
+    "license",
+    "content_hash"
   )
   expect_true(all(required_cols %in% names(rules)))
 })
@@ -115,7 +144,9 @@ test_that("no P21-derived rule sneaks in via source_url / source_document", {
 
   # Case-insensitive substring check across provenance fields
   hay <- tolower(paste(
-    rules$source_url, rules$source_document, rules$source_version
+    rules$source_url,
+    rules$source_document,
+    rules$source_version
   ))
   for (term in banned) {
     hits <- grepl(term, hay, fixed = TRUE)
@@ -123,7 +154,8 @@ test_that("no P21-derived rule sneaks in via source_url / source_document", {
       any(hits),
       info = sprintf(
         "Banned source term '%s' appears in %d rule(s)",
-        term, sum(hits)
+        term,
+        sum(hits)
       )
     )
   }

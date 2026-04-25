@@ -51,25 +51,32 @@ write_report_xlsx <- function(x, path, ...) {
   require_pkg("openxlsx2", "to write XLSX reports", call = call)
 
   findings <- x$findings
-  ds_meta  <- dataset_meta_tbl(x$dataset_meta, findings)
+  ds_meta <- dataset_meta_tbl(x$dataset_meta, findings)
   rules_df <- applied_rules(x$rule_catalog, findings)
-  fired    <- sum(findings$status == "fired", na.rm = TRUE)
-  adv      <- sum(findings$status == "advisory", na.rm = TRUE)
+  fired <- sum(findings$status == "fired", na.rm = TRUE)
+  adv <- sum(findings$status == "advisory", na.rm = TRUE)
 
   summary_df <- tibble::tibble(
     key = c(
-      "herald_version", "timestamp", "duration_secs", "profile",
-      "config_hash", "rules_applied", "rules_total", "n_datasets",
-      "n_findings_fired", "n_findings_advisory"
+      "herald_version",
+      "timestamp",
+      "duration_secs",
+      "profile",
+      "config_hash",
+      "rules_applied",
+      "rules_total",
+      "n_datasets",
+      "n_findings_fired",
+      "n_findings_advisory"
     ),
     value = c(
       as.character(utils::packageVersion("herald")),
       iso_timestamp(x$timestamp %||% Sys.time()),
       as.character(format_duration_secs(x$duration)),
-      as.character(x$profile     %||% NA_character_),
+      as.character(x$profile %||% NA_character_),
       as.character(x$config_hash %||% NA_character_),
       as.character(x$rules_applied %||% 0L),
-      as.character(x$rules_total   %||% 0L),
+      as.character(x$rules_total %||% 0L),
       as.character(length(x$datasets_checked %||% character())),
       as.character(fired),
       as.character(adv)
@@ -78,13 +85,13 @@ write_report_xlsx <- function(x, path, ...) {
 
   wb <- openxlsx2::wb_workbook(
     creator = "herald",
-    title   = "herald validation report"
+    title = "herald validation report"
   )
 
-  .add_sheet(wb, "summary",  summary_df, filter = FALSE)
+  .add_sheet(wb, "summary", summary_df, filter = FALSE)
   .add_sheet(wb, "findings", findings)
   .add_sheet(wb, "datasets", ds_meta)
-  .add_sheet(wb, "rules",    rules_df)
+  .add_sheet(wb, "rules", rules_df)
 
   openxlsx2::wb_save(wb, path, overwrite = TRUE)
   invisible(path)
@@ -104,8 +111,8 @@ write_report_xlsx <- function(x, path, ...) {
     n_col <- length(names(df))
     wb$add_filter(
       sheet = name,
-      rows  = 1L,
-      cols  = seq_len(n_col)
+      rows = 1L,
+      cols = seq_len(n_col)
     )
   }
   invisible(wb)

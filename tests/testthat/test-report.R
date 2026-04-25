@@ -4,54 +4,69 @@
 
 mk_findings_fixture <- function() {
   tibble::tibble(
-    rule_id           = c("CORE-000172", "CORE-000172", "CORE-000201"),
-    authority         = rep("CDISC", 3L),
-    standard          = rep("SDTM-IG", 3L),
-    severity          = c("Reject", "High", "Medium"),
-    status            = c("fired", "fired", "advisory"),
-    dataset           = c("AE", "DM", "AE"),
-    variable          = c("USUBJID", "STUDYID", NA_character_),
-    row               = c(1L, 2L, NA_integer_),
-    value             = c("x", "y", NA_character_),
-    expected          = rep(NA_character_, 3L),
-    message           = c("bad link", "bad study id", "could not decide"),
-    source_url        = c("https://example/rules/172",
-                          "https://example/rules/172",
-                          "https://example/rules/201"),
+    rule_id = c("CORE-000172", "CORE-000172", "CORE-000201"),
+    authority = rep("CDISC", 3L),
+    standard = rep("SDTM-IG", 3L),
+    severity = c("Reject", "High", "Medium"),
+    status = c("fired", "fired", "advisory"),
+    dataset = c("AE", "DM", "AE"),
+    variable = c("USUBJID", "STUDYID", NA_character_),
+    row = c(1L, 2L, NA_integer_),
+    value = c("x", "y", NA_character_),
+    expected = rep(NA_character_, 3L),
+    message = c("bad link", "bad study id", "could not decide"),
+    source_url = c(
+      "https://example/rules/172",
+      "https://example/rules/172",
+      "https://example/rules/201"
+    ),
     p21_id_equivalent = rep(NA_character_, 3L),
-    license           = rep("CC-BY-4.0", 3L)
+    license = rep("CC-BY-4.0", 3L)
   )
 }
 
 mk_result_fixture <- function(findings = mk_findings_fixture()) {
   rule_catalog <- tibble::tibble(
-    id        = c("CORE-000172", "CORE-000201", "CORE-999999"),
+    id = c("CORE-000172", "CORE-000201", "CORE-999999"),
     authority = rep("CDISC", 3L),
-    standard  = rep("SDTM-IG", 3L),
-    severity  = c("Reject", "Medium", "Low"),
-    message   = c("study id must match", "usubjid must be present", "x")
+    standard = rep("SDTM-IG", 3L),
+    severity = c("Reject", "Medium", "Low"),
+    message = c("study id must match", "usubjid must be present", "x")
   )
   new_herald_result(
-    findings         = findings,
-    rules_applied    = 2L,
-    rules_total      = 3L,
+    findings = findings,
+    rules_applied = 2L,
+    rules_total = 3L,
     datasets_checked = c("AE", "DM"),
-    duration         = as.difftime(1.75, units = "secs"),
-    profile          = NA_character_,
-    config_hash      = NA_character_,
-    dataset_meta     = list(
-      AE = list(rows = 10L, cols = 5L, label = "Adverse Events", class = "EVENTS"),
-      DM = list(rows = 3L,  cols = 6L, label = "Demographics",   class = "SPECIAL PURPOSE")
+    duration = as.difftime(1.75, units = "secs"),
+    profile = NA_character_,
+    config_hash = NA_character_,
+    dataset_meta = list(
+      AE = list(
+        rows = 10L,
+        cols = 5L,
+        label = "Adverse Events",
+        class = "EVENTS"
+      ),
+      DM = list(
+        rows = 3L,
+        cols = 6L,
+        label = "Demographics",
+        class = "SPECIAL PURPOSE"
+      )
     ),
-    rule_catalog     = rule_catalog,
-    op_errors        = list()
+    rule_catalog = rule_catalog,
+    op_errors = list()
   )
 }
 
 # ---- dispatcher + input validation ----------------------------------------
 
 test_that("report() rejects non-herald_result inputs", {
-  expect_error(report(list(), tempfile(fileext = ".json")), class = "herald_error_report")
+  expect_error(
+    report(list(), tempfile(fileext = ".json")),
+    class = "herald_error_report"
+  )
 })
 
 test_that("report() rejects unknown formats", {
@@ -99,11 +114,14 @@ test_that("write_report_json produces canonical keys and counts", {
   write_report_json(r, p)
   obj <- jsonlite::read_json(p)
 
-  expect_equal(obj$herald_version, as.character(utils::packageVersion("herald")))
+  expect_equal(
+    obj$herald_version,
+    as.character(utils::packageVersion("herald"))
+  )
   expect_equal(obj$rules_applied, 2L)
   expect_equal(obj$rules_total, 3L)
   expect_equal(unlist(obj$datasets_checked), c("AE", "DM"))
-  expect_equal(obj$counts$by_status$fired,    2L)
+  expect_equal(obj$counts$by_status$fired, 2L)
   expect_equal(obj$counts$by_status$advisory, 1L)
   expect_equal(obj$counts$by_severity$Reject, 1L)
   expect_equal(length(obj$findings), 3L)
@@ -129,8 +147,10 @@ test_that("write_report_xlsx emits the expected 4 sheets", {
   expect_true(file.exists(p))
 
   wb <- openxlsx2::wb_load(p)
-  expect_equal(unname(wb$get_sheet_names()),
-               c("summary", "findings", "datasets", "rules"))
+  expect_equal(
+    unname(wb$get_sheet_names()),
+    c("summary", "findings", "datasets", "rules")
+  )
 
   findings_back <- openxlsx2::wb_to_df(wb, sheet = "findings")
   expect_equal(nrow(findings_back), 3L)
@@ -156,13 +176,13 @@ test_that("write_report_html produces a self-contained document", {
   expect_false(grepl("<link[^>]*\\shref=\"https?://", html))
   # Content made it in
   expect_true(grepl("CORE-000172", html))
-  expect_true(grepl("panel-issues",   html))
-  expect_true(grepl("panel-details",  html))
+  expect_true(grepl("panel-issues", html))
+  expect_true(grepl("panel-details", html))
   expect_true(grepl("panel-datasets", html))
-  expect_true(grepl("panel-rules",    html))
+  expect_true(grepl("panel-rules", html))
   # Both datasets surfaced
-  expect_true(grepl(">AE<",  html))
-  expect_true(grepl(">DM<",  html))
+  expect_true(grepl(">AE<", html))
+  expect_true(grepl(">DM<", html))
   # Severity rows carry the printable class
   expect_true(grepl("sev-reject", html))
 })
@@ -213,8 +233,8 @@ test_that("dataset_meta_tbl flattens named list to a tibble with counts", {
   r <- mk_result_fixture()
   t <- dataset_meta_tbl(r$dataset_meta, r$findings)
   expect_equal(nrow(t), 2L)
-  expect_equal(t$fired_n[t$name == "AE"],    1L)
-  expect_equal(t$fired_n[t$name == "DM"],    1L)
+  expect_equal(t$fired_n[t$name == "AE"], 1L)
+  expect_equal(t$fired_n[t$name == "DM"], 1L)
   expect_equal(t$advisory_n[t$name == "AE"], 1L)
 })
 

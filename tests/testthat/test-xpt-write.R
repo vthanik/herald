@@ -1,4 +1,4 @@
-# Tests for R/write-xpt.R — XPT writer
+# Tests for R/write-xpt.R  --  XPT writer
 
 test_that("write_xpt creates a file", {
   tmp <- withr::local_tempfile(fileext = ".xpt")
@@ -107,7 +107,7 @@ test_that("write_xpt rejects V5 with long names", {
 
 test_that("write_xpt derives dataset name from file path when dataset=NULL", {
   tmp <- file.path(withr::local_tempdir(), "ae.xpt")
-  write_xpt(data.frame(X = 1), tmp)  # inline expression -> no symbol capture
+  write_xpt(data.frame(X = 1), tmp) # inline expression -> no symbol capture
   expect_true(file.exists(tmp))
 
   raw_data <- readBin(tmp, "raw", file.info(tmp)$size)
@@ -117,7 +117,7 @@ test_that("write_xpt derives dataset name from file path when dataset=NULL", {
 
 test_that("write_xpt uses dataset_name attribute when dataset=NULL", {
   tmp <- withr::local_tempfile(fileext = ".xpt")
-  x <- data.frame(X = 1)          # generic name so attr beats capture
+  x <- data.frame(X = 1) # generic name so attr beats capture
   attr(x, "dataset_name") <- "VS"
   write_xpt(x, tmp)
   expect_true(file.exists(tmp))
@@ -179,7 +179,7 @@ test_that("write_xpt preserves column labels in namestr", {
   # Label is in the namestr block (starts after 240 + 400 = 640 bytes)
   # Namestr label field is at offset 16 within each 140-byte namestr
   raw_data <- readBin(tmp, "raw", file.info(tmp)$size)
-  # Read the namestr area — label is at bytes 641+16 to 641+55
+  # Read the namestr area  --  label is at bytes 641+16 to 641+55
   label_raw <- raw_data[657:696]
   label_str <- rawToChar(label_raw)
   expect_true(grepl("Subject Age", label_str, fixed = TRUE))
@@ -236,7 +236,11 @@ test_that("write_xpt sorts by herald.sort_keys attribute", {
   result <- read_xpt(tmp)
 
   # After sorting, USUBJID should be in order
-  expect_equal(result$USUBJID, c("S1-001", "S1-002", "S1-003"), ignore_attr = TRUE)
+  expect_equal(
+    result$USUBJID,
+    c("S1-001", "S1-002", "S1-003"),
+    ignore_attr = TRUE
+  )
 })
 
 test_that("write_xpt with sort_keys that are not in data still writes", {
@@ -261,7 +265,7 @@ test_that("write_xpt converts logical columns to numeric", {
   write_xpt(df, tmp, dataset = "TEST")
   result <- read_xpt(tmp)
 
-  # TRUE → 1, FALSE → 0, NA → NA
+  # TRUE -> 1, FALSE -> 0, NA -> NA
   expect_equal(result$FLAG[1L], 1)
   expect_equal(result$FLAG[2L], 0)
   expect_true(is.na(result$FLAG[3L]))
@@ -285,7 +289,7 @@ test_that("write_xpt converts difftime (time) columns to numeric seconds", {
 
 test_that("write_xpt uses 'DATA' when file stem has only special chars", {
   df <- data.frame(X = 1L, stringsAsFactors = FALSE)
-  # File with only special chars → empty after gsub → "DATA"
+  # File with only special chars -> empty after gsub -> "DATA"
   tmp <- file.path(withr::local_tempdir(), "123-!@#.xpt")
 
   write_xpt(df, tmp)

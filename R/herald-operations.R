@@ -22,15 +22,15 @@
 #     any other length   -> store as a list-column (each row gets the same value).
 #   Returning NULL signals failure; the $id column is left out (leaf -> NA advisory).
 
-.OP_TABLE_OPS  <- new.env(parent = emptyenv())   # name -> function
-.OP_META_OPS   <- new.env(parent = emptyenv())   # name -> metadata list
+.OP_TABLE_OPS <- new.env(parent = emptyenv()) # name -> function
+.OP_META_OPS <- new.env(parent = emptyenv()) # name -> metadata list
 
 .DEFAULT_META_OPS <- list(
-  name         = NA_character_,
-  kind         = NA_character_,
-  summary      = "",
-  returns      = "scalar",    # "scalar" | "vector" | "array"
-  cost_hint    = "O(n)",
+  name = NA_character_,
+  kind = NA_character_,
+  summary = "",
+  returns = "scalar", # "scalar" | "vector" | "array"
+  cost_hint = "O(n)",
   registered_in = NA_character_
 )
 
@@ -66,7 +66,9 @@
 #' Look up a registered Operations function; returns NULL if not found.
 #' @noRd
 .get_operation <- function(name) {
-  if (!exists(name, envir = .OP_TABLE_OPS, inherits = FALSE)) return(NULL)
+  if (!exists(name, envir = .OP_TABLE_OPS, inherits = FALSE)) {
+    return(NULL)
+  }
   get(name, envir = .OP_TABLE_OPS)
 }
 

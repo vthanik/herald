@@ -65,7 +65,9 @@ apply_spec <- function(datasets, spec) {
       cand <- as.character(.ds_expr)
       if (grepl("^[A-Za-z_][A-Za-z0-9_]*$", cand)) ds_name <- toupper(cand)
     }
-    if (is.null(ds_name)) ds_name <- "DATA"
+    if (is.null(ds_name)) {
+      ds_name <- "DATA"
+    }
     datasets_list <- stats::setNames(list(datasets), ds_name)
   } else if (is.list(datasets)) {
     datasets_list <- datasets
@@ -99,8 +101,10 @@ apply_spec <- function(datasets, spec) {
 
   for (i in seq_along(datasets_list)) {
     ds_name_i <- nms[[i]]
-    ds        <- datasets_list[[i]]
-    if (!is.data.frame(ds)) next
+    ds <- datasets_list[[i]]
+    if (!is.data.frame(ds)) {
+      next
+    }
 
     ds <- .apply_ds_attrs(ds, spec, ds_name_i)
     ds <- .apply_var_attrs(ds, spec, ds_name_i)
@@ -114,7 +118,9 @@ apply_spec <- function(datasets, spec) {
 #' @noRd
 .apply_ds_attrs <- function(ds, spec, ds_name) {
   row <- .spec_ds(spec, ds_name)
-  if (is.null(row)) return(ds)
+  if (is.null(row)) {
+    return(ds)
+  }
   lbl <- row[["label"]]
   if (!is.null(lbl) && length(lbl) == 1L && !is.na(lbl) && nzchar(lbl)) {
     attr(ds, "label") <- as.character(lbl)
@@ -126,11 +132,15 @@ apply_spec <- function(datasets, spec) {
 #' @noRd
 .apply_var_attrs <- function(ds, spec, ds_name) {
   v <- spec[["var_spec"]]
-  if (!is.data.frame(v) || nrow(v) == 0L) return(ds)
+  if (!is.data.frame(v) || nrow(v) == 0L) {
+    return(ds)
+  }
 
   ds_col <- toupper(as.character(v$dataset))
-  hits   <- which(ds_col == toupper(as.character(ds_name)))
-  if (length(hits) == 0L) return(ds)
+  hits <- which(ds_col == toupper(as.character(ds_name)))
+  if (length(hits) == 0L) {
+    return(ds)
+  }
 
   sub <- v[hits, , drop = FALSE]
   col_names_up <- toupper(names(ds))
@@ -138,15 +148,21 @@ apply_spec <- function(datasets, spec) {
   for (r in seq_len(nrow(sub))) {
     var_name <- toupper(as.character(sub$variable[[r]]))
     j <- which(col_names_up == var_name)
-    if (length(j) == 0L) next
+    if (length(j) == 0L) {
+      next
+    }
     j <- j[[1L]]
     col <- ds[[j]]
 
     lbl <- .scalar_or_null(sub[["label"]][[r]])
-    if (!is.null(lbl))  attr(col, "label")      <- lbl
+    if (!is.null(lbl)) {
+      attr(col, "label") <- lbl
+    }
 
     fmt <- .scalar_or_null(sub[["format"]][[r]])
-    if (!is.null(fmt))  attr(col, "format.sas") <- fmt
+    if (!is.null(fmt)) {
+      attr(col, "format.sas") <- fmt
+    }
 
     len <- sub[["length"]][[r]]
     if (!is.null(len) && length(len) == 1L && !is.na(len)) {
@@ -154,7 +170,9 @@ apply_spec <- function(datasets, spec) {
     }
 
     typ <- .scalar_or_null(sub[["type"]][[r]])
-    if (!is.null(typ))  attr(col, "xpt_type")   <- typ
+    if (!is.null(typ)) {
+      attr(col, "xpt_type") <- typ
+    }
 
     ds[[j]] <- col
   }
@@ -164,8 +182,12 @@ apply_spec <- function(datasets, spec) {
 #' Return `x` as a non-empty character scalar, or NULL if absent/empty.
 #' @noRd
 .scalar_or_null <- function(x) {
-  if (is.null(x) || length(x) != 1L || is.na(x)) return(NULL)
+  if (is.null(x) || length(x) != 1L || is.na(x)) {
+    return(NULL)
+  }
   s <- as.character(x)
-  if (!nzchar(s)) return(NULL)
+  if (!nzchar(s)) {
+    return(NULL)
+  }
   s
 }

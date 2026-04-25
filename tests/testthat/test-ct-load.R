@@ -3,7 +3,7 @@
 test_that("load_ct('sdtm') returns the bundled SDTM CT with attributes", {
   ct <- load_ct("sdtm")
   expect_type(ct, "list")
-  expect_gt(length(ct), 1000L)                 # 1200+ SDTM codelists
+  expect_gt(length(ct), 1000L) # 1200+ SDTM codelists
   expect_equal(attr(ct, "package"), "sdtm")
   expect_equal(attr(ct, "version"), "2026-03-27")
   expect_equal(attr(ct, "release_date"), "2026-03-27")
@@ -34,8 +34,10 @@ test_that("load_ct() accepts an explicit .rds path override", {
 })
 
 test_that("load_ct() errors on an unknown cache version", {
-  expect_error(load_ct("sdtm", version = "1999-01-01"),
-               class = "herald_error_input")
+  expect_error(
+    load_ct("sdtm", version = "1999-01-01"),
+    class = "herald_error_input"
+  )
 })
 
 test_that("ct_info('sdtm') reports row + codelist counts", {

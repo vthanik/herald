@@ -48,7 +48,9 @@ write_parquet <- function(x, file, dataset = NULL, label = NULL) {
 
   if (is.null(dataset)) {
     ds_attr <- attr(x, "dataset_name")
-    dataset <- if (!is.null(ds_attr) && length(ds_attr) == 1L && nzchar(ds_attr)) {
+    dataset <- if (
+      !is.null(ds_attr) && length(ds_attr) == 1L && nzchar(ds_attr)
+    ) {
       toupper(ds_attr)
     } else if (is.symbol(.x_expr)) {
       cand <- as.character(.x_expr)
@@ -81,16 +83,18 @@ write_parquet <- function(x, file, dataset = NULL, label = NULL) {
     len <- attr(col, "sas.length")
     typ <- attr(col, "xpt_type")
     if (!is.null(lbl) && length(lbl) == 1L && nzchar(lbl)) {
-      meta[[paste0("herald.col.", nm, ".label")]]  <- as.character(lbl)
+      meta[[paste0("herald.col.", nm, ".label")]] <- as.character(lbl)
     }
     if (!is.null(fmt) && length(fmt) == 1L && nzchar(fmt)) {
       meta[[paste0("herald.col.", nm, ".format")]] <- as.character(fmt)
     }
     if (!is.null(len) && length(len) == 1L && !is.na(len)) {
-      meta[[paste0("herald.col.", nm, ".length")]] <- as.character(as.integer(len))
+      meta[[paste0("herald.col.", nm, ".length")]] <- as.character(as.integer(
+        len
+      ))
     }
     if (!is.null(typ) && length(typ) == 1L && nzchar(typ)) {
-      meta[[paste0("herald.col.", nm, ".type")]]   <- as.character(typ)
+      meta[[paste0("herald.col.", nm, ".type")]] <- as.character(typ)
     }
   }
 

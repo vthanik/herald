@@ -4,18 +4,22 @@
   as_herald_spec(
     ds_spec = data.frame(
       dataset = c("DM", "AE"),
-      class   = c("SPECIAL PURPOSE", "EVENTS"),
-      label   = c("Demographics", "Adverse Events"),
+      class = c("SPECIAL PURPOSE", "EVENTS"),
+      label = c("Demographics", "Adverse Events"),
       stringsAsFactors = FALSE
     ),
     var_spec = data.frame(
-      dataset  = c("DM", "DM", "DM", "AE"),
+      dataset = c("DM", "DM", "DM", "AE"),
       variable = c("USUBJID", "AGE", "AGEU", "AEDECOD"),
-      type     = c("text", "integer", "text", "text"),
-      label    = c("Unique Subject Identifier", "Age", "Age Unit",
-                   "Dictionary-Derived Term"),
-      format   = c("", "", "", ""),
-      length   = c(40L, 8L, 6L, 200L),
+      type = c("text", "integer", "text", "text"),
+      label = c(
+        "Unique Subject Identifier",
+        "Age",
+        "Age Unit",
+        "Dictionary-Derived Term"
+      ),
+      format = c("", "", "", ""),
+      length = c(40L, 8L, 6L, 200L),
       stringsAsFactors = FALSE
     )
   )
@@ -27,7 +31,7 @@ test_that("apply_spec() stamps dataset and column labels", {
 
   expect_equal(attr(out$DM, "label"), "Demographics")
   expect_equal(attr(out$DM$USUBJID, "label"), "Unique Subject Identifier")
-  expect_equal(attr(out$DM$AGE,     "label"), "Age")
+  expect_equal(attr(out$DM$AGE, "label"), "Age")
 })
 
 test_that("apply_spec() stamps length and xpt_type from var_spec", {
@@ -35,9 +39,9 @@ test_that("apply_spec() stamps length and xpt_type from var_spec", {
   out <- apply_spec(list(DM = dm), .test_spec())
 
   expect_equal(attr(out$DM$USUBJID, "sas.length"), 40L)
-  expect_equal(attr(out$DM$AGE,     "sas.length"), 8L)
-  expect_equal(attr(out$DM$USUBJID, "xpt_type"),   "text")
-  expect_equal(attr(out$DM$AGE,     "xpt_type"),   "integer")
+  expect_equal(attr(out$DM$AGE, "sas.length"), 8L)
+  expect_equal(attr(out$DM$USUBJID, "xpt_type"), "text")
+  expect_equal(attr(out$DM$AGE, "xpt_type"), "integer")
 })
 
 test_that("apply_spec() overwrites existing attrs when spec has a value", {
@@ -66,12 +70,11 @@ test_that("apply_spec() matches dataset + variable names case-insensitively", {
 
 test_that("apply_spec() skips empty-string labels without clobbering", {
   spec <- as_herald_spec(
-    ds_spec = data.frame(dataset = "DM", label = "",
-                         stringsAsFactors = FALSE),
+    ds_spec = data.frame(dataset = "DM", label = "", stringsAsFactors = FALSE),
     var_spec = data.frame(
-      dataset  = "DM",
+      dataset = "DM",
       variable = "USUBJID",
-      label    = "",
+      label = "",
       stringsAsFactors = FALSE
     )
   )
@@ -80,8 +83,8 @@ test_that("apply_spec() skips empty-string labels without clobbering", {
   attr(dm$USUBJID, "label") <- "pre-existing col"
 
   out <- apply_spec(list(DM = dm), spec)
-  expect_equal(attr(out$DM, "label"),          "pre-existing")
-  expect_equal(attr(out$DM$USUBJID, "label"),  "pre-existing col")
+  expect_equal(attr(out$DM, "label"), "pre-existing")
+  expect_equal(attr(out$DM$USUBJID, "label"), "pre-existing col")
 })
 
 test_that("apply_spec() errors on non-list / non-spec inputs", {
@@ -94,23 +97,24 @@ test_that("apply_spec() errors on non-list / non-spec inputs", {
     class = "herald_error_input"
   )
   expect_error(
-    apply_spec(list(data.frame(x = 1)), .test_spec()),  # no names
+    apply_spec(list(data.frame(x = 1)), .test_spec()), # no names
     class = "herald_error_input"
   )
 })
 
 test_that("apply_spec() skips non-data-frame elements gracefully", {
-  out <- apply_spec(list(DM = data.frame(USUBJID = "S1"),
-                         NOTDF = list(a = 1)),
-                    .test_spec())
+  out <- apply_spec(
+    list(DM = data.frame(USUBJID = "S1"), NOTDF = list(a = 1)),
+    .test_spec()
+  )
   expect_equal(attr(out$DM$USUBJID, "label"), "Unique Subject Identifier")
   expect_equal(out$NOTDF, list(a = 1))
 })
 
 test_that("bundled dm.rds + sdtm-spec.rds round-trip via apply_spec (single df)", {
-  dm   <- readRDS(system.file("extdata", "dm.rds",        package = "herald"))
+  dm <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
   spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
-  dm   <- apply_spec(dm, spec)
+  dm <- apply_spec(dm, spec)
   expect_s3_class(dm, "data.frame")
   lbl <- attr(dm$USUBJID, "label")
   expect_true(!is.null(lbl) && nzchar(lbl))
@@ -128,9 +132,17 @@ test_that("apply_spec single df returns data frame, not list", {
 
 test_that("apply_spec single df infers name from variable symbol", {
   spec <- as_herald_spec(
-    ds_spec  = data.frame(dataset = "DM", label = "Demo", stringsAsFactors = FALSE),
-    var_spec = data.frame(dataset = "DM", variable = "USUBJID",
-                          label = "Subject ID", stringsAsFactors = FALSE)
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demo",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "USUBJID",
+      label = "Subject ID",
+      stringsAsFactors = FALSE
+    )
   )
   dm <- data.frame(USUBJID = "S1")
   dm <- apply_spec(dm, spec)

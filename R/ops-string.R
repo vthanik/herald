@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# ops-string.R — string-shape operators
+# ops-string.R  --  string-shape operators
 # -----------------------------------------------------------------------------
 
 # --- iso8601 (SDTM --DTC format) ---------------------------------------------
@@ -24,19 +24,19 @@
   # Time separators (:) are required in the strict form, but the minute/sec
   # slots themselves can be dashed ("T13:-:17" = unknown minute).
   date_re <- paste0(
-    "(\\d{4}|-{1,4})",                 # year
-    "(-?(\\d{2}|-{1,2})",              # optional sep + month
-      "(-?(\\d{2}|-{1,2}))?",          # optional sep + day
+    "(\\d{4}|-{1,4})", # year
+    "(-?(\\d{2}|-{1,2})", # optional sep + month
+    "(-?(\\d{2}|-{1,2}))?", # optional sep + day
     ")?"
   )
   time_re <- paste0(
-    "(\\d{2}|-{1,2})",                 # hour
-    "(:(\\d{2}|-{1,2})",               # :minute
-      "(:(\\d{2}|-{1,2})",             # :second
-        "(\\.\\d+)?",                  # .fraction
-      ")?",
+    "(\\d{2}|-{1,2})", # hour
+    "(:(\\d{2}|-{1,2})", # :minute
+    "(:(\\d{2}|-{1,2})", # :second
+    "(\\.\\d+)?", # .fraction
     ")?",
-    "(Z|[+-]\\d{2}:?\\d{2})?"          # timezone
+    ")?",
+    "(Z|[+-]\\d{2}:?\\d{2})?" # timezone
   )
   pat <- paste0("^(", date_re, ")?(T", time_re, ")?$")
 
@@ -67,16 +67,17 @@ op_iso8601 <- function(data, ctx, name, allow_missing = TRUE) {
 }
 
 .register_op(
-  "iso8601", op_iso8601,
+  "iso8601",
+  op_iso8601,
   meta = list(
-    kind       = "string",
-    summary    = "SDTM ISO 8601 extended format with dash-substitution for missing components",
+    kind = "string",
+    summary = "SDTM ISO 8601 extended format with dash-substitution for missing components",
     arg_schema = list(
-      name          = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
       allow_missing = list(type = "logical", required = FALSE, default = TRUE)
     ),
-    cost_hint     = "O(n)",
-    column_arg    = "name",
+    cost_hint = "O(n)",
+    column_arg = "name",
     returns_na_ok = TRUE,
     examples = list(
       list(name = "AESTDTC"),
@@ -91,8 +92,12 @@ op_iso8601 <- function(data, ctx, name, allow_missing = TRUE) {
 # value. Patterns already carrying ^ or $ are left untouched.
 .anchor_regex <- function(pat) {
   pat <- as.character(pat)
-  if (!nzchar(pat)) return(pat)
-  if (startsWith(pat, "^") || endsWith(pat, "$")) return(pat)
+  if (!nzchar(pat)) {
+    return(pat)
+  }
+  if (startsWith(pat, "^") || endsWith(pat, "$")) {
+    return(pat)
+  }
   paste0("^(?:", pat, ")$")
 }
 
@@ -104,7 +109,9 @@ op_iso8601 <- function(data, ctx, name, allow_missing = TRUE) {
 #' @noRd
 op_matches_regex <- function(data, ctx, name, value, allow_missing = TRUE) {
   values <- data[[name]]
-  if (is.null(values)) return(rep(NA, nrow(data)))
+  if (is.null(values)) {
+    return(rep(NA, nrow(data)))
+  }
   values <- as.character(values)
   missing <- is.na(values) | !nzchar(values)
   pass <- logical(length(values))
@@ -114,17 +121,18 @@ op_matches_regex <- function(data, ctx, name, value, allow_missing = TRUE) {
 }
 
 .register_op(
-  "matches_regex", op_matches_regex,
+  "matches_regex",
+  op_matches_regex,
   meta = list(
-    kind       = "string",
-    summary    = "PCRE regex match on column values",
+    kind = "string",
+    summary = "PCRE regex match on column values",
     arg_schema = list(
-      name          = list(type = "string",  required = TRUE),
-      value         = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "string", required = TRUE),
       allow_missing = list(type = "logical", required = FALSE, default = TRUE)
     ),
-    cost_hint     = "O(n)",
-    column_arg    = "name",
+    cost_hint = "O(n)",
+    column_arg = "name",
     returns_na_ok = TRUE,
     examples = list(
       list(name = "USUBJID", value = "^[A-Z0-9-]+$")
@@ -141,7 +149,9 @@ op_matches_regex <- function(data, ctx, name, value, allow_missing = TRUE) {
 #' @noRd
 op_length_le <- function(data, ctx, name, value) {
   values <- data[[name]]
-  if (is.null(values)) return(rep(NA, nrow(data)))
+  if (is.null(values)) {
+    return(rep(NA, nrow(data)))
+  }
   values <- as.character(values)
   missing <- is.na(values)
   pass <- logical(length(values))
@@ -151,16 +161,17 @@ op_length_le <- function(data, ctx, name, value) {
 }
 
 .register_op(
-  "length_le", op_length_le,
+  "length_le",
+  op_length_le,
   meta = list(
-    kind       = "string",
-    summary    = "Character byte-length <= max (matches SAS column width semantics)",
+    kind = "string",
+    summary = "Character byte-length <= max (matches SAS column width semantics)",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
       value = list(type = "integer", required = TRUE)
     ),
-    cost_hint     = "O(n)",
-    column_arg    = "name",
+    cost_hint = "O(n)",
+    column_arg = "name",
     returns_na_ok = TRUE,
     examples = list(
       list(name = "AETERM", value = 200L)
@@ -177,14 +188,19 @@ op_length_le <- function(data, ctx, name, value) {
 #' @noRd
 op_contains <- function(data, ctx, name, value, ignore_case = FALSE) {
   values <- data[[name]]
-  if (is.null(values)) return(rep(NA, nrow(data)))
+  if (is.null(values)) {
+    return(rep(NA, nrow(data)))
+  }
   values <- as.character(values)
   missing <- is.na(values)
   pass <- logical(length(values))
   pass[missing] <- FALSE
   if (ignore_case) {
-    pass[!missing] <- grepl(tolower(value), tolower(values[!missing]),
-                            fixed = TRUE)
+    pass[!missing] <- grepl(
+      tolower(value),
+      tolower(values[!missing]),
+      fixed = TRUE
+    )
   } else {
     pass[!missing] <- grepl(value, values[!missing], fixed = TRUE)
   }
@@ -192,17 +208,18 @@ op_contains <- function(data, ctx, name, value, ignore_case = FALSE) {
 }
 
 .register_op(
-  "contains", op_contains,
+  "contains",
+  op_contains,
   meta = list(
-    kind       = "string",
-    summary    = "Fixed substring containment on column values",
+    kind = "string",
+    summary = "Fixed substring containment on column values",
     arg_schema = list(
-      name        = list(type = "string",  required = TRUE),
-      value       = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "string", required = TRUE),
       ignore_case = list(type = "logical", required = FALSE, default = FALSE)
     ),
-    cost_hint     = "O(n)",
-    column_arg    = "name",
+    cost_hint = "O(n)",
+    column_arg = "name",
     returns_na_ok = FALSE,
     examples = list(
       list(name = "AETERM", value = "HEADACHE")
@@ -218,16 +235,19 @@ op_not_matches_regex <- function(data, ctx, name, value, allow_missing = TRUE) {
   ifelse(is.na(m), NA, !m)
 }
 .register_op(
-  "not_matches_regex", op_not_matches_regex,
+  "not_matches_regex",
+  op_not_matches_regex,
   meta = list(
     kind = "string",
     summary = "Column value does not match regex pattern",
     arg_schema = list(
-      name  = list(type = "string", required = TRUE),
+      name = list(type = "string", required = TRUE),
       value = list(type = "string", required = TRUE),
       allow_missing = list(type = "logical", default = TRUE)
     ),
-    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
   )
 )
 
@@ -238,16 +258,19 @@ op_does_not_contain <- function(data, ctx, name, value, ignore_case = FALSE) {
   ifelse(is.na(m), NA, !m)
 }
 .register_op(
-  "does_not_contain", op_does_not_contain,
+  "does_not_contain",
+  op_does_not_contain,
   meta = list(
     kind = "string",
     summary = "Column value does NOT contain substring",
     arg_schema = list(
-      name        = list(type = "string", required = TRUE),
-      value       = list(type = "string", required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "string", required = TRUE),
       ignore_case = list(type = "logical", default = FALSE)
     ),
-    cost_hint = "O(n)", column_arg = "name", returns_na_ok = FALSE
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = FALSE
   )
 )
 
@@ -255,7 +278,9 @@ op_does_not_contain <- function(data, ctx, name, value, ignore_case = FALSE) {
 
 op_longer_than <- function(data, ctx, name, value) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
   values <- as.character(col)
   missing <- is.na(values)
   out <- logical(length(values))
@@ -264,21 +289,26 @@ op_longer_than <- function(data, ctx, name, value) {
   out
 }
 .register_op(
-  "longer_than", op_longer_than,
+  "longer_than",
+  op_longer_than,
   meta = list(
     kind = "string",
     summary = "Column character length (bytes) is greater than value",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
       value = list(type = "integer", required = TRUE)
     ),
-    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
   )
 )
 
 op_shorter_than <- function(data, ctx, name, value) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
   values <- as.character(col)
   missing <- is.na(values)
   out <- logical(length(values))
@@ -287,15 +317,18 @@ op_shorter_than <- function(data, ctx, name, value) {
   out
 }
 .register_op(
-  "shorter_than", op_shorter_than,
+  "shorter_than",
+  op_shorter_than,
   meta = list(
     kind = "string",
     summary = "Column character length (bytes) is less than value",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
       value = list(type = "integer", required = TRUE)
     ),
-    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
   )
 )
 
@@ -303,7 +336,9 @@ op_shorter_than <- function(data, ctx, name, value) {
 
 op_starts_with <- function(data, ctx, name, value, ignore_case = FALSE) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
   values <- as.character(col)
   missing <- is.na(values)
   out <- logical(length(values))
@@ -316,22 +351,27 @@ op_starts_with <- function(data, ctx, name, value, ignore_case = FALSE) {
   out
 }
 .register_op(
-  "starts_with", op_starts_with,
+  "starts_with",
+  op_starts_with,
   meta = list(
     kind = "string",
     summary = "Column value starts with prefix",
     arg_schema = list(
-      name        = list(type = "string", required = TRUE),
-      value       = list(type = "string", required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "string", required = TRUE),
       ignore_case = list(type = "logical", default = FALSE)
     ),
-    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
   )
 )
 
 op_ends_with <- function(data, ctx, name, value, ignore_case = FALSE) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
   values <- as.character(col)
   missing <- is.na(values)
   out <- logical(length(values))
@@ -344,16 +384,19 @@ op_ends_with <- function(data, ctx, name, value, ignore_case = FALSE) {
   out
 }
 .register_op(
-  "ends_with", op_ends_with,
+  "ends_with",
+  op_ends_with,
   meta = list(
     kind = "string",
     summary = "Column value ends with suffix",
     arg_schema = list(
-      name        = list(type = "string", required = TRUE),
-      value       = list(type = "string", required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "string", required = TRUE),
       ignore_case = list(type = "logical", default = FALSE)
     ),
-    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
   )
 )
 
@@ -365,25 +408,31 @@ op_ends_with <- function(data, ctx, name, value, ignore_case = FALSE) {
 
 op_prefix_equal_to <- function(data, ctx, name, value, prefix_length = 2L) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
   values <- as.character(col)
   missing <- is.na(values)
   out <- logical(length(values))
-  out[missing]  <- NA
-  out[!missing] <- .prefix(values[!missing], prefix_length) == as.character(value)
+  out[missing] <- NA
+  out[!missing] <- .prefix(values[!missing], prefix_length) ==
+    as.character(value)
   out
 }
 .register_op(
-  "prefix_equal_to", op_prefix_equal_to,
+  "prefix_equal_to",
+  op_prefix_equal_to,
   meta = list(
     kind = "string",
     summary = "First `prefix_length` chars of value equal a literal",
     arg_schema = list(
-      name          = list(type = "string",  required = TRUE),
-      value         = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "string", required = TRUE),
       prefix_length = list(type = "integer", default = 2L)
     ),
-    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
   )
 )
 
@@ -392,60 +441,85 @@ op_prefix_not_equal_to <- function(data, ctx, name, value, prefix_length = 2L) {
   ifelse(is.na(m), NA, !m)
 }
 .register_op(
-  "prefix_not_equal_to", op_prefix_not_equal_to,
+  "prefix_not_equal_to",
+  op_prefix_not_equal_to,
   meta = list(
     kind = "string",
     summary = "First N chars of value do not equal a literal",
     arg_schema = list(
-      name          = list(type = "string",  required = TRUE),
-      value         = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "string", required = TRUE),
       prefix_length = list(type = "integer", default = 2L)
     ),
-    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
   )
 )
 
-op_prefix_matches_regex <- function(data, ctx, name, value, prefix_length = 2L) {
+op_prefix_matches_regex <- function(
+  data,
+  ctx,
+  name,
+  value,
+  prefix_length = 2L
+) {
   col <- data[[name]]
-  if (is.null(col)) return(rep(NA, nrow(data)))
+  if (is.null(col)) {
+    return(rep(NA, nrow(data)))
+  }
   values <- as.character(col)
   missing <- is.na(values)
   out <- logical(length(values))
-  out[missing]  <- NA
-  out[!missing] <- grepl(.anchor_regex(value),
-                         .prefix(values[!missing], prefix_length),
-                         perl = TRUE)
+  out[missing] <- NA
+  out[!missing] <- grepl(
+    .anchor_regex(value),
+    .prefix(values[!missing], prefix_length),
+    perl = TRUE
+  )
   out
 }
 .register_op(
-  "prefix_matches_regex", op_prefix_matches_regex,
+  "prefix_matches_regex",
+  op_prefix_matches_regex,
   meta = list(
     kind = "string",
     summary = "First N chars of value match PCRE pattern",
     arg_schema = list(
-      name          = list(type = "string",  required = TRUE),
-      value         = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "string", required = TRUE),
       prefix_length = list(type = "integer", default = 2L)
     ),
-    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
   )
 )
 
-op_not_prefix_matches_regex <- function(data, ctx, name, value, prefix_length = 2L) {
+op_not_prefix_matches_regex <- function(
+  data,
+  ctx,
+  name,
+  value,
+  prefix_length = 2L
+) {
   m <- op_prefix_matches_regex(data, ctx, name, value, prefix_length)
   ifelse(is.na(m), NA, !m)
 }
 .register_op(
-  "not_prefix_matches_regex", op_not_prefix_matches_regex,
+  "not_prefix_matches_regex",
+  op_not_prefix_matches_regex,
   meta = list(
     kind = "string",
     summary = "First N chars of value do not match PCRE pattern",
     arg_schema = list(
-      name          = list(type = "string",  required = TRUE),
-      value         = list(type = "string",  required = TRUE),
+      name = list(type = "string", required = TRUE),
+      value = list(type = "string", required = TRUE),
       prefix_length = list(type = "integer", default = 2L)
     ),
-    cost_hint = "O(n)", column_arg = "name", returns_na_ok = TRUE
+    cost_hint = "O(n)",
+    column_arg = "name",
+    returns_na_ok = TRUE
   )
 )
 
@@ -461,10 +535,18 @@ op_not_prefix_matches_regex <- function(data, ctx, name, value, prefix_length = 
 # is_not_contained_by already exists; these are prefix/suffix extensions.
 # Unlocks: CORE-000376 (CG0349), CORE-000540 (CG0333).
 
-op_prefix_is_not_contained_by <- function(data, ctx, name, prefix = 2L,
-                                           value = character(0), ...) {
+op_prefix_is_not_contained_by <- function(
+  data,
+  ctx,
+  name,
+  prefix = 2L,
+  value = character(0),
+  ...
+) {
   col <- name
-  if (!col %in% names(data)) return(rep(NA, nrow(data)))
+  if (!col %in% names(data)) {
+    return(rep(NA, nrow(data)))
+  }
   n_chars <- as.integer(prefix[[1L]])
   allowed <- as.character(unlist(value, use.names = FALSE))
   pfx <- substr(toupper(as.character(data[[col]])), 1L, n_chars)
@@ -475,27 +557,35 @@ op_prefix_is_not_contained_by <- function(data, ctx, name, prefix = 2L,
   "prefix_is_not_contained_by",
   op_prefix_is_not_contained_by,
   meta = list(
-    kind       = "set",
-    summary    = "First N characters of the column value are not in the allowed set.",
+    kind = "set",
+    summary = "First N characters of the column value are not in the allowed set.",
     arg_schema = list(
-      name   = list(type = "string",  required = TRUE),
-      prefix = list(type = "integer", default  = 2L),
-      value  = list(type = "array",   required = TRUE)
+      name = list(type = "string", required = TRUE),
+      prefix = list(type = "integer", default = 2L),
+      value = list(type = "array", required = TRUE)
     ),
-    cost_hint     = "O(n)",
-    column_arg    = "name",
+    cost_hint = "O(n)",
+    column_arg = "name",
     returns_na_ok = FALSE
   )
 )
 
-op_suffix_is_not_contained_by <- function(data, ctx, name, suffix = 2L,
-                                           value = character(0), ...) {
+op_suffix_is_not_contained_by <- function(
+  data,
+  ctx,
+  name,
+  suffix = 2L,
+  value = character(0),
+  ...
+) {
   col <- name
-  if (!col %in% names(data)) return(rep(NA, nrow(data)))
+  if (!col %in% names(data)) {
+    return(rep(NA, nrow(data)))
+  }
   n_chars <- as.integer(suffix[[1L]])
   allowed <- as.character(unlist(value, use.names = FALSE))
   vals <- toupper(as.character(data[[col]]))
-  sfx  <- substr(vals, nchar(vals) - n_chars + 1L, nchar(vals))
+  sfx <- substr(vals, nchar(vals) - n_chars + 1L, nchar(vals))
   !sfx %in% toupper(allowed)
 }
 
@@ -503,15 +593,15 @@ op_suffix_is_not_contained_by <- function(data, ctx, name, suffix = 2L,
   "suffix_is_not_contained_by",
   op_suffix_is_not_contained_by,
   meta = list(
-    kind       = "set",
-    summary    = "Last N characters of the column value are not in the allowed set.",
+    kind = "set",
+    summary = "Last N characters of the column value are not in the allowed set.",
     arg_schema = list(
-      name   = list(type = "string",  required = TRUE),
-      suffix = list(type = "integer", default  = 2L),
-      value  = list(type = "array",   required = TRUE)
+      name = list(type = "string", required = TRUE),
+      suffix = list(type = "integer", default = 2L),
+      value = list(type = "array", required = TRUE)
     ),
-    cost_hint     = "O(n)",
-    column_arg    = "name",
+    cost_hint = "O(n)",
+    column_arg = "name",
     returns_na_ok = FALSE
   )
 )
@@ -524,14 +614,24 @@ op_suffix_is_not_contained_by <- function(data, ctx, name, suffix = 2L,
 #
 # params: name (column), start (1-based char start), end (1-based char end).
 
-op_does_not_equal_string_part <- function(data, ctx, name,
-                                           start = 5L, end = 6L, ...) {
+op_does_not_equal_string_part <- function(
+  data,
+  ctx,
+  name,
+  start = 5L,
+  end = 6L,
+  ...
+) {
   col <- name
-  n   <- nrow(data)
-  if (!col %in% names(data)) return(rep(NA, n))
+  n <- nrow(data)
+  if (!col %in% names(data)) {
+    return(rep(NA, n))
+  }
   ds_name <- ctx$current_dataset %||% ""
   expected <- toupper(substr(ds_name, as.integer(start), as.integer(end)))
-  if (!nzchar(expected)) return(rep(NA, n))
+  if (!nzchar(expected)) {
+    return(rep(NA, n))
+  }
   toupper(as.character(data[[col]])) != expected
 }
 
@@ -539,15 +639,15 @@ op_does_not_equal_string_part <- function(data, ctx, name,
   "does_not_equal_string_part",
   op_does_not_equal_string_part,
   meta = list(
-    kind       = "compare",
-    summary    = "TRUE when column value != the specified chars of the dataset name.",
+    kind = "compare",
+    summary = "TRUE when column value != the specified chars of the dataset name.",
     arg_schema = list(
-      name  = list(type = "string",  required = TRUE),
-      start = list(type = "integer", default  = 5L),
-      end   = list(type = "integer", default  = 6L)
+      name = list(type = "string", required = TRUE),
+      start = list(type = "integer", default = 5L),
+      end = list(type = "integer", default = 6L)
     ),
-    cost_hint     = "O(n)",
-    column_arg    = "name",
+    cost_hint = "O(n)",
+    column_arg = "name",
     returns_na_ok = TRUE
   )
 )

@@ -1,5 +1,5 @@
 # --------------------------------------------------------------------------
-# xpt-header.R — XPT binary header parsing + construction
+# xpt-header.R  --  XPT binary header parsing + construction
 # --------------------------------------------------------------------------
 # Consolidates parse-header.R + build-header.R into one cohesive module.
 

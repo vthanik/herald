@@ -58,7 +58,7 @@ ieee_to_ibm <- function(x) {
 
   result <- raw(8L * n)
 
-  # ── Special values → SAS missing (NA, NaN, Inf, -Inf) ────────────────────
+  # -- Special values -> SAS missing (NA, NaN, Inf, -Inf) --------------------
   is_special <- !is.finite(x) # TRUE for NA, NaN, Inf, -Inf
   if (any(is_special)) {
     sp_pos <- which(is_special)
@@ -66,7 +66,7 @@ ieee_to_ibm <- function(x) {
     result[dest_sp] <- rep(sas_missing_raw(), length(sp_pos))
   }
 
-  # ── Non-zero regular values ───────────────────────────────────────────────
+  # -- Non-zero regular values -----------------------------------------------
   # Zeros stay as raw(0) (already zero-initialised).
   is_nz <- !is_special & x != 0
   if (!any(is_nz)) {
@@ -78,7 +78,7 @@ ieee_to_ibm <- function(x) {
 
   # Get all IEEE big-endian bytes at once (one writeBin for the whole vector).
   ieee_bytes <- writeBin(xnz, raw(), size = 8L, endian = "big")
-  m <- matrix(as.integer(ieee_bytes), nrow = 8L) # 8 × nnz integer matrix
+  m <- matrix(as.integer(ieee_bytes), nrow = 8L) # 8 x nnz integer matrix
 
   b1 <- m[1L, ]
   b2 <- m[2L, ]
@@ -87,18 +87,18 @@ ieee_to_ibm <- function(x) {
   ieee_exp <- bitwOr(bitwShiftL(bitwAnd(b1, 0x7FL), 4L), bitwShiftR(b2, 4L))
   fexp <- ieee_exp - 1023L
 
-  # IEEE: value = 2^fexp × mantissa   IBM: value = 16^(ibm_exp−64) × ibm_frac/2^56
-  # ibm_exp = 64 + ⌈(fexp+1)/4⌉;   lshift = fexp+4 − 4(ibm_exp−64)  ∈ {0,1,2,3}
+  # IEEE: value = 2^fexp x mantissa   IBM: value = 16^(ibm_exp-64) x ibm_frac/2^56
+  # ibm_exp = 64 + ceil((fexp+1)/4);   lshift = fexp+4 - 4(ibm_exp-64)  in {0,1,2,3}
   ibm_exp <- 64L + ((fexp + 4L) %/% 4L) # equiv. 64 + ceil((fexp+1)/4)
   lshift <- fexp + 4L - 4L * (ibm_exp - 64L)
 
   # Classify within the nonzero set
   is_subnorm <- ieee_exp == 0L # treat as zero (leave zeroed)
-  is_overflow <- ibm_exp > 127L # → SAS missing
-  is_underflow <- ibm_exp < 0L # → zero (leave zeroed)
+  is_overflow <- ibm_exp > 127L # -> SAS missing
+  is_underflow <- ibm_exp < 0L # -> zero (leave zeroed)
   is_reg <- !is_subnorm & !is_overflow & !is_underflow
 
-  # Overflow → SAS missing
+  # Overflow -> SAS missing
   if (any(is_overflow)) {
     ov_global <- which(is_nz)[is_overflow]
     dest_ov <- as.integer(outer(0L:7L, (ov_global - 1L) * 8L + 1L, "+"))
@@ -109,8 +109,8 @@ ieee_to_ibm <- function(x) {
     return(result)
   }
 
-  # ── Regular values: build 8 × nreg output matrix ─────────────────────────
-  frac_m <- m[2:8, is_reg, drop = FALSE] # 7 × nreg (bytes 2-8 = mantissa)
+  # -- Regular values: build 8 x nreg output matrix -------------------------
+  frac_m <- m[2:8, is_reg, drop = FALSE] # 7 x nreg (bytes 2-8 = mantissa)
   ib_exp <- ibm_exp[is_reg]
   ls <- lshift[is_reg]
   sb <- sign_bit[is_reg]
@@ -119,7 +119,7 @@ ieee_to_ibm <- function(x) {
   frac_m[1L, ] <- bitwOr(bitwAnd(frac_m[1L, ], 0x0FL), 0x10L)
 
   # Left-shift the 7-byte mantissa by ls bits (0-3) to align to IBM hex digits.
-  # bitwShiftL/R accept vector shift amounts — one vectorised call per row pair.
+  # bitwShiftL/R accept vector shift amounts  --  one vectorised call per row pair.
   # When ls == 0: (x << 0 | y >> 8) & 0xFF = x (no-op, correct).
   for (j in seq_len(6L)) {
     frac_m[j, ] <- bitwAnd(
@@ -133,9 +133,9 @@ ieee_to_ibm <- function(x) {
   frac_m[7L, ] <- bitwAnd(bitwShiftL(frac_m[7L, ], ls), 0xFFL)
 
   # Assemble: byte1 = sign|ibm_exp, bytes 2-8 = shifted mantissa
-  out_m <- rbind(bitwOr(bitwShiftL(sb, 7L), ib_exp), frac_m) # 8 × nreg
+  out_m <- rbind(bitwOr(bitwShiftL(sb, 7L), ib_exp), frac_m) # 8 x nreg
 
-  # as.integer(out_m) is column-major = obs1_b1…obs1_b8, obs2_b1… ✓
+  # as.integer(out_m) is column-major = obs1_b1...obs1_b8, obs2_b1... (ok)
   reg_global <- which(is_nz)[is_reg]
   dest_reg <- as.integer(outer(0L:7L, (reg_global - 1L) * 8L + 1L, "+"))
   result[dest_reg] <- as.raw(as.integer(out_m))
@@ -154,12 +154,12 @@ ibm_to_ieee <- function(raw_vec) {
     return(numeric(0L))
   }
 
-  # Reshape to 8 x n integer matrix — each column is one IBM double
+  # Reshape to 8 x n integer matrix  --  each column is one IBM double
   m <- matrix(as.integer(raw_vec), nrow = 8L) # 8 x n
 
   b1 <- m[1L, ] # first byte of every value
 
-  # ── Special value masks ───────────────────────────────────────────────────
+  # -- Special value masks ---------------------------------------------------
   col_sums <- colSums(m)
   lower_sums <- colSums(m[2:8, , drop = FALSE])
 
@@ -172,11 +172,11 @@ ibm_to_ieee <- function(raw_vec) {
   result[is_missing] <- NA_real_
   # zeros and non-regular values stay 0
 
-  # ── Tag each missing with its SAS indicator character ────────────────────
+  # -- Tag each missing with its SAS indicator character --------------------
   # sas_missing attr: character vector, NA_character_ for non-missing slots.
-  #   0x2E       → "."   (standard missing)
-  #   0x41–0x5A  → ".A"–".Z" (extended special missing)
-  #   0x5F       → "._"  (underscore missing)
+  #   0x2E       -> "."   (standard missing)
+  #   0x41--0x5A  -> ".A"--".Z" (extended special missing)
+  #   0x5F       -> "._"  (underscore missing)
   if (any(is_missing)) {
     tags <- rep(NA_character_, n)
     miss_b1 <- b1[is_missing]
@@ -196,13 +196,13 @@ ibm_to_ieee <- function(raw_vec) {
     return(result)
   }
 
-  # ── Vectorised IBM → IEEE conversion for regular values ──────────────────
+  # -- Vectorised IBM -> IEEE conversion for regular values ------------------
   #
-  # IBM 370 double: value = (-1)^s × 16^(E−64) × F
+  # IBM 370 double: value = (-1)^s x 16^(E-64) x F
   #   where F = fraction bytes interpreted as base-256 fraction:
-  #   F = (b2×256^6 + b3×256^5 + … + b8×256^0) / 256^7
+  #   F = (b2x256^6 + b3x256^5 + ... + b8x256^0) / 256^7
   #
-  # No bit-shifting needed — pure floating-point arithmetic.
+  # No bit-shifting needed  --  pure floating-point arithmetic.
 
   reg_m <- m[, regular, drop = FALSE]
   reg_b1 <- b1[regular]
@@ -211,8 +211,8 @@ ibm_to_ieee <- function(raw_vec) {
   ibm_exp <- reg_b1 - sign_v * 128L * (sign_v < 0) # clear sign bit
   ibm_exp <- reg_b1 %% 128L # low 7 bits = exponent
 
-  # Fraction: weighted sum of bytes 2–8 as a base-256 fraction
-  weights <- 256^(6:0) # 256^6 … 256^0
+  # Fraction: weighted sum of bytes 2--8 as a base-256 fraction
+  weights <- 256^(6:0) # 256^6 ... 256^0
   frac_val <- colSums(reg_m[2:8, , drop = FALSE] * weights) / (256^7)
 
   result[regular] <- sign_v * (16^(ibm_exp - 64L)) * frac_val

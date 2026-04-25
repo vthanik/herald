@@ -54,9 +54,11 @@
 #'
 #' @family ct
 #' @export
-available_ct_releases <- function(package = c("sdtm", "adam", "send"),
-                                  include_remote = TRUE,
-                                  timeout = 30L) {
+available_ct_releases <- function(
+  package = c("sdtm", "adam", "send"),
+  include_remote = TRUE,
+  timeout = 30L
+) {
   call <- rlang::caller_env()
   package <- match.arg(package)
 
@@ -68,12 +70,12 @@ available_ct_releases <- function(package = c("sdtm", "adam", "send"),
     if (!is.null(m)) {
       ver <- sub("^[a-z]+ct-", "", m$effective %||% "")
       rows[[length(rows) + 1L]] <- data.frame(
-        package      = package,
-        version      = if (nzchar(ver)) ver else "bundled",
+        package = package,
+        version = if (nzchar(ver)) ver else "bundled",
         release_date = if (nzchar(ver)) ver else NA_character_,
-        url          = NA_character_,
-        format       = "rds",
-        source       = "bundled",
+        url = NA_character_,
+        format = "rds",
+        source = "bundled",
         stringsAsFactors = FALSE
       )
     }
@@ -84,12 +86,12 @@ available_ct_releases <- function(package = c("sdtm", "adam", "send"),
   cached <- cached[cached$package == package, , drop = FALSE]
   if (nrow(cached) > 0L) {
     rows[[length(rows) + 1L]] <- data.frame(
-      package      = cached$package,
-      version      = cached$version,
+      package = cached$package,
+      version = cached$version,
       release_date = cached$release_date,
-      url          = rep(NA_character_, nrow(cached)),
-      format       = rep("rds", nrow(cached)),
-      source       = rep("cache", nrow(cached)),
+      url = rep(NA_character_, nrow(cached)),
+      format = rep("rds", nrow(cached)),
+      source = rep("cache", nrow(cached)),
       stringsAsFactors = FALSE
     )
   }
@@ -99,7 +101,9 @@ available_ct_releases <- function(package = c("sdtm", "adam", "send"),
     remote <- tryCatch(
       .list_nci_evs_releases(package, timeout = timeout),
       error = function(e) {
-        cli::cli_inform(c("i" = "NCI EVS listing unavailable: {conditionMessage(e)}"))
+        cli::cli_inform(c(
+          "i" = "NCI EVS listing unavailable: {conditionMessage(e)}"
+        ))
         NULL
       }
     )
@@ -110,16 +114,25 @@ available_ct_releases <- function(package = c("sdtm", "adam", "send"),
 
   if (length(rows) == 0L) {
     return(tibble::tibble(
-      package = character(), version = character(),
-      release_date = character(), url = character(),
-      format = character(), source = character()
+      package = character(),
+      version = character(),
+      release_date = character(),
+      url = character(),
+      format = character(),
+      source = character()
     ))
   }
 
   out <- do.call(rbind, rows)
-  out <- out[order(out$source != "bundled",
-                   is.na(out$release_date),
-                   -rank(out$release_date)), , drop = FALSE]
+  out <- out[
+    order(
+      out$source != "bundled",
+      is.na(out$release_date),
+      -rank(out$release_date)
+    ),
+    ,
+    drop = FALSE
+  ]
   rownames(out) <- NULL
   tibble::as_tibble(out)
 }
@@ -154,42 +167,51 @@ available_ct_releases <- function(package = c("sdtm", "adam", "send"),
 #'
 #' @family ct
 #' @export
-download_ct <- function(package = c("sdtm", "adam", "send"),
-                        version = "latest",
-                        dest    = .ct_cache_dir(),
-                        force   = FALSE,
-                        timeout = 120L,
-                        quiet   = FALSE) {
+download_ct <- function(
+  package = c("sdtm", "adam", "send"),
+  version = "latest",
+  dest = .ct_cache_dir(),
+  force = FALSE,
+  timeout = 120L,
+  quiet = FALSE
+) {
   call <- rlang::caller_env()
   package <- match.arg(package)
   check_scalar_chr(version, call = call)
   check_scalar_chr(dest, call = call)
-  if (!dir.exists(dest)) dir.create(dest, recursive = TRUE)
+  if (!dir.exists(dest)) {
+    dir.create(dest, recursive = TRUE)
+  }
 
   url_info <- .nci_evs_url_for(package, version, timeout = timeout)
-  rds_path <- file.path(dest, sprintf("%s-ct-%s.rds", package,
-                                      url_info$release_date))
+  rds_path <- file.path(
+    dest,
+    sprintf("%s-ct-%s.rds", package, url_info$release_date)
+  )
 
   .download_and_cache(
-    url           = url_info$url,
-    rds_path      = rds_path,
-    fetch_ext     = ".txt",
-    parser        = function(tmp, info) {
-      .parse_nci_evs_txt(tmp, package = package,
-                         release_date = info$release_date,
-                         source_url   = info$url)
+    url = url_info$url,
+    rds_path = rds_path,
+    fetch_ext = ".txt",
+    parser = function(tmp, info) {
+      .parse_nci_evs_txt(
+        tmp,
+        package = package,
+        release_date = info$release_date,
+        source_url = info$url
+      )
     },
-    parser_info   = url_info,
+    parser_info = url_info,
     manifest_entry = list(
-      package       = package,
-      version       = url_info$release_date,
-      release_date  = url_info$release_date,
-      path          = rds_path
+      package = package,
+      version = url_info$release_date,
+      release_date = url_info$release_date,
+      path = rds_path
     ),
-    force         = force,
-    timeout       = timeout,
-    quiet         = quiet,
-    dest          = dest
+    force = force,
+    timeout = timeout,
+    quiet = quiet,
+    dest = dest
   )
 }
 
@@ -205,11 +227,18 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
 # --------------------------------------------------------------------------
 
 #' @noRd
-.download_and_cache <- function(url, rds_path, fetch_ext, parser,
-                                parser_info, manifest_entry,
-                                force = FALSE, timeout = 120L,
-                                quiet = FALSE,
-                                dest  = .ct_cache_dir()) {
+.download_and_cache <- function(
+  url,
+  rds_path,
+  fetch_ext,
+  parser,
+  parser_info,
+  manifest_entry,
+  force = FALSE,
+  timeout = 120L,
+  quiet = FALSE,
+  dest = .ct_cache_dir()
+) {
   if (file.exists(rds_path) && !isTRUE(force)) {
     if (!isTRUE(quiet)) {
       cli::cli_inform(c("v" = "Using cached {.path {rds_path}}"))
@@ -230,9 +259,11 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
   payload <- parser(tmp, parser_info)
   saveRDS(payload, rds_path, compress = "xz")
   n_rows <- tryCatch(
-    sum(vapply(payload,
+    sum(vapply(
+      payload,
       function(e) nrow(e$terms %||% e %||% data.frame()),
-      integer(1L))),
+      integer(1L)
+    )),
     error = function(e) NROW(payload)
   )
   if (!isTRUE(quiet)) {
@@ -244,10 +275,10 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
   if (.normalise_path(dest) != .normalise_path(.ct_cache_dir(create = FALSE))) {
     return(invisible(rds_path))
   }
-  entry <- c(manifest_entry,
-             list(downloaded_at = format(Sys.time(),
-                                         "%Y-%m-%dT%H:%M:%SZ",
-                                         tz = "UTC")))
+  entry <- c(
+    manifest_entry,
+    list(downloaded_at = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"))
+  )
   .ct_cache_write(entry, dir = dest)
   invisible(rds_path)
 }
@@ -256,7 +287,9 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
 # Internals
 # --------------------------------------------------------------------------
 
-.normalise_path <- function(p) normalizePath(p, winslash = "/", mustWork = FALSE)
+.normalise_path <- function(p) {
+  normalizePath(p, winslash = "/", mustWork = FALSE)
+}
 
 #' Resolve (package, version) to an NCI EVS URL + release date.
 #' @noRd
@@ -265,21 +298,31 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
   if (identical(version, "latest")) {
     rel <- .nci_evs_latest_release(package, timeout = timeout)
     return(list(
-      url = sprintf("%s/Archive/%s%%20Terminology%%20%s.txt",
-                    base, toupper(package), rel),
+      url = sprintf(
+        "%s/Archive/%s%%20Terminology%%20%s.txt",
+        base,
+        toupper(package),
+        rel
+      ),
       release_date = rel
     ))
   }
   if (!grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", version)) {
     herald_error(
-      c("{.arg version} must be {.val latest} or a {.val YYYY-MM-DD} date.",
-        "x" = "Got {.val {version}}."),
+      c(
+        "{.arg version} must be {.val latest} or a {.val YYYY-MM-DD} date.",
+        "x" = "Got {.val {version}}."
+      ),
       class = "herald_error_input"
     )
   }
   list(
-    url = sprintf("%s/Archive/%s%%20Terminology%%20%s.txt",
-                  base, toupper(package), version),
+    url = sprintf(
+      "%s/Archive/%s%%20Terminology%%20%s.txt",
+      base,
+      toupper(package),
+      version
+    ),
     release_date = version
   )
 }
@@ -295,34 +338,43 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
 #' @noRd
 .list_nci_evs_releases <- function(package, timeout = 30L) {
   base <- .nci_evs_index_for(package)
-  url  <- paste0(base, "/Archive/")
-  tmp  <- tempfile(fileext = ".html")
+  url <- paste0(base, "/Archive/")
+  tmp <- tempfile(fileext = ".html")
   on.exit(unlink(tmp), add = TRUE)
   old_timeout <- getOption("timeout")
   on.exit(options(timeout = old_timeout), add = TRUE)
   options(timeout = max(timeout, old_timeout))
   utils::download.file(url, tmp, mode = "wb", quiet = TRUE)
   html <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
-  rx <- sprintf("%s%%20Terminology%%20([0-9]{4}-[0-9]{2}-[0-9]{2})\\.txt",
-                toupper(package))
+  rx <- sprintf(
+    "%s%%20Terminology%%20([0-9]{4}-[0-9]{2}-[0-9]{2})\\.txt",
+    toupper(package)
+  )
   m <- regmatches(html, gregexpr(rx, html, perl = TRUE))[[1L]]
   if (length(m) == 0L) {
     return(tibble::tibble(
-      package = character(), version = character(),
-      release_date = character(), url = character(),
-      format = character(), source = character()
+      package = character(),
+      version = character(),
+      release_date = character(),
+      url = character(),
+      format = character(),
+      source = character()
     ))
   }
   dates <- regmatches(m, regexpr("[0-9]{4}-[0-9]{2}-[0-9]{2}", m))
   dates <- unique(sort(dates, decreasing = TRUE))
   data.frame(
-    package      = rep(package, length(dates)),
-    version      = dates,
+    package = rep(package, length(dates)),
+    version = dates,
     release_date = dates,
-    url          = sprintf("%s/Archive/%s%%20Terminology%%20%s.txt",
-                           base, toupper(package), dates),
-    format       = rep("txt", length(dates)),
-    source       = rep("remote", length(dates)),
+    url = sprintf(
+      "%s/Archive/%s%%20Terminology%%20%s.txt",
+      base,
+      toupper(package),
+      dates
+    ),
+    format = rep("txt", length(dates)),
+    source = rep("remote", length(dates)),
     stringsAsFactors = FALSE
   )
 }
@@ -349,34 +401,41 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
 #' @noRd
 .parse_nci_evs_txt <- function(path, package, release_date, source_url) {
   raw <- utils::read.delim(
-    path, sep = "\t", quote = "", stringsAsFactors = FALSE,
-    check.names = FALSE, na.strings = "", encoding = "UTF-8"
+    path,
+    sep = "\t",
+    quote = "",
+    stringsAsFactors = FALSE,
+    check.names = FALSE,
+    na.strings = "",
+    encoding = "UTF-8"
   )
   want <- c(
-    code        = "Code",
-    clist_code  = "Codelist Code",
-    extensible  = "Codelist Extensible (Yes/No)",
-    clist_name  = "Codelist Name",
-    submission  = "CDISC Submission Value",
-    synonyms    = "CDISC Synonym(s)",
-    preferred   = "NCI Preferred Term",
-    definition  = "CDISC Definition"
+    code = "Code",
+    clist_code = "Codelist Code",
+    extensible = "Codelist Extensible (Yes/No)",
+    clist_name = "Codelist Name",
+    submission = "CDISC Submission Value",
+    synonyms = "CDISC Synonym(s)",
+    preferred = "NCI Preferred Term",
+    definition = "CDISC Definition"
   )
   missing <- want[!want %in% names(raw)]
   if (length(missing) > 0L) {
     herald_error_runtime(
-      c("NCI EVS file is missing expected column{?s}: {.val {unname(missing)}}",
-        "i" = "Parsed columns: {.val {names(raw)}}")
+      c(
+        "NCI EVS file is missing expected column{?s}: {.val {unname(missing)}}",
+        "i" = "Parsed columns: {.val {names(raw)}}"
+      )
     )
   }
   df <- data.frame(
-    code       = raw[[want[["code"]]]],
+    code = raw[[want[["code"]]]],
     clist_code = raw[[want[["clist_code"]]]],
     extensible = toupper(raw[[want[["extensible"]]]]) == "YES",
     clist_name = raw[[want[["clist_name"]]]],
     submission = raw[[want[["submission"]]]],
-    synonyms   = raw[[want[["synonyms"]]]],
-    preferred  = raw[[want[["preferred"]]]],
+    synonyms = raw[[want[["synonyms"]]]],
+    preferred = raw[[want[["preferred"]]]],
     definition = raw[[want[["definition"]]]],
     stringsAsFactors = FALSE
   )
@@ -385,7 +444,7 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
   # equal to `Code`. Use the first as the definitive signal.
   is_header <- is.na(df$clist_code) | !nzchar(df$clist_code)
   headers <- df[is_header, , drop = FALSE]
-  terms   <- df[!is_header, , drop = FALSE]
+  terms <- df[!is_header, , drop = FALSE]
 
   out <- vector("list", nrow(headers))
   names(out) <- headers$submission
@@ -396,19 +455,19 @@ download_ct <- function(package = c("sdtm", "adam", "send"),
     out[[h$submission]] <- list(
       codelist_code = h$code,
       codelist_name = h$clist_name,
-      extensible    = isTRUE(h$extensible),
-      terms         = data.frame(
+      extensible = isTRUE(h$extensible),
+      terms = data.frame(
         submissionValue = tm$submission,
-        conceptId       = tm$code,
-        preferredTerm   = tm$preferred,
+        conceptId = tm$code,
+        preferredTerm = tm$preferred,
         stringsAsFactors = FALSE
       )
     )
   }
 
-  attr(out, "package")      <- package
-  attr(out, "version")      <- release_date
+  attr(out, "package") <- package
+  attr(out, "version") <- release_date
   attr(out, "release_date") <- release_date
-  attr(out, "source_url")   <- source_url
+  attr(out, "source_url") <- source_url
   out
 }

@@ -21,8 +21,10 @@ test_that("ct_provider('adam') wraps the bundled ADaM CT", {
 test_that("contains() tests codelist membership per submission value", {
   p <- ct_provider("sdtm")
   expect_true(all(p$contains(c("Y", "N"), field = "NY")))
-  expect_equal(p$contains(c("Y", "UNKNOWN_VALUE"), field = "NY"),
-               c(TRUE, FALSE))
+  expect_equal(
+    p$contains(c("Y", "UNKNOWN_VALUE"), field = "NY"),
+    c(TRUE, FALSE)
+  )
   expect_true(p$contains("ASSIGNED, NOT TREATED", field = "ARMNULRS"))
 })
 
@@ -57,8 +59,10 @@ test_that("lookup() returns NULL for unknown field or value", {
 })
 
 test_that("op_value_in_codelist still works unchanged (provider shim)", {
-  d <- data.frame(FL = c("Y", "N", "UNKNOWN", NA_character_),
-                  stringsAsFactors = FALSE)
+  d <- data.frame(
+    FL = c("Y", "N", "UNKNOWN", NA_character_),
+    stringsAsFactors = FALSE
+  )
   ctx <- list()
   out <- op_value_in_codelist(d, ctx, name = "FL", codelist = "NY")
   # Y and N are in NY, UNKNOWN is not, NA advises
@@ -79,8 +83,13 @@ test_that("op_value_in_codelist with match_synonyms reads raw CT", {
   # code path and confirms it still returns a correct membership.
   d <- data.frame(FL = c("Y", "UNKNOWN_VALUE"), stringsAsFactors = FALSE)
   ctx <- list()
-  out <- op_value_in_codelist(d, ctx, name = "FL", codelist = "NY",
-                              match_synonyms = TRUE)
+  out <- op_value_in_codelist(
+    d,
+    ctx,
+    name = "FL",
+    codelist = "NY",
+    match_synonyms = TRUE
+  )
   expect_equal(out, c(FALSE, TRUE))
 })
 
@@ -89,7 +98,6 @@ test_that("ct_provider() works via register_dictionary + validate()", {
   on.exit(unregister_dictionary("ct-sdtm"), add = TRUE)
   register_dictionary("ct-sdtm", ct_provider("sdtm"))
   dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
-  r <- validate(files = list(DM = dm), rules = character(0),
-                quiet = TRUE)
+  r <- validate(files = list(DM = dm), rules = character(0), quiet = TRUE)
   expect_s3_class(r, "herald_result")
 })

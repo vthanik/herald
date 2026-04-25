@@ -43,32 +43,36 @@ validate_spec <- function(spec, report = NULL, view = TRUE) {
   call <- rlang::caller_env()
   check_herald_spec(spec, call = call)
 
-  rules    <- .spec_rules()
+  rules <- .spec_rules()
   datasets <- .spec_datasets(spec)
 
   ctx <- new.env(parent = emptyenv())
-  ctx$datasets     <- datasets
-  ctx$spec         <- spec
-  ctx$crossrefs    <- list()
+  ctx$datasets <- datasets
+  ctx$spec <- spec
+  ctx$crossrefs <- list()
   ctx$missing_refs <- list(datasets = list(), dictionaries = list())
-  ctx$op_errors    <- list()
+  ctx$op_errors <- list()
 
   all_findings <- list()
 
   for (i in seq_len(nrow(rules))) {
-    rule            <- as.list(rules[i, , drop = FALSE])
-    rule$scope      <- rule$scope[[1]]
+    rule <- as.list(rules[i, , drop = FALSE])
+    rule$scope <- rule$scope[[1]]
     rule$check_tree <- rule$check_tree[[1]]
     rule$operations <- rule$operations[[1]]
 
     target_ds <- .spec_scoped_datasets(rule, datasets)
-    if (length(target_ds) == 0L) next
+    if (length(target_ds) == 0L) {
+      next
+    }
 
     # Use the human-readable description as the finding message so users
     # see "Dataset label (Description) is required for regulatory submissions."
     # rather than the short code "DATASET_LABEL_REQUIRED".
     desc <- rule$description %||% rule$message
-    if (!is.null(desc) && nzchar(desc)) rule$message <- desc
+    if (!is.null(desc) && nzchar(desc)) {
+      rule$message <- desc
+    }
 
     for (ds_name in target_ds) {
       d <- datasets[[ds_name]]
@@ -78,7 +82,9 @@ validate_spec <- function(spec, report = NULL, view = TRUE) {
         walk_tree(rule$check_tree, d, ctx),
         error = function(e) rep(NA, nrow(d))
       )
-      if (length(mask) == 0L) next
+      if (length(mask) == 0L) {
+        next
+      }
 
       primary_var <- .leaf_name(rule$check_tree)
       f <- emit_findings(rule, ds_name, mask, d, variable = primary_var)
@@ -94,7 +100,9 @@ validate_spec <- function(spec, report = NULL, view = TRUE) {
 
   n_issues <- sum(findings$status == "fired", na.rm = TRUE)
 
-  if (n_issues == 0L) return(invisible(NULL))
+  if (n_issues == 0L) {
+    return(invisible(NULL))
+  }
 
   # Write + view + abort -------------------------------------------------
   out_path <- report %||% tempfile(fileext = ".html")
@@ -107,7 +115,8 @@ validate_spec <- function(spec, report = NULL, view = TRUE) {
     } else if (requireNamespace("htmltools", quietly = TRUE)) {
       tryCatch(
         htmltools::html_print(htmltools::HTML(paste(
-          readLines(out_path, warn = FALSE), collapse = "\n"
+          readLines(out_path, warn = FALSE),
+          collapse = "\n"
         ))),
         error = function(e) utils::browseURL(out_path)
       )
@@ -123,7 +132,7 @@ validate_spec <- function(spec, report = NULL, view = TRUE) {
       "i" = "Fix the spec and re-run {.fn validate}."
     ),
     class = "herald_error_validation",
-    call  = call
+    call = call
   )
 }
 
@@ -134,12 +143,18 @@ validate_spec <- function(spec, report = NULL, view = TRUE) {
 #' Load spec_rules.rds (lazy, cached per session)
 #' @noRd
 .spec_rules <- function() {
-  path <- system.file("rules", "spec_rules.rds", package = "herald",
-                      mustWork = FALSE)
+  path <- system.file(
+    "rules",
+    "spec_rules.rds",
+    package = "herald",
+    mustWork = FALSE
+  )
   if (!nzchar(path) || !file.exists(path)) {
     herald_error(
-      c("spec_rules.rds not found.",
-        "i" = "Run {.code Rscript tools/compile-rules.R} to rebuild it."),
+      c(
+        "spec_rules.rds not found.",
+        "i" = "Run {.code Rscript tools/compile-rules.R} to rebuild it."
+      ),
       class = "herald_error_file"
     )
   }
@@ -164,12 +179,15 @@ validate_spec <- function(spec, report = NULL, view = TRUE) {
   }
 
   list(
-    Define_Dataset_Metadata    = ensure_df(spec$ds_spec,    "dataset"),
-    Define_Variable_Metadata   = ensure_df(spec$var_spec,   c("dataset", "variable")),
-    Define_Study_Metadata      = ensure_df(spec$study,      "attribute"),
+    Define_Dataset_Metadata = ensure_df(spec$ds_spec, "dataset"),
+    Define_Variable_Metadata = ensure_df(
+      spec$var_spec,
+      c("dataset", "variable")
+    ),
+    Define_Study_Metadata = ensure_df(spec$study, "attribute"),
     Define_ValueLevel_Metadata = ensure_df(spec$value_spec),
-    Define_Codelist_Metadata   = ensure_df(spec$codelist),
-    Define_ARM_Metadata        = ensure_df(spec$arm_displays),
+    Define_Codelist_Metadata = ensure_df(spec$codelist),
+    Define_ARM_Metadata = ensure_df(spec$arm_displays),
     Define_ARM_Result_Metadata = ensure_df(spec$arm_results)
   )
 }
@@ -189,12 +207,20 @@ validate_spec <- function(spec, report = NULL, view = TRUE) {
   }
 
   required <- .check_tree_field_names(rule$check_tree)
-  if (length(required) == 0L) return(names(datasets))
+  if (length(required) == 0L) {
+    return(names(datasets))
+  }
 
-  keep <- vapply(datasets, function(d) {
-    if (!is.data.frame(d) || nrow(d) == 0L) return(FALSE)
-    all(required %in% names(d))
-  }, logical(1L))
+  keep <- vapply(
+    datasets,
+    function(d) {
+      if (!is.data.frame(d) || nrow(d) == 0L) {
+        return(FALSE)
+      }
+      all(required %in% names(d))
+    },
+    logical(1L)
+  )
 
   names(datasets)[keep]
 }
@@ -206,8 +232,9 @@ validate_spec <- function(spec, report = NULL, view = TRUE) {
   walk <- function(x) {
     if (is.list(x)) {
       v <- x[["name"]]
-      if (is.character(v) && length(v) == 1L && nzchar(v) &&
-          !startsWith(v, "__")) {
+      if (
+        is.character(v) && length(v) == 1L && nzchar(v) && !startsWith(v, "__")
+      ) {
         out <<- c(out, v)
       }
       lapply(x, walk)
@@ -220,10 +247,16 @@ validate_spec <- function(spec, report = NULL, view = TRUE) {
 #' Extract the primary variable name from the outermost check_tree leaf
 #' @noRd
 .leaf_name <- function(ct) {
-  if (is.null(ct)) return(NA_character_)
+  if (is.null(ct)) {
+    return(NA_character_)
+  }
   first_leaf <- function(x) {
-    if (!is.list(x)) return(NA_character_)
-    if (!is.null(x$name) && !is.null(x$operator)) return(x$name)
+    if (!is.list(x)) {
+      return(NA_character_)
+    }
+    if (!is.null(x$name) && !is.null(x$operator)) {
+      return(x$name)
+    }
     for (child in x) {
       v <- first_leaf(child)
       if (!is.na(v)) return(v)

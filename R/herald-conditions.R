@@ -1,5 +1,5 @@
 # --------------------------------------------------------------------------
-# herald-conditions.R — structured error and warning conditions
+# herald-conditions.R  --  structured error and warning conditions
 # --------------------------------------------------------------------------
 # Every herald error inherits from "herald_error" so callers can catch
 # broadly or narrowly:

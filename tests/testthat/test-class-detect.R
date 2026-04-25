@@ -35,8 +35,10 @@ test_that("ADLB / ADQS resolve to BDS via PARAMCD prototype (Stage 2)", {
 test_that("AD-prefixed dataset without PARAMCD but with --TRT/--TERM is OCCDS", {
   # An ADXX dataset with ADXXTRT and no PARAMCD matches OCCDS prototype.
   cols_occds <- c("USUBJID", "ADXXSEQ", "ADXXTRT", "ADXXDECOD")
-  expect_equal(herald:::infer_class("ADXX", cols_occds),
-               "OCCURRENCE DATA STRUCTURE")
+  expect_equal(
+    herald:::infer_class("ADXX", cols_occds),
+    "OCCURRENCE DATA STRUCTURE"
+  )
 })
 
 test_that("AD-prefixed dataset with neither BDS nor OCCDS cues falls to ADAM OTHER", {
@@ -56,15 +58,23 @@ test_that("custom FINDINGS via --TESTCD", {
 })
 
 test_that("caller-supplied spec wins over auto-detection", {
-  spec <- structure(list(
-    ds_spec = data.frame(dataset = "AE", class = "EVENTS OVERRIDE",
-                         stringsAsFactors = FALSE)
-  ), class = c("herald_spec", "list"))
+  spec <- structure(
+    list(
+      ds_spec = data.frame(
+        dataset = "AE",
+        class = "EVENTS OVERRIDE",
+        stringsAsFactors = FALSE
+      )
+    ),
+    class = c("herald_spec", "list")
+  )
   # Even though AE -> EVENTS via the map, spec takes precedence.
-  expect_equal(herald:::infer_class("AE", c("AETERM"), spec = spec),
-               "EVENTS OVERRIDE")
+  expect_equal(
+    herald:::infer_class("AE", c("AETERM"), spec = spec),
+    "EVENTS OVERRIDE"
+  )
 })
 
 test_that("unknown dataset with no identifying columns yields NA", {
-  expect_true(is.na(herald:::infer_class("NOMATCH", c("X","Y","Z"))))
+  expect_true(is.na(herald:::infer_class("NOMATCH", c("X", "Y", "Z"))))
 })

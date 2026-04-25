@@ -331,7 +331,11 @@ test_that("parse_member_section V5: multiple rows round-trip", {
 
   result <- suppressMessages(suppressWarnings(read_xpt(tmp)))
   expect_equal(nrow(result), 3L)
-  expect_equal(result$USUBJID, c("S1-001", "S1-002", "S1-003"), ignore_attr = TRUE)
+  expect_equal(
+    result$USUBJID,
+    c("S1-001", "S1-002", "S1-003"),
+    ignore_attr = TRUE
+  )
 })
 
 # -- parse_member_section: V8 (ds_name bytes 9:40) ----------------------------
@@ -474,7 +478,7 @@ test_that("parse_label_extension LABELV9: mixed columns (some with long format)"
     AGE = 30L,
     stringsAsFactors = FALSE
   )
-  # Only ADTM has a long format — triggers LABELV9 for all columns with ext
+  # Only ADTM has a long format  --  triggers LABELV9 for all columns with ext
   attr(df$ADTM, "label") <- "Analysis Datetime"
   attr(df$ADTM, "format.sas") <- "E8601DT26.6" # > 8 chars
   attr(df$AGE, "label") <- "Age at Baseline"

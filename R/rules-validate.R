@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# rules-validate.R — validate() entry point
+# rules-validate.R  --  validate() entry point
 # -----------------------------------------------------------------------------
 # Top-level: given a directory path OR a named list of data frames, load the
 # rule corpus, scope each rule to matching datasets, walk its check_tree, and
@@ -107,19 +107,21 @@
 #'   [rule_catalog()] to browse the available rules.
 #' @family validate
 #' @export
-validate <- function(path = NULL,
-                     files = NULL,
-                     spec = NULL,
-                     rules = NULL,
-                     authorities = NULL,
-                     standards = NULL,
-                     dictionaries = NULL,
-                     study_metadata = NULL,
-                     define = NULL,
-                     severity_map = NULL,
-                     quiet = FALSE) {
+validate <- function(
+  path = NULL,
+  files = NULL,
+  spec = NULL,
+  rules = NULL,
+  authorities = NULL,
+  standards = NULL,
+  dictionaries = NULL,
+  study_metadata = NULL,
+  define = NULL,
+  severity_map = NULL,
+  quiet = FALSE
+) {
   t0 <- Sys.time()
-  call      <- rlang::caller_env()
+  call <- rlang::caller_env()
   files_exp <- rlang::enexpr(files)
 
   if (is.null(path) && is.null(files)) {
@@ -141,16 +143,19 @@ validate <- function(path = NULL,
   if (!is.null(files)) {
     # Single data frame shortcut: validate(files = dm) works like list(dm).
     if (is.data.frame(files)) {
-      ds_name <- if (is.symbol(files_exp)) toupper(as.character(files_exp)) else
+      ds_name <- if (is.symbol(files_exp)) {
+        toupper(as.character(files_exp))
+      } else {
         attr(files, "dataset_name") %||% "DATA"
-      files     <- stats::setNames(list(files), ds_name)
+      }
+      files <- stats::setNames(list(files), ds_name)
       files_exp <- call("list", files_exp)
     } else {
       files <- .infer_file_names(files, files_exp, call)
     }
     # Lift out any Define-XML entry (path or herald_define object) from files.
-    define   <- define %||% .extract_define_from_files(files, call)
-    files    <- .drop_define_entries(files)
+    define <- define %||% .extract_define_from_files(files, call)
+    files <- .drop_define_entries(files)
     datasets <- .assemble_from_files(files, call)
   } else {
     datasets <- .assemble_from_path(path, call)
@@ -200,13 +205,13 @@ validate <- function(path = NULL,
 
   # ---- ctx + per-rule execution -------------------------------------------
   ctx <- new_herald_ctx()
-  ctx$datasets       <- datasets
-  ctx$spec           <- spec
+  ctx$datasets <- datasets
+  ctx$spec <- spec
   ctx$study_metadata <- study_metadata
-  ctx$define         <- define
-  ctx$crossrefs      <- build_crossrefs(datasets, spec)
+  ctx$define <- define
+  ctx$crossrefs <- build_crossrefs(datasets, spec)
   # Per-run CT cache. op_value_in_codelist lazy-loads on first use.
-  ctx$ct           <- list()
+  ctx$ct <- list()
   # Dictionary registry (Dictionary Provider Protocol). Populated
   # from the global session registry + the explicit `dictionaries=`
   # arg. Missing-ref tracker feeds result$skipped_refs at the end.
@@ -223,7 +228,7 @@ validate <- function(path = NULL,
   for (i in seq_len(rules_total)) {
     rule <- as.list(catalog[i, , drop = FALSE])
     # Un-list-column the scope + check_tree (they come back as length-1 list)
-    rule$scope      <- rule$scope[[1]]
+    rule$scope <- rule$scope[[1]]
     rule$check_tree <- rule$check_tree[[1]]
     ctx$current_rule_id <- rule$id
 
@@ -233,13 +238,15 @@ validate <- function(path = NULL,
     if (.is_submission_scope(rule)) {
       stub <- .submission_stub_df()
       ctx$current_dataset <- .SUBMISSION_DATASET
-      ctx$current_domain  <- ""
+      ctx$current_domain <- ""
       mask <- walk_tree(rule$check_tree, stub, ctx)
       if (length(mask) > 0L && any(!is.na(mask) & mask)) {
         rule_emit <- .sev_override(rule, severity_map, NULL)
         f <- emit_submission_finding(rule_emit$rule)
         if (nrow(f) > 0L) {
-          if (rule_emit$changed) f$severity_override <- rule_emit$orig
+          if (rule_emit$changed) {
+            f$severity_override <- rule_emit$orig
+          }
           all_findings[[length(all_findings) + 1L]] <- f
           rules_applied <- rules_applied + 1L
         }
@@ -248,7 +255,9 @@ validate <- function(path = NULL,
     }
 
     target_ds <- scoped_datasets(rule, ctx)
-    if (length(target_ds) == 0L) next
+    if (length(target_ds) == 0L) {
+      next
+    }
 
     rule_fired <- FALSE
     is_meta_rule <- .is_metadata_rule(rule$check_tree)
@@ -256,7 +265,7 @@ validate <- function(path = NULL,
       d <- datasets[[ds_name]]
       # Make dataset name available to the walker for --VAR wildcard expansion
       ctx$current_dataset <- ds_name
-      ctx$current_domain  <- toupper(substr(ds_name, 1, 2))
+      ctx$current_domain <- toupper(substr(ds_name, 1, 2))
       rule_emit <- .sev_override(rule, severity_map, .ds_class(ds_name, ctx))
       # Run Operations: pre-compute phase (stamp $id columns; cache in ctx).
       ctx$op_results <- list()
@@ -275,18 +284,24 @@ validate <- function(path = NULL,
         for (idx_val in names(xp$instances)) {
           inst_ct <- xp$instances[[idx_val]]
           m <- walk_tree(inst_ct, d, ctx)
-          if (length(m) == 0L) next
+          if (length(m) == 0L) {
+            next
+          }
           if (is_meta_rule && length(m) > 1L && any(!is.na(m) & m)) {
             m <- c(TRUE, rep(FALSE, length(m) - 1L))
           }
-          if (!any(!is.na(m) & m)) next
+          if (!any(!is.na(m) & m)) {
+            next
+          }
           any_fired_this_ds <- TRUE
           tuple <- xp$tuples[[idx_val]]
           msg <- rule$message
           var_inst <- primary_variable(rule$check_tree)
           for (p in names(tuple)) {
             v <- tuple[[p]]
-            if (is.na(v) || !nzchar(as.character(v))) next
+            if (is.na(v) || !nzchar(as.character(v))) {
+              next
+            }
             msg <- .render_indexed_text(msg, p, v)
             var_inst <- .render_indexed_text(var_inst, p, v)
           }
@@ -294,11 +309,15 @@ validate <- function(path = NULL,
           inst_rule$message <- msg
           f <- emit_findings(inst_rule, ds_name, m, d, variable = var_inst)
           if (nrow(f) > 0L) {
-            if (rule_emit$changed) f$severity_override <- rule_emit$orig
+            if (rule_emit$changed) {
+              f$severity_override <- rule_emit$orig
+            }
             all_findings[[length(all_findings) + 1L]] <- f
           }
         }
-        if (any_fired_this_ds) rule_fired <- TRUE
+        if (any_fired_this_ds) {
+          rule_fired <- TRUE
+        }
         next
       }
 
@@ -310,23 +329,33 @@ validate <- function(path = NULL,
       # against a 1-row placeholder that preserves the column list, then
       # trim to a single fire/non-fire answer.
       if (is_meta_rule && length(mask) == 0L) {
-        ph <- as.data.frame(lapply(d, function(x) x[NA_integer_][1]),
-                            stringsAsFactors = FALSE, check.names = FALSE)
-        # lapply with NA_integer_ gives 1 row of NAs preserving column types.
-        if (nrow(ph) == 0L) ph <- as.data.frame(
-          stats::setNames(rep(list(NA), length(names(d))), names(d)),
-          stringsAsFactors = FALSE, check.names = FALSE
+        ph <- as.data.frame(
+          lapply(d, function(x) x[NA_integer_][1]),
+          stringsAsFactors = FALSE,
+          check.names = FALSE
         )
+        # lapply with NA_integer_ gives 1 row of NAs preserving column types.
+        if (nrow(ph) == 0L) {
+          ph <- as.data.frame(
+            stats::setNames(rep(list(NA), length(names(d))), names(d)),
+            stringsAsFactors = FALSE,
+            check.names = FALSE
+          )
+        }
         mask <- walk_tree(xp$tree, ph, ctx)
       }
-      if (length(mask) == 0L) next
+      if (length(mask) == 0L) {
+        next
+      }
       if (is_meta_rule && length(mask) > 1L && any(!is.na(mask) & mask)) {
         mask <- c(TRUE, rep(FALSE, length(mask) - 1L))
       }
       var <- primary_variable(rule$check_tree)
       f <- emit_findings(rule_emit$rule, ds_name, mask, d, variable = var)
       if (nrow(f) > 0L) {
-        if (rule_emit$changed) f$severity_override <- rule_emit$orig
+        if (rule_emit$changed) {
+          f$severity_override <- rule_emit$orig
+        }
         all_findings[[length(all_findings) + 1L]] <- f
         rule_fired <- TRUE
       } else if (any(!is.na(mask) & mask)) {
@@ -351,10 +380,10 @@ validate <- function(path = NULL,
   dataset_meta <- lapply(names(datasets), function(nm) {
     d <- datasets[[nm]]
     list(
-      rows   = nrow(d),
-      cols   = ncol(d),
-      label  = attr(d, "label") %||% NA_character_,
-      class  = .ds_class(nm, ctx)
+      rows = nrow(d),
+      cols = ncol(d),
+      label = attr(d, "label") %||% NA_character_,
+      class = .ds_class(nm, ctx)
     )
   })
   names(dataset_meta) <- names(datasets)
@@ -362,20 +391,20 @@ validate <- function(path = NULL,
   duration <- Sys.time() - t0
 
   new_herald_result(
-    findings         = findings_tbl,
-    rules_applied    = rules_applied,
-    rules_total      = rules_total,
+    findings = findings_tbl,
+    rules_applied = rules_applied,
+    rules_total = rules_total,
     datasets_checked = names(datasets),
-    duration         = duration,
-    profile          = NA_character_,
-    config_hash      = NA_character_,
-    dataset_meta     = dataset_meta,
-    rule_catalog     = tibble::as_tibble(catalog[, intersect(
+    duration = duration,
+    profile = NA_character_,
+    config_hash = NA_character_,
+    dataset_meta = dataset_meta,
+    rule_catalog = tibble::as_tibble(catalog[, intersect(
       c("id", "authority", "standard", "severity", "message", "source_url"),
       names(catalog)
     )]),
-    op_errors        = ctx$op_errors,
-    skipped_refs     = .finalize_skipped_refs(ctx)
+    op_errors = ctx$op_errors,
+    skipped_refs = .finalize_skipped_refs(ctx)
   )
 }
 
@@ -386,27 +415,42 @@ validate <- function(path = NULL,
 # the rule is "metadata-level" and its mask is uniform across rows: we should
 # fire once per (rule x dataset), not once per row. Matches P21's concept of
 # Target="Metadata" rules authored from CDISC text.
-.METADATA_OPS <- c("exists", "not_exists", "label_by_suffix_missing",
-                   "any_var_name_exceeds_length",
-                   "any_var_label_exceeds_length",
-                   "attr_mismatch", "shared_attr_mismatch",
-                   "dataset_label_not",
-                   "treatment_var_absent_across_datasets",
-                   "no_var_with_suffix")
+.METADATA_OPS <- c(
+  "exists",
+  "not_exists",
+  "label_by_suffix_missing",
+  "any_var_name_exceeds_length",
+  "any_var_label_exceeds_length",
+  "attr_mismatch",
+  "shared_attr_mismatch",
+  "dataset_label_not",
+  "treatment_var_absent_across_datasets",
+  "no_var_with_suffix"
+)
 
 # Walk a check_tree and return TRUE when every leaf operator is in
 # .METADATA_OPS. Narrative / empty / r_expression trees are not metadata-
 # level (different handling elsewhere).
 .is_metadata_rule <- function(node) {
-  if (!is.list(node) || length(node) == 0L) return(FALSE)
-  if (!is.null(node[["narrative"]])) return(FALSE)
-  if (!is.null(node[["r_expression"]])) return(FALSE)
+  if (!is.list(node) || length(node) == 0L) {
+    return(FALSE)
+  }
+  if (!is.null(node[["narrative"]])) {
+    return(FALSE)
+  }
+  if (!is.null(node[["r_expression"]])) {
+    return(FALSE)
+  }
   if (!is.null(node[["operator"]])) {
     return(isTRUE(node[["operator"]] %in% .METADATA_OPS))
   }
-  if (!is.null(node[["not"]])) return(.is_metadata_rule(node[["not"]]))
+  if (!is.null(node[["not"]])) {
+    return(.is_metadata_rule(node[["not"]]))
+  }
   children <- c(node[["all"]], node[["any"]])
-  if (length(children) == 0L) return(FALSE)
+  if (length(children) == 0L) {
+    return(FALSE)
+  }
   all(vapply(children, .is_metadata_rule, logical(1L)))
 }
 
@@ -439,7 +483,7 @@ validate <- function(path = NULL,
     }
     vals <- as.character(d[[j]])
     vals <- vals[!is.na(vals) & nzchar(vals)]
-    dup  <- unique(vals[duplicated(vals)])
+    dup <- unique(vals[duplicated(vals)])
     out[[nm]] <- dup
   }
   out
@@ -455,14 +499,20 @@ validate <- function(path = NULL,
 #' dataset field of an advisory row being exhaustive.
 #' @noRd
 .collapse_advisories <- function(findings) {
-  if (nrow(findings) == 0L) return(findings)
+  if (nrow(findings) == 0L) {
+    return(findings)
+  }
   fired <- findings[findings$status != "advisory", , drop = FALSE]
-  adv   <- findings[findings$status == "advisory", , drop = FALSE]
+  adv <- findings[findings$status == "advisory", , drop = FALSE]
   if (nrow(adv) > 1L) {
     adv <- adv[!duplicated(adv$rule_id), , drop = FALSE]
   }
-  if (nrow(fired) == 0L) return(adv)
-  if (nrow(adv)   == 0L) return(fired)
+  if (nrow(fired) == 0L) {
+    return(adv)
+  }
+  if (nrow(adv) == 0L) {
+    return(fired)
+  }
   rbind(fired, adv)
 }
 
@@ -478,7 +528,9 @@ validate <- function(path = NULL,
   }
   new_sev <- .apply_sev_map(rule[["id"]] %||% "", orig, severity_map, ds_class)
   changed <- !identical(new_sev, orig)
-  if (changed) rule[["severity"]] <- new_sev
+  if (changed) {
+    rule[["severity"]] <- new_sev
+  }
   list(rule = rule, orig = orig, changed = changed)
 }
 
@@ -486,23 +538,33 @@ validate <- function(path = NULL,
 #' @noRd
 .apply_sev_map <- function(rule_id, orig_sev, severity_map, ds_class) {
   nm <- names(severity_map)
-  if (is.null(nm)) return(orig_sev)
+  if (is.null(nm)) {
+    return(orig_sev)
+  }
 
   # tier 1: exact rule_id
   i <- match(rule_id, nm, nomatch = 0L)
-  if (i > 0L) return(.resolve_sev_entry(severity_map[[i]], ds_class, orig_sev))
+  if (i > 0L) {
+    return(.resolve_sev_entry(severity_map[[i]], ds_class, orig_sev))
+  }
 
   # tier 2: regex match against rule_id
   for (j in seq_along(nm)) {
     pat <- nm[[j]]
-    if (!nzchar(pat)) next
+    if (!nzchar(pat)) {
+      next
+    }
     hit <- tryCatch(grepl(pat, rule_id, perl = TRUE), error = function(e) FALSE)
-    if (isTRUE(hit)) return(.resolve_sev_entry(severity_map[[j]], ds_class, orig_sev))
+    if (isTRUE(hit)) {
+      return(.resolve_sev_entry(severity_map[[j]], ds_class, orig_sev))
+    }
   }
 
   # tier 3: severity category
   i <- match(orig_sev, nm, nomatch = 0L)
-  if (i > 0L) return(.resolve_sev_entry(severity_map[[i]], ds_class, orig_sev))
+  if (i > 0L) {
+    return(.resolve_sev_entry(severity_map[[i]], ds_class, orig_sev))
+  }
 
   orig_sev
 }
@@ -511,7 +573,9 @@ validate <- function(path = NULL,
 #' list (`list(ADSL = "Reject", BDS = "High", default = "Medium")`).
 #' @noRd
 .resolve_sev_entry <- function(entry, ds_class, orig_sev) {
-  if (is.character(entry) && length(entry) == 1L) return(entry)
+  if (is.character(entry) && length(entry) == 1L) {
+    return(entry)
+  }
   if (is.list(entry)) {
     if (!is.null(ds_class) && nzchar(ds_class) && !is.null(entry[[ds_class]])) {
       return(as.character(entry[[ds_class]]))
@@ -542,16 +606,23 @@ validate <- function(path = NULL,
 #' produce its usual "must be a named list of data frames" error.
 #' @noRd
 .infer_file_names <- function(files, files_exp, call) {
-  if (!is.list(files)) return(files)
+  if (!is.list(files)) {
+    return(files)
+  }
   have_names <- names(files) %||% rep("", length(files))
 
-  if (!is.call(files_exp) || length(files_exp) <= 1L ||
-      !identical(files_exp[[1L]], quote(list))) {
+  if (
+    !is.call(files_exp) ||
+      length(files_exp) <= 1L ||
+      !identical(files_exp[[1L]], quote(list))
+  ) {
     return(files)
   }
 
   entries <- as.list(files_exp)[-1L]
-  if (length(entries) != length(files)) return(files)
+  if (length(entries) != length(files)) {
+    return(files)
+  }
 
   entry_nms <- names(entries) %||% rep("", length(entries))
   is_sym <- vapply(entries, is.symbol, logical(1L))
@@ -559,7 +630,9 @@ validate <- function(path = NULL,
   # If none of the entries look like bare symbols, nothing to infer --
   # leave `files` as given and let downstream validation handle it.
   recoverable <- is_sym & !nzchar(have_names) & !nzchar(entry_nms)
-  if (!any(recoverable)) return(files)
+  if (!any(recoverable)) {
+    return(files)
+  }
 
   for (i in which(recoverable)) {
     have_names[[i]] <- as.character(entries[[i]])
@@ -582,23 +655,41 @@ validate <- function(path = NULL,
 }
 
 .extract_define_from_files <- function(files, call) {
-  if (!is.list(files)) return(NULL)
+  if (!is.list(files)) {
+    return(NULL)
+  }
   for (nm in names(files)) {
     v <- files[[nm]]
-    if (inherits(v, "herald_define")) return(v)
-    if (is.character(v) && length(v) == 1L && grepl("[.]xml$", v, ignore.case = TRUE)) {
-      return(tryCatch(read_define_xml(v, call = call), error = function(e) NULL))
+    if (inherits(v, "herald_define")) {
+      return(v)
+    }
+    if (
+      is.character(v) &&
+        length(v) == 1L &&
+        grepl("[.]xml$", v, ignore.case = TRUE)
+    ) {
+      return(tryCatch(read_define_xml(v, call = call), error = function(e) {
+        NULL
+      }))
     }
   }
   NULL
 }
 
 .drop_define_entries <- function(files) {
-  if (!is.list(files)) return(files)
-  keep <- vapply(files, function(v) {
-    !inherits(v, "herald_define") &&
-      !(is.character(v) && length(v) == 1L && grepl("[.]xml$", v, ignore.case = TRUE))
-  }, logical(1L))
+  if (!is.list(files)) {
+    return(files)
+  }
+  keep <- vapply(
+    files,
+    function(v) {
+      !inherits(v, "herald_define") &&
+        !(is.character(v) &&
+          length(v) == 1L &&
+          grepl("[.]xml$", v, ignore.case = TRUE))
+    },
+    logical(1L)
+  )
   files[keep]
 }
 
@@ -609,7 +700,9 @@ validate <- function(path = NULL,
       call = call
     )
   }
-  if (length(files) == 0L) return(list())
+  if (length(files) == 0L) {
+    return(list())
+  }
   if (is.null(names(files))) {
     herald_error_validation(
       "{.arg files} must be a named list of data frames.",
@@ -629,30 +722,39 @@ validate <- function(path = NULL,
 
 .assemble_from_path <- function(path, call) {
   if (!dir.exists(path)) {
-    herald_error_validation("{.arg path} {.path {path}} does not exist.", call = call)
+    herald_error_validation(
+      "{.arg path} {.path {path}} does not exist.",
+      call = call
+    )
   }
-  xpt_files  <- list.files(path, pattern = "\\.xpt$", full.names = TRUE,
-                           ignore.case = TRUE)
-  json_files <- list.files(path, pattern = "\\.json$", full.names = TRUE,
-                           ignore.case = TRUE)
+  xpt_files <- list.files(
+    path,
+    pattern = "\\.xpt$",
+    full.names = TRUE,
+    ignore.case = TRUE
+  )
+  json_files <- list.files(
+    path,
+    pattern = "\\.json$",
+    full.names = TRUE,
+    ignore.case = TRUE
+  )
 
   datasets <- list()
   for (f in xpt_files) {
     nm <- toupper(tools::file_path_sans_ext(basename(f)))
-    datasets[[nm]] <- tryCatch(read_xpt(f),
-                               error = function(e) {
-                                 cli::cli_warn("Failed to read {.path {f}}: {conditionMessage(e)}")
-                                 NULL
-                               })
+    datasets[[nm]] <- tryCatch(read_xpt(f), error = function(e) {
+      cli::cli_warn("Failed to read {.path {f}}: {conditionMessage(e)}")
+      NULL
+    })
   }
   for (f in json_files) {
     nm <- toupper(tools::file_path_sans_ext(basename(f)))
     if (is.null(datasets[[nm]])) {
-      datasets[[nm]] <- tryCatch(read_json(f),
-                                 error = function(e) {
-                                   cli::cli_warn("Failed to read {.path {f}}: {conditionMessage(e)}")
-                                   NULL
-                                 })
+      datasets[[nm]] <- tryCatch(read_json(f), error = function(e) {
+        cli::cli_warn("Failed to read {.path {f}}: {conditionMessage(e)}")
+        NULL
+      })
     }
   }
   datasets[!vapply(datasets, is.null, logical(1))]

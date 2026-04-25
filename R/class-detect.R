@@ -24,48 +24,92 @@
 
 .DATASET_CLASS <- c(
   # ADaM structures
-  ADSL      = "SUBJECT LEVEL ANALYSIS DATASET",
-  BDS       = "BASIC DATA STRUCTURE",
-  ADAE      = "OCCURRENCE DATA STRUCTURE",
-  OCCDS     = "OCCURRENCE DATA STRUCTURE",
+  ADSL = "SUBJECT LEVEL ANALYSIS DATASET",
+  BDS = "BASIC DATA STRUCTURE",
+  ADAE = "OCCURRENCE DATA STRUCTURE",
+  OCCDS = "OCCURRENCE DATA STRUCTURE",
   ADAMOTHER = "ADAM OTHER",
 
   # ADaMIG-MD (Medical Devices) -- v1.0 Section 2.2 structures
-  ADDL      = "DEVICE LEVEL ANALYSIS DATASET",
-  ADMDBD    = "MEDICAL DEVICE BASIC DATA STRUCTURE",
-  ADMDOC    = "MEDICAL DEVICE OCCURRENCE DATA STRUCTURE",
+  ADDL = "DEVICE LEVEL ANALYSIS DATASET",
+  ADMDBD = "MEDICAL DEVICE BASIC DATA STRUCTURE",
+  ADMDOC = "MEDICAL DEVICE OCCURRENCE DATA STRUCTURE",
 
   # SDTM EVENTS
-  AE = "EVENTS", APAE = "EVENTS", APMH = "EVENTS", CE = "EVENTS",
-  DE = "EVENTS", DS   = "EVENTS", DT   = "EVENTS", DV = "EVENTS",
-  HO = "EVENTS", MH   = "EVENTS",
+  AE = "EVENTS",
+  APAE = "EVENTS",
+  APMH = "EVENTS",
+  CE = "EVENTS",
+  DE = "EVENTS",
+  DS = "EVENTS",
+  DT = "EVENTS",
+  DV = "EVENTS",
+  HO = "EVENTS",
+  MH = "EVENTS",
 
   # SDTM INTERVENTIONS
-  AG = "INTERVENTIONS", CM = "INTERVENTIONS", DX = "INTERVENTIONS",
-  EC = "INTERVENTIONS", EX = "INTERVENTIONS", ML = "INTERVENTIONS",
-  PR = "INTERVENTIONS", SU = "INTERVENTIONS",
+  AG = "INTERVENTIONS",
+  CM = "INTERVENTIONS",
+  DX = "INTERVENTIONS",
+  EC = "INTERVENTIONS",
+  EX = "INTERVENTIONS",
+  ML = "INTERVENTIONS",
+  PR = "INTERVENTIONS",
+  SU = "INTERVENTIONS",
 
   # SDTM FINDINGS
-  CV = "FINDINGS", DA = "FINDINGS", DD = "FINDINGS", DO = "FINDINGS",
-  DU = "FINDINGS", EG = "FINDINGS", FT = "FINDINGS", IE = "FINDINGS",
-  IS = "FINDINGS", LB = "FINDINGS", MB = "FINDINGS", MI = "FINDINGS",
-  MK = "FINDINGS", MO = "FINDINGS", MS = "FINDINGS", NV = "FINDINGS",
-  OE = "FINDINGS", PC = "FINDINGS", PE = "FINDINGS", PP = "FINDINGS",
-  QS = "FINDINGS", RE = "FINDINGS", RP = "FINDINGS", RS = "FINDINGS",
-  SC = "FINDINGS", SS = "FINDINGS", TR = "FINDINGS", TU = "FINDINGS",
-  UR = "FINDINGS", VS = "FINDINGS",
+  CV = "FINDINGS",
+  DA = "FINDINGS",
+  DD = "FINDINGS",
+  DO = "FINDINGS",
+  DU = "FINDINGS",
+  EG = "FINDINGS",
+  FT = "FINDINGS",
+  IE = "FINDINGS",
+  IS = "FINDINGS",
+  LB = "FINDINGS",
+  MB = "FINDINGS",
+  MI = "FINDINGS",
+  MK = "FINDINGS",
+  MO = "FINDINGS",
+  MS = "FINDINGS",
+  NV = "FINDINGS",
+  OE = "FINDINGS",
+  PC = "FINDINGS",
+  PE = "FINDINGS",
+  PP = "FINDINGS",
+  QS = "FINDINGS",
+  RE = "FINDINGS",
+  RP = "FINDINGS",
+  RS = "FINDINGS",
+  SC = "FINDINGS",
+  SS = "FINDINGS",
+  TR = "FINDINGS",
+  TU = "FINDINGS",
+  UR = "FINDINGS",
+  VS = "FINDINGS",
 
   # SDTM FINDINGS ABOUT
-  FA = "FINDINGS ABOUT", SR = "FINDINGS ABOUT",
+  FA = "FINDINGS ABOUT",
+  SR = "FINDINGS ABOUT",
 
   # SDTM SPECIAL PURPOSE
-  APDM = "SPECIAL PURPOSE", CO = "SPECIAL PURPOSE", DI = "SPECIAL PURPOSE",
-  DM   = "SPECIAL PURPOSE", DR = "SPECIAL PURPOSE", SE = "SPECIAL PURPOSE",
-  SM   = "SPECIAL PURPOSE", SV = "SPECIAL PURPOSE",
+  APDM = "SPECIAL PURPOSE",
+  CO = "SPECIAL PURPOSE",
+  DI = "SPECIAL PURPOSE",
+  DM = "SPECIAL PURPOSE",
+  DR = "SPECIAL PURPOSE",
+  SE = "SPECIAL PURPOSE",
+  SM = "SPECIAL PURPOSE",
+  SV = "SPECIAL PURPOSE",
 
   # SDTM TRIAL DESIGN
-  TA = "TRIAL DESIGN", TD = "TRIAL DESIGN", TE = "TRIAL DESIGN",
-  TI = "TRIAL DESIGN", TM = "TRIAL DESIGN", TS = "TRIAL DESIGN",
+  TA = "TRIAL DESIGN",
+  TD = "TRIAL DESIGN",
+  TE = "TRIAL DESIGN",
+  TI = "TRIAL DESIGN",
+  TM = "TRIAL DESIGN",
+  TS = "TRIAL DESIGN",
   TV = "TRIAL DESIGN",
 
   # SDTM RELATIONSHIP (SUPP-- handled by prefix; RELREC by name)
@@ -95,48 +139,64 @@
 
 .PROTOTYPES <- list(
   # --- ADaM --------------------------------------------------------------
-  list(class = "BASIC DATA STRUCTURE",
-       name_prefix = "AD",
-       require_any = c("PARAMCD", "PARAM", "AVAL", "AVALC"),
-       require_none = character(),
-       score = 40),
-  list(class = "OCCURRENCE DATA STRUCTURE",
-       name_prefix = "AD",
-       require_any = c("--TRT", "--TERM"),
-       require_none = c("PARAMCD"),
-       score = 30),
-  list(class = "ADAM OTHER",
-       name_prefix = "AD",
-       require_any = character(),   # catch-all for AD* without BDS/OCCDS cues
-       require_none = character(),
-       score = 10),
+  list(
+    class = "BASIC DATA STRUCTURE",
+    name_prefix = "AD",
+    require_any = c("PARAMCD", "PARAM", "AVAL", "AVALC"),
+    require_none = character(),
+    score = 40
+  ),
+  list(
+    class = "OCCURRENCE DATA STRUCTURE",
+    name_prefix = "AD",
+    require_any = c("--TRT", "--TERM"),
+    require_none = c("PARAMCD"),
+    score = 30
+  ),
+  list(
+    class = "ADAM OTHER",
+    name_prefix = "AD",
+    require_any = character(), # catch-all for AD* without BDS/OCCDS cues
+    require_none = character(),
+    score = 10
+  ),
 
   # --- SDTM --------------------------------------------------------------
-  list(class = "EVENTS",
-       name_prefix = NULL,
-       require_any = c("--TERM"),
-       require_none = character(),
-       score = 25),
-  list(class = "INTERVENTIONS",
-       name_prefix = NULL,
-       require_any = c("--TRT"),
-       require_none = character(),
-       score = 25),
-  list(class = "FINDINGS",
-       name_prefix = NULL,
-       require_any = c("--TESTCD"),
-       require_none = character(),
-       score = 25),
-  list(class = "FINDINGS ABOUT",
-       name_prefix = NULL,
-       require_any = c("--OBJ"),
-       require_none = character(),
-       score = 35),          # more specific than FINDINGS/EVENTS
-  list(class = "RELATIONSHIP",
-       name_prefix = NULL,
-       require_any = c("QNAM"),
-       require_none = character(),
-       score = 20)
+  list(
+    class = "EVENTS",
+    name_prefix = NULL,
+    require_any = c("--TERM"),
+    require_none = character(),
+    score = 25
+  ),
+  list(
+    class = "INTERVENTIONS",
+    name_prefix = NULL,
+    require_any = c("--TRT"),
+    require_none = character(),
+    score = 25
+  ),
+  list(
+    class = "FINDINGS",
+    name_prefix = NULL,
+    require_any = c("--TESTCD"),
+    require_none = character(),
+    score = 25
+  ),
+  list(
+    class = "FINDINGS ABOUT",
+    name_prefix = NULL,
+    require_any = c("--OBJ"),
+    require_none = character(),
+    score = 35
+  ), # more specific than FINDINGS/EVENTS
+  list(
+    class = "RELATIONSHIP",
+    name_prefix = NULL,
+    require_any = c("QNAM"),
+    require_none = character(),
+    score = 20
+  )
 )
 
 # --- resolvers --------------------------------------------------------------
@@ -144,15 +204,23 @@
 #' Stage 1: class of a dataset by NAME.
 #' @noRd
 .class_of_dataset_name <- function(ds_name) {
-  if (length(ds_name) != 1L) return(NA_character_)
+  if (length(ds_name) != 1L) {
+    return(NA_character_)
+  }
   u <- toupper(as.character(ds_name))
-  if (!nzchar(u) || is.na(u)) return(NA_character_)
+  if (!nzchar(u) || is.na(u)) {
+    return(NA_character_)
+  }
   # Prefix rules first so SUPPAE etc. don't require enumeration.
-  if (grepl("^SUPP[A-Z0-9]{2,}$", u)) return("RELATIONSHIP")
+  if (grepl("^SUPP[A-Z0-9]{2,}$", u)) {
+    return("RELATIONSHIP")
+  }
   # Explicit map (named character vector; use [u] to get NA on miss rather
   # than [[u]] which would throw subscriptOutOfBounds).
   val <- unname(.DATASET_CLASS[u])
-  if (!is.na(val) && nzchar(val)) return(val)
+  if (!is.na(val) && nzchar(val)) {
+    return(val)
+  }
   # Unknown dataset name -- defer to Stage 2 prototype matching in
   # .class_from_topic which inspects columns to distinguish
   # ADLB/ADQS (BDS via PARAMCD) from ADXX custom (OCCDS via --TRT /
@@ -176,12 +244,12 @@
 #' criteria all match. Mirrors Pinnacle 21's val:Prototype table.
 #' @noRd
 .class_from_topic <- function(ds_name, cols) {
-  u_cols  <- toupper(as.character(cols))
+  u_cols <- toupper(as.character(cols))
   u_dsname <- toupper(as.character(ds_name))
 
-  protos_by_score <- .PROTOTYPES[order(-vapply(.PROTOTYPES,
-                                               function(p) as.numeric(p$score),
-                                               numeric(1L)))]
+  protos_by_score <- .PROTOTYPES[order(
+    -vapply(.PROTOTYPES, function(p) as.numeric(p$score), numeric(1L))
+  )]
   # Check one pattern against the column list. `--<STEM>` matches both the
   # strict 2-char-prefix form (<DOM2><STEM>, P21's `__` convention) and any
   # reasonable prefix (1-7 uppercase chars, for custom domains with longer
@@ -191,7 +259,9 @@
       stem <- sub("^--", "", pat)
       dom2 <- substring(toupper(as.character(ds_name)), 1, 2)
       specific <- paste0(dom2, stem)
-      if (specific %in% cols) return(TRUE)
+      if (specific %in% cols) {
+        return(TRUE)
+      }
       # Relaxed: any uppercase prefix of 1-7 chars ending in STEM.
       return(any(grepl(sprintf("^[A-Z][A-Z0-9]{0,6}%s$", stem), cols)))
     }
@@ -199,18 +269,40 @@
   }
 
   for (p in protos_by_score) {
-    if (!is.null(p$name_prefix) &&
-        !startsWith(u_dsname, toupper(p$name_prefix))) next
-    any_ok <- if (length(p$require_any) == 0L) TRUE else {
-      any(vapply(p$require_any, .matches_any_col, logical(1L),
-                 cols = u_cols, ds_name = ds_name))
+    if (
+      !is.null(p$name_prefix) &&
+        !startsWith(u_dsname, toupper(p$name_prefix))
+    ) {
+      next
     }
-    if (!any_ok) next
-    none_ok <- if (length(p$require_none) == 0L) TRUE else {
-      !any(vapply(p$require_none, .matches_any_col, logical(1L),
-                  cols = u_cols, ds_name = ds_name))
+    any_ok <- if (length(p$require_any) == 0L) {
+      TRUE
+    } else {
+      any(vapply(
+        p$require_any,
+        .matches_any_col,
+        logical(1L),
+        cols = u_cols,
+        ds_name = ds_name
+      ))
     }
-    if (!none_ok) next
+    if (!any_ok) {
+      next
+    }
+    none_ok <- if (length(p$require_none) == 0L) {
+      TRUE
+    } else {
+      !any(vapply(
+        p$require_none,
+        .matches_any_col,
+        logical(1L),
+        cols = u_cols,
+        ds_name = ds_name
+      ))
+    }
+    if (!none_ok) {
+      next
+    }
     return(p$class)
   }
   NA_character_
@@ -227,8 +319,8 @@
 infer_class <- function(ds_name, cols = character(), spec = NULL) {
   # Caller-supplied spec always wins.
   if (!is.null(spec) && !is.null(spec$ds_spec)) {
-    ds_col  <- spec$ds_spec[["dataset"]] %||% spec$ds_spec[["Dataset"]]
-    cls_col <- spec$ds_spec[["class"]]   %||% spec$ds_spec[["Class"]]
+    ds_col <- spec$ds_spec[["dataset"]] %||% spec$ds_spec[["Dataset"]]
+    cls_col <- spec$ds_spec[["class"]] %||% spec$ds_spec[["Class"]]
     if (!is.null(ds_col) && !is.null(cls_col)) {
       hit <- which(toupper(as.character(ds_col)) == toupper(ds_name))
       if (length(hit) > 0L) {
@@ -239,9 +331,13 @@ infer_class <- function(ds_name, cols = character(), spec = NULL) {
   }
   # Stage 1.
   by_name <- .class_of_dataset_name(ds_name)
-  if (!is.na(by_name)) return(by_name)
+  if (!is.na(by_name)) {
+    return(by_name)
+  }
   # Stage 2.
   by_topic <- .class_from_topic(ds_name, cols)
-  if (!is.na(by_topic)) return(by_topic)
+  if (!is.na(by_topic)) {
+    return(by_topic)
+  }
   NA_character_
 }

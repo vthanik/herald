@@ -47,7 +47,11 @@ read_json <- function(file) {
   check_scalar_chr(file, call = call)
 
   if (!file.exists(file)) {
-    herald_error_io("File {.path {file}} does not exist.", path = file, call = call)
+    herald_error_io(
+      "File {.path {file}} does not exist.",
+      path = file,
+      call = call
+    )
   }
 
   if (!requireNamespace("jsonlite", quietly = TRUE)) {

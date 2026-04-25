@@ -57,20 +57,20 @@ meddra_provider <- function(path, version = "unknown") {
 
   files <- .meddra_resolve_files(path, call)
   hier <- .parse_meddra_mdhier(files$mdhier)
-  llt  <- if (!is.null(files$llt)) .parse_meddra_llt(files$llt) else NULL
+  llt <- if (!is.null(files$llt)) .parse_meddra_llt(files$llt) else NULL
 
   pool <- list(
-    pt        = unique(hier$pt_name),
-    pt_code   = unique(as.character(hier$pt_code)),
-    hlt       = unique(hier$hlt_name),
-    hlt_code  = unique(as.character(hier$hlt_code)),
-    hlgt      = unique(hier$hlgt_name),
+    pt = unique(hier$pt_name),
+    pt_code = unique(as.character(hier$pt_code)),
+    hlt = unique(hier$hlt_name),
+    hlt_code = unique(as.character(hier$hlt_code)),
+    hlgt = unique(hier$hlgt_name),
     hlgt_code = unique(as.character(hier$hlgt_code)),
-    soc       = unique(hier$soc_name),
-    soc_code  = unique(as.character(hier$soc_code))
+    soc = unique(hier$soc_name),
+    soc_code = unique(as.character(hier$soc_code))
   )
   if (!is.null(llt)) {
-    pool$llt      <- unique(llt$llt_name)
+    pool$llt <- unique(llt$llt_name)
     pool$llt_code <- unique(as.character(llt$llt_code))
   }
 
@@ -78,7 +78,9 @@ meddra_provider <- function(path, version = "unknown") {
 
   contains_fn <- function(value, field = "pt", ignore_case = FALSE) {
     field <- as.character(field %||% "pt")
-    if (!(field %in% names(pool))) return(rep(NA, length(value)))
+    if (!(field %in% names(pool))) {
+      return(rep(NA, length(value)))
+    }
     v <- sub(" +$", "", as.character(value))
     p <- pool[[field]]
     if (isTRUE(ignore_case)) {
@@ -91,27 +93,34 @@ meddra_provider <- function(path, version = "unknown") {
     if (field == "llt" && !is.null(llt)) {
       return(llt[llt$llt_name %in% as.character(value), , drop = FALSE])
     }
-    col <- switch(field,
-      pt = "pt_name", hlt = "hlt_name",
-      hlgt = "hlgt_name", soc = "soc_name",
+    col <- switch(
+      field,
+      pt = "pt_name",
+      hlt = "hlt_name",
+      hlgt = "hlgt_name",
+      soc = "soc_name",
       NULL
     )
-    if (is.null(col)) return(NULL)
+    if (is.null(col)) {
+      return(NULL)
+    }
     hits <- hier[hier[[col]] %in% as.character(value), , drop = FALSE]
-    if (nrow(hits) == 0L) return(NULL)
+    if (nrow(hits) == 0L) {
+      return(NULL)
+    }
     hits
   }
 
   new_dict_provider(
-    name         = "meddra",
-    version      = version,
-    source       = "user-file",
-    license      = "MSSO",
+    name = "meddra",
+    version = version,
+    source = "user-file",
+    license = "MSSO",
     license_note = "User-supplied MedDRA distribution (MSSO licensed; not bundled).",
-    size_rows    = as.integer(n_rows),
-    fields       = names(pool),
-    contains     = contains_fn,
-    lookup       = lookup_fn
+    size_rows = as.integer(n_rows),
+    fields = names(pool),
+    contains = contains_fn,
+    lookup = lookup_fn
   )
 }
 
@@ -123,20 +132,21 @@ meddra_provider <- function(path, version = "unknown") {
   if (!file.exists(path)) {
     herald_error(
       "MedDRA path {.path {path}} does not exist.",
-      class = "herald_error_input", call = call
+      class = "herald_error_input",
+      call = call
     )
   }
   if (dir.exists(path)) {
     hier_path <- .find_case_insensitive(path, "mdhier.asc")
-    llt_path  <- .find_case_insensitive(path, "llt.asc")
+    llt_path <- .find_case_insensitive(path, "llt.asc")
     if (is.na(hier_path)) {
       herald_error(
         "MedDRA directory {.path {path}} is missing {.file mdhier.asc}.",
-        class = "herald_error_input", call = call
+        class = "herald_error_input",
+        call = call
       )
     }
-    list(mdhier = hier_path,
-         llt    = if (is.na(llt_path)) NULL else llt_path)
+    list(mdhier = hier_path, llt = if (is.na(llt_path)) NULL else llt_path)
   } else {
     list(mdhier = path, llt = NULL)
   }
@@ -147,7 +157,9 @@ meddra_provider <- function(path, version = "unknown") {
   files <- list.files(dir, full.names = TRUE)
   target <- tolower(filename)
   hit <- files[tolower(basename(files)) == target]
-  if (length(hit) == 0L) return(NA_character_)
+  if (length(hit) == 0L) {
+    return(NA_character_)
+  }
   hit[[1L]]
 }
 
@@ -159,14 +171,29 @@ meddra_provider <- function(path, version = "unknown") {
 #' @noRd
 .parse_meddra_mdhier <- function(path) {
   col_names <- c(
-    "pt_code", "hlt_code", "hlgt_code", "soc_code",
-    "pt_name", "hlt_name", "hlgt_name", "soc_name",
-    "soc_abbrev", "null1", "pt_soc_code", "primary_soc_fg", "null2"
+    "pt_code",
+    "hlt_code",
+    "hlgt_code",
+    "soc_code",
+    "pt_name",
+    "hlt_name",
+    "hlgt_name",
+    "soc_name",
+    "soc_abbrev",
+    "null1",
+    "pt_soc_code",
+    "primary_soc_fg",
+    "null2"
   )
   raw <- utils::read.delim(
-    path, sep = "$", header = FALSE, quote = "",
-    stringsAsFactors = FALSE, check.names = FALSE,
-    na.strings = "", fileEncoding = "UTF-8"
+    path,
+    sep = "$",
+    header = FALSE,
+    quote = "",
+    stringsAsFactors = FALSE,
+    check.names = FALSE,
+    na.strings = "",
+    fileEncoding = "UTF-8"
   )
   # MedDRA files end each row with a trailing $ producing an extra
   # empty column; truncate to the known column count.
@@ -183,15 +210,28 @@ meddra_provider <- function(path, version = "unknown") {
 #' @noRd
 .parse_meddra_llt <- function(path) {
   col_names <- c(
-    "llt_code", "llt_name", "pt_code", "llt_whoart_code",
-    "llt_harts_code", "llt_costart_sym", "llt_icd9_code",
-    "llt_icd9cm_code", "llt_icd10_code", "llt_currency",
-    "llt_jart_code", "null1"
+    "llt_code",
+    "llt_name",
+    "pt_code",
+    "llt_whoart_code",
+    "llt_harts_code",
+    "llt_costart_sym",
+    "llt_icd9_code",
+    "llt_icd9cm_code",
+    "llt_icd10_code",
+    "llt_currency",
+    "llt_jart_code",
+    "null1"
   )
   raw <- utils::read.delim(
-    path, sep = "$", header = FALSE, quote = "",
-    stringsAsFactors = FALSE, check.names = FALSE,
-    na.strings = "", fileEncoding = "UTF-8"
+    path,
+    sep = "$",
+    header = FALSE,
+    quote = "",
+    stringsAsFactors = FALSE,
+    check.names = FALSE,
+    na.strings = "",
+    fileEncoding = "UTF-8"
   )
   keep <- min(length(col_names), ncol(raw))
   out <- raw[, seq_len(keep), drop = FALSE]
@@ -246,39 +286,46 @@ whodrug_provider <- function(path, version = "unknown", format = "b3") {
   if (!identical(tolower(format), "b3")) {
     herald_error(
       "Only WHO-Drug format {.val b3} is supported right now.",
-      class = "herald_error_input", call = call
+      class = "herald_error_input",
+      call = call
     )
   }
 
   if (!dir.exists(path)) {
     herald_error(
       "WHO-Drug directory {.path {path}} does not exist.",
-      class = "herald_error_input", call = call
+      class = "herald_error_input",
+      call = call
     )
   }
-  dd_path  <- .find_case_insensitive(path, "DD.txt")
+  dd_path <- .find_case_insensitive(path, "DD.txt")
   dda_path <- .find_case_insensitive(path, "DDA.txt")
   if (is.na(dd_path)) {
     herald_error(
       "WHO-Drug directory {.path {path}} is missing {.file DD.txt}.",
-      class = "herald_error_input", call = call
+      class = "herald_error_input",
+      call = call
     )
   }
 
-  dd  <- .parse_whodrug_dd(dd_path)
+  dd <- .parse_whodrug_dd(dd_path)
   dda <- if (!is.na(dda_path)) .parse_whodrug_dda(dda_path) else NULL
 
   pool <- list(
-    drug_name           = unique(dd$drug_name),
-    drug_record_number  = unique(dd$drug_record_number)
+    drug_name = unique(dd$drug_name),
+    drug_record_number = unique(dd$drug_record_number)
   )
-  if (!is.null(dda)) pool$alternate_name <- unique(dda$drug_name)
+  if (!is.null(dda)) {
+    pool$alternate_name <- unique(dda$drug_name)
+  }
 
   n_rows <- nrow(dd) + if (!is.null(dda)) nrow(dda) else 0L
 
   contains_fn <- function(value, field = "drug_name", ignore_case = FALSE) {
     field <- as.character(field %||% "drug_name")
-    if (!(field %in% names(pool))) return(rep(NA, length(value)))
+    if (!(field %in% names(pool))) {
+      return(rep(NA, length(value)))
+    }
     v <- sub(" +$", "", as.character(value))
     p <- pool[[field]]
     if (isTRUE(ignore_case)) {
@@ -288,27 +335,32 @@ whodrug_provider <- function(path, version = "unknown", format = "b3") {
   }
 
   lookup_fn <- function(value, field = "drug_name") {
-    col <- switch(field,
-      drug_name          = "drug_name",
+    col <- switch(
+      field,
+      drug_name = "drug_name",
       drug_record_number = "drug_record_number",
       NULL
     )
-    if (is.null(col)) return(NULL)
+    if (is.null(col)) {
+      return(NULL)
+    }
     hits <- dd[dd[[col]] %in% as.character(value), , drop = FALSE]
-    if (nrow(hits) == 0L) return(NULL)
+    if (nrow(hits) == 0L) {
+      return(NULL)
+    }
     hits
   }
 
   new_dict_provider(
-    name         = "whodrug",
-    version      = version,
-    source       = "user-file",
-    license      = "UMC",
+    name = "whodrug",
+    version = version,
+    source = "user-file",
+    license = "UMC",
     license_note = "User-supplied WHO-Drug distribution (UMC licensed; not bundled).",
-    size_rows    = as.integer(n_rows),
-    fields       = names(pool),
-    contains     = contains_fn,
-    lookup       = lookup_fn
+    size_rows = as.integer(n_rows),
+    fields = names(pool),
+    contains = contains_fn,
+    lookup = lookup_fn
   )
 }
 
@@ -322,17 +374,19 @@ whodrug_provider <- function(path, version = "unknown", format = "b3") {
   # The B3 DD record is 1506 chars wide. For herald we only need the
   # record number + drug name. Use read.fwf for portability.
   widths <- c(6, 1, 1, 1500)
-  col_names <- c("drug_record_number", "sequence1",
-                 "sequence2", "drug_name")
+  col_names <- c("drug_record_number", "sequence1", "sequence2", "drug_name")
   raw <- utils::read.fwf(
-    path, widths = widths, header = FALSE,
-    strip.white = TRUE, stringsAsFactors = FALSE,
-    colClasses = "character", fileEncoding = "UTF-8",
+    path,
+    widths = widths,
+    header = FALSE,
+    strip.white = TRUE,
+    stringsAsFactors = FALSE,
+    colClasses = "character",
+    fileEncoding = "UTF-8",
     comment.char = ""
   )
   names(raw) <- col_names
-  tibble::as_tibble(raw[, c("drug_record_number", "drug_name"),
-                         drop = FALSE])
+  tibble::as_tibble(raw[, c("drug_record_number", "drug_name"), drop = FALSE])
 }
 
 #' Parse DDA.txt (alternate drug names). Record layout: same leading
@@ -342,14 +396,17 @@ whodrug_provider <- function(path, version = "unknown", format = "b3") {
   widths <- c(6, 3, 1500)
   col_names <- c("drug_record_number", "sequence", "drug_name")
   raw <- utils::read.fwf(
-    path, widths = widths, header = FALSE,
-    strip.white = TRUE, stringsAsFactors = FALSE,
-    colClasses = "character", fileEncoding = "UTF-8",
+    path,
+    widths = widths,
+    header = FALSE,
+    strip.white = TRUE,
+    stringsAsFactors = FALSE,
+    colClasses = "character",
+    fileEncoding = "UTF-8",
     comment.char = ""
   )
   names(raw) <- col_names
-  tibble::as_tibble(raw[, c("drug_record_number", "drug_name"),
-                         drop = FALSE])
+  tibble::as_tibble(raw[, c("drug_record_number", "drug_name"), drop = FALSE])
 }
 
 # --------------------------------------------------------------------------
@@ -395,7 +452,8 @@ loinc_provider <- function(path, version = "unknown") {
     if (is.na(hit)) {
       herald_error(
         "LOINC directory {.path {path}} is missing {.file Loinc.csv}.",
-        class = "herald_error_input", call = call
+        class = "herald_error_input",
+        call = call
       )
     }
     hit
@@ -403,24 +461,36 @@ loinc_provider <- function(path, version = "unknown") {
     if (!file.exists(path)) {
       herald_error(
         "LOINC file {.path {path}} does not exist.",
-        class = "herald_error_input", call = call
+        class = "herald_error_input",
+        call = call
       )
     }
     path
   }
 
-  raw <- utils::read.csv(csv_path, stringsAsFactors = FALSE,
-                          check.names = FALSE,
-                          na.strings = "", fileEncoding = "UTF-8")
+  raw <- utils::read.csv(
+    csv_path,
+    stringsAsFactors = FALSE,
+    check.names = FALSE,
+    na.strings = "",
+    fileEncoding = "UTF-8"
+  )
   keep_cols <- intersect(
-    c("LOINC_NUM", "COMPONENT", "SHORTNAME",
-      "LONG_COMMON_NAME", "STATUS", "CLASS"),
+    c(
+      "LOINC_NUM",
+      "COMPONENT",
+      "SHORTNAME",
+      "LONG_COMMON_NAME",
+      "STATUS",
+      "CLASS"
+    ),
     names(raw)
   )
   if (!"LOINC_NUM" %in% keep_cols) {
     herald_error(
       "LOINC file is missing required column LOINC_NUM.",
-      class = "herald_error_runtime", call = call
+      class = "herald_error_runtime",
+      call = call
     )
   }
   tbl <- tibble::as_tibble(raw[, keep_cols, drop = FALSE])
@@ -430,7 +500,9 @@ loinc_provider <- function(path, version = "unknown") {
 
   contains_fn <- function(value, field = "loinc_num", ignore_case = FALSE) {
     field <- tolower(as.character(field %||% "loinc_num"))
-    if (!(field %in% names(field_col))) return(rep(NA, length(value)))
+    if (!(field %in% names(field_col))) {
+      return(rep(NA, length(value)))
+    }
     pool <- as.character(tbl[[field_col[[field]]]])
     v <- sub(" +$", "", as.character(value))
     if (isTRUE(ignore_case)) {
@@ -441,23 +513,30 @@ loinc_provider <- function(path, version = "unknown") {
 
   lookup_fn <- function(value, field = "loinc_num") {
     field <- tolower(as.character(field %||% "loinc_num"))
-    if (!(field %in% names(field_col))) return(NULL)
-    hits <- tbl[tbl[[field_col[[field]]]] %in% as.character(value), ,
-                drop = FALSE]
-    if (nrow(hits) == 0L) return(NULL)
+    if (!(field %in% names(field_col))) {
+      return(NULL)
+    }
+    hits <- tbl[
+      tbl[[field_col[[field]]]] %in% as.character(value),
+      ,
+      drop = FALSE
+    ]
+    if (nrow(hits) == 0L) {
+      return(NULL)
+    }
     hits
   }
 
   new_dict_provider(
-    name         = "loinc",
-    version      = version,
-    source       = "user-file",
-    license      = "LOINC",
+    name = "loinc",
+    version = version,
+    source = "user-file",
+    license = "LOINC",
     license_note = "User-supplied LOINC distribution (Regenstrief licence).",
-    size_rows    = as.integer(nrow(tbl)),
-    fields       = fields,
-    contains     = contains_fn,
-    lookup       = lookup_fn
+    size_rows = as.integer(nrow(tbl)),
+    fields = fields,
+    contains = contains_fn,
+    lookup = lookup_fn
   )
 }
 
@@ -503,14 +582,18 @@ snomed_provider <- function(path, version = "unknown") {
 
   desc_path <- if (dir.exists(path)) {
     hits <- list.files(
-      path, pattern = "^sct2_Description_Snapshot.*\\.txt$",
-      ignore.case = TRUE, full.names = TRUE, recursive = TRUE
+      path,
+      pattern = "^sct2_Description_Snapshot.*\\.txt$",
+      ignore.case = TRUE,
+      full.names = TRUE,
+      recursive = TRUE
     )
     if (length(hits) == 0L) {
       herald_error(
         "SNOMED directory {.path {path}} contains no \\
          sct2_Description_Snapshot*.txt file.",
-        class = "herald_error_input", call = call
+        class = "herald_error_input",
+        call = call
       )
     }
     hits[[1L]]
@@ -518,24 +601,32 @@ snomed_provider <- function(path, version = "unknown") {
     if (!file.exists(path)) {
       herald_error(
         "SNOMED file {.path {path}} does not exist.",
-        class = "herald_error_input", call = call
+        class = "herald_error_input",
+        call = call
       )
     }
     path
   }
 
   raw <- utils::read.delim(
-    desc_path, sep = "\t", quote = "",
-    stringsAsFactors = FALSE, check.names = FALSE,
-    na.strings = "", fileEncoding = "UTF-8"
+    desc_path,
+    sep = "\t",
+    quote = "",
+    stringsAsFactors = FALSE,
+    check.names = FALSE,
+    na.strings = "",
+    fileEncoding = "UTF-8"
   )
   want <- c("conceptId", "term", "active", "typeId")
   missing_cols <- setdiff(want, names(raw))
   if (length(missing_cols) > 0L) {
     herald_error(
-      c("SNOMED description file missing required column{?s}: {.val {missing_cols}}",
-        "i" = "Got: {.val {names(raw)}}"),
-      class = "herald_error_runtime", call = call
+      c(
+        "SNOMED description file missing required column{?s}: {.val {missing_cols}}",
+        "i" = "Got: {.val {names(raw)}}"
+      ),
+      class = "herald_error_runtime",
+      call = call
     )
   }
   # Keep only active descriptions; they're the canonical reference.
@@ -543,12 +634,16 @@ snomed_provider <- function(path, version = "unknown") {
 
   contains_fn <- function(value, field = "term", ignore_case = FALSE) {
     field <- as.character(field %||% "term")
-    col <- switch(field,
-      "term"       = "term",
+    col <- switch(
+      field,
+      "term" = "term",
       "concept_id" = "conceptId",
-      "conceptId"  = "conceptId",
-      NULL)
-    if (is.null(col)) return(rep(NA, length(value)))
+      "conceptId" = "conceptId",
+      NULL
+    )
+    if (is.null(col)) {
+      return(rep(NA, length(value)))
+    }
     pool <- as.character(tbl[[col]])
     v <- sub(" +$", "", as.character(value))
     if (isTRUE(ignore_case)) {
@@ -559,25 +654,33 @@ snomed_provider <- function(path, version = "unknown") {
 
   lookup_fn <- function(value, field = "term") {
     field <- as.character(field %||% "term")
-    col <- switch(field, "term" = "term",
-                  "concept_id" = "conceptId",
-                  "conceptId" = "conceptId", NULL)
-    if (is.null(col)) return(NULL)
+    col <- switch(
+      field,
+      "term" = "term",
+      "concept_id" = "conceptId",
+      "conceptId" = "conceptId",
+      NULL
+    )
+    if (is.null(col)) {
+      return(NULL)
+    }
     hits <- tbl[tbl[[col]] %in% as.character(value), , drop = FALSE]
-    if (nrow(hits) == 0L) return(NULL)
+    if (nrow(hits) == 0L) {
+      return(NULL)
+    }
     hits
   }
 
   new_dict_provider(
-    name         = "snomed",
-    version      = version,
-    source       = "user-file",
-    license      = "IHTSDO",
+    name = "snomed",
+    version = version,
+    source = "user-file",
+    license = "IHTSDO",
     license_note = "User-supplied SNOMED CT RF2 distribution (IHTSDO affiliate licence).",
-    size_rows    = as.integer(nrow(tbl)),
-    fields       = c("term", "concept_id"),
-    contains     = contains_fn,
-    lookup       = lookup_fn
+    size_rows = as.integer(nrow(tbl)),
+    fields = c("term", "concept_id"),
+    contains = contains_fn,
+    lookup = lookup_fn
   )
 }
 
@@ -617,25 +720,31 @@ snomed_provider <- function(path, version = "unknown") {
 #' @seealso [register_dictionary()].
 #' @family dict
 #' @export
-custom_provider <- function(table,
-                            name,
-                            fields  = NULL,
-                            version = "unknown",
-                            license = "sponsor-private") {
+custom_provider <- function(
+  table,
+  name,
+  fields = NULL,
+  version = "unknown",
+  license = "sponsor-private"
+) {
   call <- rlang::caller_env()
   if (!is.data.frame(table)) {
     herald_error(
       "{.arg table} must be a data frame.",
-      class = "herald_error_input", call = call
+      class = "herald_error_input",
+      call = call
     )
   }
   check_scalar_chr(name, call = call)
-  if (is.null(fields)) fields <- names(table)
+  if (is.null(fields)) {
+    fields <- names(table)
+  }
   bad <- setdiff(fields, names(table))
   if (length(bad) > 0L) {
     herald_error(
       "{.arg fields} references columns not in {.arg table}: {.val {bad}}.",
-      class = "herald_error_input", call = call
+      class = "herald_error_input",
+      call = call
     )
   }
 
@@ -643,7 +752,9 @@ custom_provider <- function(table,
 
   contains_fn <- function(value, field = NULL, ignore_case = FALSE) {
     f <- as.character(field %||% fields[[1L]])
-    if (!(f %in% fields)) return(rep(NA, length(value)))
+    if (!(f %in% fields)) {
+      return(rep(NA, length(value)))
+    }
     pool <- as.character(tbl[[f]])
     v <- sub(" +$", "", as.character(value))
     if (isTRUE(ignore_case)) {
@@ -654,21 +765,25 @@ custom_provider <- function(table,
 
   lookup_fn <- function(value, field = NULL) {
     f <- as.character(field %||% fields[[1L]])
-    if (!(f %in% names(tbl))) return(NULL)
+    if (!(f %in% names(tbl))) {
+      return(NULL)
+    }
     hits <- tbl[tbl[[f]] %in% as.character(value), , drop = FALSE]
-    if (nrow(hits) == 0L) return(NULL)
+    if (nrow(hits) == 0L) {
+      return(NULL)
+    }
     hits
   }
 
   new_dict_provider(
-    name         = name,
-    version      = version,
-    source       = "sponsor",
-    license      = license,
+    name = name,
+    version = version,
+    source = "sponsor",
+    license = license,
     license_note = "In-memory sponsor-supplied dictionary.",
-    size_rows    = as.integer(nrow(tbl)),
-    fields       = fields,
-    contains     = contains_fn,
-    lookup       = lookup_fn
+    size_rows = as.integer(nrow(tbl)),
+    fields = fields,
+    contains = contains_fn,
+    lookup = lookup_fn
   )
 }
