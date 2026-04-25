@@ -1,5 +1,4 @@
-# Tests for Parquet I/O. Requires the `arrow` package (Suggests); skipped
-# in CI environments that don't have it installed.
+# Tests for R/parquet-write.R (write_parquet function).
 
 test_that("parquet round-trip preserves labels / formats / lengths / type", {
   skip_if_not_installed("arrow")
@@ -58,12 +57,3 @@ test_that("write_parquet infers dataset_name from file stem when no param", {
 
   expect_equal(attr(out, "dataset_name"), toupper(tools::file_path_sans_ext(basename(f))))
 })
-
-test_that("read_parquet errors when the file is missing", {
-  skip_if_not_installed("arrow")
-  expect_error(read_parquet("/definitely/not/here.parquet"), class = "herald_error_io")
-})
-
-# Note: a mocked-requireNamespace() test was considered for the "arrow not
-# installed" path but the file.exists() check fires first in read_parquet()
-# so it adds no real coverage. Left as documentation-only behaviour.
