@@ -1,0 +1,211 @@
+url: https://vthanik.github.io/herald/
+
+template:
+  bootstrap: 5
+  light-switch: true
+  bslib:
+    primary: "#4184f3"
+    navbar-bg: "#ffffff"
+    navbar-light-color: "#374151"
+    navbar-light-hover-color: "#3b82f6"
+    navbar-light-active-color: "#3b82f6"
+    navbar-light-brand-color: "#1f2937"
+    link-color: "#3b82f6"
+    link-hover-color: "#2563eb"
+    body-color: "#374151"
+    headings-color: "#111827"
+    border-color: "#e5e7eb"
+    base_font:
+      google:
+        family: "Open Sans"
+        wght: [400, 500, 600, 700]
+    heading_font:
+      google:
+        family: "Open Sans"
+        wght: [600, 700]
+    code_font:
+      google:
+        family: "Source Code Pro"
+        wght: [400, 500, 600]
+
+home:
+  title: "herald - CDISC Validation in R"
+  description: >
+    Pure-R CDISC conformance validation for clinical trial submissions.
+    Read XPT, Dataset-JSON, and Parquet; stamp submission metadata; run
+    SDTM, ADaM, and Define-XML rules; manage controlled terminology; and
+    write reviewer-ready HTML, XLSX, and JSON reports.
+
+navbar:
+  type: light
+  structure:
+    left: [intro, reference, articles, news]
+    right: [search, lightswitch, github]
+  components:
+    intro:
+      text: Get Started
+      href: articles/herald.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    news:
+      text: News
+      href: news/index.html
+
+footer:
+  structure:
+    left: developed_by
+    right: built_with
+
+reference:
+  - title: "Dataset I/O"
+    desc: >
+      Read and write clinical datasets without a Java or SAS dependency.
+      `read_xpt()` and `write_xpt()` handle SAS transport files in pure R.
+      `read_json()` and `write_json()` support CDISC Dataset-JSON v1.1.
+      `read_parquet()` and `write_parquet()` use Arrow when available.
+      `convert_dataset()` moves between formats while preserving labels,
+      lengths, types, and dataset-level metadata.
+    contents:
+      - read_xpt
+      - write_xpt
+      - read_json
+      - write_json
+      - read_parquet
+      - write_parquet
+      - convert_dataset
+
+  - title: "Specification Metadata"
+    desc: >
+      Build and inspect `herald_spec` objects: the metadata source for
+      dataset labels, variable labels, storage lengths, expected types,
+      standards, and dataset classes. `apply_spec()` stamps those attributes
+      onto data frames before validation and transport writing.
+    contents:
+      - as_herald_spec
+      - herald_spec
+      - is_herald_spec
+      - apply_spec
+
+  - title: "Define-XML 2.1"
+    desc: >
+      Read, write, and render Define-XML 2.1. The rich `herald_spec()`
+      constructor carries study metadata, datasets, variables, codelists,
+      methods, comments, document leaves, value-level metadata, and ADaM ARM.
+      Parsed Define-XML can be passed to `validate()` so metadata-dependent
+      rules run with the same context as reviewers.
+    contents:
+      - read_define_xml
+      - write_define_xml
+      - write_define_html
+      - validate_spec
+
+  - title: "Validation Engine"
+    desc: >
+      `validate()` runs the compiled rule catalog against directories or
+      named lists of data frames and returns a `herald_result`. Rule filters
+      can target exact IDs, authorities, standards, and study-specific
+      severity policies. `rule_catalog()` and `supported_standards()` expose
+      the compiled corpus for planning, QC, and coverage review.
+    contents:
+      - validate
+      - rule_catalog
+      - supported_standards
+
+  - title: "Reports"
+    desc: >
+      Convert `herald_result` objects into submission-review artifacts.
+      `report()` dispatches from file extension; explicit writers produce
+      self-contained HTML, workbook-style XLSX, and machine-readable JSON.
+      Reports include findings, rule counts, dataset metadata, skipped
+      references, and run metadata.
+    contents:
+      - report
+      - write_report_html
+      - write_report_xlsx
+      - write_report_json
+
+  - title: "Controlled Terminology"
+    desc: >
+      Load bundled SDTM and ADaM controlled terminology, inspect release
+      metadata, list available NCI EVS releases, and refresh local caches.
+      `ct_provider()` exposes CDISC CT through the same dictionary-provider
+      protocol used by SRS, MedDRA, WHODrug, LOINC, SNOMED, and sponsor
+      dictionaries.
+    contents:
+      - load_ct
+      - ct_info
+      - available_ct_releases
+      - download_ct
+      - ct_provider
+
+  - title: "External Dictionary Providers"
+    desc: >
+      Register external or sponsor-owned terminology sources for validation
+      runs. Providers expose `contains()` and optional `lookup()` methods so
+      rules can check dictionary membership without knowing the file format.
+      Use session-wide registration for interactive work or pass providers
+      directly to `validate(dictionaries = ...)` for reproducible pipelines.
+    contents:
+      - new_dict_provider
+      - custom_provider
+      - register_dictionary
+      - unregister_dictionary
+      - list_dictionaries
+      - download_srs
+      - srs_provider
+      - meddra_provider
+      - whodrug_provider
+      - loinc_provider
+      - snomed_provider
+
+  - title: "Submission Discovery and ADaM Helpers"
+    desc: >
+      Helpers for classifying ADaM datasets and detecting analysis dataset
+      shapes from variable names. These functions are useful for routing
+      class-scoped ADaM rules and for checking whether a sponsor dataset
+      looks like ADSL, BDS, OCCDS, or ADTTE.
+    contents:
+      - detect_adam_class
+      - detect_adam_classes
+
+  - title: "Object Methods"
+    desc: >
+      Print and summary methods for the main herald objects. These keep
+      console output compact while preserving the full object for programmatic
+      access in pipelines and reports.
+    contents:
+      - print.herald_define
+      - print.herald_dict_provider
+      - print.herald_result
+      - print.herald_spec
+      - summary.herald_result
+
+  - title: "Built-in Pilot Data"
+    desc: >
+      Small pilot datasets and specs bundled under `inst/extdata` for
+      examples, smoke tests, and vignette workflows. These are accessed with
+      `system.file("extdata", ..., package = "herald")`.
+    contents:
+      - "pilot-data"
+
+articles:
+  - title: "Get started"
+    navbar: ~
+    contents:
+      - herald
+      - validation-reporting
+      - data-io
+
+  - title: "Workflows"
+    navbar: Workflows
+    contents:
+      - define-xml
+      - dictionaries
+      - best-practices
+
+  - title: "Advanced"
+    navbar: Advanced
+    contents:
+      - rule-coverage
+      - architecture

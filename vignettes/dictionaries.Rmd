@@ -1,0 +1,136 @@
+---
+title: "Controlled Terminology and Dictionary Providers"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Controlled Terminology and Dictionary Providers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(herald)
+```
+
+Clinical validation depends on reference data: CDISC controlled terminology,
+SRS, MedDRA, WHODrug, LOINC, SNOMED, and sponsor dictionaries. `herald`
+uses one interface for all of them: a dictionary provider.
+
+## Bundled CDISC CT
+
+The package ships bundled SDTM and ADaM controlled terminology.
+
+```{r ct-info}
+ct_info("sdtm")
+ct_info("adam")
+```
+
+Load the raw CT when you need direct inspection:
+
+```{r load-ct}
+sdtm_ct <- load_ct("sdtm")
+
+length(sdtm_ct)
+names(sdtm_ct)[1:10]
+
+sdtm_ct[["NY"]]$terms[, c("submissionValue", "preferredTerm")]
+```
+
+## CT as a provider
+
+Use `ct_provider()` when rule operations need dictionary lookup behavior.
+
+```{r ct-provider}
+p <- ct_provider("sdtm")
+
+p
+p$contains(c("Y", "N", "UNKNOWN"), field = "NY")
+p$contains("y", field = "NY", ignore_case = TRUE)
+
+p$lookup(c("Y", "N"), field = "NY")[, c("submissionValue", "preferredTerm")]
+```
+
+## Registering providers
+
+Register providers globally for the R session, or pass them directly to
+`validate(dictionaries = ...)` for one run.
+
+```{r register}
+register_dictionary("ct-sdtm", ct_provider("sdtm"))
+list_dictionaries()
+unregister_dictionary("ct-sdtm")
+```
+
+One-run registration avoids session state:
+
+```{r one-run}
+dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+
+result <- validate(
+  files = list(DM = dm),
+  rules = character(0),
+  dictionaries = list("ct-sdtm" = ct_provider("sdtm")),
+  quiet = TRUE
+)
+
+result
+```
+
+## Custom dictionaries
+
+Use `custom_provider()` when your dictionary is already in a data frame.
+
+```{r custom-provider}
+sponsor_terms <- data.frame(
+  VISIT = c("SCREENING", "BASELINE", "WEEK 1"),
+  stringsAsFactors = FALSE
+)
+
+visit_provider <- custom_provider(
+  sponsor_terms,
+  name = "sponsor-visits",
+  fields = "VISIT"
+)
+
+visit_provider
+visit_provider$contains(c("BASELINE", "EARLY TERMINATION"), field = "VISIT")
+```
+
+For full control, build a provider directly with `new_dict_provider()`.
+
+```{r new-provider}
+allowed <- c("LOW", "MEDIUM", "HIGH")
+
+risk_provider <- new_dict_provider(
+  name      = "risk-levels",
+  version   = "2026-04",
+  source    = "sponsor",
+  license   = "internal",
+  size_rows = length(allowed),
+  fields    = "RISK",
+  contains  = function(value, field = NULL, ignore_case = FALSE) {
+    value <- as.character(value)
+    if (isTRUE(ignore_case)) {
+      return(toupper(value) %in% toupper(allowed))
+    }
+    value %in% allowed
+  }
+)
+
+risk_provider$contains(c("LOW", "UNKNOWN"), field = "RISK")
+```
+
+## External dictionaries
+
+The package also exposes factories for common clinical dictionaries:
+
+| Provider | Function |
+|---|---|
+| SRS | `download_srs()`, `srs_provider()` |
+| MedDRA | `meddra_provider()` |
+| WHODrug | `whodrug_provider()` |
+| LOINC | `loinc_provider()` |
+| SNOMED | `snomed_provider()` |
+
+Those functions expect licensed or downloaded source files and are usually
+configured in project-specific setup scripts rather than inside analysis code.

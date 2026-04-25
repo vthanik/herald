@@ -1,0 +1,160 @@
+---
+title: "Architecture"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Architecture}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(herald)
+
+extdata <- function(file) {
+  candidates <- c(
+    system.file("extdata", file, package = "herald"),
+    file.path("..", "inst", "extdata", file),
+    file.path("inst", "extdata", file)
+  )
+  hits <- candidates[nzchar(candidates) & file.exists(candidates)]
+  if (!length(hits)) stop("Cannot find extdata file: ", file)
+  hits[[1L]]
+}
+```
+
+`herald` is organized as a set of small layers. Each layer can be used
+directly, but the usual production path flows from data ingest to validation
+reports.
+
+```
+6  reports              report(), write_report_html(), write_report_xlsx()
+5  validation engine    validate(), rule_catalog(), supported_standards()
+4  rule operations      op_* functions registered in R/ops-*.R
+3  dictionaries         ct_provider(), srs_provider(), custom_provider()
+2  specifications       as_herald_spec(), herald_spec(), read_define_xml()
+1  metadata stamping    apply_spec()
+0  dataset I/O          read_xpt(), read_json(), read_parquet()
+```
+
+## Dataset contract
+
+Datasets are normal R data frames. Metadata is carried in attributes:
+
+```{r attrs}
+dm <- readRDS(extdata("dm.rds"))
+spec <- readRDS(extdata("sdtm-spec.rds"))
+dm <- apply_spec(list(DM = dm), spec)$DM
+
+attr(dm, "label")
+attr(dm$USUBJID, "label")
+attr(dm$USUBJID, "sas.length")
+attr(dm$USUBJID, "xpt_type")
+```
+
+This keeps the package compatible with base R, `dplyr`, `data.table`, and
+other data-frame tooling while still preserving submission metadata for XPT
+and report writers.
+
+## Specification objects
+
+`as_herald_spec()` is the compact constructor for dataset and variable
+metadata. `herald_spec()` is the richer constructor used by Define-XML.
+
+```{r spec}
+simple_spec <- as_herald_spec(
+  ds_spec = data.frame(
+    dataset = "DM",
+    label = "Demographics",
+    class = "SPECIAL PURPOSE",
+    stringsAsFactors = FALSE
+  ),
+  var_spec = data.frame(
+    dataset = "DM",
+    variable = c("STUDYID", "USUBJID"),
+    label = c("Study Identifier", "Unique Subject Identifier"),
+    type = c("text", "text"),
+    stringsAsFactors = FALSE
+  )
+)
+
+simple_spec
+```
+
+## Rule catalog
+
+Compiled rules live under `inst/rules`. `rule_catalog()` flattens the compiled
+corpus for browsing, filtering, and coverage checks.
+
+```{r catalog}
+catalog <- rule_catalog()
+
+nrow(catalog)
+head(catalog[, c("rule_id", "standard", "authority", "severity", "has_predicate")])
+```
+
+`supported_standards()` summarizes predicate coverage by standard and authority.
+
+```{r supported}
+supported_standards()
+```
+
+## Operation registry
+
+Rule predicates are implemented by operation functions in `R/ops-*.R`.
+Operations return logical vectors with this convention:
+
+| Return value | Meaning |
+|---|---|
+| `TRUE` | Rule fires for that row or dataset |
+| `FALSE` | Rule passes |
+| `NA` | Advisory or skipped because required context is unavailable |
+
+Every operation is registered with metadata so the rule engine can dispatch by
+name and report unresolved references.
+
+## Error contract
+
+Package errors inherit from `herald_error`. Specific subclasses distinguish
+input, file, spec, rule, validation, Define-XML, report, and runtime failures.
+This lets pipelines catch broadly while tests pin precise classes.
+
+```{r error-contract}
+tryCatch(
+  validate(quiet = TRUE),
+  herald_error = function(e) class(e)
+)
+```
+
+## Extension points
+
+The safest extension points are:
+
+| Need | Extension point |
+|---|---|
+| New controlled terminology source | `new_dict_provider()` or `custom_provider()` |
+| Sponsor-specific dictionary | `register_dictionary()` or `validate(dictionaries = ...)` |
+| Severity policy | `validate(severity_map = ...)` |
+| Output automation | `report()` or specific report writers |
+| Define-XML authoring | `herald_spec()` plus `write_define_xml()` |
+
+Internal rule operation authoring is more powerful, but it changes validation
+semantics and should be paired with focused fixtures.
+
+## Development checks
+
+The package-level quality gate is:
+
+```r
+devtools::document()
+devtools::test()
+devtools::check(args = "--no-manual")
+```
+
+For rule development, also track fixture coverage with:
+
+```r
+source("tools/fixture-coverage.R")
+```
+
+See `vignette("rule-coverage")` for the current fixture coverage report.

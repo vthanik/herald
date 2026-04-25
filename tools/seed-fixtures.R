@@ -64,12 +64,19 @@ WHITELIST_OPS <- c(
   # set membership
   "is_contained_by", "is_not_contained_by",
   "is_contained_by_case_insensitive", "is_not_contained_by_case_insensitive",
+  "value_in_codelist", "value_in_dictionary",
   # structural (multi-row)
   "is_unique_set", "is_not_unique_set",
   "is_unique_relationship", "is_not_unique_relationship",
+  "differs_by_key", "matches_by_key",
+  "less_than_by_key", "less_than_or_equal_by_key",
+  "greater_than_by_key", "greater_than_or_equal_by_key",
+  "missing_in_ref", "subject_has_matching_row",
   # temporal / format
   "iso8601", "is_complete_date", "is_incomplete_date",
-  "invalid_date"
+  "invalid_date", "value_not_iso8601", "invalid_duration",
+  # token/arithmetic
+  "not_contains_all", "is_not_diff", "is_not_pct_diff"
 )
 
 # Canonical SDTM class -> representative domain for --VAR wildcard expansion.
@@ -83,7 +90,16 @@ CLASS_TO_DOMAIN <- list(
   "SPECIAL-PURPOSE" = "DM",
   "TRIAL DESIGN"    = "TA",
   "TRIAL-DESIGN"    = "TA",
-  "RELATIONSHIP"    = "RELREC"
+  "RELATIONSHIP"    = "RELREC",
+  "SUBJECT LEVEL ANALYSIS DATASET" = "ADSL",
+  "BASIC DATA STRUCTURE" = "ADVS",
+  "OCCURRENCE DATA STRUCTURE" = "ADAE",
+  "TIME-TO-EVENT" = "ADTTE",
+  "ADVERSE EVENT" = "ADAE",
+  "ADSL" = "ADSL",
+  "BDS" = "ADVS",
+  "OCCDS" = "ADAE",
+  "TTE" = "ADTTE"
 )
 
 fx_root <- file.path("tests", "testthat", "fixtures", "golden")
@@ -124,8 +140,15 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
 # -- dataset + spec picker --------------------------------------------------
 
 .pick_dataset_and_spec <- function(rule) {
+  datasets <- rule[["scope"]][["datasets"]]
   doms    <- rule[["scope"]][["domains"]]
   classes <- rule[["scope"]][["classes"]]
+
+  concrete_datasets <- character()
+  if (!is.null(datasets) && length(datasets) > 0L) {
+    u <- as.character(unlist(datasets))
+    concrete_datasets <- u[nzchar(u) & u != "ALL"]
+  }
 
   concrete_doms <- character()
   if (!is.null(doms) && length(doms) > 0L) {
@@ -142,7 +165,9 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
   class_pick <- if (length(concrete_cls) > 0L) concrete_cls[[1L]] else NA_character_
 
   ds_name <- NA_character_
-  if (length(concrete_doms) > 0L) {
+  if (length(concrete_datasets) > 0L) {
+    ds_name <- concrete_datasets[[1L]]
+  } else if (length(concrete_doms) > 0L) {
     ds_name <- concrete_doms[[1L]]
   } else if (!is.na(class_pick)) {
     d <- CLASS_TO_DOMAIN[[class_pick]]
@@ -177,6 +202,33 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
   }, character(1L), USE.NAMES = FALSE)
 }
 
+.seed_expand_tuple <- function(expand) {
+  if (is.null(expand)) return(list())
+  raw <- as.character(unlist(expand))
+  if (length(raw) == 1L && grepl("[,;| ]", raw)) {
+    raw <- trimws(strsplit(raw, "[,;| ]+", perl = TRUE)[[1L]])
+  }
+  raw <- raw[nzchar(raw)]
+  vals <- list(stem = "PARAM", xx = "01", zz = "01", y = "1", w = "1")
+  vals[intersect(raw, names(vals))]
+}
+
+.substitute_seed_tuple <- function(x, tuple) {
+  if (length(tuple) == 0L) return(x)
+  if (is.character(x)) {
+    out <- x
+    # Longer placeholders first: `stem` before `y`, `xx` before `x`.
+    for (ph in names(tuple)[order(-nchar(names(tuple)))]) {
+      out <- gsub(ph, tuple[[ph]], out, fixed = TRUE)
+    }
+    return(out)
+  }
+  if (is.list(x)) {
+    return(lapply(x, .substitute_seed_tuple, tuple = tuple))
+  }
+  x
+}
+
 # -- per-op seed variants ---------------------------------------------------
 
 .val_first <- function(x) {
@@ -190,6 +242,24 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
 }
 
 .mk <- function(name, v) stats::setNames(list(v), name)
+
+.dummy_dictionaries <- function() {
+  fields <- c("pt", "pt_code", "llt", "llt_code", "hlt", "hlt_code",
+              "hlgt", "hlgt_code", "soc", "soc_code", "drug", "code",
+              "preferred_name")
+  make <- function(name) {
+    tbl <- as.data.frame(stats::setNames(rep(list("VALID"), length(fields)), fields),
+                         stringsAsFactors = FALSE)
+    custom_provider(tbl, name = name, fields = fields)
+  }
+  list(
+    meddra  = make("meddra"),
+    whodrug = make("whodrug"),
+    srs     = make("srs"),
+    loinc   = make("loinc"),
+    snomed  = make("snomed")
+  )
+}
 
 .shift_date <- function(date_str, days) {
   # Accept YYYY-MM-DD; return shifted date string. Any parse error -> NA.
@@ -376,6 +446,22 @@ DOLLAR_ALIASES <- list(
     return(.dollar_variant(op, name, ref))
   }
 
+  # Cross-dataset column presence: exists("AE.AESTDY") means column AESTDY
+  # exists in dataset AE, not a literal column named "AE.AESTDY" in the main
+  # dataset.
+  if (identical(op, "exists") &&
+      grepl("^[A-Z][A-Z0-9]{1,3}\\.[A-Z][A-Z0-9_]*$", name)) {
+    parts <- strsplit(name, ".", fixed = TRUE)[[1L]]
+    ref_ds <- parts[[1L]]
+    ref_col <- parts[[2L]]
+    return(list(
+      A = list(main = list(`_placeholder_` = "x"),
+               extras = stats::setNames(list(.mk(ref_col, "value")), ref_ds)),
+      B = list(main = list(`_placeholder_` = "x"),
+               extras = stats::setNames(list(list(`_placeholder_` = "x")), ref_ds))
+    ))
+  }
+
   switch(
     op,
     # -- existence ---------------------------------------------------------
@@ -551,6 +637,28 @@ DOLLAR_ALIASES <- list(
       list(A = .mk(name, paste0("NOT_IN_", allowed[[1L]])),
            B = .mk(name, toupper(allowed[[1L]])))
     },
+    value_in_codelist = {
+      codelist <- as.character(leaf[["codelist"]] %||% "")
+      package  <- tolower(as.character(leaf[["package"]] %||% "sdtm"))
+      if (!nzchar(codelist)) return(NULL)
+      if (!package %in% c("sdtm", "adam")) package <- "sdtm"
+      ct <- tryCatch(load_ct(package), error = function(e) NULL)
+      if (is.null(ct)) return(NULL)
+      entry <- .lookup_codelist(ct, codelist)
+      if (is.null(entry) || is.null(entry$terms$submissionValue)) return(NULL)
+      allowed <- as.character(entry$terms$submissionValue)
+      allowed <- allowed[!is.na(allowed) & nzchar(allowed)]
+      if (length(allowed) == 0L) return(NULL)
+      # op_value_in_codelist fires when value is NOT in CT.
+      list(A = .mk(name, paste0("NOT_IN_", allowed[[1L]])),
+           B = .mk(name, allowed[[1L]]))
+    },
+    value_in_dictionary = {
+      # op_value_in_dictionary fires when a non-empty value is not found in
+      # the named provider. .run_rule supplies deterministic dummy providers
+      # whose every field contains "VALID".
+      list(A = .mk(name, "INVALID"), B = .mk(name, "VALID"))
+    },
 
     # -- structural (multi-row) -------------------------------------------
     # is_unique_set: TRUE when row's key is unique (count == 1)
@@ -574,22 +682,115 @@ DOLLAR_ALIASES <- list(
     is_unique_relationship = {
       rel <- leaf[["value"]]
       related <- if (is.list(rel)) rel$related_name else rel
+      group_by <- if (is.list(rel)) as.character(unlist(rel$group_by %||% character(0))) else character(0)
       if (is.null(related) || !nzchar(as.character(related))) return(NULL)
       related <- .expand_wildcard(as.character(related), domain)
       if (related == name) return(NULL)
+      group_by <- .expand_wildcard(group_by, domain)
       A <- stats::setNames(list(c("a","a"), c("1","1")), c(name, related))  # 1:1
       B <- stats::setNames(list(c("a","a"), c("1","2")), c(name, related))  # 1:many
+      for (g in group_by) {
+        A[[g]] <- c("G1", "G1")
+        B[[g]] <- c("G1", "G1")
+      }
       list(A = A, B = B)
     },
     is_not_unique_relationship = {
       rel <- leaf[["value"]]
       related <- if (is.list(rel)) rel$related_name else rel
+      group_by <- if (is.list(rel)) as.character(unlist(rel$group_by %||% character(0))) else character(0)
       if (is.null(related) || !nzchar(as.character(related))) return(NULL)
       related <- .expand_wildcard(as.character(related), domain)
       if (related == name) return(NULL)
+      group_by <- .expand_wildcard(group_by, domain)
       A <- stats::setNames(list(c("a","a"), c("1","2")), c(name, related))  # 1:many
       B <- stats::setNames(list(c("a","a"), c("1","1")), c(name, related))  # 1:1
+      for (g in group_by) {
+        A[[g]] <- c("G1", "G1")
+        B[[g]] <- c("G1", "G1")
+      }
       list(A = A, B = B)
+    },
+
+    differs_by_key = {
+      ref_ds  <- as.character(leaf$reference_dataset %||% "")
+      ref_col <- as.character(leaf$reference_column %||% "")
+      if (!nzchar(ref_ds) || !nzchar(ref_col)) return(NULL)
+      key <- as.character(unlist(leaf$key %||% name))
+      ref_key <- as.character(unlist(leaf$reference_key %||% key))
+      if (length(key) != 1L || length(ref_key) != 1L) return(NULL)
+      list(
+        A = list(main = c(.mk(name, "DIFF"), .mk(key, "K1")),
+                 extras = stats::setNames(list(c(.mk(ref_col, "SAME"), .mk(ref_key, "K1"))), ref_ds)),
+        B = list(main = c(.mk(name, "SAME"), .mk(key, "K1")),
+                 extras = stats::setNames(list(c(.mk(ref_col, "SAME"), .mk(ref_key, "K1"))), ref_ds))
+      )
+    },
+    matches_by_key = {
+      ref_ds  <- as.character(leaf$reference_dataset %||% "")
+      ref_col <- as.character(leaf$reference_column %||% "")
+      if (!nzchar(ref_ds) || !nzchar(ref_col)) return(NULL)
+      key <- as.character(unlist(leaf$key %||% name))
+      ref_key <- as.character(unlist(leaf$reference_key %||% key))
+      if (length(key) != 1L || length(ref_key) != 1L) return(NULL)
+      list(
+        A = list(main = c(.mk(name, "SAME"), .mk(key, "K1")),
+                 extras = stats::setNames(list(c(.mk(ref_col, "SAME"), .mk(ref_key, "K1"))), ref_ds)),
+        B = list(main = c(.mk(name, "DIFF"), .mk(key, "K1")),
+                 extras = stats::setNames(list(c(.mk(ref_col, "SAME"), .mk(ref_key, "K1"))), ref_ds))
+      )
+    },
+    less_than_by_key = {
+      ref_ds <- as.character(leaf$reference_dataset %||% ""); ref_col <- as.character(leaf$reference_column %||% "")
+      if (!nzchar(ref_ds) || !nzchar(ref_col)) return(NULL)
+      key <- as.character(unlist(leaf$key %||% "USUBJID")); ref_key <- as.character(unlist(leaf$reference_key %||% key))
+      if (length(key) != 1L || length(ref_key) != 1L) return(NULL)
+      list(A = list(main = c(.mk(name, 1), .mk(key, "K1")), extras = stats::setNames(list(c(.mk(ref_col, 2), .mk(ref_key, "K1"))), ref_ds)),
+           B = list(main = c(.mk(name, 3), .mk(key, "K1")), extras = stats::setNames(list(c(.mk(ref_col, 2), .mk(ref_key, "K1"))), ref_ds)))
+    },
+    less_than_or_equal_by_key = {
+      ref_ds <- as.character(leaf$reference_dataset %||% ""); ref_col <- as.character(leaf$reference_column %||% "")
+      if (!nzchar(ref_ds) || !nzchar(ref_col)) return(NULL)
+      key <- as.character(unlist(leaf$key %||% "USUBJID")); ref_key <- as.character(unlist(leaf$reference_key %||% key))
+      if (length(key) != 1L || length(ref_key) != 1L) return(NULL)
+      list(A = list(main = c(.mk(name, 2), .mk(key, "K1")), extras = stats::setNames(list(c(.mk(ref_col, 2), .mk(ref_key, "K1"))), ref_ds)),
+           B = list(main = c(.mk(name, 3), .mk(key, "K1")), extras = stats::setNames(list(c(.mk(ref_col, 2), .mk(ref_key, "K1"))), ref_ds)))
+    },
+    greater_than_by_key = {
+      ref_ds <- as.character(leaf$reference_dataset %||% ""); ref_col <- as.character(leaf$reference_column %||% "")
+      if (!nzchar(ref_ds) || !nzchar(ref_col)) return(NULL)
+      key <- as.character(unlist(leaf$key %||% "USUBJID")); ref_key <- as.character(unlist(leaf$reference_key %||% key))
+      if (length(key) != 1L || length(ref_key) != 1L) return(NULL)
+      list(A = list(main = c(.mk(name, 3), .mk(key, "K1")), extras = stats::setNames(list(c(.mk(ref_col, 2), .mk(ref_key, "K1"))), ref_ds)),
+           B = list(main = c(.mk(name, 1), .mk(key, "K1")), extras = stats::setNames(list(c(.mk(ref_col, 2), .mk(ref_key, "K1"))), ref_ds)))
+    },
+    greater_than_or_equal_by_key = {
+      ref_ds <- as.character(leaf$reference_dataset %||% ""); ref_col <- as.character(leaf$reference_column %||% "")
+      if (!nzchar(ref_ds) || !nzchar(ref_col)) return(NULL)
+      key <- as.character(unlist(leaf$key %||% "USUBJID")); ref_key <- as.character(unlist(leaf$reference_key %||% key))
+      if (length(key) != 1L || length(ref_key) != 1L) return(NULL)
+      list(A = list(main = c(.mk(name, 2), .mk(key, "K1")), extras = stats::setNames(list(c(.mk(ref_col, 2), .mk(ref_key, "K1"))), ref_ds)),
+           B = list(main = c(.mk(name, 1), .mk(key, "K1")), extras = stats::setNames(list(c(.mk(ref_col, 2), .mk(ref_key, "K1"))), ref_ds)))
+    },
+    missing_in_ref = {
+      ref_ds <- as.character(leaf$reference_dataset %||% "")
+      if (!nzchar(ref_ds)) return(NULL)
+      key <- as.character(unlist(leaf$key %||% name))
+      ref_key <- as.character(unlist(leaf$reference_key %||% key))
+      if (length(key) != 1L || length(ref_key) != 1L) return(NULL)
+      list(A = list(main = .mk(key, "K_MISSING"), extras = stats::setNames(list(.mk(ref_key, "K_PRESENT")), ref_ds)),
+           B = list(main = .mk(key, "K_PRESENT"), extras = stats::setNames(list(.mk(ref_key, "K_PRESENT")), ref_ds)))
+    },
+    subject_has_matching_row = {
+      ref_ds <- as.character(leaf$reference_dataset %||% "")
+      ref_col <- as.character(leaf$reference_column %||% "")
+      exp <- as.character(leaf$expected_value %||% "")
+      if (!nzchar(ref_ds) || !nzchar(ref_col) || !nzchar(exp)) return(NULL)
+      key <- as.character(unlist(leaf$key %||% name))
+      ref_key <- as.character(unlist(leaf$reference_key %||% key))
+      if (length(key) != 1L || length(ref_key) != 1L) return(NULL)
+      list(A = list(main = .mk(key, "K1"), extras = stats::setNames(list(c(.mk(ref_key, "K1"), .mk(ref_col, exp))), ref_ds)),
+           B = list(main = .mk(key, "K1"), extras = stats::setNames(list(c(.mk(ref_key, "K1"), .mk(ref_col, paste0("NO_", exp)))), ref_ds)))
     },
 
     # -- temporal / format -----------------------------------------------
@@ -598,6 +799,30 @@ DOLLAR_ALIASES <- list(
     is_complete_date   = list(A = .mk(name, "2026-01-15"), B = .mk(name, "2026-01-")),
     is_incomplete_date = list(A = .mk(name, "2026-01-"),   B = .mk(name, "2026-01-15")),
     invalid_date       = list(A = .mk(name, "not-a-date"), B = .mk(name, "2026-01-15")),
+    value_not_iso8601  = list(A = .mk(name, "not-a-date"), B = .mk(name, "2026-01-15")),
+    invalid_duration   = list(A = .mk(name, "not-duration"), B = .mk(name, "P1D")),
+
+    not_contains_all = {
+      vals <- .vals_all(leaf[["value"]])
+      if (length(vals) == 0L) return(NULL)
+      list(A = .mk(name, vals[[1L]]),
+           B = .mk(name, paste(vals, collapse = " ")))
+    },
+    is_not_diff = {
+      minuend <- as.character(leaf$minuend %||% "")
+      subtrahend <- as.character(leaf$subtrahend %||% "")
+      if (!nzchar(minuend) || !nzchar(subtrahend)) return(NULL)
+      list(A = c(.mk(name, 99), .mk(minuend, 10), .mk(subtrahend, 3)),
+           B = c(.mk(name, 7),  .mk(minuend, 10), .mk(subtrahend, 3)))
+    },
+    is_not_pct_diff = {
+      minuend <- as.character(leaf$minuend %||% "")
+      subtrahend <- as.character(leaf$subtrahend %||% "")
+      denom <- as.character(leaf$denominator %||% subtrahend)
+      if (!nzchar(minuend) || !nzchar(subtrahend) || !nzchar(denom)) return(NULL)
+      list(A = c(.mk(name, 99), .mk(minuend, 12), .mk(subtrahend, 10), .mk(denom, 10)),
+           B = c(.mk(name, 20), .mk(minuend, 12), .mk(subtrahend, 10), .mk(denom, 10)))
+    },
 
     NULL
   )
@@ -670,7 +895,8 @@ DOLLAR_ALIASES <- list(
   files <- lapply(dataset_map, function(cols) {
     as.data.frame(cols, stringsAsFactors = FALSE, check.names = FALSE)
   })
-  r <- validate(files = files, spec = spec, rules = rule_id, quiet = TRUE)
+  r <- validate(files = files, spec = spec, rules = rule_id, quiet = TRUE,
+                dictionaries = .dummy_dictionaries())
   main_name <- names(dataset_map)[[1L]]
   fired <- r$findings[r$findings$status == "fired", , drop = FALSE]
   main_rows <- fired$row[toupper(fired$dataset) == toupper(main_name)]
@@ -772,6 +998,20 @@ for (i in seq_len(n_total)) {
     next
   }
 
+  seed_tuple <- .seed_expand_tuple(rule$check_tree$expand)
+  if (length(seed_tuple) > 0L) {
+    leaves_info <- lapply(leaves_info, function(x) {
+      leaf_name <- as.character(unlist(x$leaf$name %||% character()))
+      name_has_placeholder <- any(vapply(names(seed_tuple), function(ph) {
+        any(grepl(ph, leaf_name, fixed = TRUE))
+      }, logical(1L)))
+      if (name_has_placeholder) {
+        x$leaf <- .substitute_seed_tuple(x$leaf, seed_tuple)
+      }
+      x
+    })
+  }
+
   # When the fallback main dataset collides with a $-ref target (e.g. a rule
   # scoped to ALL domains that references $dm_usubjid), swap to a non-
   # conflicting domain. Only do this when the rule has no explicit scope --
@@ -828,24 +1068,6 @@ for (i in seq_len(n_total)) {
     next
   }
 
-  main_A_cols <- lapply(variants_A, function(v) v$main)
-  main_B_cols <- lapply(variants_B, function(v) v$main)
-  cols_pos <- .merge_cols(main_A_cols)
-  cols_neg <- .merge_cols(main_B_cols)
-  if (is.null(cols_pos) || is.null(cols_neg)) {
-    n_skipped <- n_skipped + 1L
-    reasons <- c(reasons, "leaf-col-conflict")
-    next
-  }
-
-  extras_pos <- .merge_extras(lapply(variants_A, function(v) v$extras))
-  extras_neg <- .merge_extras(lapply(variants_B, function(v) v$extras))
-  if (is.null(extras_pos) || is.null(extras_neg)) {
-    n_skipped <- n_skipped + 1L
-    reasons <- c(reasons, "leaf-extras-conflict")
-    next
-  }
-
   paths <- .fx_paths(rule$authority %||% "unknown", rule_id)
   if (!isTRUE(force) &&
       (.is_manual(paths$positive) || .is_manual(paths$negative))) {
@@ -854,11 +1076,57 @@ for (i in seq_len(n_total)) {
     next
   }
 
-  dataset_map_pos <- c(stats::setNames(list(cols_pos), ds_info$name), extras_pos)
-  dataset_map_neg <- c(stats::setNames(list(cols_neg), ds_info$name), extras_neg)
+  # Build and verify candidate datasets. The first candidate is the old
+  # all-A positive. Additional candidates handle `{any: [...]}` and mixed
+  # trees where setting every leaf to its firing value creates conflicts or
+  # accidentally disables a branch. We still rely on validate() as oracle:
+  # no unverified candidate is written.
+  .dataset_map_from_sides <- function(sides) {
+    cols <- .merge_cols(lapply(sides, function(v) v$main))
+    if (is.null(cols)) return(NULL)
+    extras <- .merge_extras(lapply(sides, function(v) v$extras))
+    if (is.null(extras)) return(NULL)
+    c(stats::setNames(list(cols), ds_info$name), extras)
+  }
 
-  out_pos <- .run_rule(rule_id, dataset_map_pos, spec = ds_info$spec)
+  dataset_map_neg <- .dataset_map_from_sides(variants_B)
+  if (is.null(dataset_map_neg)) {
+    n_skipped <- n_skipped + 1L
+    reasons <- c(reasons, "leaf-col-conflict")
+    next
+  }
+
+  pos_side_candidates <- list(variants_A)
+  n_leaf <- length(variants_A)
+  if (n_leaf > 1L) {
+    for (j in seq_len(n_leaf)) {
+      sides <- variants_B
+      sides[[j]] <- variants_A[[j]]
+      pos_side_candidates[[length(pos_side_candidates) + 1L]] <- sides
+    }
+    if (n_leaf <= 8L) {
+      pairs <- utils::combn(seq_len(n_leaf), 2L, simplify = FALSE)
+      for (pair in pairs) {
+        sides <- variants_B
+        sides[pair] <- variants_A[pair]
+        pos_side_candidates[[length(pos_side_candidates) + 1L]] <- sides
+      }
+    }
+  }
+
   out_neg <- .run_rule(rule_id, dataset_map_neg, spec = ds_info$spec)
+  dataset_map_pos <- NULL
+  out_pos <- list(fires = FALSE, rows = integer())
+  for (sides in pos_side_candidates) {
+    cand <- .dataset_map_from_sides(sides)
+    if (is.null(cand)) next
+    got <- .run_rule(rule_id, cand, spec = ds_info$spec)
+    if (isTRUE(got$fires)) {
+      dataset_map_pos <- cand
+      out_pos <- got
+      break
+    }
+  }
 
   if (!isTRUE(out_pos$fires) || isTRUE(out_neg$fires)) {
     n_skipped <- n_skipped + 1L
@@ -870,8 +1138,8 @@ for (i in seq_len(n_total)) {
   }
 
   any_inverted <- any(vapply(leaves_info, function(l) isTRUE(l$inverted), logical(1)))
-  has_extras <- length(extras_pos) > 0L
-  extras_tag <- if (has_extras) sprintf(" (+%d ref ds)", length(extras_pos)) else ""
+  has_extras <- length(dataset_map_pos) > 1L
+  extras_tag <- if (has_extras) sprintf(" (+%d ref ds)", length(dataset_map_pos) - 1L) else ""
   notes_pos <- sprintf("auto-seeded%s%s; %d leaf op(s): %s",
                        if (any_inverted) " (w/ not-wrapper)" else "",
                        extras_tag,

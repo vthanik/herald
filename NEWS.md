@@ -2,6 +2,9 @@
 
 Initial clean-slate rewrite. See plan at `.local/plan.md`.
 
+- Added a current-API documentation set: expanded README, pkgdown reference
+  structure, and vignettes for getting started, validation/reporting, data I/O,
+  Define-XML, dictionary providers, best practices, and architecture.
 - `convert_dataset()` replaces the six directional converters (`xpt_to_json()`, `json_to_xpt()`, `xpt_to_parquet()`, `parquet_to_xpt()`, `json_to_parquet()`, `parquet_to_json()`). Formats are inferred from file extensions; pass `from =` / `to =` to override.
 - All `@examples` now use `pharmaversesdtm` and `pharmaverseadam` pilot datasets instead of hand-crafted toy data frames.
 - Pure-R, CRAN-clean, no JVM.

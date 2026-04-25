@@ -43,10 +43,29 @@
   )
 }
 
+.fixture_dictionaries <- function() {
+  fields <- c("pt", "pt_code", "llt", "llt_code", "hlt", "hlt_code",
+              "hlgt", "hlgt_code", "soc", "soc_code", "drug", "code",
+              "preferred_name")
+  make <- function(name) {
+    tbl <- as.data.frame(stats::setNames(rep(list("VALID"), length(fields)), fields),
+                         stringsAsFactors = FALSE)
+    custom_provider(tbl, name = name, fields = fields)
+  }
+  list(
+    meddra  = make("meddra"),
+    whodrug = make("whodrug"),
+    srs     = make("srs"),
+    loinc   = make("loinc"),
+    snomed  = make("snomed")
+  )
+}
+
 .assert_fixture <- function(fx) {
   datasets <- .fixture_datasets(fx)
   res <- validate(files = datasets, spec = .fixture_spec(fx),
-                  rules = fx$rule_id, quiet = TRUE)
+                  rules = fx$rule_id, quiet = TRUE,
+                  dictionaries = .fixture_dictionaries())
 
   if (isTRUE(res$rules_applied == 0L)) {
     testthat::skip(sprintf("rule %s not in catalog (superseded or not yet authored)",

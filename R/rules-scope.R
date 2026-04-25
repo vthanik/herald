@@ -115,7 +115,7 @@ scoped_datasets <- function(rule, ctx) {
   # When set, the rule only runs against those exact dataset names.
   datasets_scope <- scope[["datasets"]]
   if (!is.null(datasets_scope) && length(datasets_scope) > 0L) {
-    return(ds_name %in% as.character(unlist(datasets_scope)))
+    return(toupper(ds_name) %in% toupper(as.character(unlist(datasets_scope))))
   }
 
   ds_up <- toupper(ds_name)

@@ -1,0 +1,151 @@
+---
+title: "Getting Started with herald"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with herald}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(herald)
+
+extdata <- function(file) {
+  candidates <- c(
+    system.file("extdata", file, package = "herald"),
+    file.path("..", "inst", "extdata", file),
+    file.path("inst", "extdata", file)
+  )
+  hits <- candidates[nzchar(candidates) & file.exists(candidates)]
+  if (!length(hits)) stop("Cannot find extdata file: ", file)
+  hits[[1L]]
+}
+```
+
+`herald` is a clinical submission validation package. It is designed for
+R-native pipelines that need to read submission datasets, attach CDISC
+metadata, execute conformance rules, and produce auditable reports.
+
+The current package has four core objects:
+
+| Object | What it represents |
+|---|---|
+| `data.frame` with attributes | A clinical dataset with labels, lengths, and XPT type metadata |
+| `herald_spec` | Dataset and variable metadata used before validation |
+| `herald_define` | A Define-XML document parsed into R data frames |
+| `herald_result` | Validation findings, rule snapshot, dataset metadata, and skipped references |
+
+## The workflow
+
+Most workflows follow the same shape:
+
+```
+read data -> build/read spec -> apply spec -> validate -> report
+```
+
+Use the pilot data bundled with the package:
+
+```{r load-pilot}
+dm <- readRDS(extdata("dm.rds"))
+spec <- readRDS(extdata("sdtm-spec.rds"))
+
+dim(dm)
+names(dm)[1:6]
+spec
+```
+
+## Apply metadata
+
+`apply_spec()` stamps dataset-level and variable-level metadata. The result is
+still a regular data frame, so existing R code keeps working.
+
+```{r apply-spec}
+dm <- apply_spec(list(DM = dm), spec)$DM
+
+attr(dm, "label")
+attr(dm$USUBJID, "label")
+attr(dm$USUBJID, "sas.length")
+attr(dm$USUBJID, "xpt_type")
+```
+
+## Validate
+
+`validate()` accepts either a directory path or a named list of data frames.
+For a first smoke test, use `rules = character(0)` to exercise the result
+object and reporting path without running the full compiled corpus.
+
+```{r validate-smoke}
+result <- validate(
+  files = list(DM = dm),
+  rules = character(0),
+  quiet = TRUE
+)
+
+result
+names(result)
+```
+
+Run selected rules by passing rule identifiers. To inspect what is available,
+use `rule_catalog()`.
+
+```{r selected-rules}
+catalog <- rule_catalog()
+head(catalog[, c("rule_id", "standard", "authority", "severity", "has_predicate")])
+
+selected <- head(catalog$rule_id[catalog$has_predicate], 3)
+selected
+
+selected_result <- validate(
+  files = list(DM = dm),
+  rules = selected,
+  quiet = TRUE
+)
+
+selected_result$rules_total
+selected_result$datasets_checked
+```
+
+## Write reports
+
+Reports are generated from a `herald_result`. The generic `report()` dispatches
+from the file extension.
+
+```{r report-files}
+out_dir <- file.path(tempdir(), "herald-getting-started")
+dir.create(out_dir, showWarnings = FALSE)
+
+html_path <- file.path(out_dir, "validation-report.html")
+json_path <- file.path(out_dir, "validation-report.json")
+xlsx_path <- file.path(out_dir, "validation-report.xlsx")
+
+report(selected_result, html_path)
+report(selected_result, json_path)
+report(selected_result, xlsx_path)
+
+file.exists(c(html_path, json_path, xlsx_path))
+```
+
+## Convert dataset formats
+
+`convert_dataset()` converts among XPT, Dataset-JSON, and Parquet. Parquet
+requires the optional `arrow` package.
+
+```{r convert-xpt-json}
+xpt_path  <- file.path(out_dir, "dm.xpt")
+json_path <- file.path(out_dir, "dm.json")
+
+write_xpt(dm, xpt_path)
+convert_dataset(xpt_path, json_path)
+
+dm_from_json <- read_json(json_path)
+identical(nrow(dm), nrow(dm_from_json))
+```
+
+## Where to go next
+
+- `vignette("validation-reporting")` for rule filters, severity overrides, and reports.
+- `vignette("data-io")` for XPT, Dataset-JSON, Parquet, and conversions.
+- `vignette("define-xml")` for Define-XML 2.1 read/write round-trips.
+- `vignette("dictionaries")` for controlled terminology and external dictionaries.
+- `vignette("architecture")` for package layers and extension points.

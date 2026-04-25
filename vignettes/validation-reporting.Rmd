@@ -1,0 +1,171 @@
+---
+title: "Validation and Reporting"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Validation and Reporting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(herald)
+
+extdata <- function(file) {
+  candidates <- c(
+    system.file("extdata", file, package = "herald"),
+    file.path("..", "inst", "extdata", file),
+    file.path("inst", "extdata", file)
+  )
+  hits <- candidates[nzchar(candidates) & file.exists(candidates)]
+  if (!length(hits)) stop("Cannot find extdata file: ", file)
+  hits[[1L]]
+}
+```
+
+`validate()` is the main entry point. It returns a `herald_result`: a stable
+object containing findings, the rule catalog snapshot, dataset metadata,
+skipped references, timing, and the detected submission profile.
+
+## Inputs
+
+Validation can start from in-memory data frames:
+
+```{r memory-input}
+dm <- readRDS(extdata("dm.rds"))
+spec <- readRDS(extdata("sdtm-spec.rds"))
+
+dm <- apply_spec(list(DM = dm), spec)$DM
+
+r0 <- validate(
+  files = list(DM = dm),
+  rules = character(0),
+  quiet = TRUE
+)
+
+r0
+```
+
+Or from a directory of files:
+
+```{r path-input}
+submission_dir <- file.path(tempdir(), "herald-validation")
+dir.create(submission_dir, showWarnings = FALSE)
+
+write_xpt(dm, file.path(submission_dir, "dm.xpt"))
+
+r1 <- validate(
+  path  = submission_dir,
+  rules = character(0),
+  quiet = TRUE
+)
+
+r1$datasets_checked
+```
+
+## Rule selection
+
+Use `rule_catalog()` to find rule IDs, then pass those IDs to `validate()`.
+`authorities` and `standards` give broader filters.
+
+```{r rule-selection}
+catalog <- rule_catalog()
+
+table(catalog$standard, catalog$authority)
+head(catalog[catalog$has_predicate, c("rule_id", "standard", "severity", "message")])
+
+rule_ids <- head(catalog$rule_id[catalog$has_predicate], 5)
+
+r2 <- validate(
+  files = list(DM = dm),
+  rules = rule_ids,
+  quiet = TRUE
+)
+
+r2$rules_total
+r2$rules_applied
+```
+
+For exploratory runs, `supported_standards()` gives a corpus-level summary.
+
+```{r standards}
+supported_standards()
+```
+
+## Findings
+
+Findings are stored in a tibble. The most useful columns for triage are
+`rule_id`, `severity`, `status`, `dataset`, `variable`, `row`, and `message`.
+
+```{r findings}
+names(r2$findings)
+
+if (nrow(r2$findings)) {
+  r2$findings[, c("rule_id", "severity", "status", "dataset", "variable", "row", "message")]
+} else {
+  "No findings emitted by the selected rules."
+}
+```
+
+Filter with base R or your preferred data-frame toolkit:
+
+```{r filter-findings}
+fired <- r2$findings[r2$findings$status == "fired", , drop = FALSE]
+high  <- r2$findings[r2$findings$severity %in% c("Reject", "High", "Error"), , drop = FALSE]
+
+nrow(fired)
+nrow(high)
+```
+
+## Severity overrides
+
+Sponsors often need study-specific severity policies. `severity_map` can
+override by exact rule ID, by regular expression, or by severity category.
+
+```{r severity-map}
+r3 <- validate(
+  files = list(DM = dm),
+  rules = rule_ids,
+  severity_map = c("Medium" = "High"),
+  quiet = TRUE
+)
+
+if (nrow(r3$findings)) {
+  unique(r3$findings[, c("rule_id", "severity", "severity_override")])
+} else {
+  "No emitted findings to override in this small run."
+}
+```
+
+## Reports
+
+Use `report()` when you want extension-based dispatch. Use the specific
+writers when you want explicit output.
+
+```{r reports}
+report_dir <- file.path(tempdir(), "herald-reports")
+dir.create(report_dir, showWarnings = FALSE)
+
+html <- file.path(report_dir, "report.html")
+xlsx <- file.path(report_dir, "report.xlsx")
+json <- file.path(report_dir, "report.json")
+
+write_report_html(r2, html)
+write_report_xlsx(r2, xlsx)
+write_report_json(r2, json)
+
+file.info(c(html, xlsx, json))[, c("size", "mtime")]
+```
+
+## Skipped references
+
+Some rules require datasets or dictionaries that are absent. Those are reported
+as skipped references rather than hidden as silent passes.
+
+```{r skipped-refs}
+str(r2$skipped_refs, max.level = 2)
+```
+
+The result object keeps enough context for both automated pipelines and human
+review. A CI job can fail on `nrow(result$findings) > 0`, while a clinical
+programmer can open the HTML or XLSX report for triage.
