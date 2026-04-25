@@ -57,10 +57,8 @@ test_that("write_json() errors on non-data.frame", {
 test_that("write_json() infers dataset name from path", {
   skip_if_not_installed("jsonlite")
 
-  df <- data.frame(X = 1L, stringsAsFactors = FALSE)
   path <- withr::local_tempfile(pattern = "adsl", fileext = ".json")
-
-  write_json(df, path)
+  write_json(data.frame(X = 1L, stringsAsFactors = FALSE), path)  # inline -> no capture
   raw <- jsonlite::fromJSON(path, simplifyVector = FALSE)
   expect_true(grepl("ADSL", raw$name, ignore.case = TRUE))
 })
@@ -113,12 +111,37 @@ test_that("write_json infers dataset name from dataset_name attribute", {
   expect_equal(raw$label, "My Dataset")
 })
 
+test_that("write_json infers dataset name from bare variable symbol", {
+  skip_if_not_installed("jsonlite")
+  adsl <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  tmp <- withr::local_tempfile(fileext = ".json")
+  write_json(adsl, tmp)
+  raw <- jsonlite::fromJSON(tmp, simplifyVector = FALSE)
+  expect_equal(raw$name, "ADSL")
+})
+
+test_that("write_json explicit dataset= beats variable symbol capture", {
+  skip_if_not_installed("jsonlite")
+  adsl <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  tmp <- withr::local_tempfile(fileext = ".json")
+  write_json(adsl, tmp, dataset = "CUSTOM")
+  raw <- jsonlite::fromJSON(tmp, simplifyVector = FALSE)
+  expect_equal(raw$name, "CUSTOM")
+})
+
+test_that("write_json falls through symbol capture for inline expression", {
+  skip_if_not_installed("jsonlite")
+  tmp <- file.path(withr::local_tempdir(), "dm_test.json")
+  write_json(data.frame(X = 1L), tmp)
+  raw <- jsonlite::fromJSON(tmp, simplifyVector = FALSE)
+  expect_equal(raw$name, "DM_TEST")
+})
+
 test_that("write_json infers dataset name from filename when no attribute", {
   skip_if_not_installed("jsonlite")
   tmp <- file.path(withr::local_tempdir(), "dm_test.json")
 
-  dm <- data.frame(X = 1L, stringsAsFactors = FALSE)
-  write_json(dm, tmp) # no dataset=, no attribute
+  write_json(data.frame(X = 1L, stringsAsFactors = FALSE), tmp)  # inline -> no capture
 
   raw <- jsonlite::fromJSON(tmp, simplifyVector = FALSE)
   expect_equal(raw$name, "DM_TEST")

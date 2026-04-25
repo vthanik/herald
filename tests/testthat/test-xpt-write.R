@@ -107,9 +107,7 @@ test_that("write_xpt rejects V5 with long names", {
 
 test_that("write_xpt derives dataset name from file path when dataset=NULL", {
   tmp <- file.path(withr::local_tempdir(), "ae.xpt")
-
-  df <- data.frame(X = 1)
-  write_xpt(df, tmp)
+  write_xpt(data.frame(X = 1), tmp)  # inline expression -> no symbol capture
   expect_true(file.exists(tmp))
 
   raw_data <- readBin(tmp, "raw", file.info(tmp)$size)
@@ -119,15 +117,41 @@ test_that("write_xpt derives dataset name from file path when dataset=NULL", {
 
 test_that("write_xpt uses dataset_name attribute when dataset=NULL", {
   tmp <- withr::local_tempfile(fileext = ".xpt")
-
-  df <- data.frame(X = 1)
-  attr(df, "dataset_name") <- "VS"
-  write_xpt(df, tmp)
+  x <- data.frame(X = 1)          # generic name so attr beats capture
+  attr(x, "dataset_name") <- "VS"
+  write_xpt(x, tmp)
   expect_true(file.exists(tmp))
 
   raw_data <- readBin(tmp, "raw", file.info(tmp)$size)
   content <- rawToChar(raw_data[401:480])
   expect_true(grepl("VS", content, fixed = TRUE))
+})
+
+test_that("write_xpt infers dataset name from bare variable symbol", {
+  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  tmp <- withr::local_tempfile(fileext = ".xpt")
+  write_xpt(dm, tmp)
+  raw_data <- readBin(tmp, "raw", file.info(tmp)$size)
+  content <- rawToChar(raw_data[401:480])
+  expect_true(grepl("DM", content, fixed = TRUE))
+})
+
+test_that("write_xpt explicit dataset= beats variable symbol capture", {
+  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  tmp <- withr::local_tempfile(fileext = ".xpt")
+  write_xpt(dm, tmp, dataset = "MYDS")
+  raw_data <- readBin(tmp, "raw", file.info(tmp)$size)
+  content <- rawToChar(raw_data[401:480])
+  expect_true(grepl("MYDS", content, fixed = TRUE))
+  expect_false(grepl("DM", content, fixed = TRUE))
+})
+
+test_that("write_xpt falls through symbol capture for inline expression", {
+  tmp <- file.path(withr::local_tempdir(), "ae.xpt")
+  write_xpt(data.frame(X = 1L), tmp)
+  raw_data <- readBin(tmp, "raw", file.info(tmp)$size)
+  content <- rawToChar(raw_data[401:480])
+  expect_true(grepl("AE", content, fixed = TRUE))
 })
 
 test_that("write_xpt handles custom name and label", {

@@ -50,10 +50,35 @@ test_that("write_parquet with dataset param round-trips dataset_name", {
 test_that("write_parquet infers dataset_name from file stem when no param", {
   skip_if_not_installed("arrow")
 
-  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
   f  <- withr::local_tempfile(pattern = "ae", fileext = ".parquet")
-  write_parquet(dm, f)
+  write_parquet(data.frame(USUBJID = "S1", stringsAsFactors = FALSE), f)  # inline -> no capture
   out <- read_parquet(f)
 
   expect_equal(attr(out, "dataset_name"), toupper(tools::file_path_sans_ext(basename(f))))
+})
+
+test_that("write_parquet infers dataset name from bare variable symbol", {
+  skip_if_not_installed("arrow")
+  adsl <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  f <- withr::local_tempfile(fileext = ".parquet")
+  write_parquet(adsl, f)
+  out <- read_parquet(f)
+  expect_equal(attr(out, "dataset_name"), "ADSL")
+})
+
+test_that("write_parquet explicit dataset= beats variable symbol capture", {
+  skip_if_not_installed("arrow")
+  adsl <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  f <- withr::local_tempfile(fileext = ".parquet")
+  write_parquet(adsl, f, dataset = "CUSTOM")
+  out <- read_parquet(f)
+  expect_equal(attr(out, "dataset_name"), "CUSTOM")
+})
+
+test_that("write_parquet falls through symbol capture for inline expression", {
+  skip_if_not_installed("arrow")
+  f <- file.path(withr::local_tempdir(), "vs.parquet")
+  write_parquet(data.frame(X = 1L), f)
+  out <- read_parquet(f)
+  expect_equal(attr(out, "dataset_name"), "VS")
 })

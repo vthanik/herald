@@ -72,12 +72,12 @@
 #' @return \code{x} invisibly (the input data frame, not the file path).
 #'
 #' @examples
-#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-#'   dm  <- pharmaversesdtm::dm
-#'   tmp <- tempfile(fileext = ".xpt")
-#'   on.exit(unlink(tmp))
-#'   write_xpt(dm, tmp, dataset = "DM")
-#' }
+#' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+#' dm   <- apply_spec(dm, spec)
+#' tmp  <- tempfile(fileext = ".xpt")
+#' on.exit(unlink(tmp))
+#' write_xpt(dm, tmp)
 #'
 #' @export
 write_xpt <- function(
@@ -88,6 +88,7 @@ write_xpt <- function(
   label = NULL,
   encoding = "wlatin1"
 ) {
+  .x_expr <- rlang::enexpr(x)
   call <- rlang::caller_env()
   encoding <- resolve_encoding(encoding)
   version <- vctrs::vec_cast(version, integer())
@@ -106,15 +107,19 @@ write_xpt <- function(
 
   data <- x # local alias for existing write logic below
 
-  # Resolve dataset name: explicit arg → dataset_name attr → file stem → "DATA"
+  # Resolve dataset name: explicit arg -> dataset_name attr -> variable symbol -> file stem -> "DATA"
   name <- dataset
   if (is.null(name)) {
     ds_attr <- attr(x, "dataset_name")
-    name <- if (!is.null(ds_attr) && length(ds_attr) == 1L) {
-      ds_attr
-    } else {
-      toupper(tools::file_path_sans_ext(basename(file)))
+    if (!is.null(ds_attr) && length(ds_attr) == 1L) {
+      name <- ds_attr
+    } else if (is.symbol(.x_expr)) {
+      cand <- as.character(.x_expr)
+      if (grepl("^[A-Za-z_][A-Za-z0-9_]*$", cand)) name <- toupper(cand)
     }
+  }
+  if (is.null(name)) {
+    name <- toupper(tools::file_path_sans_ext(basename(file)))
     name <- gsub("[^A-Za-z0-9_]", "", name)
     if (!nzchar(name)) name <- "DATA"
   }

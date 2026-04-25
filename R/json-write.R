@@ -25,12 +25,12 @@
 #' @return \code{x} invisibly (the input data frame, not the file path).
 #'
 #' @examples
-#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-#'   dm   <- pharmaversesdtm::dm
-#'   file <- tempfile(fileext = ".json")
-#'   on.exit(unlink(file))
-#'   write_json(dm, file, dataset = "DM", label = "Demographics")
-#' }
+#' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+#' dm   <- apply_spec(dm, spec)
+#' file <- tempfile(fileext = ".json")
+#' on.exit(unlink(file))
+#' write_json(dm, file, label = "Demographics")
 #'
 #' @seealso [read_json()] for reading, [write_xpt()] for XPT I/O.
 #'
@@ -46,6 +46,7 @@ write_json <- function(
   metadata_ref = NULL,
   originator = "herald"
 ) {
+  .x_expr <- rlang::enexpr(x)
   call <- rlang::caller_env()
   check_data_frame(x, call = call)
   check_scalar_chr(file, call = call)
@@ -73,10 +74,13 @@ write_json <- function(
 
   if (is.null(dataset)) {
     ds_attr <- attr(data, "dataset_name")
-    dataset <- if (!is.null(ds_attr) && length(ds_attr) == 1L) {
-      ds_attr
+    if (!is.null(ds_attr) && length(ds_attr) == 1L) {
+      dataset <- ds_attr
+    } else if (is.symbol(.x_expr)) {
+      cand <- as.character(.x_expr)
+      if (grepl("^[A-Za-z_][A-Za-z0-9_]*$", cand)) dataset <- toupper(cand)
     } else {
-      toupper(tools::file_path_sans_ext(basename(file)))
+      dataset <- toupper(tools::file_path_sans_ext(basename(file)))
     }
   }
   dataset <- toupper(dataset)

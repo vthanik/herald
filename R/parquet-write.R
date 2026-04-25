@@ -19,19 +19,19 @@
 #'
 #' @return `x` invisibly.
 #'
-#' @examples
-#' if (requireNamespace("arrow", quietly = TRUE) &&
-#'     requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-#'   dm  <- pharmaversesdtm::dm
-#'   out <- tempfile(fileext = ".parquet")
-#'   on.exit(unlink(out))
-#'   write_parquet(dm, out, dataset = "DM", label = "Demographics")
-#' }
+#' @examplesIf requireNamespace("arrow", quietly = TRUE)
+#' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+#' dm   <- apply_spec(dm, spec)
+#' out  <- tempfile(fileext = ".parquet")
+#' on.exit(unlink(out))
+#' write_parquet(dm, out, label = "Demographics")
 #'
 #' @seealso [read_parquet()], [write_xpt()], [write_json()].
 #' @family io
 #' @export
 write_parquet <- function(x, file, dataset = NULL, label = NULL) {
+  .x_expr <- rlang::enexpr(x)
   call <- rlang::caller_env()
   check_data_frame(x, call = call)
   check_scalar_chr(file, call = call)
@@ -41,6 +41,9 @@ write_parquet <- function(x, file, dataset = NULL, label = NULL) {
     ds_attr <- attr(x, "dataset_name")
     dataset <- if (!is.null(ds_attr) && length(ds_attr) == 1L && nzchar(ds_attr)) {
       toupper(ds_attr)
+    } else if (is.symbol(.x_expr)) {
+      cand <- as.character(.x_expr)
+      if (grepl("^[A-Za-z_][A-Za-z0-9_]*$", cand)) toupper(cand) else NULL
     } else {
       stem <- tools::file_path_sans_ext(basename(file))
       if (nzchar(stem)) toupper(stem) else NULL
