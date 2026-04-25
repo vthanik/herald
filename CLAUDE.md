@@ -237,7 +237,5 @@ scoped rules live at `.claude/rules/r-code.md` (R/**/*.R) and
 
 ## skills
 
-local skill repo: `~/.claude/skills/`. invoke with `/skill-name` only.
-
-- `cli` -- full cli inline-markup + conditions reference (Posit, MIT).
-  use when writing error messages or progress output.
+on-demand skills can land at `~/.claude/skills/` when a reusable
+workflow crystallises. do not auto-invoke; user must type `/skill-name`.
