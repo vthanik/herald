@@ -23,7 +23,6 @@ cdisc/adam-library-api/*.yaml      cdisc/adam-v5.0/*.yaml
                   compile-rules.R
                           ▼
               inst/rules/rules.rds          (shipped)
-              inst/rules/rules.jsonl        (shipped, diffable)
               inst/rules/MANIFEST.json      (shipped)
 ```
 
@@ -77,7 +76,6 @@ Output: `tools/handauthored/cdisc/{sdtm-ig-v2.0,adam-v5.0}/<rule-id>.yaml`.
 Reads every YAML under `tools/handauthored/**` and produces:
 
 - `inst/rules/rules.rds` — binary (what `validate()` loads)
-- `inst/rules/rules.jsonl` — human-readable, diffable
 - `inst/rules/MANIFEST.json` — counts + integrity checks
 
 ```bash
