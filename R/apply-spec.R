@@ -24,44 +24,62 @@
 #' XPT and Dataset-JSON readers already set these attributes at ingest,
 #' so `apply_spec()` is optional there.
 #'
-#' @param datasets A named list of data frames. Names are dataset names
-#'   (matched case-insensitively against `spec$ds_spec$dataset`).
+#' @param datasets Either a single data frame **or** a named list of data
+#'   frames. When a single data frame is passed, the dataset name is
+#'   inferred from the variable name (`dm` -> `"DM"`), then
+#'   `attr(datasets, "dataset_name")`, then `"DATA"`. A single data frame
+#'   is returned; a list returns a list.
 #' @param spec A `herald_spec` (see [as_herald_spec()]).
 #'
-#' @return The `datasets` list with attributes populated.
+#' @return Same shape as `datasets`: a data frame if one was passed, a
+#'   named list otherwise.
 #'
 #' @examples
-#' if (requireNamespace("pharmaversesdtm", quietly = TRUE)) {
-#'   dm   <- pharmaversesdtm::dm
-#'   spec <- as_herald_spec(
-#'     ds_spec = data.frame(dataset = "DM", label = "Demographics",
-#'                          stringsAsFactors = FALSE),
-#'     var_spec = data.frame(
-#'       dataset  = c("DM", "DM"),
-#'       variable = c("USUBJID", "AGE"),
-#'       type     = c("text", "integer"),
-#'       label    = c("Unique Subject Identifier", "Age"),
-#'       length   = c(40L, 8L),
-#'       stringsAsFactors = FALSE
-#'     )
-#'   )
-#'   out <- apply_spec(list(DM = dm), spec)
-#'   attr(out$DM, "label")
-#'   attr(out$DM$USUBJID, "label")
-#' }
+#' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+#'
+#' # Single data frame -- name inferred from variable, returns data frame
+#' dm   <- apply_spec(dm, spec)
+#' attr(dm, "label")
+#' attr(dm$USUBJID, "label")
+#'
+#' # Pipe-friendly
+#' dm2 <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' dm2 <- dm2 |> apply_spec(spec)
 #'
 #' @seealso [as_herald_spec()], [validate()].
 #' @family spec
 #' @export
 apply_spec <- function(datasets, spec) {
+  .ds_expr <- rlang::enexpr(datasets)
   call <- rlang::caller_env()
-  if (!is.list(datasets) || is.data.frame(datasets)) {
+
+  single_df <- is.data.frame(datasets)
+
+  if (single_df) {
+    ds_name <- NULL
+    ds_attr <- attr(datasets, "dataset_name")
+    if (!is.null(ds_attr) && length(ds_attr) == 1L && nzchar(ds_attr)) {
+      ds_name <- toupper(as.character(ds_attr))
+    } else if (is.symbol(.ds_expr)) {
+      cand <- as.character(.ds_expr)
+      if (grepl("^[A-Za-z_][A-Za-z0-9_]*$", cand)) ds_name <- toupper(cand)
+    }
+    if (is.null(ds_name)) ds_name <- "DATA"
+    datasets_list <- stats::setNames(list(datasets), ds_name)
+  } else if (is.list(datasets)) {
+    datasets_list <- datasets
+  } else {
     herald_error(
-      "{.arg datasets} must be a named list of data frames.",
+      c(
+        "{.arg datasets} must be a data frame or a named list of data frames.",
+        "x" = "You supplied {.obj_type_friendly {datasets}}."
+      ),
       class = "herald_error_input",
       call = call
     )
   }
+
   if (!is_herald_spec(spec)) {
     herald_error(
       "{.arg spec} must be a {.cls herald_spec} object.",
@@ -70,7 +88,7 @@ apply_spec <- function(datasets, spec) {
     )
   }
 
-  nms <- names(datasets)
+  nms <- names(datasets_list)
   if (is.null(nms) || any(!nzchar(nms))) {
     herald_error(
       "{.arg datasets} must have non-empty names for every element.",
@@ -79,17 +97,17 @@ apply_spec <- function(datasets, spec) {
     )
   }
 
-  for (i in seq_along(datasets)) {
-    ds_name <- nms[[i]]
-    ds      <- datasets[[i]]
+  for (i in seq_along(datasets_list)) {
+    ds_name_i <- nms[[i]]
+    ds        <- datasets_list[[i]]
     if (!is.data.frame(ds)) next
 
-    ds <- .apply_ds_attrs(ds, spec, ds_name)
-    ds <- .apply_var_attrs(ds, spec, ds_name)
-    datasets[[i]] <- ds
+    ds <- .apply_ds_attrs(ds, spec, ds_name_i)
+    ds <- .apply_var_attrs(ds, spec, ds_name_i)
+    datasets_list[[i]] <- ds
   }
 
-  datasets
+  if (single_df) datasets_list[[1L]] else datasets_list
 }
 
 #' Stamp dataset-level attributes from ds_spec.

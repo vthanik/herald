@@ -259,11 +259,12 @@ detect_standard <- function(names) {
 #' }
 #'
 #' @examples
-#' if (requireNamespace("pharmaverseadam", quietly = TRUE)) {
-#'   detect_adam_class(names(pharmaverseadam::adsl))          # "ADSL"
-#'   detect_adam_class(names(pharmaverseadam::advs))          # "BDS"
-#'   detect_adam_class(names(pharmaverseadam::adae))          # "OCCDS"
-#' }
+#' adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
+#' advs <- readRDS(system.file("extdata", "advs.rds", package = "herald"))
+#' adae <- readRDS(system.file("extdata", "adae.rds", package = "herald"))
+#' detect_adam_class(names(adsl))  # "ADSL"
+#' detect_adam_class(names(advs))  # "BDS"
+#' detect_adam_class(names(adae))  # "OCCDS"
 #'
 #' @family specification
 #' @export
@@ -303,56 +304,67 @@ detect_adam_class <- function(vars) {
   "unknown"
 }
 
-#' Detect ADaM class for each dataset in a named list or spec
+#' Detect ADaM class for each dataset
 #'
-#' Applies \code{\link{detect_adam_class}} to every dataset, accepting either
-#' a named list of data frames or a \code{herald_spec} object.
+#' Applies \code{\link{detect_adam_class}} to every dataset. Pass data frames
+#' as bare variables (names inferred from symbols), as a named list, or as a
+#' \code{herald_spec}.
 #'
-#' @param x A named list of data frames, or a \code{herald_spec} object.
+#' @param ... One or more data frames (names inferred from variable symbols or
+#'   provided explicitly, e.g. \code{ADSL = adsl}), a single named list of
+#'   data frames, or a single \code{herald_spec} object.
 #' @param call Caller environment for error reporting.
-#' @return A named character vector mapping dataset name → ADaM class.
+#' @return A named character vector mapping dataset name to ADaM class.
 #'
 #' @examples
-#' if (requireNamespace("pharmaverseadam", quietly = TRUE)) {
-#'   detect_adam_classes(list(
-#'     ADSL = pharmaverseadam::adsl,
-#'     ADVS = pharmaverseadam::advs,
-#'     ADAE = pharmaverseadam::adae
-#'   ))
-#' }
+#' adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
+#' advs <- readRDS(system.file("extdata", "advs.rds", package = "herald"))
+#' adae <- readRDS(system.file("extdata", "adae.rds", package = "herald"))
+#'
+#' detect_adam_classes(adsl, advs, adae)
 #'
 #' @family specification
 #' @export
-detect_adam_classes <- function(x, call = rlang::caller_env()) {
-  if (inherits(x, "herald_spec")) {
-    vs <- x$var_spec
-    if (is.null(vs) || !"dataset" %in% names(vs)) {
-      return(character(0L))
+detect_adam_classes <- function(..., call = rlang::caller_env()) {
+  .exprs <- rlang::enexprs(...)
+  .vals  <- list(...)
+
+  # Single herald_spec or named list passed as the only argument
+  if (length(.vals) == 1L && (inherits(.vals[[1L]], "herald_spec") ||
+                               (is.list(.vals[[1L]]) && !is.data.frame(.vals[[1L]])))) {
+    x <- .vals[[1L]]
+    if (inherits(x, "herald_spec")) {
+      vs <- x$var_spec
+      if (is.null(vs) || !"dataset" %in% names(vs)) return(character(0L))
+      datasets <- unique(vs[["dataset"]])
+      return(vapply(datasets, function(ds) {
+        detect_adam_class(vs[vs[["dataset"]] == ds, "variable"])
+      }, character(1L)))
     }
-    datasets <- unique(vs[["dataset"]])
-    result <- vapply(
-      datasets,
-      function(ds) {
-        vars <- vs[vs[["dataset"]] == ds, "variable"]
-        detect_adam_class(vars)
-      },
-      character(1L)
-    )
-    return(result)
+    if (is.list(x) && !is.null(names(x))) {
+      return(vapply(names(x), function(nm) detect_adam_class(names(x[[nm]])),
+                    character(1L)))
+    }
   }
 
-  if (is.list(x) && !is.null(names(x))) {
-    return(vapply(
-      names(x),
-      function(nm) {
-        detect_adam_class(names(x[[nm]]))
-      },
-      character(1L)
-    ))
+  # One or more data frames passed directly (bare or named)
+  nms <- names(.vals)
+  if (is.null(nms)) nms <- character(length(.vals))
+  for (i in seq_along(.vals)) {
+    if (!nzchar(nms[[i]]) && is.symbol(.exprs[[i]])) {
+      nms[[i]] <- toupper(as.character(.exprs[[i]]))
+    }
+    if (!nzchar(nms[[i]])) nms[[i]] <- paste0("DATA", i)
+  }
+  names(.vals) <- nms
+
+  if (length(.vals) > 0L && all(vapply(.vals, is.data.frame, logical(1L)))) {
+    return(vapply(nms, function(nm) detect_adam_class(names(.vals[[nm]])),
+                  character(1L)))
   }
 
   herald_error_io(
-    "{.arg x} must be a named list of data frames or a {.cls herald_spec}.",
+    "Pass data frames, a named list of data frames, or a {.cls herald_spec}.",
     call = call
   )
 }

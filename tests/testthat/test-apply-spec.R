@@ -106,3 +106,34 @@ test_that("apply_spec() skips non-data-frame elements gracefully", {
   expect_equal(attr(out$DM$USUBJID, "label"), "Unique Subject Identifier")
   expect_equal(out$NOTDF, list(a = 1))
 })
+
+test_that("bundled dm.rds + sdtm-spec.rds round-trip via apply_spec (single df)", {
+  dm   <- readRDS(system.file("extdata", "dm.rds",        package = "herald"))
+  spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+  dm   <- apply_spec(dm, spec)
+  expect_s3_class(dm, "data.frame")
+  lbl <- attr(dm$USUBJID, "label")
+  expect_true(!is.null(lbl) && nzchar(lbl))
+  expect_equal(nrow(dm), 50L)
+})
+
+test_that("apply_spec single df returns data frame, not list", {
+  spec <- as_herald_spec(
+    data.frame(dataset = "DM", label = "Demo", stringsAsFactors = FALSE)
+  )
+  dm <- data.frame(USUBJID = "S1")
+  out <- apply_spec(dm, spec)
+  expect_s3_class(out, "data.frame")
+})
+
+test_that("apply_spec single df infers name from variable symbol", {
+  spec <- as_herald_spec(
+    ds_spec  = data.frame(dataset = "DM", label = "Demo", stringsAsFactors = FALSE),
+    var_spec = data.frame(dataset = "DM", variable = "USUBJID",
+                          label = "Subject ID", stringsAsFactors = FALSE)
+  )
+  dm <- data.frame(USUBJID = "S1")
+  dm <- apply_spec(dm, spec)
+  expect_equal(attr(dm, "label"), "Demo")
+  expect_equal(attr(dm$USUBJID, "label"), "Subject ID")
+})
