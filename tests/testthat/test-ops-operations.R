@@ -263,6 +263,337 @@ test_that("inconsistent_enumerated_columns fires when TSVAL gap exists", {
 })
 
 # =============================================================================
+# Direct op function calls -- cover uncovered branches
+# =============================================================================
+
+# ---- domain_label direct calls -----------------------------------------------
+
+test_that(".op_operation_domain_label uses ctx$datasets label when present", {
+  df <- data.frame(x = 1L, stringsAsFactors = FALSE)
+  attr(df, "label") <- "Demographics"
+  ctx <- mk_ctx(datasets = list(DM = df), current_dataset = "DM")
+  fn <- herald:::.get_operation("domain_label")
+  expect_equal(fn(df, ctx, list()), "Demographics")
+})
+
+test_that(".op_operation_domain_label falls back to data attr label", {
+  df <- data.frame(x = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx(datasets = list(), current_dataset = NULL)
+  attr(df, "label") <- "Fallback Label"
+  fn <- herald:::.get_operation("domain_label")
+  expect_equal(fn(df, ctx, list()), "Fallback Label")
+})
+
+test_that(".op_operation_domain_label returns NA_character_ when no label anywhere", {
+  df <- data.frame(x = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx(datasets = list(), current_dataset = NULL)
+  fn <- herald:::.get_operation("domain_label")
+  expect_equal(fn(df, ctx, list()), NA_character_)
+})
+
+# ---- distinct direct calls ---------------------------------------------------
+
+test_that(".op_operation_distinct returns character(0) when no name param", {
+  df <- data.frame(DOMAIN = c("AE", "LB"), stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("distinct")
+  expect_equal(fn(df, ctx, list()), character(0))
+})
+
+test_that(".op_operation_distinct returns character(0) when column absent", {
+  df <- data.frame(DOMAIN = c("AE", "LB"), stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("distinct")
+  expect_equal(fn(df, ctx, list(name = "NONEXISTENT")), character(0))
+})
+
+test_that(".op_operation_distinct is case-insensitive for column name", {
+  df <- data.frame(domain = c("AE", "LB", "AE"), stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("distinct")
+  result <- fn(df, ctx, list(name = "DOMAIN"))
+  expect_setequal(result, c("AE", "LB"))
+})
+
+test_that(".op_operation_distinct excludes NA and empty-string values", {
+  df <- data.frame(
+    DOMAIN = c("AE", NA, "", "LB", "AE"),
+    stringsAsFactors = FALSE
+  )
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("distinct")
+  result <- fn(df, ctx, list(name = "DOMAIN"))
+  expect_setequal(result, c("AE", "LB"))
+})
+
+# ---- record_count direct call ------------------------------------------------
+
+test_that(".op_operation_record_count returns integer nrow", {
+  df <- data.frame(x = seq_len(7L), stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("record_count")
+  expect_equal(fn(df, ctx, list()), 7L)
+})
+
+# ---- study_domains / dataset_names direct calls ------------------------------
+
+test_that(".op_operation_study_domains returns uppercase names from ctx", {
+  ctx <- mk_ctx(datasets = list(dm = data.frame(x = 1L),
+                                ae = data.frame(x = 1L)))
+  # Force lowercase names to confirm uppercasing
+  fn <- herald:::.get_operation("study_domains")
+  result <- fn(data.frame(x = 1L), ctx, list())
+  expect_setequal(result, c("DM", "AE"))
+})
+
+test_that(".op_operation_study_domains returns character(0) when no datasets", {
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("study_domains")
+  expect_equal(fn(data.frame(x = 1L), ctx, list()), character(0))
+})
+
+test_that("dataset_names alias returns same result as study_domains", {
+  ctx <- mk_ctx(datasets = list(DM = data.frame(x = 1L)))
+  fn1 <- herald:::.get_operation("study_domains")
+  fn2 <- herald:::.get_operation("dataset_names")
+  df <- data.frame(x = 1L)
+  expect_equal(fn1(df, ctx, list()), fn2(df, ctx, list()))
+})
+
+# ---- max_date / min_date direct calls ----------------------------------------
+
+test_that(".op_operation_max_date returns NA_character_ when no name param", {
+  df <- data.frame(EXSTDTC = c("2020-01-01", "2021-01-01"),
+                   stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("max_date")
+  expect_equal(fn(df, ctx, list()), NA_character_)
+})
+
+test_that(".op_operation_max_date returns NA_character_ when column missing", {
+  df <- data.frame(EXSTDTC = c("2020-01-01"), stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("max_date")
+  expect_equal(fn(df, ctx, list(name = "NONEXISTENT")), NA_character_)
+})
+
+test_that(".op_operation_max_date returns NA_character_ when all values NA", {
+  df <- data.frame(EXSTDTC = c(NA_character_, NA_character_),
+                   stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("max_date")
+  expect_equal(fn(df, ctx, list(name = "EXSTDTC")), NA_character_)
+})
+
+test_that(".op_operation_min_date returns NA_character_ when no name param", {
+  df <- data.frame(EXSTDTC = c("2020-01-01"), stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("min_date")
+  expect_equal(fn(df, ctx, list()), NA_character_)
+})
+
+test_that(".op_operation_min_date returns NA_character_ when column missing", {
+  df <- data.frame(EXSTDTC = c("2020-01-01"), stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("min_date")
+  expect_equal(fn(df, ctx, list(name = "NOEXIST")), NA_character_)
+})
+
+test_that(".op_operation_min_date returns NA_character_ when all values NA", {
+  df <- data.frame(EXSTDTC = NA_character_, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("min_date")
+  expect_equal(fn(df, ctx, list(name = "EXSTDTC")), NA_character_)
+})
+
+# ---- dy (study_day_from_dates) direct calls ----------------------------------
+
+test_that(".op_operation_study_day returns NA vector when no name param", {
+  df <- data.frame(AESTDTC = c("2020-01-01", "2020-02-01"),
+                   USUBJID = c("S1", "S1"),
+                   stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("dy")
+  result <- fn(df, ctx, list())
+  expect_equal(result, c(NA_integer_, NA_integer_))
+})
+
+test_that(".op_operation_study_day returns NA vector when column absent", {
+  df <- data.frame(AESTDTC = c("2020-01-01"), USUBJID = "S1",
+                   stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("dy")
+  result <- fn(df, ctx, list(name = "NONEXISTENT"))
+  expect_equal(result, NA_integer_)
+})
+
+test_that(".op_operation_study_day returns NA vector when DM absent", {
+  df <- data.frame(AESTDTC = c("2020-01-01", "2020-01-03"),
+                   USUBJID = c("S1", "S1"),
+                   stringsAsFactors = FALSE)
+  ctx <- mk_ctx(datasets = list(AE = df))  # no DM
+  fn <- herald:::.get_operation("dy")
+  result <- fn(df, ctx, list(name = "AESTDTC"))
+  expect_equal(result, c(NA_integer_, NA_integer_))
+})
+
+test_that(".op_operation_study_day returns NA when DM lacks RFSTDTC", {
+  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE) # no RFSTDTC
+  df <- data.frame(AESTDTC = "2020-01-01", USUBJID = "S1",
+                   stringsAsFactors = FALSE)
+  ctx <- mk_ctx(datasets = list(DM = dm, AE = df))
+  fn <- herald:::.get_operation("dy")
+  result <- fn(df, ctx, list(name = "AESTDTC"))
+  expect_equal(result, NA_integer_)
+})
+
+test_that(".op_operation_study_day returns NA when RFSTDTC is NA for subject", {
+  dm <- data.frame(USUBJID = "S1", RFSTDTC = NA_character_,
+                   stringsAsFactors = FALSE)
+  df <- data.frame(AESTDTC = "2020-01-05", USUBJID = "S1",
+                   stringsAsFactors = FALSE)
+  ctx <- mk_ctx(datasets = list(DM = dm, AE = df))
+  fn <- herald:::.get_operation("dy")
+  result <- fn(df, ctx, list(name = "AESTDTC"))
+  expect_equal(result, NA_integer_)
+})
+
+test_that(".op_operation_study_day computes correct CDISC study day", {
+  dm <- data.frame(USUBJID = c("S1", "S2"),
+                   RFSTDTC = c("2020-01-01", "2020-06-01"),
+                   stringsAsFactors = FALSE)
+  ae <- data.frame(
+    USUBJID = c("S1", "S1", "S2"),
+    AESTDTC = c("2020-01-01", "2020-01-03", "2020-05-31"),
+    stringsAsFactors = FALSE
+  )
+  ctx <- mk_ctx(datasets = list(DM = dm, AE = ae), current_dataset = "AE")
+  fn <- herald:::.get_operation("dy")
+  result <- fn(ae, ctx, list(name = "AESTDTC"))
+  # Day 1 is reference day (RFSTDTC); day before is -1
+  expect_equal(result[[1L]], 1L)   # 2020-01-01 == RFSTDTC -> day 1
+  expect_equal(result[[2L]], 3L)   # 2020-01-03 is 2 days after -> day 3
+  expect_equal(result[[3L]], -1L)  # 2020-05-31 is 1 day before -> day -1
+})
+
+test_that(".op_operation_study_day handles NA AESTDTC values gracefully", {
+  dm <- data.frame(USUBJID = "S1", RFSTDTC = "2020-01-01",
+                   stringsAsFactors = FALSE)
+  df <- data.frame(AESTDTC = NA_character_, USUBJID = "S1",
+                   stringsAsFactors = FALSE)
+  ctx <- mk_ctx(datasets = list(DM = dm, AE = df))
+  fn <- herald:::.get_operation("dy")
+  result <- fn(df, ctx, list(name = "AESTDTC"))
+  expect_equal(result, NA_integer_)
+})
+
+# ---- column-order family direct calls ----------------------------------------
+
+test_that("get_column_order_from_dataset returns variable names", {
+  df <- data.frame(A = 1L, B = 2L, C = 3L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("get_column_order_from_dataset")
+  expect_equal(fn(df, ctx, list()), c("A", "B", "C"))
+})
+
+test_that("expected_variables returns variable names", {
+  df <- data.frame(X = 1L, Y = 2L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("expected_variables")
+  expect_equal(fn(df, ctx, list()), c("X", "Y"))
+})
+
+test_that("get_dataset_filtered_variables returns variable names", {
+  df <- data.frame(A = 1L, B = 2L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("get_dataset_filtered_variables")
+  expect_equal(fn(df, ctx, list()), c("A", "B"))
+})
+
+test_that("required_variables returns character(0) when spec is NULL", {
+  df <- data.frame(A = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("required_variables")
+  expect_equal(fn(df, ctx, list()), character(0))
+})
+
+test_that("get_model_column_order returns character(0)", {
+  df <- data.frame(A = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("get_model_column_order")
+  expect_equal(fn(df, ctx, list()), character(0))
+})
+
+test_that("get_parent_model_column_order returns character(0)", {
+  df <- data.frame(A = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("get_parent_model_column_order")
+  expect_equal(fn(df, ctx, list()), character(0))
+})
+
+test_that("get_column_order_from_library returns character(0)", {
+  df <- data.frame(A = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("get_column_order_from_library")
+  expect_equal(fn(df, ctx, list()), character(0))
+})
+
+test_that("get_model_filtered_variables returns character(0)", {
+  df <- data.frame(A = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("get_model_filtered_variables")
+  expect_equal(fn(df, ctx, list()), character(0))
+})
+
+# ---- get_codelist_attributes direct calls ------------------------------------
+
+test_that("get_codelist_attributes returns character(0) when name param absent", {
+  df <- data.frame(x = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("get_codelist_attributes")
+  expect_equal(fn(df, ctx, list()), character(0))
+})
+
+test_that("get_codelist_attributes returns character(0) when no CT provider", {
+  df <- data.frame(x = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("get_codelist_attributes")
+  expect_equal(fn(df, ctx, list(name = "RACE")), character(0))
+})
+
+# ---- extract_metadata direct call --------------------------------------------
+
+test_that("extract_metadata returns variable names of data frame", {
+  df <- data.frame(SUBJID = 1L, AGE = 30L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx()
+  fn <- herald:::.get_operation("extract_metadata")
+  expect_equal(fn(df, ctx, list()), c("SUBJID", "AGE"))
+})
+
+# ---- domain_is_custom direct calls -------------------------------------------
+
+test_that(".op_operation_domain_is_custom TRUE for custom 2-letter prefix", {
+  df <- data.frame(x = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx(current_dataset = "XY")
+  fn <- herald:::.get_operation("domain_is_custom")
+  expect_true(fn(df, ctx, list()))
+})
+
+test_that(".op_operation_domain_is_custom FALSE for standard domain AE", {
+  df <- data.frame(x = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx(current_dataset = "AE")
+  fn <- herald:::.get_operation("domain_is_custom")
+  expect_false(fn(df, ctx, list()))
+})
+
+test_that(".op_operation_domain_is_custom FALSE when no current_dataset", {
+  df <- data.frame(x = 1L, stringsAsFactors = FALSE)
+  ctx <- mk_ctx(current_dataset = NULL)
+  fn <- herald:::.get_operation("domain_is_custom")
+  expect_false(fn(df, ctx, list()))
+})
+
+# =============================================================================
 # op registry metadata (.op_meta)
 # =============================================================================
 
