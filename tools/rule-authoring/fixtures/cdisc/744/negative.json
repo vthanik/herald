@@ -1,0 +1,25 @@
+{
+  "rule_id": "744",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADVS": {
+      "BTOXGR": ["Y", "Y"],
+      "ATOXGR": ["Y", "Y"],
+      "ABLFL": ["Y", "N"],
+      "USUBJID": ["G1", "G1"],
+      "PARAMCD": ["G1", "G1"],
+      "BASETYPE": ["BTYPE", "BTYPE"]
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 1 leaf op(s): base_not_equal_abl_row (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADVS": "BASIC DATA STRUCTURE"
+    }
+  }
+}

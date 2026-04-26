@@ -1,20 +1,21 @@
 # Golden-fixture coverage
 
-_generated 2026-04-25T22:33:18Z by tools/fixture-coverage.R_
+_generated 2026-04-26T08:17:33Z by tools/fixture-coverage.R_
 
 | metric | count |
 |---|---:|
 | executable rules | 1650 |
-| covered (both fixtures) | 1211 |
+| covered (both fixtures) | 1349 |
 | missing positive only | 0 |
 | missing negative only | 0 |
-| missing both (pending) | 439 |
-| coverage | 73.4% |
+| missing both (pending) | 301 |
+| coverage | 81.8% |
 
 Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 
 ## Covered rules
 
+- 1
 - 10
 - 105
 - 106
@@ -31,6 +32,8 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 124
 - 125
 - 126
+- 127
+- 128
 - 129
 - 130
 - 135
@@ -43,17 +46,27 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 145
 - 146
 - 147
+- 148
 - 149
 - 150
+- 152
+- 154
+- 155
 - 156
 - 157
 - 159
 - 163
 - 164
+- 165
 - 166
 - 167
+- 168
 - 176
 - 178
+- 180
+- 181
+- 182
+- 183
 - 19
 - 194
 - 195
@@ -83,8 +96,10 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 229
 - 23
 - 230
+- 231
 - 232
 - 233
+- 234
 - 235
 - 236
 - 237
@@ -174,6 +189,7 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 35
 - 350
 - 351
+- 354
 - 355
 - 356
 - 359
@@ -302,12 +318,31 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 490
 - 491
 - 493
+- 494
 - 499
 - 5
 - 50
 - 501
+- 503
+- 504
+- 505
+- 506
+- 507
+- 508
+- 509
 - 51
+- 510
+- 511
+- 512
+- 513
+- 514
+- 515
+- 516
+- 517
+- 518
+- 519
 - 52
+- 520
 - 522
 - 523
 - 524
@@ -355,6 +390,7 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 567
 - 568
 - 569
+- 58
 - 582
 - 583
 - 584
@@ -363,7 +399,9 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 587
 - 588
 - 589
+- 59
 - 6
+- 60
 - 616
 - 617
 - 619
@@ -422,12 +460,17 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 686
 - 688
 - 689
+- 691
+- 692
 - 693
 - 694
+- 698
+- 699
 - 7
 - 70
 - 700
 - 701
+- 703
 - 704
 - 705
 - 71
@@ -435,6 +478,7 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 711
 - 712
 - 713
+- 716
 - 717
 - 718
 - 72
@@ -459,6 +503,9 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 741
 - 742
 - 743
+- 744
+- 745
+- 746
 - 747
 - 748
 - 749
@@ -469,8 +516,10 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 753
 - 754
 - 755
+- 756
 - 757
 - 758
+- 759
 - 76
 - 760
 - 761
@@ -502,6 +551,8 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 786
 - 787
 - 788
+- 789
+- 790
 - 791
 - 795
 - 796
@@ -810,10 +861,18 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - DEFINE-264
 - CG0007
 - CG0008
+- CG0009
 - CG0010
 - CG0012
 - CG0026
+- CG0027
+- CG0029
+- CG0031
+- CG0033
+- CG0034
 - CG0035
+- CG0037
+- CG0039
 - CG0040
 - CG0041
 - CG0042
@@ -834,12 +893,14 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0062
 - CG0063
 - CG0065
+- CG0066
 - CG0067
 - CG0068
 - CG0069
 - CG0071
 - CG0073
 - CG0075
+- CG0078
 - CG0079
 - CG0081
 - CG0082
@@ -868,14 +929,23 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0109
 - CG0110
 - CG0111
+- CG0112
 - CG0114
 - CG0115
 - CG0116
 - CG0117
+- CG0118
+- CG0119
 - CG0120
+- CG0121
+- CG0122
 - CG0123
 - CG0124
+- CG0125
+- CG0126
+- CG0127
 - CG0128
+- CG0129
 - CG0131
 - CG0132
 - CG0134
@@ -904,16 +974,30 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0171
 - CG0175
 - CG0176
+- CG0177
+- CG0178
+- CG0179
 - CG0180
 - CG0181
 - CG0182
 - CG0183
+- CG0185
+- CG0186
+- CG0187
+- CG0188
+- CG0189
+- CG0190
 - CG0193
+- CG0202
+- CG0203
+- CG0204
 - CG0206
 - CG0208
 - CG0209
 - CG0210
 - CG0211
+- CG0213
+- CG0215
 - CG0216
 - CG0217
 - CG0221
@@ -925,7 +1009,9 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0235
 - CG0238
 - CG0240
+- CG0244
 - CG0246
+- CG0248
 - CG0250
 - CG0251
 - CG0252
@@ -956,6 +1042,8 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0286
 - CG0287
 - CG0289
+- CG0293
+- CG0294
 - CG0297
 - CG0299
 - CG0300
@@ -964,12 +1052,18 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0303
 - CG0304
 - CG0307
+- CG0308
+- CG0309
 - CG0313
 - CG0322
 - CG0323
 - CG0325
 - CG0328
 - CG0329
+- CG0337
+- CG0338
+- CG0339
+- CG0340
 - CG0341
 - CG0342
 - CG0343
@@ -987,8 +1081,12 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0359
 - CG0361
 - CG0362
+- CG0363
+- CG0364
 - CG0365
 - CG0366
+- CG0368
+- CG0372
 - CG0377
 - CG0378
 - CG0379
@@ -1011,9 +1109,13 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0396
 - CG0397
 - CG0398
+- CG0399
 - CG0404
 - CG0406
+- CG0409
 - CG0410
+- CG0416
+- CG0417
 - CG0420
 - CG0421
 - CG0422
@@ -1032,25 +1134,37 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0437
 - CG0440
 - CG0441
+- CG0442
+- CG0443
 - CG0444
+- CG0445
+- CG0446
+- CG0450
+- CG0451
 - CG0455
 - CG0456
 - CG0457
 - CG0458
-- CG0459
 - CG0462
 - CG0465
+- CG0466
 - CG0467
 - CG0468
+- CG0501
+- CG0502
 - CG0503
 - CG0507
 - CG0508
 - CG0509
 - CG0510
 - CG0511
+- CG0512
 - CG0513
+- CG0514
 - CG0515
+- CG0516
 - CG0517
+- CG0518
 - CG0519
 - CG0520
 - CG0521
@@ -1062,6 +1176,8 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0534
 - CG0536
 - CG0537
+- CG0538
+- CG0539
 - CG0541
 - CG0542
 - CG0547
@@ -1078,6 +1194,8 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0568
 - CG0569
 - CG0570
+- CG0601
+- CG0603
 - CG0619
 - CG0621
 - CG0622
@@ -1103,12 +1221,14 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0642
 - CG0643
 - CG0644
+- CG0646
 - CG0647
-- CG0649
 - CG0650
 - CG0653
 - CG0654
+- CG0655
 - CG0656
+- CG0657
 - CG0658
 - CG0659
 - CG0660
@@ -1117,10 +1237,10 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CG0666
 - CORE-000004
 - CORE-000040
-- CORE-000041
 - CORE-000045
 - CORE-000046
 - CORE-000087
+- CORE-000094
 - CORE-000107
 - CORE-000115
 - CORE-000116
@@ -1146,19 +1266,25 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000162
 - CORE-000163
 - CORE-000164
+- CORE-000169
 - CORE-000170
 - CORE-000199
 - CORE-000207
+- CORE-000220
+- CORE-000221
 - CORE-000223
 - CORE-000224
 - CORE-000233
 - CORE-000234
+- CORE-000250
 - CORE-000289
 - CORE-000290
 - CORE-000296
 - CORE-000298
 - CORE-000299
+- CORE-000302
 - CORE-000303
+- CORE-000305
 - CORE-000308
 - CORE-000310
 - CORE-000318
@@ -1175,6 +1301,7 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000518
 - CORE-000522
 - CORE-000533
+- CORE-000541
 - CORE-000585
 - CORE-000594
 - CORE-000616
@@ -1183,14 +1310,19 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000655
 - CORE-000656
 - CORE-000657
+- CORE-000658
 - CORE-000659
 - CORE-000700
 - CORE-000701
 - CORE-000705
 - CORE-000706
 - CORE-000709
+- CORE-000711
+- CORE-000713
+- CORE-000714
 - CORE-000716
 - CORE-000719
+- CORE-000720
 - CORE-000723
 - CORE-000726
 - CORE-000728
@@ -1204,6 +1336,9 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000746
 - CORE-000747
 - CORE-000758
+- CORE-000760
+- CORE-000766
+- CORE-000767
 - CORE-000774
 - CORE-000776
 - CORE-000778
@@ -1214,8 +1349,11 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-000841
 - CORE-000853
 - CORE-000862
+- CORE-000863
 - CORE-000864
 - CORE-000865
+- CORE-000867
+- CORE-000880
 - CORE-000885
 - CORE-000886
 - CORE-000890
@@ -1229,24 +1367,24 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 
 ## First 20 pending rules
 
-- 1
 - 102
 - 103
 - 104
-- 127
-- 128
 - 13
 - 131
 - 14
-- 148
 - 15
 - 151
-- 152
-- 154
-- 155
 - 16
-- 165
-- 168
 - 17
-- 180
-- _...and 419 more_
+- 320
+- 48
+- 496
+- 497
+- 500
+- 581
+- 590
+- 591
+- 600
+- 603
+- _...and 281 more_

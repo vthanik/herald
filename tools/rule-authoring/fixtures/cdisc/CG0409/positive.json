@@ -1,0 +1,20 @@
+{
+  "rule_id": "CG0409",
+  "fixture_type": "positive",
+  "datasets": {
+    "AE": {
+      "STUDYID": "DIFF",
+      "USUBJID": "K1"
+    },
+    "DM": {
+      "STUDYID": "SAME",
+      "USUBJID": "K1"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded (+1 ref ds); 1 leaf op(s): differs_by_key",
+  "authored": "auto-seed@4"
+}

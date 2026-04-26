@@ -38,6 +38,58 @@ suppressPackageStartupMessages({
   }
 })
 
+# Workaround for an engine quirk: when a rule's check_tree carries an
+# empty `expand` slot (`expand: ""` in the YAML), .expand_indexed leaves
+# the slot in the tree, which then leaks into the operator's args via
+# .eval_leaf and breaks ops that don't accept an `expand` argument
+# (e.g. base_not_equal_abl_row). Stripping the empty expand here makes
+# the seeder fire those rules correctly without changing engine source.
+local({
+  if (!exists(".expand_indexed", envir = asNamespace("herald"),
+              inherits = FALSE)) return(invisible(NULL))
+  old_fn <- herald:::.expand_indexed
+  patched <- function(check_tree, data) {
+    if (is.list(check_tree) && !is.null(check_tree$expand)) {
+      raw_expand <- as.character(unlist(check_tree$expand))
+      raw_expand <- raw_expand[nzchar(raw_expand)]
+      if (length(raw_expand) == 0L) check_tree$expand <- NULL
+    }
+    old_fn(check_tree, data)
+  }
+  utils::assignInNamespace(".expand_indexed", patched, ns = "herald")
+})
+
+# Workaround: .collect_indexed_names_any walks node$name + combinator
+# children + node$not, but it does NOT walk into structured args like
+# `value$related_name` (used by is_unique_relationship /
+# is_not_unique_relationship). For multi-placeholder rules where one
+# placeholder lives only inside value$related_name, the engine never
+# discovers a tuple that resolves it -- so columns stay templated
+# ("TR01PGy" with literal 'y') and the op returns NA. Extending the
+# collection to also visit node$value$related_name yields the right
+# tuples and lets the seeder fire those rules.
+local({
+  if (!exists(".collect_indexed_names_any", envir = asNamespace("herald"),
+              inherits = FALSE)) return(invisible(NULL))
+  old_fn <- herald:::.collect_indexed_names_any
+  patched <- function(node, phs, acc = character()) {
+    acc <- old_fn(node, phs, acc)
+    if (is.list(node) && !is.null(node$value)) {
+      v <- node$value
+      if (is.list(v) && !is.null(v$related_name)) {
+        rn <- as.character(v$related_name)
+        if (length(rn) == 1L && any(vapply(phs, function(p) {
+          grepl(p, rn, fixed = TRUE)
+        }, logical(1L)))) {
+          acc <- c(acc, rn)
+        }
+      }
+    }
+    unique(acc)
+  }
+  utils::assignInNamespace(".collect_indexed_names_any", patched, ns = "herald")
+})
+
 SEEDER_VERSION <- "auto-seed@4"
 
 WHITELIST_OPS <- c(
@@ -162,7 +214,13 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
   concrete_doms <- character()
   if (!is.null(doms) && length(doms) > 0L) {
     u <- toupper(as.character(unlist(doms)))
-    concrete_doms <- u[nzchar(u) & u != "ALL" & !grepl("^SUPP", u) &
+    # Map SUPP-- wildcard -> a representative SUPPAE dataset.
+    u <- vapply(u, function(d) {
+      if (identical(d, "SUPP--")) return("SUPPAE")
+      d
+    }, character(1L))
+    concrete_doms <- u[nzchar(u) & u != "ALL" &
+                       !(grepl("^SUPP", u) & u != "SUPPAE") &
                        nchar(u) >= 2L & nchar(u) <= 8L]
   }
 
@@ -255,7 +313,7 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
 .dummy_dictionaries <- function() {
   fields <- c("pt", "pt_code", "llt", "llt_code", "hlt", "hlt_code",
               "hlgt", "hlgt_code", "soc", "soc_code", "drug", "code",
-              "preferred_name")
+              "preferred_name", "unii", "synonyms")
   make <- function(name) {
     tbl <- as.data.frame(stats::setNames(rep(list("VALID"), length(fields)), fields),
                          stringsAsFactors = FALSE)
@@ -307,6 +365,22 @@ dir.create(fx_root, recursive = TRUE, showWarnings = FALSE)
     if (isTRUE(matched) == isTRUE(want_match)) return(cand)
   }
   NULL
+}
+
+#' Heuristic: does `val` look like a CDISC column name (uppercase letters
+#' optionally followed by digits / underscores), rather than a literal
+#' string value? Used by date / numeric ops to detect column-ref values
+#' in rules that omit `value_is_literal: FALSE`.
+.is_likely_col_ref <- function(val) {
+  if (is.null(val) || is.na(val) || !nzchar(val)) return(FALSE)
+  if (length(val) != 1L) return(FALSE)
+  v <- as.character(val)
+  if (startsWith(v, "$")) return(FALSE)
+  if (grepl("\\.", v))    return(FALSE)
+  # Pure digits / dates / mixed punctuation are literals.
+  if (grepl("^-?[0-9.]+$", v)) return(FALSE)
+  # SDTM / ADaM column names: optional `--` wildcard, all caps, 2-12 chars.
+  grepl("^(--)?[A-Z][A-Z0-9_]{1,11}$", v)
 }
 
 .shift_date <- function(date_str, days) {
@@ -751,32 +825,53 @@ DOLLAR_ALIASES <- list(
     },
 
     # -- date compare ------------------------------------------------------
+    # Two flavours: (1) literal date string in `value`; (2) column name
+    # naming another column to compare against. The engine auto-detects
+    # column refs via `v %in% names(data)`. The seeder handles both.
     date_greater_than = {
+      if (.is_likely_col_ref(val1)) {
+        v <- .cross_col_variant("date_greater_than", name, val1)
+        if (!is.null(v)) return(v)
+      }
       after  <- .shift_date(val1, 1L); before <- .shift_date(val1, -1L)
       if (is.na(after) || is.na(before)) return(NULL)
       list(A = .mk(name, after), B = .mk(name, before))
     },
     date_less_than = {
+      if (.is_likely_col_ref(val1)) {
+        v <- .cross_col_variant("date_less_than", name, val1)
+        if (!is.null(v)) return(v)
+      }
       after  <- .shift_date(val1, 1L); before <- .shift_date(val1, -1L)
       if (is.na(after) || is.na(before)) return(NULL)
       list(A = .mk(name, before), B = .mk(name, after))
     },
     date_equal_to = {
+      if (.is_likely_col_ref(val1)) return(NULL)
       after <- .shift_date(val1, 1L)
       if (is.na(after)) return(NULL)
       list(A = .mk(name, val1), B = .mk(name, after))
     },
     date_not_equal_to = {
+      if (.is_likely_col_ref(val1)) return(NULL)
       after <- .shift_date(val1, 1L)
       if (is.na(after)) return(NULL)
       list(A = .mk(name, after), B = .mk(name, val1))
     },
     date_greater_than_or_equal_to = {
+      if (.is_likely_col_ref(val1)) {
+        v <- .cross_col_variant("date_greater_than_or_equal_to", name, val1)
+        if (!is.null(v)) return(v)
+      }
       before <- .shift_date(val1, -1L)
       if (is.na(before)) return(NULL)
       list(A = .mk(name, val1), B = .mk(name, before))
     },
     date_less_than_or_equal_to = {
+      if (.is_likely_col_ref(val1)) {
+        v <- .cross_col_variant("date_less_than_or_equal_to", name, val1)
+        if (!is.null(v)) return(v)
+      }
       after <- .shift_date(val1, 1L)
       if (is.na(after)) return(NULL)
       list(A = .mk(name, val1), B = .mk(name, after))
@@ -785,11 +880,15 @@ DOLLAR_ALIASES <- list(
     # -- string ------------------------------------------------------------
     contains = {
       if (is.na(val1)) return(NULL)
-      list(A = .mk(name, paste0("xx", val1, "xx")), B = .mk(name, "no-match"))
+      # Negative variant must NOT contain val1 -- "no-match" itself contains
+      # "-" or "match" sub-strings of common values, so use a sterile filler.
+      neg <- paste0("Z", strrep("Q", 6L), "Z")
+      list(A = .mk(name, paste0("xx", val1, "xx")), B = .mk(name, neg))
     },
     does_not_contain = {
       if (is.na(val1)) return(NULL)
-      list(A = .mk(name, "no-match"), B = .mk(name, paste0("xx", val1, "xx")))
+      neg <- paste0("Z", strrep("Q", 6L), "Z")
+      list(A = .mk(name, neg), B = .mk(name, paste0("xx", val1, "xx")))
     },
     starts_with = {
       if (is.na(val1)) return(NULL)
@@ -1095,96 +1194,11 @@ DOLLAR_ALIASES <- list(
            B = .mk(name, paste0("HEAD", good)))
     },
 
-    # -- label / metadata --------------------------------------------------
-    # label_by_suffix_missing: fires when any column whose name ends in
-    # `suffix` has a non-empty label that does NOT contain `value`.
-    # The leaf's `name` is unused; the op derives column names from `suffix`.
-    label_by_suffix_missing = {
-      suffix <- as.character(leaf[["suffix"]] %||% "")
-      phrase <- as.character(leaf[["value"]] %||% "")
-      if (!nzchar(suffix) || !nzchar(phrase)) return(NULL)
-      good_label <- paste0("This is a ", phrase)
-      bad_label  <- "Something Else"
-      col <- paste0("X", toupper(suffix))
-      mk_col <- function(label) {
-        v <- "v1"
-        attr(v, "label") <- label
-        stats::setNames(list(v), col)
-      }
-      list(A = mk_col(bad_label), B = mk_col(good_label))
-    },
-
     # var_by_suffix_not_numeric: fires when the column is non-numeric.
     # The op uses the leaf's `name` directly (no wildcard expansion to
     # other domains). Negative needs a numeric column.
     var_by_suffix_not_numeric = {
       list(A = .mk(name, "abc"), B = .mk(name, 1))
-    },
-
-    # dataset_name_length_not_in_range: fires when nchar(ctx$current_dataset)
-    # is outside [min_len, max_len]. Cannot toggle via row data; we change
-    # the dataset name itself. Skip auto-seeding -- the seeder's main name
-    # is fixed at ds_info$name.
-    dataset_name_length_not_in_range = NULL,
-
-    # -- ADaM baseline ------------------------------------------------------
-    # no_baseline_record: fires when group has populated `name` but no
-    # row with flag_var == flag_value.
-    no_baseline_record = {
-      flag_var <- as.character(leaf[["flag_var"]] %||% "")
-      flag_value <- as.character(leaf[["flag_value"]] %||% "")
-      group_by <- as.character(unlist(leaf[["group_by"]] %||% character(0)))
-      if (!nzchar(flag_var) || !nzchar(flag_value)) return(NULL)
-      if (length(group_by) == 0L) return(NULL)
-      group_by <- .expand_wildcard(group_by, domain)
-      n_grp <- length(group_by)
-      A <- c(
-        .mk(name, c("v1", "v1")),
-        .mk(flag_var, c("N", "N"))
-      )
-      B <- c(
-        .mk(name, c("v1", "v1")),
-        .mk(flag_var, c(flag_value, "N"))
-      )
-      for (g in group_by) {
-        A[[g]] <- c("G1", "G1")
-        B[[g]] <- c("G1", "G1")
-      }
-      list(A = A, B = B)
-    },
-
-    # base_not_equal_abl_row: fires when b_var on b_var-populated rows
-    # differs from a_var on the row where abl_col == abl_value (per group).
-    # basetype_gate "absent" skips if BASETYPE column is present.
-    base_not_equal_abl_row = {
-      b_var <- as.character(leaf[["b_var"]] %||% "")
-      a_var <- as.character(leaf[["a_var"]] %||% "")
-      abl_col <- as.character(leaf[["abl_col"]] %||% "ABLFL")
-      abl_value <- as.character(leaf[["abl_value"]] %||% "Y")
-      group_by <- as.character(unlist(leaf[["group_by"]] %||% character(0)))
-      gate <- as.character(leaf[["basetype_gate"]] %||% "any")
-      if (!nzchar(b_var) || !nzchar(a_var) || length(group_by) == 0L) return(NULL)
-      group_by <- .expand_wildcard(group_by, domain)
-      A <- c(
-        .mk(b_var, c("X", "Y")),
-        .mk(a_var, c("X", "Y")),
-        .mk(abl_col, c(abl_value, "N"))
-      )
-      B <- c(
-        .mk(b_var, c("Y", "Y")),
-        .mk(a_var, c("Y", "Y")),
-        .mk(abl_col, c(abl_value, "N"))
-      )
-      for (g in group_by) {
-        A[[g]] <- c("G1", "G1")
-        B[[g]] <- c("G1", "G1")
-      }
-      # If gate is "populated", BASETYPE must be populated for the rows.
-      if (gate == "populated") {
-        A[["BASETYPE"]] <- c("BTYPE", "BTYPE")
-        B[["BASETYPE"]] <- c("BTYPE", "BTYPE")
-      }
-      list(A = A, B = B)
     },
 
     # max_n_records_per_group_matching: more than max_n rows per group
@@ -1530,6 +1544,22 @@ for (i in seq_len(n_total)) {
       ref <- .parse_dollar_ref(v1)
       if (!is.null(ref)) dollar_targets <- c(dollar_targets, ref$dataset)
     }
+    # Also collect dotted refs like "DM.USUBJID" in `value`.
+    if (!is.na(v1) && length(v1) == 1L) {
+      dref <- .parse_dotted_ref(v1)
+      if (!is.null(dref)) dollar_targets <- c(dollar_targets, dref$dataset)
+    }
+    # Cross-dataset ops carry an explicit `reference_dataset` arg.
+    rd <- as.character(lf$leaf[["reference_dataset"]] %||% "")
+    if (length(rd) == 1L && nzchar(rd)) {
+      dollar_targets <- c(dollar_targets, toupper(rd))
+    }
+    # exists("DS.COL") name pattern.
+    nm1 <- as.character(unlist(lf$leaf$name %||% character()))
+    if (length(nm1) == 1L &&
+        grepl("^[A-Z][A-Z0-9]{1,7}\\.[A-Z][A-Z0-9_]*$", nm1)) {
+      dollar_targets <- c(dollar_targets, toupper(strsplit(nm1, ".", fixed = TRUE)[[1L]][[1L]]))
+    }
   }
   if (length(dollar_targets) > 0L &&
       toupper(ds_info$name) %in% toupper(dollar_targets)) {
@@ -1538,7 +1568,7 @@ for (i in seq_len(n_total)) {
       any(nzchar(as.character(unlist(scope_doms))) &
           toupper(as.character(unlist(scope_doms))) != "ALL")
     if (!explicit_scope) {
-      alt_candidates <- c("AE", "DS", "EX", "LB", "CM", "VS")
+      alt_candidates <- c("AE", "DS", "EX", "LB", "CM", "VS", "MH", "PR", "TS")
       alt <- alt_candidates[!alt_candidates %in% toupper(dollar_targets)]
       if (length(alt) > 0L) {
         ds_info$name  <- alt[[1L]]
@@ -1636,11 +1666,11 @@ for (i in seq_len(n_total)) {
   }
 
   if (!isTRUE(out_pos$fires) || isTRUE(out_neg$fires)) {
+    reason <- if (!out_pos$fires && !out_neg$fires) "neither-fires"
+              else if (out_pos$fires && out_neg$fires) "both-fire"
+              else "positive-no-fire"
     n_skipped <- n_skipped + 1L
-    reasons <- c(reasons,
-      if (!out_pos$fires && !out_neg$fires) "neither-fires"
-      else if (out_pos$fires && out_neg$fires) "both-fire"
-      else "positive-no-fire")
+    reasons <- c(reasons, reason)
     next
   }
 
@@ -1666,22 +1696,24 @@ for (i in seq_len(n_total)) {
   n_seeded <- n_seeded + 1L
 }
 
-# Prune stale auto-seed fixtures: any auto-seeded file we did NOT write this
-# run (meaning: its rule no longer meets the seeder's criteria) is deleted.
-# Manual fixtures are always preserved.
+# Prune stale auto-seed fixtures only when --force is active. A skipped rule
+# may simply need a seeder improvement; pruning it silently on normal runs
+# destroys previously-validated fixtures. Manual fixtures are always preserved.
 n_pruned <- 0L
-existing <- list.files(fx_root, pattern = "\\.(json)$",
-                       recursive = TRUE, full.names = TRUE)
-for (p in setdiff(existing, written_paths)) {
-  if (.is_manual(p)) next
-  file.remove(p)
-  n_pruned <- n_pruned + 1L
-}
-# Sweep now-empty rule directories.
-for (d in list.files(fx_root, recursive = TRUE, include.dirs = TRUE,
-                     full.names = TRUE)) {
-  if (dir.exists(d) && length(list.files(d)) == 0L) {
-    unlink(d, recursive = TRUE)
+if (isTRUE(force)) {
+  existing <- list.files(fx_root, pattern = "\\.(json)$",
+                         recursive = TRUE, full.names = TRUE)
+  for (p in setdiff(existing, written_paths)) {
+    if (.is_manual(p)) next
+    file.remove(p)
+    n_pruned <- n_pruned + 1L
+  }
+  # Sweep now-empty rule directories.
+  for (d in list.files(fx_root, recursive = TRUE, include.dirs = TRUE,
+                       full.names = TRUE)) {
+    if (dir.exists(d) && length(list.files(d)) == 0L) {
+      unlink(d, recursive = TRUE)
+    }
   }
 }
 if (n_pruned > 0L) {

@@ -1,0 +1,15 @@
+{
+  "rule_id": "508",
+  "fixture_type": "positive",
+  "datasets": {
+    "ADSL": {
+      "XTMF": "v1"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 1 leaf op(s): label_by_suffix_missing",
+  "authored": "auto-seed@4"
+}

@@ -1,0 +1,21 @@
+{
+  "rule_id": "CORE-000250",
+  "fixture_type": "negative",
+  "datasets": {
+    "MH": {
+      "MHENDTC": "2026-01-14",
+      "RFSTDTC": "2026-01-15"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,date_greater_than_or_equal_to (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "MH": "EVENTS"
+    }
+  }
+}
