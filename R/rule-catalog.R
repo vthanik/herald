@@ -24,10 +24,25 @@
 #'   }
 #' @export
 #' @examples
-#' \dontrun{
 #' cat <- rule_catalog()
-#' cat[cat$standard == "ADaM-IG" & !cat$has_predicate, ]
-#' }
+#' nrow(cat)                                       # total rules
+#'
+#' # Rules with an executable predicate
+#' sum(cat$has_predicate)
+#'
+#' # Filter by standard
+#' cat[cat$standard == "ADaM-IG", ]
+#' cat[cat$standard == "SDTM-IG", ]
+#'
+#' # Narrative stubs awaiting implementation
+#' cat[!cat$has_predicate, c("rule_id", "standard", "message")]
+#'
+#' # Rules by severity
+#' table(cat$severity)
+#'
+#' # Find a rule by ID
+#' cat[cat$rule_id == "CG0006", ]
+#'
 rule_catalog <- function() {
   rules <- .load_rule_rds("rules.rds")
   spec <- .load_rule_rds("spec_rules.rds")
@@ -69,9 +84,19 @@ rule_catalog <- function() {
 #'   }
 #' @export
 #' @examples
-#' \dontrun{
-#' supported_standards()
-#' }
+#' stds <- supported_standards()
+#' stds
+#'
+#' # Predicate coverage per standard (0 = no rules, 1 = fully implemented)
+#' stds[, c("standard", "pct_predicate")]
+#'
+#' # Which standards have full predicate coverage?
+#' stds[!is.na(stds$pct_predicate) & stds$pct_predicate == 1, ]
+#'
+#' # Corpus compilation metadata
+#' attr(stds, "compiled_at")
+#' attr(stds, "herald_version")
+#'
 supported_standards <- function() {
   cat <- rule_catalog()
 

@@ -19,12 +19,11 @@
 #'
 #' @param path Directory path containing `.xpt` or `.json` datasets.
 #'   Mutually exclusive with `files`.
-#' @param files A single data frame or a list of data frames. When a
-#'   bare variable is passed as a list element (e.g. `list(dm)`) or
-#'   directly (e.g. `files = dm`), the dataset name is inferred from
-#'   the variable name and uppercased (`dm` -> `"DM"`). Explicit names
-#'   are required when the variable name does not match the domain (e.g.
-#'   `list(DM = dm_loaded)`). Mutually exclusive with `path`.
+#' @param files A single data frame or a list of data frames. When
+#'   passed directly (e.g. `files = dm`), the dataset name is inferred
+#'   from the variable name and uppercased (`dm` -> `"DM"`). Explicit
+#'   names are required when the variable name does not match the domain
+#'   (e.g. `list(DM = dm_loaded)`). Mutually exclusive with `path`.
 #' @param spec Optional `herald_spec` from [as_herald_spec()] or
 #'   [read_define_xml()]. Used for class resolution and anchor variables.
 #' @param rules Character vector of rule IDs to run (e.g.
@@ -88,7 +87,7 @@
 #'   AETERM  = "HEADACHE", AEDECOD = "Headache",
 #'   stringsAsFactors = FALSE
 #' )
-#' result <- validate(files = list(ae), quiet = TRUE)
+#' result <- validate(files = ae, quiet = TRUE)
 #' result
 #'
 #' # Inspect findings

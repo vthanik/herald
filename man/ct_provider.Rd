@@ -24,11 +24,30 @@ membership look up this provider under the name \code{"ct-sdtm"} or
 \code{"ct-adam"}.
 }
 \examples{
-\dontrun{
+# Bundled SDTM CT (always available, no network)
 p <- ct_provider("sdtm")
 p$contains("Y", field = "NY")           # TRUE
 p$contains("UNKNOWN", field = "NY")     # FALSE
-p$info()$version                         # e.g. "2026-03-27"
+p$contains(c("Y", "N", "BAD"), field = "NY")  # TRUE TRUE FALSE
+p$info()$version
+p$info()$codelist_count
+
+# Case-insensitive lookup
+p$contains("y", field = "NY", ignore_case = TRUE)  # TRUE
+
+# ADaM CT provider
+pa <- ct_provider("adam")
+pa$info()$size_rows
+
+# Register globally so every validate() picks it up
+register_dictionary("ct-sdtm", p)
+list_dictionaries()
+unregister_dictionary("ct-sdtm")
+
+# Pinned version from user cache (requires prior download_ct())
+if (interactive()) {
+  p_pinned <- ct_provider("sdtm", version = "2024-09-27")
+  p_pinned$info()$version
 }
 
 }

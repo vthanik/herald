@@ -23,7 +23,24 @@ returns a \code{herald_dict_provider} with membership lookup by
 # Requires a LOINC CSV distribution (user-supplied)
 if (interactive()) {
   p <- loinc_provider("/path/to/Loinc_2.77/LoincTable", version = "2.77")
-  p$contains("2160-0", field = "loinc_num")
+
+  # LOINC code lookup (case-sensitive)
+  p$contains("2160-0", field = "loinc_num")          # TRUE
+  p$contains("9999-9", field = "loinc_num")          # FALSE
+
+  # Short name and long name lookup
+  p$contains("Creatinine", field = "shortname")
+  p$contains("Creatinine [Mass/volume] in Serum or Plasma",
+             field = "long_common_name")
+
+  # Component lookup
+  p$contains("Creatinine", field = "component")
+
+  # Provider metadata
+  p$info()$version   # "2.77"
+  p$info()$fields    # all queryable field names
+
+  # Register globally
   register_dictionary("loinc", p)
 }
 

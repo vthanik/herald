@@ -28,7 +28,25 @@ valid local distribution.
 # Requires a licensed MedDRA ASCII distribution (user-supplied)
 if (interactive()) {
   p <- meddra_provider("/path/to/meddra_27_0/MedAscii", version = "27.0")
-  p$contains("Headache", field = "pt")
+
+  # Preferred-term lookup
+  p$contains("Headache", field = "pt")          # TRUE
+  p$contains("HEADACHE", field = "pt")          # FALSE (case-sensitive)
+  p$contains("HEADACHE", field = "pt",
+             ignore_case = TRUE)                 # TRUE
+
+  # High-level term and SOC lookup
+  p$contains("Nervous system disorders", field = "soc")
+  p$contains("Headaches NEC", field = "hlt")
+
+  # Lowest-level term (when llt.asc is present)
+  p$contains("Tension headache", field = "llt")
+
+  # Inspect provider metadata
+  p$info()$version          # "27.0"
+  p$info()$fields           # available query fields
+
+  # Register globally for all subsequent validate() calls
   register_dictionary("meddra", p)
 }
 

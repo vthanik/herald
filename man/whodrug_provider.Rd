@@ -28,7 +28,23 @@ WHO-Drug is licensed, herald never bundles the data.
 # Requires a licensed WHO-Drug B3 distribution (user-supplied)
 if (interactive()) {
   p <- whodrug_provider("/path/to/whodrug-b3", version = "2026-Mar-01")
-  p$contains("ASPIRIN", field = "drug_name")
+
+  # Drug-name lookup
+  p$contains("ASPIRIN", field = "drug_name")       # TRUE
+  p$contains("aspirin", field = "drug_name",
+             ignore_case = TRUE)                    # TRUE
+
+  # Alternate names (requires DDA.txt in the distribution)
+  p$contains("ACETYLSALICYLIC ACID", field = "alternate_name")
+
+  # Drug record number lookup
+  p$contains("000062", field = "drug_record_number")
+
+  # Provider metadata
+  p$info()$version          # "2026-Mar-01"
+  p$info()$size_rows
+
+  # Register globally
   register_dictionary("whodrug", p)
 }
 

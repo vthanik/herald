@@ -40,12 +40,21 @@ listed on NCI EVS. Works offline -- missing columns become \code{NA}
 rather than errors.
 }
 \examples{
-# Local-only: bundled + already-cached releases (no network required)
+# Bundled + cache only (no network)
 available_ct_releases("sdtm", include_remote = FALSE)
+
+# ADaM CT -- local only
+available_ct_releases("adam", include_remote = FALSE)
+
+# Filter to cached entries
+rel <- available_ct_releases("sdtm", include_remote = FALSE)
+rel[rel$source == "cache", ]
 
 # Full listing including NCI EVS archive (requires internet)
 if (interactive()) {
   available_ct_releases("sdtm")
+  available_ct_releases("adam")
+  available_ct_releases("send")
 }
 
 }

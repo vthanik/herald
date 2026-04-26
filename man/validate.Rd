@@ -22,12 +22,11 @@ validate(
 \item{path}{Directory path containing \code{.xpt} or \code{.json} datasets.
 Mutually exclusive with \code{files}.}
 
-\item{files}{A single data frame or a list of data frames. When a
-bare variable is passed as a list element (e.g. \code{list(dm)}) or
-directly (e.g. \code{files = dm}), the dataset name is inferred from
-the variable name and uppercased (\code{dm} -> \code{"DM"}). Explicit names
-are required when the variable name does not match the domain (e.g.
-\code{list(DM = dm_loaded)}). Mutually exclusive with \code{path}.}
+\item{files}{A single data frame or a list of data frames. When
+passed directly (e.g. \code{files = dm}), the dataset name is inferred
+from the variable name and uppercased (\code{dm} -> \code{"DM"}). Explicit
+names are required when the variable name does not match the domain
+(e.g. \code{list(DM = dm_loaded)}). Mutually exclusive with \code{path}.}
 
 \item{spec}{Optional \code{herald_spec} from \code{\link[=as_herald_spec]{as_herald_spec()}} or
 \code{\link[=read_define_xml]{read_define_xml()}}. Used for class resolution and anchor variables.}
@@ -110,7 +109,7 @@ ae <- data.frame(
   AETERM  = "HEADACHE", AEDECOD = "Headache",
   stringsAsFactors = FALSE
 )
-result <- validate(files = list(ae), quiet = TRUE)
+result <- validate(files = ae, quiet = TRUE)
 result
 
 # Inspect findings

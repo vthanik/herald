@@ -21,7 +21,15 @@ return without deserialising it. Pulls version + release date from
 the bundled \code{CT-MANIFEST.json} or the user cache manifest.
 }
 \examples{
-ct_info("sdtm")
+# SDTM CT summary
+info <- ct_info("sdtm")
+info$version
+info$codelist_count
+info$row_count
+info$source_path
+
+# ADaM CT summary
+ct_info("adam")
 
 }
 \seealso{

@@ -43,9 +43,19 @@
 #' @return The path to the generated RDS, invisibly.
 #'
 #' @examples
-#' # Download the FDA SRS table to a temporary directory (requires internet)
+#' # Download the FDA SRS table (requires internet)
 #' if (interactive()) {
+#'   # Default: cache under tools::R_user_dir("herald", "cache")
+#'   download_srs()
+#'
+#'   # Download to a specific directory
 #'   download_srs(dest = tempdir())
+#'
+#'   # Tag with an explicit version (useful for reproducibility)
+#'   download_srs(version = "2026-04-01", dest = tempdir())
+#'
+#'   # Re-download even when cached
+#'   download_srs(force = TRUE, quiet = TRUE)
 #' }
 #'
 #' @seealso [srs_provider()], [download_ct()].
@@ -108,7 +118,24 @@ download_srs <- function(
 #' # Requires a prior download_srs() call to populate the cache
 #' if (interactive()) {
 #'   p <- srs_provider()
-#'   p$contains("ASPIRIN", field = "preferred_name")
+#'
+#'   # Preferred-name lookup (case-sensitive)
+#'   p$contains("ASPIRIN", field = "preferred_name")    # TRUE
+#'   p$contains("aspirin", field = "preferred_name",
+#'              ignore_case = TRUE)                      # TRUE
+#'
+#'   # UNII code lookup
+#'   p$contains("R16CO5Y76E", field = "unii")           # TRUE (aspirin)
+#'
+#'   # Provider metadata
+#'   p$info()$version
+#'   p$info()$size_rows
+#'
+#'   # Pin to a specific cached version
+#'   p2 <- srs_provider(version = "2026-04-01")
+#'
+#'   # Register globally so all validate() calls pick it up
+#'   register_dictionary("srs", p)
 #' }
 #'
 #' @seealso [download_srs()], [register_dictionary()].

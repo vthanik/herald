@@ -77,7 +77,7 @@ object and reporting path without running the full compiled corpus.
 
 ```{r validate-smoke}
 result <- validate(
-  files = list(dm),
+  files = dm,
   rules = character(0),
   quiet = TRUE
 )
@@ -97,7 +97,7 @@ selected <- head(catalog$rule_id[catalog$has_predicate], 3)
 selected
 
 selected_result <- validate(
-  files = list(dm),
+  files = dm,
   rules = selected,
   quiet = TRUE
 )

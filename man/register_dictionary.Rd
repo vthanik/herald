@@ -22,10 +22,20 @@ automatically under \code{name} unless explicitly overridden by the
 \verb{dictionaries=} argument.
 }
 \examples{
+# Register bundled SDTM CT and inspect the registry
 p <- ct_provider("sdtm")
 register_dictionary("sdtm", p)
 list_dictionaries()
+
+# Register a custom sponsor-private dictionary
+codes <- data.frame(site = c("S01", "S02", "S03"), stringsAsFactors = FALSE)
+sponsor_p <- custom_provider(codes, name = "site-codes", fields = "site")
+register_dictionary("site-codes", sponsor_p)
+list_dictionaries()
+
+# Clean up
 unregister_dictionary("sdtm")
+unregister_dictionary("site-codes")
 
 }
 \seealso{

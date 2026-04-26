@@ -25,7 +25,23 @@ jurisdictions; herald never bundles the data.
 # Requires an IHTSDO SNOMED CT RF2 distribution (user-supplied)
 if (interactive()) {
   p <- snomed_provider("/path/to/SnomedCT_RF2Release", version = "2024-01-31")
-  p$contains("Headache", field = "term")
+
+  # Term description lookup
+  p$contains("Headache", field = "term")             # TRUE
+  p$contains("headache", field = "term",
+             ignore_case = TRUE)                      # TRUE
+
+  # SNOMED concept ID lookup
+  p$contains("25064002", field = "concept_id")       # TRUE (Headache)
+
+  # Vector of values -- returns logical vector
+  p$contains(c("Headache", "NOT_A_TERM"), field = "term")
+
+  # Provider metadata
+  p$info()$version        # "2024-01-31"
+  p$info()$size_rows      # number of active descriptions
+
+  # Register globally
   register_dictionary("snomed", p)
 }
 

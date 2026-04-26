@@ -18,7 +18,8 @@ Remove a dictionary from the session registry
 \examples{
 p <- ct_provider("sdtm")
 register_dictionary("sdtm", p)
-unregister_dictionary("sdtm")
+unregister_dictionary("sdtm")    # returns TRUE
+unregister_dictionary("sdtm")    # already gone -- returns FALSE
 
 }
 \seealso{

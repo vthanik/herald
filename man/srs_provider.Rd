@@ -28,7 +28,24 @@ name \code{"srs"}.
 # Requires a prior download_srs() call to populate the cache
 if (interactive()) {
   p <- srs_provider()
-  p$contains("ASPIRIN", field = "preferred_name")
+
+  # Preferred-name lookup (case-sensitive)
+  p$contains("ASPIRIN", field = "preferred_name")    # TRUE
+  p$contains("aspirin", field = "preferred_name",
+             ignore_case = TRUE)                      # TRUE
+
+  # UNII code lookup
+  p$contains("R16CO5Y76E", field = "unii")           # TRUE (aspirin)
+
+  # Provider metadata
+  p$info()$version
+  p$info()$size_rows
+
+  # Pin to a specific cached version
+  p2 <- srs_provider(version = "2026-04-01")
+
+  # Register globally so all validate() calls pick it up
+  register_dictionary("srs", p)
 }
 
 }

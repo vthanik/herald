@@ -65,10 +65,20 @@
 #' @return `invisible(provider)`.
 #'
 #' @examples
+#' # Register bundled SDTM CT and inspect the registry
 #' p <- ct_provider("sdtm")
 #' register_dictionary("sdtm", p)
 #' list_dictionaries()
+#'
+#' # Register a custom sponsor-private dictionary
+#' codes <- data.frame(site = c("S01", "S02", "S03"), stringsAsFactors = FALSE)
+#' sponsor_p <- custom_provider(codes, name = "site-codes", fields = "site")
+#' register_dictionary("site-codes", sponsor_p)
+#' list_dictionaries()
+#'
+#' # Clean up
 #' unregister_dictionary("sdtm")
+#' unregister_dictionary("site-codes")
 #'
 #' @family dict
 #' @export
@@ -95,7 +105,8 @@ register_dictionary <- function(name, provider) {
 #' @examples
 #' p <- ct_provider("sdtm")
 #' register_dictionary("sdtm", p)
-#' unregister_dictionary("sdtm")
+#' unregister_dictionary("sdtm")    # returns TRUE
+#' unregister_dictionary("sdtm")    # already gone -- returns FALSE
 #'
 #' @family dict
 #' @export
@@ -122,7 +133,17 @@ unregister_dictionary <- function(name) {
 #'   `license`, `size_rows`.
 #'
 #' @examples
+#' # No providers registered yet -- returns empty tibble
 #' list_dictionaries()
+#'
+#' # Register SDTM CT, then list
+#' p <- ct_provider("sdtm")
+#' register_dictionary("sdtm", p)
+#' list_dictionaries()
+#' unregister_dictionary("sdtm")
+#'
+#' # Session registry only (skip cache scan)
+#' list_dictionaries(include_global = TRUE, include_cache = FALSE)
 #'
 #' @family dict
 #' @export

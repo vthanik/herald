@@ -29,8 +29,23 @@ Returns every rule shipped with herald (conformance rules from
 \code{inst/rules/spec_rules.rds}) as a flat tibble.
 }
 \examples{
-\dontrun{
 cat <- rule_catalog()
-cat[cat$standard == "ADaM-IG" & !cat$has_predicate, ]
-}
+nrow(cat)                                       # total rules
+
+# Rules with an executable predicate
+sum(cat$has_predicate)
+
+# Filter by standard
+cat[cat$standard == "ADaM-IG", ]
+cat[cat$standard == "SDTM-IG", ]
+
+# Narrative stubs awaiting implementation
+cat[!cat$has_predicate, c("rule_id", "standard", "message")]
+
+# Rules by severity
+table(cat$severity)
+
+# Find a rule by ID
+cat[cat$rule_id == "CG0006", ]
+
 }

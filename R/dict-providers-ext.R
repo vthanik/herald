@@ -43,7 +43,25 @@
 #' # Requires a licensed MedDRA ASCII distribution (user-supplied)
 #' if (interactive()) {
 #'   p <- meddra_provider("/path/to/meddra_27_0/MedAscii", version = "27.0")
-#'   p$contains("Headache", field = "pt")
+#'
+#'   # Preferred-term lookup
+#'   p$contains("Headache", field = "pt")          # TRUE
+#'   p$contains("HEADACHE", field = "pt")          # FALSE (case-sensitive)
+#'   p$contains("HEADACHE", field = "pt",
+#'              ignore_case = TRUE)                 # TRUE
+#'
+#'   # High-level term and SOC lookup
+#'   p$contains("Nervous system disorders", field = "soc")
+#'   p$contains("Headaches NEC", field = "hlt")
+#'
+#'   # Lowest-level term (when llt.asc is present)
+#'   p$contains("Tension headache", field = "llt")
+#'
+#'   # Inspect provider metadata
+#'   p$info()$version          # "27.0"
+#'   p$info()$fields           # available query fields
+#'
+#'   # Register globally for all subsequent validate() calls
 #'   register_dictionary("meddra", p)
 #' }
 #'
@@ -271,7 +289,23 @@ meddra_provider <- function(path, version = "unknown") {
 #' # Requires a licensed WHO-Drug B3 distribution (user-supplied)
 #' if (interactive()) {
 #'   p <- whodrug_provider("/path/to/whodrug-b3", version = "2026-Mar-01")
-#'   p$contains("ASPIRIN", field = "drug_name")
+#'
+#'   # Drug-name lookup
+#'   p$contains("ASPIRIN", field = "drug_name")       # TRUE
+#'   p$contains("aspirin", field = "drug_name",
+#'              ignore_case = TRUE)                    # TRUE
+#'
+#'   # Alternate names (requires DDA.txt in the distribution)
+#'   p$contains("ACETYLSALICYLIC ACID", field = "alternate_name")
+#'
+#'   # Drug record number lookup
+#'   p$contains("000062", field = "drug_record_number")
+#'
+#'   # Provider metadata
+#'   p$info()$version          # "2026-Mar-01"
+#'   p$info()$size_rows
+#'
+#'   # Register globally
 #'   register_dictionary("whodrug", p)
 #' }
 #'
@@ -435,7 +469,24 @@ whodrug_provider <- function(path, version = "unknown", format = "b3") {
 #' # Requires a LOINC CSV distribution (user-supplied)
 #' if (interactive()) {
 #'   p <- loinc_provider("/path/to/Loinc_2.77/LoincTable", version = "2.77")
-#'   p$contains("2160-0", field = "loinc_num")
+#'
+#'   # LOINC code lookup (case-sensitive)
+#'   p$contains("2160-0", field = "loinc_num")          # TRUE
+#'   p$contains("9999-9", field = "loinc_num")          # FALSE
+#'
+#'   # Short name and long name lookup
+#'   p$contains("Creatinine", field = "shortname")
+#'   p$contains("Creatinine [Mass/volume] in Serum or Plasma",
+#'              field = "long_common_name")
+#'
+#'   # Component lookup
+#'   p$contains("Creatinine", field = "component")
+#'
+#'   # Provider metadata
+#'   p$info()$version   # "2.77"
+#'   p$info()$fields    # all queryable field names
+#'
+#'   # Register globally
 #'   register_dictionary("loinc", p)
 #' }
 #'
@@ -568,7 +619,23 @@ loinc_provider <- function(path, version = "unknown") {
 #' # Requires an IHTSDO SNOMED CT RF2 distribution (user-supplied)
 #' if (interactive()) {
 #'   p <- snomed_provider("/path/to/SnomedCT_RF2Release", version = "2024-01-31")
-#'   p$contains("Headache", field = "term")
+#'
+#'   # Term description lookup
+#'   p$contains("Headache", field = "term")             # TRUE
+#'   p$contains("headache", field = "term",
+#'              ignore_case = TRUE)                      # TRUE
+#'
+#'   # SNOMED concept ID lookup
+#'   p$contains("25064002", field = "concept_id")       # TRUE (Headache)
+#'
+#'   # Vector of values -- returns logical vector
+#'   p$contains(c("Headache", "NOT_A_TERM"), field = "term")
+#'
+#'   # Provider metadata
+#'   p$info()$version        # "2024-01-31"
+#'   p$info()$size_rows      # number of active descriptions
+#'
+#'   # Register globally
 #'   register_dictionary("snomed", p)
 #' }
 #'

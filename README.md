@@ -71,10 +71,10 @@ library(herald)
 dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
 spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
 
-dm <- apply_spec(list(DM = dm), spec)$DM
+dm <- apply_spec(dm, spec)
 
 result <- validate(
-  files = list(DM = dm),
+  files = dm,
   rules = character(0),
   quiet = TRUE
 )
@@ -114,7 +114,7 @@ ct <- ct_provider("sdtm")
 ct$contains(c("Y", "N", "UNKNOWN"), field = "NY")
 
 validate(
-  files = list(DM = dm),
+  files = dm,
   dictionaries = list("ct-sdtm" = ct),
   quiet = TRUE
 )

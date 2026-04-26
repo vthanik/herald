@@ -33,11 +33,26 @@ and a \code{terms} data frame holding submission values, NCI concept
 ids, and preferred terms.
 }
 \examples{
-\dontrun{
+# Bundled SDTM CT (no network; always available)
 ct <- load_ct("sdtm")
-names(ct)[1:5]
-ct[["NY"]]$terms
+length(ct)                  # number of codelists
+names(ct)[1:5]              # first 5 codelist short names
+ct[["NY"]]$codelist_name   # "No Yes Response"
+ct[["NY"]]$terms            # data frame of submission values
 attr(ct, "version")
+attr(ct, "release_date")
+
+# ADaM CT
+ct_adam <- load_ct("adam")
+names(ct_adam)[1:5]
+
+# Pinned version from user cache (requires prior download_ct() call)
+if (interactive()) {
+  ct_pinned <- load_ct("sdtm", version = "2024-09-27")
+  attr(ct_pinned, "version")
+
+  # Newest cached version
+  ct_latest <- load_ct("sdtm", version = "latest-cache")
 }
 
 }

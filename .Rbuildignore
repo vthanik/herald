@@ -13,6 +13,7 @@
 ^\.claude$
 ^\.claudeignore$
 ^tools$
+^data-raw$
 ^revdep$
 ^cran-comments\.md$
 ^\.DS_Store$

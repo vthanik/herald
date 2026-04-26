@@ -21,7 +21,17 @@ dictionaries, cache-discoverable dictionaries, and the bundled
 CDISC CT. Used for reporting and debugging.
 }
 \examples{
+# No providers registered yet -- returns empty tibble
 list_dictionaries()
+
+# Register SDTM CT, then list
+p <- ct_provider("sdtm")
+register_dictionary("sdtm", p)
+list_dictionaries()
+unregister_dictionary("sdtm")
+
+# Session registry only (skip cache scan)
+list_dictionaries(include_global = TRUE, include_cache = FALSE)
 
 }
 \seealso{

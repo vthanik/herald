@@ -40,10 +40,22 @@ and updates the cache manifest. Idempotent: returns the existing
 path if the file already exists and \code{!force}.
 }
 \examples{
-# Download the latest SDTM CT to a temporary directory (requires internet)
+# Download the latest SDTM CT (requires internet)
 if (interactive()) {
   dest <- tempdir()
   download_ct("sdtm", version = "latest", dest = dest)
+
+  # ADaM CT -- same pattern
+  download_ct("adam", version = "latest", dest = dest)
+
+  # Pin a specific quarterly release
+  download_ct("sdtm", version = "2024-09-27", dest = dest)
+
+  # Re-download even when already cached
+  download_ct("sdtm", version = "latest", dest = dest, force = TRUE)
+
+  # Suppress progress output (useful in scripts)
+  download_ct("sdtm", version = "latest", dest = dest, quiet = TRUE)
 }
 
 }

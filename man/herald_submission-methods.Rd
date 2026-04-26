@@ -41,8 +41,31 @@ S3 methods for \code{$}, \verb{$<-}, \code{[[}, and \code{print} on \code{herald
 # Requires a real submission directory produced by submit()
 if (interactive()) {
   sub <- submit("/path/to/sdtm", spec = my_spec)
-  sub$xpt_files
+
+  # $ accessor -- raw S7 properties
   sub$output_dir
+  sub$herald_version
+  sub$timestamp
+
+  # $ accessor -- derived file-type views
+  sub$xpt_files        # character vector of XPT paths
+  sub$json_files       # character vector of JSON dataset paths
+  sub$define_path      # single path or NULL
+  sub$report_paths     # HTML / XLSX report paths
+
+  # [[ works the same as $
+  sub[["xpt_files"]]
+
+  # Raw files table (path, type, size columns)
+  sub$files
+  sub$files[sub$files$type == "xpt", ]
+
+  # Print summary
+  print(sub)
+
+  # Validation summary (if validate = TRUE was used in submit())
+  sub$validation$summary
+  sub$validation$findings[sub$validation$findings$status == "fired", ]
 }
 
 }

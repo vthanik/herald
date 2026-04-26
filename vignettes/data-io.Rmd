@@ -122,10 +122,10 @@ file.exists(json3)
 The validation layer is format-blind after data is loaded.
 
 ```{r validate-after-io}
-dm_loaded <- read_xpt(xpt)
+dm <- read_xpt(xpt)
 
 result <- validate(
-  files = list(DM = dm_loaded),
+  files = dm,
   rules = character(0),
   quiet = TRUE
 )

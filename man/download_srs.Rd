@@ -36,9 +36,19 @@ cache as an RDS, and updates the cache manifest. Idempotent --
 re-runs short-circuit when the file is already cached.
 }
 \examples{
-# Download the FDA SRS table to a temporary directory (requires internet)
+# Download the FDA SRS table (requires internet)
 if (interactive()) {
+  # Default: cache under tools::R_user_dir("herald", "cache")
+  download_srs()
+
+  # Download to a specific directory
   download_srs(dest = tempdir())
+
+  # Tag with an explicit version (useful for reproducibility)
+  download_srs(version = "2026-04-01", dest = tempdir())
+
+  # Re-download even when cached
+  download_srs(force = TRUE, quiet = TRUE)
 }
 
 }

@@ -29,7 +29,7 @@
 #' @examples
 #' ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
 #'                   stringsAsFactors = FALSE)
-#' r   <- validate(files = list(ae), quiet = TRUE)
+#' r   <- validate(files = ae, quiet = TRUE)
 #' out <- tempfile(fileext = ".json")
 #' on.exit(unlink(out))
 #' report(r, out)
@@ -71,7 +71,7 @@ report <- function(x, path, format = NULL, ...) {
 #' @examples
 #' ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
 #'                   stringsAsFactors = FALSE)
-#' r   <- validate(files = list(ae), quiet = TRUE)
+#' r   <- validate(files = ae, quiet = TRUE)
 #' out <- tempfile(fileext = ".json")
 #' on.exit(unlink(out))
 #' write_report_json(r, out)

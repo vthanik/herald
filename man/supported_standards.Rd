@@ -28,7 +28,17 @@ Returns a cross-tab of rule counts by standard and authority, with
 predicate vs narrative split and corpus metadata.
 }
 \examples{
-\dontrun{
-supported_standards()
-}
+stds <- supported_standards()
+stds
+
+# Predicate coverage per standard (0 = no rules, 1 = fully implemented)
+stds[, c("standard", "pct_predicate")]
+
+# Which standards have full predicate coverage?
+stds[!is.na(stds$pct_predicate) & stds$pct_predicate == 1, ]
+
+# Corpus compilation metadata
+attr(stds, "compiled_at")
+attr(stds, "herald_version")
+
 }
