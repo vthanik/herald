@@ -35,30 +35,17 @@
 #'   named list otherwise.
 #'
 #' @examples
-#' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
-#' adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
+#' dm   <- readRDS(system.file("extdata", "dm.rds",        package = "herald"))
 #' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
 #'
-#' # ---- Single data frame -- name inferred from variable symbol (dm -> "DM") ----
-#' dm_stamped <- apply_spec(dm, spec)
-#' attr(dm_stamped, "label")           # dataset label from ds_spec
-#' attr(dm_stamped$USUBJID, "label")   # column label from var_spec
+#' # single dataset -- name inferred from variable (dm -> "DM")
+#' dm <- apply_spec(dm, spec)
+#' attr(dm, "label")
+#' attr(dm$USUBJID, "label")
 #'
-#' # ---- Pipe-friendly: identical result ---------------------------------
-#' dm_stamped2 <- dm |> apply_spec(spec)
-#' attr(dm_stamped2$STUDYID, "label")
-#'
-#' # ---- Named list of data frames -- applies spec to each; returns named list ----
-#' datasets <- list(DM = dm)
-#' out <- apply_spec(datasets, spec)
-#' attr(out$DM, "label")
-#' attr(out$DM$USUBJID, "label")
-#'
-#' # ---- Explicit dataset_name attribute -- overrides variable-symbol inference ----
-#' raw <- dm
-#' attr(raw, "dataset_name") <- "DM"
-#' stamped <- apply_spec(raw, spec)
-#' attr(stamped, "label")
+#' # pipe-friendly
+#' dm2 <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' dm2 <- dm2 |> apply_spec(spec)
 #'
 #' @seealso [as_herald_spec()], [validate()].
 #' @family spec

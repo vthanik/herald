@@ -26,34 +26,15 @@ is suitable for submission packages, inspection, and long-term
 archiving without external dependencies.
 }
 \examples{
-dm <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
-ae <- data.frame(STUDYID = "X", USUBJID = "X-001",
-                 stringsAsFactors = FALSE)
+ae  <- data.frame(STUDYID = "X", USUBJID = "X-001", stringsAsFactors = FALSE)
+r   <- validate(files = ae, rules = character(0), quiet = TRUE)
+out <- tempfile(fileext = ".html")
+on.exit(unlink(out))
+write_report_html(r, out)
+file.exists(out)
 
-# ---- Single-dataset validation -> HTML report ------------------------
-r1  <- validate(files = ae, quiet = TRUE)
-out1 <- tempfile(fileext = ".html")
-on.exit(unlink(out1))
-write_report_html(r1, out1)
-file.exists(out1)
-
-# ---- Custom document title -------------------------------------------
-r2   <- validate(files = list(DM = dm, AE = ae), quiet = TRUE)
-out2 <- tempfile(fileext = ".html")
-on.exit(unlink(out2), add = TRUE)
-write_report_html(r2, out2, title = "PILOT01 SDTM Conformance Report")
-
-# ---- Report inspects datasets_checked and finding counts -------------
-r3   <- validate(files = dm, quiet = TRUE)
-out3 <- tempfile(fileext = ".html")
-on.exit(unlink(out3), add = TRUE)
-write_report_html(r3, out3)
-r3$summary   # fired + advisory counts
-
-# ---- Via the unified report() entry point ----------------------------
-out4 <- tempfile(fileext = ".html")
-on.exit(unlink(out4), add = TRUE)
-report(r1, out4)
+# custom title
+write_report_html(r, out, title = "PILOT01 SDTM Conformance Report")
 
 }
 \seealso{

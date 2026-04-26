@@ -34,31 +34,15 @@
 #' @return `path` invisibly.
 #'
 #' @examplesIf requireNamespace("openxlsx2", quietly = TRUE)
-#' dm <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
-#' ae <- data.frame(STUDYID = "X", USUBJID = "X-001",
-#'                  stringsAsFactors = FALSE)
+#' ae  <- data.frame(STUDYID = "X", USUBJID = "X-001", stringsAsFactors = FALSE)
+#' r   <- validate(files = ae, rules = character(0), quiet = TRUE)
+#' out <- tempfile(fileext = ".xlsx")
+#' on.exit(unlink(out))
+#' write_report_xlsx(r, out)
+#' file.exists(out)
 #'
-#' # ---- Single-dataset result -> XLSX -----------------------------------
-#' r1   <- validate(files = ae, quiet = TRUE)
-#' out1 <- tempfile(fileext = ".xlsx")
-#' on.exit(unlink(out1))
-#' write_report_xlsx(r1, out1)
-#' file.exists(out1)
-#'
-#' # ---- Multi-dataset result (findings + datasets + rules sheets all populated) ----
-#' r2   <- validate(files = list(DM = dm, AE = ae), quiet = TRUE)
-#' out2 <- tempfile(fileext = ".xlsx")
-#' on.exit(unlink(out2), add = TRUE)
-#' write_report_xlsx(r2, out2)
-#'
-#' # ---- Inspect the summary sheet by reading back with openxlsx2 --------
-#' wb  <- openxlsx2::wb_load(out2)
-#' openxlsx2::wb_get_sheet_names(wb)   # summary, findings, datasets, rules, spec_validation
-#'
-#' # ---- Via the unified report() entry point ----------------------------
-#' out4 <- tempfile(fileext = ".xlsx")
-#' on.exit(unlink(out4), add = TRUE)
-#' report(r1, out4)
+#' # inspect sheet names
+#' openxlsx2::wb_get_sheet_names(openxlsx2::wb_load(out))
 #'
 #' @seealso [validate()] to produce a result, [write_report_html()] for
 #'   a self-contained HTML report, [report()] to auto-select format.
