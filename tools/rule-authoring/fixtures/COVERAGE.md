@@ -1,6 +1,6 @@
 # Golden-fixture coverage
 
-_generated 2026-04-26T12:45:59Z by tools/fixture-coverage.R_
+_generated 2026-04-26T13:04:03Z by tools/fixture-coverage.R_
 
 | metric | count |
 |---|---:|
@@ -8,10 +8,10 @@ _generated 2026-04-26T12:45:59Z by tools/fixture-coverage.R_
 | covered (both fixtures) | 1354 |
 | missing positive only | 0 |
 | missing negative only | 0 |
-| missing both (pending) | 196 |
+| missing both | 196 |
 | coverage | 87.4% |
 
-Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
+Gate: PASS. All 196 missing rules are in the known baseline.
 
 ## Covered rules
 
@@ -1370,7 +1370,7 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - CORE-001081
 - CORE-001082
 
-## First 20 pending rules
+## Known missing (baseline -- need manual fixtures)
 
 - 102
 - 103

@@ -118,9 +118,14 @@ predicates. Use this when onboarding a new cluster of rules.
 2. write patterns/<name>.md + patterns/<name>.ids
 3. apply-pattern.R       -- stamp check_tree into YAMLs
 4. compile-rules.R       -- rebuild inst/rules/rules.rds
-5. seed-fixtures.R       -- generate and validate golden fixtures
-6. commit per pattern
+5. seed-fixtures.R       -- generate and validate golden fixtures  [REQUIRED]
+6. fixture-coverage.R    -- verify 0 missing (CI blocks if any)
+7. commit per pattern
 ```
+
+**Fixtures are required for every executable rule.** CI fails if any
+executable rule is missing `positive.json` or `negative.json`. Always run
+`seed-fixtures.R` after `compile-rules.R` before committing.
 
 ### Scripts
 
