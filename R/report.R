@@ -8,14 +8,30 @@
 #' Write a herald_result to disk in any supported format
 #'
 #' @description
-#' Single-function entry point for writing validation results.
-#' Dispatches to the appropriate writer based on the output path
-#' extension (or an explicit `format` override):
+#' `r lifecycle::badge("stable")`
+#'
+#' Single-function entry point for writing validation results. `report()`
+#' inspects the path extension (or the `format` override) and delegates
+#' to the matching writer:
 #'
 #' * `"html"` -- self-contained archival HTML ([write_report_html()]).
 #' * `"xlsx"` -- five-sheet workbook for sponsor review
 #'   ([write_report_xlsx()]).
 #' * `"json"` -- machine-readable CI artifact ([write_report_json()]).
+#'
+#' @details
+#' # Extension dispatch matrix
+#'
+#' | Path / `format`   | Writer               | Use case                           |
+#' | ----------------- | -------------------- | ---------------------------------- |
+#' | `*.html` / "html" | `write_report_html()`| Submission archive, sponsor review |
+#' | `*.xlsx` / "xlsx" | `write_report_xlsx()`| Sponsor / regulator spreadsheet    |
+#' | `*.json` / "json" | `write_report_json()`| CI diff artifact, programmatic use |
+#'
+#' When `format` is supplied it wins; otherwise the extension is parsed
+#' from `path`. Unknown extensions raise an input error. The
+#' `herald_result` is rendered without mutation -- you can call
+#' `report()` repeatedly with different paths.
 #'
 #' @param x A `herald_result` object from [validate()].
 #' @param path Output file path. The extension (`.html`, `.xlsx`,
@@ -66,9 +82,18 @@ report <- function(x, path, format = NULL, ...) {
 #' Write a herald_result as canonical JSON
 #'
 #' @description
-#' Serialises a `herald_result` to a UTF-8 JSON document with a
-#' stable key order. Designed as the machine-readable artifact for
-#' CI pipelines, diffing between runs, and programmatic processing.
+#' `r lifecycle::badge("experimental")`
+#'
+#' Serialises a `herald_result` to a UTF-8 JSON document with a stable
+#' key order. Designed as the machine-readable artifact for CI
+#' pipelines, diffing between runs, and programmatic post-processing:
+#'
+#' * Top-level keys: `herald_version`, `timestamp`, `duration_secs`,
+#'   `profile`, `config_hash`, `rules_applied`, `rules_total`,
+#'   `datasets_checked`, `counts`, `findings`, `dataset_meta`,
+#'   `rule_catalog`, `op_errors`.
+#' * `findings` is a list of row objects (one entry per finding).
+#' * `NA` values become `null`.
 #'
 #' Requires the `jsonlite` package.
 #'

@@ -17,6 +17,8 @@ write_report_xlsx(x, path, ...)
 \code{path} invisibly.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Renders a \code{herald_result} to an Excel workbook structured for sponsor
 review and regulatory submission. The workbook contains five sheets:
 \describe{

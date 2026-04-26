@@ -54,9 +54,17 @@
 #' Install a dictionary provider in the session registry
 #'
 #' @description
-#' After this call every subsequent `validate()` picks up `provider`
-#' automatically under `name` unless explicitly overridden by the
-#' `dictionaries=` argument.
+#' `r lifecycle::badge("experimental")`
+#'
+#' Adds `provider` to the session-level dictionary registry under
+#' `name`. After this call every subsequent [validate()] picks up the
+#' provider automatically unless explicitly overridden by the
+#' `dictionaries =` argument:
+#'
+#' * Sponsors install a MedDRA / WHO-Drug provider once at the top of
+#'   a pipeline; downstream `validate()` calls inherit it.
+#' * The same registry powers [list_dictionaries()] for reporting.
+#' * Use [unregister_dictionary()] to remove an entry.
 #'
 #' @param name Character scalar -- canonical short name (e.g. `"meddra"`,
 #'   `"whodrug"`, `"srs"`, `"sponsor-race"`).
@@ -98,6 +106,13 @@ register_dictionary <- function(name, provider) {
 }
 
 #' Remove a dictionary from the session registry
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' Removes a previously [register_dictionary()]-installed provider.
+#' Idempotent: removing an unregistered name returns `FALSE` rather
+#' than erroring, so it is safe to call from teardown blocks.
 #'
 #' @param name Character scalar.
 #' @return `invisible(TRUE)` if removed, `FALSE` if not registered.
@@ -193,10 +208,34 @@ list_dictionaries <- function(include_global = TRUE, include_cache = TRUE) {
 #' Construct a dictionary-provider object
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Low-level constructor used by every provider factory. Validates the
 #' required fields, sets the S3 class, and returns the object. Factory
 #' authors should prefer this over hand-assembling a list so the
-#' contract stays stable.
+#' protocol contract stays stable.
+#'
+#' @details
+#' # Provider protocol
+#'
+#' Every `herald_dict_provider` honours the same contract so rule ops
+#' do not need to know whether the data comes from CDISC CT, FDA SRS,
+#' MedDRA, WHO-Drug, LOINC, SNOMED, or a sponsor-private table:
+#'
+#' * `provider$contains(value, field, ignore_case)` returns a logical
+#'   vector aligned with `value`. Required.
+#' * `provider$lookup(value, field)` returns matching rows (any
+#'   row-bindable shape). Optional; ops that need richer metadata
+#'   degrade gracefully when absent.
+#' * `provider$info()` returns the metadata list (`name`, `version`,
+#'   `source`, `license`, `license_note`, `size_rows`, `fields`).
+#'
+#' # Caching
+#'
+#' Providers built from on-disk distributions (CT, SRS, MedDRA, ...) keep
+#' the parsed table in memory inside their closure -- no re-parse cost
+#' across `validate()` calls. Bundled CDISC CT is mmap-friendly and
+#' loads lazily through [load_ct()].
 #'
 #' @param name,version,source,license,license_note,size_rows,fields
 #'   Metadata fields.

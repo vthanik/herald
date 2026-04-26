@@ -19,10 +19,33 @@
 #' Construct a `herald_spec` object
 #'
 #' @description
-#' Assembles a `herald_spec` S3 object from two data frames describing the
-#' datasets and variables in a submission. Column names are normalised to
-#' lowercase; required columns are checked. Extra columns pass through
-#' unchanged.
+#' `r lifecycle::badge("experimental")`
+#'
+#' Assembles a [`herald_spec`][herald_spec()] S3 object from two data
+#' frames describing the datasets and variables in a submission. The
+#' result is the canonical specification handed to [apply_spec()] and
+#' [validate()]:
+#'
+#' * Normalises column names to lowercase.
+#' * Checks required columns (`dataset` on `ds_spec`; `dataset`,
+#'   `variable` on `var_spec`).
+#' * Uppercases dataset and variable names for case-insensitive joins.
+#' * Preserves any extra columns unchanged so sponsor-specific metadata
+#'   round-trips through `apply_spec()`.
+#'
+#' @details
+#' # Input dispatch
+#'
+#' `as_herald_spec()` is the simple two-arg form. The richer
+#' [herald_spec()] constructor accepts the full Define-XML 2.1 slot set
+#' (study, codelist, methods, comments, ARM displays, etc.). Common
+#' upstream sources:
+#'
+#' * Two raw data frames (this constructor).
+#' * A `herald_define` object from [read_define_xml()] -- pass
+#'   `d$ds_spec` and `d$var_spec` directly.
+#' * An existing `herald_spec` -- returned unchanged by [is_herald_spec()]
+#'   guards in callers.
 #'
 #' @param ds_spec Data frame. Must carry column `dataset`. Recognised
 #'   further columns: `class`, `label`, `standard`. Any other columns are
@@ -125,11 +148,35 @@ as_herald_spec <- function(ds_spec, var_spec = NULL) {
 #' Construct a rich herald_spec with all submission slots
 #'
 #' @description
-#' Assembles a \code{herald_spec} that carries all Define-XML 2.1 slots:
-#' \code{ds_spec}, \code{var_spec}, \code{study}, \code{value_spec},
-#' \code{codelist}, \code{methods}, \code{comments}, \code{documents},
-#' \code{arm_displays}, and \code{arm_results}. Used by
-#' \code{write_define_xml()} and round-trip tests.
+#' `r lifecycle::badge("experimental")`
+#'
+#' Assembles a `herald_spec` that carries all Define-XML 2.1 slots:
+#' `ds_spec`, `var_spec`, `study`, `value_spec`, `codelist`, `methods`,
+#' `comments`, `documents`, `arm_displays`, and `arm_results`. Use this
+#' constructor when you need round-trip fidelity through
+#' [write_define_xml()]; reach for the simpler [as_herald_spec()] when
+#' only datasets and variables matter.
+#'
+#' @details
+#' # Input dispatch
+#'
+#' Each slot accepts a data frame in the layout produced by the matching
+#' [read_define_xml()] field, so a Define-XML round-trip is just:
+#'
+#' ```r
+#' d <- read_define_xml("define.xml")
+#' s <- herald_spec(
+#'   ds_spec      = d$ds_spec,      var_spec     = d$var_spec,
+#'   study        = d$study,        codelist     = d$codelist,
+#'   methods      = d$methods,      comments     = d$comments,
+#'   documents    = d$documents,    arm_displays = d$arm_displays,
+#'   arm_results  = d$arm_results
+#' )
+#' ```
+#'
+#' Slots not supplied default to either an empty data frame (`var_spec`,
+#' `study`) or `NULL` (everything else). `write_define_xml()` emits an
+#' element only when the corresponding slot is non-empty.
 #'
 #' @param ds_spec Data frame with column \code{dataset}.
 #' @param var_spec Data frame with columns \code{dataset} and \code{variable}.

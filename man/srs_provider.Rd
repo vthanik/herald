@@ -20,6 +20,8 @@ when the cache is empty -- op layer records a missing_ref with
 a hint pointing the user at \code{download_srs()}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Returns a \code{herald_dict_provider} backed by the user-cached FDA SRS
 table (written by \code{\link[=download_srs]{download_srs()}}). Rule ops query it under the
 name \code{"srs"}.

@@ -15,6 +15,8 @@ loinc_provider(path, version = "unknown")
 A \code{herald_dict_provider} with name \code{"loinc"}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Reads a Regenstrief LOINC CSV distribution (\code{Loinc.csv}) and
 returns a \code{herald_dict_provider} with membership lookup by
 \code{LOINC_NUM}, \code{COMPONENT}, \code{SHORTNAME}, or \code{LONG_COMMON_NAME}.

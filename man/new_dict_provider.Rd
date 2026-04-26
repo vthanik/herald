@@ -31,11 +31,35 @@ the metadata fields above.}
 An object of class \code{c("herald_dict_provider", "list")}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Low-level constructor used by every provider factory. Validates the
 required fields, sets the S3 class, and returns the object. Factory
 authors should prefer this over hand-assembling a list so the
-contract stays stable.
+protocol contract stays stable.
 }
+\section{Provider protocol}{
+Every \code{herald_dict_provider} honours the same contract so rule ops
+do not need to know whether the data comes from CDISC CT, FDA SRS,
+MedDRA, WHO-Drug, LOINC, SNOMED, or a sponsor-private table:
+\itemize{
+\item \code{provider$contains(value, field, ignore_case)} returns a logical
+vector aligned with \code{value}. Required.
+\item \code{provider$lookup(value, field)} returns matching rows (any
+row-bindable shape). Optional; ops that need richer metadata
+degrade gracefully when absent.
+\item \code{provider$info()} returns the metadata list (\code{name}, \code{version},
+\code{source}, \code{license}, \code{license_note}, \code{size_rows}, \code{fields}).
+}
+}
+
+\section{Caching}{
+Providers built from on-disk distributions (CT, SRS, MedDRA, ...) keep
+the parsed table in memory inside their closure -- no re-parse cost
+across \code{validate()} calls. Bundled CDISC CT is mmap-friendly and
+loads lazily through \code{\link[=load_ct]{load_ct()}}.
+}
+
 \examples{
 # ---- Minimal provider: name + contains function ----------------------
 p1 <- new_dict_provider(

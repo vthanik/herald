@@ -20,18 +20,48 @@ Same shape as \code{datasets}: a data frame if one was passed, a
 named list otherwise.
 }
 \description{
-For each dataset in \code{datasets}, writes \code{attr(., "label")} from
-\code{spec$ds_spec} when available, and for each column writes \code{"label"},
-\code{"format.sas"}, \code{"sas.length"}, and \code{"xpt_type"} from \code{spec$var_spec}
-when a matching row exists. Spec values overwrite any existing
-attribute; columns with no spec row are untouched. Datasets absent
-from the spec are returned unchanged.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Pre-validation helper that copies CDISC metadata from a
+\code{\link[=as_herald_spec]{herald_spec}} onto each dataset's columns and
+onto the data frame itself, so downstream rule operators can read
+attributes uniformly regardless of how the data was ingested. Spec
+values overwrite any existing attribute; columns with no spec row
+are untouched.
+\itemize{
+\item Sets \code{attr(ds, "label")} from \code{spec$ds_spec$label}.
+\item Sets per-column \code{"label"}, \code{"format.sas"}, \code{"sas.length"}, and
+\code{"xpt_type"} from \code{spec$var_spec}.
+\item Leaves datasets that are not in \code{spec} unchanged.
+}
 
 Call this before \code{\link[=validate]{validate()}} when datasets come from CSV, plain
 data.frames, or any source that does not itself carry CDISC metadata.
 XPT and Dataset-JSON readers already set these attributes at ingest,
 so \code{apply_spec()} is optional there.
 }
+\section{Stamped attributes}{
+For each row in \code{spec$var_spec} matching a column in \code{datasets},
+\code{apply_spec()} writes:
+\itemize{
+\item \code{attr(col, "label")} from \code{var_spec$label}
+\item \code{attr(col, "format.sas")} from \code{var_spec$format}
+\item \code{attr(col, "sas.length")} from \code{var_spec$length}
+\item \code{attr(col, "xpt_type")} from \code{var_spec$type}
+}
+
+Dataset-level \code{attr(ds, "label")} is taken from \code{spec$ds_spec$label}.
+}
+
+\section{Missing or extra variables}{
+Variables present in \code{spec$var_spec} but not in the dataset are
+silently skipped -- \code{apply_spec()} does not add columns. Variables
+present in the dataset but not in \code{spec$var_spec} are left unchanged
+(existing attributes preserved). Datasets named in \code{spec$ds_spec}
+but missing from \code{datasets} are also skipped without error; herald
+rules will catch missing required datasets at validation time.
+}
+
 \examples{
 dm   <- readRDS(system.file("extdata", "dm.rds",        package = "herald"))
 spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))

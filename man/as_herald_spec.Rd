@@ -20,11 +20,35 @@ A list with class \code{c("herald_spec", "list")} holding \code{ds_spec}
 and (if supplied) \code{var_spec}.
 }
 \description{
-Assembles a \code{herald_spec} S3 object from two data frames describing the
-datasets and variables in a submission. Column names are normalised to
-lowercase; required columns are checked. Extra columns pass through
-unchanged.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Assembles a \code{\link[=herald_spec]{herald_spec}} S3 object from two data
+frames describing the datasets and variables in a submission. The
+result is the canonical specification handed to \code{\link[=apply_spec]{apply_spec()}} and
+\code{\link[=validate]{validate()}}:
+\itemize{
+\item Normalises column names to lowercase.
+\item Checks required columns (\code{dataset} on \code{ds_spec}; \code{dataset},
+\code{variable} on \code{var_spec}).
+\item Uppercases dataset and variable names for case-insensitive joins.
+\item Preserves any extra columns unchanged so sponsor-specific metadata
+round-trips through \code{apply_spec()}.
 }
+}
+\section{Input dispatch}{
+\code{as_herald_spec()} is the simple two-arg form. The richer
+\code{\link[=herald_spec]{herald_spec()}} constructor accepts the full Define-XML 2.1 slot set
+(study, codelist, methods, comments, ARM displays, etc.). Common
+upstream sources:
+\itemize{
+\item Two raw data frames (this constructor).
+\item A \code{herald_define} object from \code{\link[=read_define_xml]{read_define_xml()}} -- pass
+\code{d$ds_spec} and \code{d$var_spec} directly.
+\item An existing \code{herald_spec} -- returned unchanged by \code{\link[=is_herald_spec]{is_herald_spec()}}
+guards in callers.
+}
+}
+
 \examples{
 dm   <- readRDS(system.file("extdata", "dm.rds",   package = "herald"))
 adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))

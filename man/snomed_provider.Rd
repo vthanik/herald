@@ -16,6 +16,8 @@ containing it (look pattern: \code{sct2_Description_Snapshot-en_*.txt}).}
 A \code{herald_dict_provider} with name \code{"snomed"}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Reads an IHTSDO SNOMED CT RF2 Description Snapshot file and
 returns a \code{herald_dict_provider} with concept-id and term
 membership lookup. SNOMED requires an affiliate licence in many

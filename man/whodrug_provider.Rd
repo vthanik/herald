@@ -20,6 +20,8 @@ future C3 support.}
 A \code{herald_dict_provider} with name \code{"whodrug"}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Reads a UMC WHO-Drug B3 distribution from \code{path} and returns a
 \code{herald_dict_provider} serving drug-name membership checks. Since
 WHO-Drug is licensed, herald never bundles the data.

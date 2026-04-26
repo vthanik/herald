@@ -8,14 +8,60 @@
 #' Validate CDISC clinical data against the conformance rule catalog
 #'
 #' @description
+#' `r lifecycle::badge("stable")`
+#'
 #' The primary entry point for CDISC conformance checking. Runs SDTM-IG,
 #' ADaM-IG, and SEND-IG rules from the compiled catalog against a set of
 #' clinical datasets and returns a `herald_result` carrying every finding,
 #' the full rule catalog snapshot, and dataset metadata.
 #'
 #' Supply datasets as a directory path (XPT or Dataset-JSON files on disk)
-#' or directly as a named list of data frames. For best results, stamp
-#' CDISC attributes first with [apply_spec()].
+#' or directly as a named list of data frames. `validate()` is the only
+#' function you need for a round-trip submission check:
+#'
+#' * Loads the compiled rule catalog (`inst/rules/rules.rds` and
+#'   `inst/rules/spec_rules.rds`) on first call and caches it.
+#' * Resolves rule scope per dataset using the autodetected profile
+#'   (`"sdtm"`, `"adam"`, `"send"`) and any class hints from `spec`.
+#' * Walks each rule's compiled `check_tree` against the relevant
+#'   datasets, recording fired and advisory findings.
+#' * Returns a `herald_result` ready for [report()] and friends.
+#'
+#' For best results, stamp CDISC attributes first with [apply_spec()].
+#'
+#' @details
+#' # Catalog loading and scope
+#'
+#' On entry `validate()` reads the compiled catalog (rules + spec
+#' pre-flight rules), then narrows it by `rules`, `authorities`, and
+#' `standards`. Scope is resolved per (rule, dataset): a rule scoped to
+#' SDTM `EX` only runs against datasets detected as `EX`, and a rule
+#' scoped to an ADaM class (`"BDS"`, `"OCCDS"`) consults the dataset's
+#' detected class (or `spec$ds_spec$class` when `spec` is supplied).
+#'
+#' # Severity-map precedence
+#'
+#' `severity_map` overrides match in this order (first wins): exact
+#' rule-id, regex on rule-id, severity category. A domain-scoped value
+#' (a named list under a rule-id key) is consulted last using the
+#' dataset's class. Findings carry a `severity_override` column when an
+#' override applied.
+#'
+#' # Virtual datasets from Define-XML
+#'
+#' When `define = read_define_xml(...)` is supplied, herald materialises
+#' a small set of "virtual" datasets such as `Define_Dataset_Metadata`,
+#' `Define_Variable_Metadata`, and `Define_Codelist_Metadata` from the
+#' parsed XML and injects them into `datasets`. Define-XML dependent
+#' rules (e.g. CG0019, CG0400) become evaluable; without `define` they
+#' return advisory `NA`.
+#'
+#' # Advisory collapse
+#'
+#' Operators may legitimately return `NA` to mean "I cannot answer".
+#' `validate()` collapses repeated advisory rows into a single advisory
+#' finding per (rule, dataset) so the report is not flooded by missing
+#' references. The unresolved references surface in `result$skipped_refs`.
 #'
 #' @param path Directory path containing `.xpt` or `.json` datasets.
 #'   Mutually exclusive with `files`.

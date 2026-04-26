@@ -25,6 +25,8 @@
 #' MedDRA as a Dictionary Provider
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Reads an MSSO MedDRA ASCII distribution from `path` and returns a
 #' `herald_dict_provider`. Supports membership checks at any level:
 #' `"llt"`, `"pt"`, `"hlt"`, `"hlgt"`, `"soc"`. Since MedDRA is
@@ -272,6 +274,8 @@ meddra_provider <- function(path, version = "unknown") {
 #' WHO-Drug as a Dictionary Provider
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Reads a UMC WHO-Drug B3 distribution from `path` and returns a
 #' `herald_dict_provider` serving drug-name membership checks. Since
 #' WHO-Drug is licensed, herald never bundles the data.
@@ -456,6 +460,8 @@ whodrug_provider <- function(path, version = "unknown", format = "b3") {
 #' LOINC as a Dictionary Provider
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Reads a Regenstrief LOINC CSV distribution (`Loinc.csv`) and
 #' returns a `herald_dict_provider` with membership lookup by
 #' `LOINC_NUM`, `COMPONENT`, `SHORTNAME`, or `LONG_COMMON_NAME`.
@@ -604,6 +610,8 @@ loinc_provider <- function(path, version = "unknown") {
 #' SNOMED CT as a Dictionary Provider
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Reads an IHTSDO SNOMED CT RF2 Description Snapshot file and
 #' returns a `herald_dict_provider` with concept-id and term
 #' membership lookup. SNOMED requires an affiliate licence in many
@@ -758,6 +766,8 @@ snomed_provider <- function(path, version = "unknown") {
 #' Generic in-memory Dictionary Provider
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Wraps any data frame into a `herald_dict_provider`. The sponsor
 #' supplies a (usually small) reference table and the fields (column
 #' names) that rules may query. Useful for site codes, custom RACE

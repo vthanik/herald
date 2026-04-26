@@ -30,6 +30,8 @@ column names in \code{table}. Defaults to every column.}
 A \code{herald_dict_provider}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Wraps any data frame into a \code{herald_dict_provider}. The sponsor
 supplies a (usually small) reference table and the fields (column
 names) that rules may query. Useful for site codes, custom RACE

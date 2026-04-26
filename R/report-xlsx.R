@@ -11,6 +11,8 @@
 #' Write a herald_result as a five-sheet XLSX workbook
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Renders a `herald_result` to an Excel workbook structured for sponsor
 #' review and regulatory submission. The workbook contains five sheets:
 #' \describe{

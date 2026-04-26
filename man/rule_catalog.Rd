@@ -24,9 +24,19 @@ as narrative stubs awaiting predicate implementation.}
 }
 }
 \description{
-Returns every rule shipped with herald (conformance rules from
-\code{inst/rules/rules.rds} plus spec pre-flight rules from
-\code{inst/rules/spec_rules.rds}) as a flat tibble.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Returns every rule shipped with herald as a flat tibble. The catalog
+is the union of two compiled corpora:
+\itemize{
+\item \code{inst/rules/rules.rds} -- CDISC conformance rules
+(SDTM-IG, ADaM-IG, SEND-IG, Define-XML).
+\item \code{inst/rules/spec_rules.rds} -- herald-authored spec pre-flight
+checks that run against a \code{herald_spec} before validation.
+}
+
+Use this to discover available rules, inspect predicate coverage, or
+build a \verb{rules =} filter for \code{\link[=validate]{validate()}}.
 }
 \examples{
 cat <- rule_catalog()

@@ -93,15 +93,61 @@ could not be resolved (missing datasets).}
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 The primary entry point for CDISC conformance checking. Runs SDTM-IG,
 ADaM-IG, and SEND-IG rules from the compiled catalog against a set of
 clinical datasets and returns a \code{herald_result} carrying every finding,
 the full rule catalog snapshot, and dataset metadata.
 
 Supply datasets as a directory path (XPT or Dataset-JSON files on disk)
-or directly as a named list of data frames. For best results, stamp
-CDISC attributes first with \code{\link[=apply_spec]{apply_spec()}}.
+or directly as a named list of data frames. \code{validate()} is the only
+function you need for a round-trip submission check:
+\itemize{
+\item Loads the compiled rule catalog (\code{inst/rules/rules.rds} and
+\code{inst/rules/spec_rules.rds}) on first call and caches it.
+\item Resolves rule scope per dataset using the autodetected profile
+(\code{"sdtm"}, \code{"adam"}, \code{"send"}) and any class hints from \code{spec}.
+\item Walks each rule's compiled \code{check_tree} against the relevant
+datasets, recording fired and advisory findings.
+\item Returns a \code{herald_result} ready for \code{\link[=report]{report()}} and friends.
 }
+
+For best results, stamp CDISC attributes first with \code{\link[=apply_spec]{apply_spec()}}.
+}
+\section{Catalog loading and scope}{
+On entry \code{validate()} reads the compiled catalog (rules + spec
+pre-flight rules), then narrows it by \code{rules}, \code{authorities}, and
+\code{standards}. Scope is resolved per (rule, dataset): a rule scoped to
+SDTM \code{EX} only runs against datasets detected as \code{EX}, and a rule
+scoped to an ADaM class (\code{"BDS"}, \code{"OCCDS"}) consults the dataset's
+detected class (or \code{spec$ds_spec$class} when \code{spec} is supplied).
+}
+
+\section{Severity-map precedence}{
+\code{severity_map} overrides match in this order (first wins): exact
+rule-id, regex on rule-id, severity category. A domain-scoped value
+(a named list under a rule-id key) is consulted last using the
+dataset's class. Findings carry a \code{severity_override} column when an
+override applied.
+}
+
+\section{Virtual datasets from Define-XML}{
+When \code{define = read_define_xml(...)} is supplied, herald materialises
+a small set of "virtual" datasets such as \code{Define_Dataset_Metadata},
+\code{Define_Variable_Metadata}, and \code{Define_Codelist_Metadata} from the
+parsed XML and injects them into \code{datasets}. Define-XML dependent
+rules (e.g. CG0019, CG0400) become evaluable; without \code{define} they
+return advisory \code{NA}.
+}
+
+\section{Advisory collapse}{
+Operators may legitimately return \code{NA} to mean "I cannot answer".
+\code{validate()} collapses repeated advisory rows into a single advisory
+finding per (rule, dataset) so the report is not flooded by missing
+references. The unresolved references surface in \code{result$skipped_refs}.
+}
+
 \examples{
 \donttest{
 dm   <- readRDS(system.file("extdata", "dm.rds",        package = "herald"))

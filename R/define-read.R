@@ -22,10 +22,37 @@
 #' Read a Define-XML 2.1 file
 #'
 #' @description
-#' Parses a Define-XML 2.1 file and returns a \code{herald_define} object
-#' carrying datasets, variables, codelists, methods, comments, ARM metadata,
-#' sponsor-defined key variables, and the LOINC dictionary version declared
-#' in `MetaDataVersion`. Requires the \code{xml2} package.
+#' `r lifecycle::badge("stable")`
+#'
+#' Parses a Define-XML 2.1 file and returns a `herald_define` object
+#' carrying datasets, variables, codelists, methods, comments, ARM
+#' metadata, sponsor-defined key variables, and the LOINC dictionary
+#' version declared in `MetaDataVersion`. Requires the `xml2` package.
+#'
+#' @details
+#' # Element coverage
+#'
+#' herald round-trips the following Define-XML 2.1 elements through
+#' `read_define_xml()` -> [herald_spec()] -> [write_define_xml()]:
+#'
+#' * `ODM` / `Study` / `MetaDataVersion` -- study slot, including
+#'   `StudyName`, `ProtocolName`, and `def:Standards`.
+#' * `ItemGroupDef` / `def:Class` -- per-dataset metadata into
+#'   `ds_spec`, including SDTM domain, ADaM class, repeating flag,
+#'   purpose, key variables.
+#' * `ItemDef` / `ItemRef` -- per-variable metadata into `var_spec`,
+#'   including type, length, label, ordering, mandatory flag, codelist
+#'   ref, method ref.
+#' * `def:ValueListDef` / value-level conditions -- value-level slot.
+#' * `CodeList` / `EnumeratedItem` / `def:CodeListItem` -- codelist
+#'   slot with coded/decoded pairs and extended values.
+#' * `MethodDef`, `def:CommentDef`, `def:leaf` -- methods, comments,
+#'   document slots.
+#' * `arm:AnalysisDisplay` / `arm:AnalysisResult` -- ARM displays and
+#'   results slots when present.
+#'
+#' Elements outside this set are not promoted to the in-memory object
+#' but are preserved verbatim where possible by [write_define_xml()].
 #'
 #' @param path Path to the Define-XML file.
 #' @param call Caller environment for error reporting.

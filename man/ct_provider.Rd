@@ -18,11 +18,28 @@ A \code{herald_dict_provider} with provider name
 \code{paste0("ct-", package)}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Returns a \code{herald_dict_provider} that serves the bundled (or
 user-cached) CDISC CT. Rule ops that need to check codelist
 membership look up this provider under the name \code{"ct-sdtm"} or
 \code{"ct-adam"}.
 }
+\section{Provider protocol}{
+\code{contains(value, field, ignore_case)} interprets \code{field} as the
+codelist short name (e.g. \code{"NY"}, \code{"ARMNULRS"}), the NCI C-code, or
+the long human-readable codelist name -- the same dispatch order as
+\code{.lookup_codelist()} used by SDTM ops. Returns \code{NA} when \code{field} is
+missing or unknown so missing-codelist conditions surface as
+advisory findings, not errors.
+}
+
+\section{Caching}{
+The bundled CT is loaded once via \code{\link[=load_ct]{load_ct()}} and held in the
+provider closure for the lifetime of the object. Cache hits from a
+prior \code{download_ct()} are addressable through \verb{version =}.
+}
+
 \examples{
 # Bundled SDTM CT (always available, no network)
 p <- ct_provider("sdtm")

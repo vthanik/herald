@@ -20,10 +20,19 @@ write_report_html(x, path, title = NULL, ...)
 \code{path} invisibly.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Renders a \code{herald_result} to a single-file, archival-quality HTML
-document. All CSS, JavaScript, and data are embedded inline -- the file
-is suitable for submission packages, inspection, and long-term
-archiving without external dependencies.
+document. All CSS, JavaScript, and data are embedded inline -- the
+file is suitable for submission packages, inspection, and long-term
+archiving without external dependencies. The report includes:
+\itemize{
+\item Header banner with run metadata and finding totals.
+\item Per-dataset summary table.
+\item Sortable findings table with rule-id deep links to the source
+document (CDISC Library / Define-XML / SDTM IG).
+\item Applied rules table with per-rule fired and advisory counts.
+}
 }
 \examples{
 ae  <- data.frame(STUDYID = "X", USUBJID = "X-001", stringsAsFactors = FALSE)

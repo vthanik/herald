@@ -25,6 +25,7 @@ Imports:
     cli,
     digest,
     jsonlite,
+    lifecycle,
     openxlsx2,
     rlang,
     S7,

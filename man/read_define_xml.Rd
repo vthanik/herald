@@ -15,11 +15,38 @@ read_define_xml(path, call = rlang::caller_env())
 A \code{herald_define} S3 object (inherits from \code{list}).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Parses a Define-XML 2.1 file and returns a \code{herald_define} object
-carrying datasets, variables, codelists, methods, comments, ARM metadata,
-sponsor-defined key variables, and the LOINC dictionary version declared
-in \code{MetaDataVersion}. Requires the \code{xml2} package.
+carrying datasets, variables, codelists, methods, comments, ARM
+metadata, sponsor-defined key variables, and the LOINC dictionary
+version declared in \code{MetaDataVersion}. Requires the \code{xml2} package.
 }
+\section{Element coverage}{
+herald round-trips the following Define-XML 2.1 elements through
+\code{read_define_xml()} -> \code{\link[=herald_spec]{herald_spec()}} -> \code{\link[=write_define_xml]{write_define_xml()}}:
+\itemize{
+\item \code{ODM} / \code{Study} / \code{MetaDataVersion} -- study slot, including
+\code{StudyName}, \code{ProtocolName}, and \code{def:Standards}.
+\item \code{ItemGroupDef} / \code{def:Class} -- per-dataset metadata into
+\code{ds_spec}, including SDTM domain, ADaM class, repeating flag,
+purpose, key variables.
+\item \code{ItemDef} / \code{ItemRef} -- per-variable metadata into \code{var_spec},
+including type, length, label, ordering, mandatory flag, codelist
+ref, method ref.
+\item \code{def:ValueListDef} / value-level conditions -- value-level slot.
+\item \code{CodeList} / \code{EnumeratedItem} / \code{def:CodeListItem} -- codelist
+slot with coded/decoded pairs and extended values.
+\item \code{MethodDef}, \code{def:CommentDef}, \code{def:leaf} -- methods, comments,
+document slots.
+\item \code{arm:AnalysisDisplay} / \code{arm:AnalysisResult} -- ARM displays and
+results slots when present.
+}
+
+Elements outside this set are not promoted to the in-memory object
+but are preserved verbatim where possible by \code{\link[=write_define_xml]{write_define_xml()}}.
+}
+
 \examples{
 tmp <- tempfile(fileext = ".xml")
 on.exit(unlink(tmp))

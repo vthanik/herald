@@ -28,8 +28,13 @@ A data frame for single-member files (with \code{attr(df, "label")},
 or a named list of data frames for multi-member files.
 }
 \description{
-Reads V5 (FDA standard) or V8 (extended) XPT transport files into R data
-frames. Pure R implementation  --  no SAS or haven dependency.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Reads V5 (FDA standard) or V8 (extended) XPT transport files into R
+data frames. Pure R implementation -- no SAS, no haven, no Java
+dependency. Preserves dataset and variable labels, SAS formats,
+SAS lengths, and missing-value semantics so the result round-trips
+through \code{\link[=write_xpt]{write_xpt()}} without metadata loss.
 }
 \details{
 \subsection{Date/datetime conversion}{

@@ -17,9 +17,18 @@ register_dictionary(name, provider)
 \code{invisible(provider)}.
 }
 \description{
-After this call every subsequent \code{validate()} picks up \code{provider}
-automatically under \code{name} unless explicitly overridden by the
-\verb{dictionaries=} argument.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Adds \code{provider} to the session-level dictionary registry under
+\code{name}. After this call every subsequent \code{\link[=validate]{validate()}} picks up the
+provider automatically unless explicitly overridden by the
+\verb{dictionaries =} argument:
+\itemize{
+\item Sponsors install a MedDRA / WHO-Drug provider once at the top of
+a pipeline; downstream \code{validate()} calls inherit it.
+\item The same registry powers \code{\link[=list_dictionaries]{list_dictionaries()}} for reporting.
+\item Use \code{\link[=unregister_dictionary]{unregister_dictionary()}} to remove an entry.
+}
 }
 \examples{
 # Register bundled SDTM CT and inspect the registry
