@@ -6,16 +6,111 @@
 \alias{herald-package}
 \title{herald: CDISC Conformance Validation for Clinical Trial Submissions}
 \description{
-Pure-R conformance validation for CDISC clinical data submissions.
-Reads SDTM and ADaM datasets from XPT, Dataset-JSON, and Parquet files,
-then checks them against published CDISC Library conformance rules,
-controlled terminology, and Define-XML 2.1 specifications. Produces
-findings reports (HTML, XLSX, JSON) with rule-level provenance linked to
-CDISC source. Includes a Define-XML 2.1 authoring object supporting full
-read-edit-write roundtrip with semantic preservation. Integrates with
-reproducible pipeline tooling ('renv', 'targets') and CI workflows.
-Pure-R and 'CRAN'-installable -- no Java runtime required.
+herald is a pure-R conformance validator for CDISC clinical trial
+submissions. It is built for sponsor statistical programmers, data
+standards leads, and regulatory submission teams preparing data
+packages for the FDA, PMDA, and EMA who want a reproducible,
+scriptable alternative to Java-based validators. herald reads SDTM
+and ADaM datasets from XPT, Dataset-JSON, and Parquet, applies a
+Define-XML 2.1 specification, and runs the published CDISC Library
+rule corpus against the data -- with no JVM, no external service,
+and full provenance back to the CDISC source for every finding.
 }
+\section{Workflow}{
+
+herald is organized as a seven-layer stack. Each layer has a small,
+stable surface; downstream layers consume the output of upstream
+layers without reaching across.
+
+\preformatted{
+ 6  write_report_html() / xlsx / json     reporting
+ 5  validate(files = ..., rules = ...)    conformance engine
+ 4  rule corpus (YAML -> rules.rds)       rule catalog
+ 3  Dictionary Provider Protocol          CT / SRS / MedDRA / user
+ 2  apply_spec(datasets, spec)            pre-validation attr stamp
+ 1  as_herald_spec() / ds_spec + var_spec specification object
+ 0  read_xpt / read_json / read_define_xml dataset + spec ingest
+}
+
+Key entry points by layer:
+\itemize{
+\item L0 ingest: \code{\link[=read_xpt]{read_xpt()}}, \code{\link[=read_json]{read_json()}}, \code{\link[=read_parquet]{read_parquet()}},
+\code{\link[=read_define_xml]{read_define_xml()}}
+\item L1 spec: \code{\link[=as_herald_spec]{as_herald_spec()}}, \code{\link[=herald_spec]{herald_spec()}}, \code{\link[=validate_spec]{validate_spec()}}
+\item L2 stamp: \code{\link[=apply_spec]{apply_spec()}}
+\item L3 dictionaries: \code{\link[=ct_provider]{ct_provider()}}, \code{\link[=register_dictionary]{register_dictionary()}},
+\code{\link[=unregister_dictionary]{unregister_dictionary()}}
+\item L4 catalog: \code{\link[=rule_catalog]{rule_catalog()}}, \code{\link[=supported_standards]{supported_standards()}}
+\item L5 engine: \code{\link[=validate]{validate()}}
+\item L6 report: \code{\link[=report]{report()}}, \code{\link[=write_report_html]{write_report_html()}},
+\code{\link[=write_report_xlsx]{write_report_xlsx()}}, \code{\link[=write_report_json]{write_report_json()}}
+}
+
+See \code{vignette("architecture", package = "herald")} for the full
+design rationale.
+}
+
+\section{Articles}{
+
+Documentation is grouped by audience. Start with "Getting started"
+for a five-minute tour, then move to the cookbook for task recipes
+or to the internals for design background.
+
+\strong{Getting started}
+\itemize{
+\item \code{vignette("herald", package = "herald")} -- five-minute tour of
+the core workflow.
+\item \code{vignette("validation-reporting", package = "herald")} -- running
+\code{\link[=validate]{validate()}} and rendering reports.
+}
+
+\strong{Cookbook and guides}
+\itemize{
+\item \code{vignette("cookbook", package = "herald")} -- task-oriented
+recipes (rule filtering, severity overrides, domain-scoped runs,
+batch validation).
+\item \code{vignette("extending-herald", package = "herald")} -- author your
+own ops, rules, and dictionary providers.
+\item \code{vignette("migrating-from-p21", package = "herald")} -- a
+side-by-side guide for teams switching from Pinnacle 21.
+\item \code{vignette("faq", package = "herald")} -- common questions and
+gotchas.
+\item \code{vignette("op-catalog", package = "herald")} -- searchable index
+of every operator in the rule engine.
+\item \code{vignette("data-io", package = "herald")} -- reading and writing
+XPT, Dataset-JSON, and Parquet.
+\item \code{vignette("define-xml", package = "herald")} -- Define-XML 2.1
+read-edit-write roundtrip.
+\item \code{vignette("dictionaries", package = "herald")} -- controlled
+terminology, SRS, MedDRA, and custom providers.
+\item \code{vignette("rule-coverage", package = "herald")} -- which CDISC
+rules are implemented today.
+\item \code{vignette("best-practices", package = "herald")} -- recommended
+patterns for production submissions.
+}
+
+\strong{Internals}
+\itemize{
+\item \code{vignette("architecture", package = "herald")} -- the layer stack
+and design decisions.
+}
+}
+
+\section{Lifecycle}{
+
+herald is pre-CRAN and currently
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}. The public API may change
+without deprecation cycles until the first CRAN release. See
+\code{news(package = "herald")} for the changelog.
+}
+
+\section{Author}{
+
+Maintainer and contributor information is auto-generated from
+\code{DESCRIPTION}; see the package citation via
+\code{citation("herald")}.
+}
+
 \seealso{
 Useful links:
 \itemize{
