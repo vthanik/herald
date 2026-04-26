@@ -211,3 +211,4 @@ articles:
     navbar: Internals
     contents:
       - architecture
+      - articles/op-catalog
