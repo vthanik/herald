@@ -143,3 +143,179 @@ test_that("plain dotted strings that don't match the pattern are not resolved", 
   expect_null(resolve_ref("v2.0", ctx))
   expect_null(resolve_ref("foo.bar", ctx))
 })
+
+# -- resolve_ref edge cases ---------------------------------------------------
+
+test_that("resolve_ref returns NULL for non-character token", {
+  ctx <- mk_ctx(list(DM = data.frame(USUBJID = "S1", stringsAsFactors = FALSE)))
+  expect_null(herald:::resolve_ref(123L, ctx))
+  expect_null(herald:::resolve_ref(NULL, ctx))
+})
+
+test_that("resolve_ref returns NULL for length > 1 character vector", {
+  ctx <- mk_ctx(list(DM = data.frame(USUBJID = "S1", stringsAsFactors = FALSE)))
+  expect_null(herald:::resolve_ref(c("$dm_usubjid", "$ta_armcd"), ctx))
+})
+
+test_that("resolve_ref uses op_results when available", {
+  ctx <- mk_ctx(list(DM = data.frame(USUBJID = "S1", stringsAsFactors = FALSE)))
+  ctx$op_results[["$computed_vals"]] <- c("V1", "V2")
+  result <- herald:::resolve_ref("$computed_vals", ctx)
+  expect_setequal(result, c("V1", "V2"))
+})
+
+test_that("resolve_ref resolves op_results via lowercased key", {
+  ctx <- mk_ctx(list(DM = data.frame(USUBJID = "S1", stringsAsFactors = FALSE)))
+  ctx$op_results[["$COMPUTED"]] <- list("A", "B")
+  result <- herald:::resolve_ref("$COMPUTED", ctx)
+  expect_setequal(result, c("A", "B"))
+})
+
+test_that("resolve_ref returns NULL when crossrefs registry is NULL", {
+  ctx <- mk_ctx(list())
+  ctx$crossrefs <- NULL
+  expect_null(herald:::resolve_ref("$dm_usubjid", ctx))
+})
+
+test_that("resolve_ref resolves function entries dynamically", {
+  dm <- data.frame(USUBJID = "S1", stringsAsFactors = FALSE)
+  attr(dm, "label") <- "Demographics"
+  ctx <- mk_ctx(list(DM = dm), current = "DM")
+  # $domain_label is a function entry in crossrefs
+  result <- herald:::resolve_ref("$domain_label", ctx)
+  expect_equal(result, "Demographics")
+})
+
+# -- build_crossrefs with spec ------------------------------------------------
+
+test_that("build_crossrefs with empty datasets returns domain_label function", {
+  cr <- herald:::build_crossrefs(list())
+  expect_true(is.function(cr[["$domain_label"]]))
+})
+
+test_that("build_crossrefs skips non-data-frame entries", {
+  datasets <- list(DM = data.frame(USUBJID = "S1"), BAD = "not a data frame")
+  cr <- herald:::build_crossrefs(datasets)
+  # DM should be indexed, BAD should not create a token
+  expect_false(is.null(cr[["$dm_usubjid"]]))
+  expect_null(cr[["$bad_usubjid"]])
+})
+
+test_that("build_crossrefs creates armcd_list alias for TA.ARMCD", {
+  ta <- data.frame(ARMCD = c("A", "B"), stringsAsFactors = FALSE)
+  cr <- herald:::build_crossrefs(list(TA = ta))
+  expect_setequal(cr[["$armcd_list"]], c("A", "B"))
+})
+
+test_that("build_crossrefs creates usubjids_in_<dom> alias for USUBJID cols", {
+  ex <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  cr <- herald:::build_crossrefs(list(EX = ex))
+  expect_setequal(cr[["$usubjids_in_ex"]], c("S1", "S2"))
+})
+
+# -- .spec_cols ---------------------------------------------------------------
+
+test_that(".spec_cols returns required variables from spec var_spec", {
+  var_spec <- data.frame(
+    dataset = c("DM", "DM", "AE"),
+    variable = c("USUBJID", "AGE", "AETERM"),
+    required = c(TRUE, FALSE, TRUE),
+    stringsAsFactors = FALSE
+  )
+  spec <- structure(
+    list(var_spec = var_spec),
+    class = c("herald_spec", "list")
+  )
+  result <- herald:::.spec_cols(spec, "DM", c("required", "Required"))
+  expect_equal(result, "USUBJID")
+})
+
+test_that(".spec_cols returns empty when no matching dataset", {
+  var_spec <- data.frame(
+    dataset = "DM",
+    variable = "USUBJID",
+    required = TRUE,
+    stringsAsFactors = FALSE
+  )
+  spec <- structure(
+    list(var_spec = var_spec),
+    class = c("herald_spec", "list")
+  )
+  result <- herald:::.spec_cols(spec, "AE", c("required"))
+  expect_equal(result, character(0))
+})
+
+test_that(".spec_cols returns empty when var_spec is not a data frame", {
+  spec <- structure(list(var_spec = NULL), class = c("herald_spec", "list"))
+  expect_equal(herald:::.spec_cols(spec, "DM", "required"), character(0))
+})
+
+test_that(".spec_cols handles string-truthy flag columns", {
+  var_spec <- data.frame(
+    dataset = c("DM", "DM"),
+    variable = c("USUBJID", "AGE"),
+    required = c("Y", "N"),
+    stringsAsFactors = FALSE
+  )
+  spec <- structure(
+    list(var_spec = var_spec),
+    class = c("herald_spec", "list")
+  )
+  result <- herald:::.spec_cols(spec, "DM", c("required"))
+  expect_equal(result, "USUBJID")
+})
+
+test_that(".spec_cols returns empty when flag column is absent", {
+  var_spec <- data.frame(
+    dataset = "DM",
+    variable = "USUBJID",
+    stringsAsFactors = FALSE
+  )
+  spec <- structure(
+    list(var_spec = var_spec),
+    class = c("herald_spec", "list")
+  )
+  result <- herald:::.spec_cols(spec, "DM", c("required"))
+  expect_equal(result, character(0))
+})
+
+# -- build_crossrefs with spec-driven refs ------------------------------------
+
+test_that("build_crossrefs registers required_variables closure when spec has ds_spec", {
+  var_spec <- data.frame(
+    dataset = "DM",
+    variable = "USUBJID",
+    required = TRUE,
+    stringsAsFactors = FALSE
+  )
+  ds_spec <- data.frame(dataset = "DM", stringsAsFactors = FALSE)
+  spec <- structure(
+    list(ds_spec = ds_spec, var_spec = var_spec),
+    class = c("herald_spec", "list")
+  )
+  cr <- herald:::build_crossrefs(list(), spec = spec)
+  expect_true(is.function(cr[["$required_variables"]]))
+  expect_true(is.function(cr[["$allowed_variables"]]))
+})
+
+# -- substitute_crossrefs edge cases ------------------------------------------
+
+test_that("substitute_crossrefs handles empty args list", {
+  ctx <- mk_ctx(list())
+  out <- herald:::substitute_crossrefs(list(), ctx)
+  expect_false(out$unresolved)
+  expect_equal(out$args, list())
+})
+
+test_that("substitute_crossrefs skips non-character arg values", {
+  ctx <- mk_ctx(list())
+  out <- herald:::substitute_crossrefs(list(n = 5L, flag = TRUE), ctx)
+  expect_false(out$unresolved)
+})
+
+test_that("substitute_crossrefs skips args with no $ or dotted refs", {
+  ctx <- mk_ctx(list())
+  out <- herald:::substitute_crossrefs(list(name = "USUBJID", value = "S1-001"), ctx)
+  expect_false(out$unresolved)
+  expect_equal(out$args$value, "S1-001")
+})
