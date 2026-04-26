@@ -207,6 +207,14 @@ articles:
       - dictionaries
       - best-practices
 
+  - title: "Cookbook"
+    navbar: Cookbook
+    contents:
+      - articles/cookbook
+      - articles/extending-herald
+      - articles/migrating-from-p21
+      - articles/faq
+
   - title: "Internals"
     navbar: Internals
     contents:
