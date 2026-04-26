@@ -49,3 +49,11 @@ table(cat$severity)
 cat[cat$rule_id == "CG0006", ]
 
 }
+\seealso{
+\code{\link[=validate]{validate()}}, \code{\link[=supported_standards]{supported_standards()}}
+
+Other validate: 
+\code{\link{supported_standards}()},
+\code{\link{validate}()}
+}
+\concept{validate}

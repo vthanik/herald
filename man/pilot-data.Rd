@@ -3,39 +3,64 @@
 \name{pilot-data}
 \alias{pilot-data}
 \title{CDISC Pilot 03 example data and specs (bundled)}
+\source{
+phuse-scripts CDISC Pilot 03 (SDTM/ADaM, public domain).
+Specs built from the full pilot \code{define.xml} via \code{\link[=read_define_xml]{read_define_xml()}} +
+\code{\link[=as_herald_spec]{as_herald_spec()}}.
+}
 \description{
 Attribute-stripped, 50-subject subset of CDISC SDTM/ADaM Pilot 03
-shipped with herald for use in examples and tests. Subjects are drawn
-from the ADSL ITT population (254 subjects) and the same 50 USUBJIDs
-are applied to all four datasets. DM is filtered to those 50 USUBJIDs
-(screen failures excluded). ADAE may contain fewer than 50 distinct
-subjects because not every sampled subject had an adverse event.
+shipped with herald for use in examples, tests, and vignettes. All four
+datasets share the same 50 USUBJIDs (drawn from the ADSL ITT population).
+DM is filtered to those 50 subjects (screen failures excluded). ADAE may
+contain fewer than 50 distinct subjects because not every sampled subject
+had an adverse event.
 }
 \details{
-Source: phuse-scripts CDISC Pilot 03 (SDTM/ADaM).
-Specs are built from the full pilot define.xml (not the 50-subject
-subset) via \code{\link[=read_define_xml]{read_define_xml()}} + \code{\link[=as_herald_spec]{as_herald_spec()}}.
-}
-\section{Files in \verb{inst/extdata/}}{
+\subsection{Lazy-loaded datasets (recommended)}{
 
+These objects are available directly after \code{library(herald)}:\tabular{llll}{
+   Object \tab Domain / type \tab Rows \tab Description \cr
+   \link{dm} \tab SDTM DM \tab 50 \tab Demographics \cr
+   \link{adsl} \tab ADaM ADSL \tab 50 \tab Subject-level analysis \cr
+   \link{adae} \tab ADaM ADAE \tab 254 \tab Adverse events \cr
+   \link{advs} \tab ADaM ADVS \tab 6 138 \tab Vital signs \cr
+   \link{sdtm_spec} \tab \code{herald_spec} \tab -- \tab SDTM variable metadata \cr
+   \link{adam_spec} \tab \code{herald_spec} \tab -- \tab ADaM variable metadata \cr
+}
+
+}
+
+\subsection{Raw RDS files (backwards compat)}{
+
+The same data is also available via \verb{inst/extdata/} for scripts written
+before lazy loading was added:
 \itemize{
-\item \code{dm.rds} -- SDTM DM, 50 rows, bare \code{data.frame}
-\item \code{adsl.rds} -- ADaM ADSL, 50 rows, bare \code{data.frame}
-\item \code{advs.rds} -- ADaM ADVS, ~6 300 rows, bare \code{data.frame}
-\item \code{adae.rds} -- ADaM ADAE, variable rows (<= 50 subjects), bare \code{data.frame}
-\item \code{sdtm-spec.rds} -- \code{herald_spec} derived from SDTM define.xml
-\item \code{adam-spec.rds} -- \code{herald_spec} derived from ADaM define.xml
+\item \code{dm.rds}, \code{adsl.rds}, \code{advs.rds}, \code{adae.rds}
+\item \code{sdtm-spec.rds}, \code{adam-spec.rds}
 }
 }
-
+}
 \examples{
-dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
-spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
-dm   <- apply_spec(dm, spec)
-attr(dm$USUBJID, "label")  # stamped from define.xml
+# Lazy-loaded -- available immediately after library(herald)
+nrow(dm)
+is_herald_spec(sdtm_spec)
 
-adsl  <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
-aspec <- readRDS(system.file("extdata", "adam-spec.rds", package = "herald"))
-adsl  <- apply_spec(adsl, aspec)
-attr(adsl$USUBJID, "label")
+dm_stamped <- apply_spec(dm, sdtm_spec)
+attr(dm_stamped$USUBJID, "label")  # stamped from define.xml
+
+# Legacy inst/extdata approach (still works)
+dm2 <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
 }
+\seealso{
+\link{dm}, \link{adsl}, \link{adae}, \link{advs}, \link{sdtm_spec}, \link{adam_spec}
+
+Other pilot-data: 
+\code{\link{adae}},
+\code{\link{adam_spec}},
+\code{\link{adsl}},
+\code{\link{advs}},
+\code{\link{dm}},
+\code{\link{sdtm_spec}}
+}
+\concept{pilot-data}

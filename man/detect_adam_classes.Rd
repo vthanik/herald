@@ -49,7 +49,7 @@ detect_adam_classes(spec)
 
 }
 \seealso{
-Other specification: 
+Other adam: 
 \code{\link{detect_adam_class}()}
 }
-\concept{specification}
+\concept{adam}

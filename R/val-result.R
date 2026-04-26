@@ -82,6 +82,7 @@ readiness_state <- function(r) {
 #' @param x A `herald_result` object.
 #' @param ... Ignored.
 #' @return `x` invisibly.
+#' @family methods
 #' @export
 print.herald_result <- function(x, ...) {
   state <- readiness_state(x)
@@ -139,6 +140,7 @@ print.herald_result <- function(x, ...) {
 #' @return A named list with `state`, `rules_applied`, `rules_total`,
 #'   `datasets_checked`, `n_findings_fired`, `n_findings_advisory`,
 #'   `severity_counts`, `duration`, and `timestamp`.
+#' @family methods
 #' @export
 summary.herald_result <- function(object, ...) {
   list(

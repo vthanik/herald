@@ -38,35 +38,32 @@ S3 methods for \code{$}, \verb{$<-}, \code{[[}, and \code{print} on \code{herald
 \code{report_paths}) in addition to the raw S7 properties.
 }
 \examples{
-# Requires a real submission directory produced by submit()
-if (interactive()) {
-  sub <- submit("/path/to/sdtm", spec = my_spec)
+\dontrun{
+# `sub` is a herald_submission produced by an internal builder.
+# Once obtained, use `$` to read raw S7 properties or derived views:
 
-  # $ accessor -- raw S7 properties
-  sub$output_dir
-  sub$herald_version
-  sub$timestamp
+sub$output_dir       # raw S7 property
+sub$herald_version
+sub$timestamp
 
-  # $ accessor -- derived file-type views
-  sub$xpt_files        # character vector of XPT paths
-  sub$json_files       # character vector of JSON dataset paths
-  sub$define_path      # single path or NULL
-  sub$report_paths     # HTML / XLSX report paths
+sub$xpt_files        # derived: character vector of XPT paths
+sub$json_files       # derived: character vector of JSON paths
+sub$define_path      # derived: single path or NULL
+sub$report_paths     # derived: HTML / XLSX report paths
 
-  # [[ works the same as $
-  sub[["xpt_files"]]
+sub[["xpt_files"]]   # `[[` works identically to `$`
 
-  # Raw files table (path, type, size columns)
-  sub$files
-  sub$files[sub$files$type == "xpt", ]
-
-  # Print summary
-  print(sub)
-
-  # Validation summary (if validate = TRUE was used in submit())
-  sub$validation$summary
-  sub$validation$findings[sub$validation$findings$status == "fired", ]
+sub$files            # raw files table: path, type, size
 }
 
 }
+\seealso{
+Other methods: 
+\code{\link{print.herald_define}()},
+\code{\link{print.herald_dict_provider}()},
+\code{\link{print.herald_result}()},
+\code{\link{print.herald_spec}()},
+\code{\link{summary.herald_result}()}
+}
+\concept{methods}
 \keyword{internal}

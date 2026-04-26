@@ -22,6 +22,8 @@
 #'       compiled for this rule; `FALSE` for rules that are authored
 #'       as narrative stubs awaiting predicate implementation.}
 #'   }
+#' @family validate
+#' @seealso [validate()], [supported_standards()]
 #' @export
 #' @examples
 #' cat <- rule_catalog()
@@ -82,6 +84,8 @@ rule_catalog <- function() {
 #'       compiled.}
 #'     \item{herald_version}{Package version at compile time.}
 #'   }
+#' @family validate
+#' @seealso [validate()], [rule_catalog()]
 #' @export
 #' @examples
 #' stds <- supported_standards()

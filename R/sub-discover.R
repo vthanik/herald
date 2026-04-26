@@ -282,7 +282,7 @@ detect_standard <- function(names) {
 #' # ---- Unknown when no identifying variables are present ---------------
 #' detect_adam_class(c("X", "Y", "Z"))  # "unknown"
 #'
-#' @family specification
+#' @family adam
 #' @export
 detect_adam_class <- function(vars) {
   vars <- toupper(vars)
@@ -358,7 +358,7 @@ detect_adam_class <- function(vars) {
 #' )
 #' detect_adam_classes(spec)
 #'
-#' @family specification
+#' @family adam
 #' @export
 detect_adam_classes <- function(..., call = rlang::caller_env()) {
   .exprs <- rlang::enexprs(...)

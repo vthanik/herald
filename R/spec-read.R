@@ -280,6 +280,7 @@ is_herald_spec <- function(x) inherits(x, "herald_spec")
 #' @param x A `herald_spec` object.
 #' @param ... Ignored.
 #' @return `x` invisibly.
+#' @family methods
 #' @export
 print.herald_spec <- function(x, ...) {
   n_ds <- if (is.data.frame(x$ds_spec)) nrow(x$ds_spec) else 0L

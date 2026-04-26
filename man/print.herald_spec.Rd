@@ -17,3 +17,12 @@
 \description{
 Print a herald_spec
 }
+\seealso{
+Other methods: 
+\code{\link{herald_submission-methods}},
+\code{\link{print.herald_define}()},
+\code{\link{print.herald_dict_provider}()},
+\code{\link{print.herald_result}()},
+\code{\link{summary.herald_result}()}
+}
+\concept{methods}

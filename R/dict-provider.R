@@ -301,6 +301,7 @@ new_dict_provider <- function(
 #' @param x A `herald_dict_provider` object.
 #' @param ... Ignored.
 #' @return `x` invisibly.
+#' @family methods
 #' @export
 print.herald_dict_provider <- function(x, ...) {
   i <- tryCatch(x$info(), error = function(e) list())

@@ -65,7 +65,7 @@ detect_adam_class(c("X", "Y", "Z"))  # "unknown"
 
 }
 \seealso{
-Other specification: 
+Other adam: 
 \code{\link{detect_adam_classes}()}
 }
-\concept{specification}
+\concept{adam}

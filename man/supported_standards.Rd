@@ -42,3 +42,11 @@ attr(stds, "compiled_at")
 attr(stds, "herald_version")
 
 }
+\seealso{
+\code{\link[=validate]{validate()}}, \code{\link[=rule_catalog]{rule_catalog()}}
+
+Other validate: 
+\code{\link{rule_catalog}()},
+\code{\link{validate}()}
+}
+\concept{validate}

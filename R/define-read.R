@@ -173,6 +173,7 @@ read_define_xml <- function(path, call = rlang::caller_env()) {
 #' @param x A `herald_define` object.
 #' @param ... Ignored.
 #' @return `x` invisibly.
+#' @family methods
 #' @export
 print.herald_define <- function(x, ...) {
   n_ds <- if (is.data.frame(x$ds_spec)) nrow(x$ds_spec) else 0L

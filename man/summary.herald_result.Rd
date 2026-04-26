@@ -19,3 +19,12 @@ A named list with \code{state}, \code{rules_applied}, \code{rules_total},
 \description{
 Summarise a herald_result
 }
+\seealso{
+Other methods: 
+\code{\link{herald_submission-methods}},
+\code{\link{print.herald_define}()},
+\code{\link{print.herald_dict_provider}()},
+\code{\link{print.herald_result}()},
+\code{\link{print.herald_spec}()}
+}
+\concept{methods}

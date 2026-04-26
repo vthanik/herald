@@ -127,5 +127,9 @@ r2$profile   # "sdtm", "adam", or "send"
 \code{\link[=apply_spec]{apply_spec()}} to stamp CDISC attributes before validation,
 \code{\link[=write_report_html]{write_report_html()}} / \code{\link[=write_report_xlsx]{write_report_xlsx()}} to render results,
 \code{\link[=rule_catalog]{rule_catalog()}} to browse the available rules.
+
+Other validate: 
+\code{\link{rule_catalog}()},
+\code{\link{supported_standards}()}
 }
 \concept{validate}

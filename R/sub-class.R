@@ -108,37 +108,26 @@ new_herald_submission <- function(
 #'   `print` returns `x` invisibly.
 #'
 #' @examples
-#' # Requires a real submission directory produced by submit()
-#' if (interactive()) {
-#'   sub <- submit("/path/to/sdtm", spec = my_spec)
+#' \dontrun{
+#' # `sub` is a herald_submission produced by an internal builder.
+#' # Once obtained, use `$` to read raw S7 properties or derived views:
 #'
-#'   # $ accessor -- raw S7 properties
-#'   sub$output_dir
-#'   sub$herald_version
-#'   sub$timestamp
+#' sub$output_dir       # raw S7 property
+#' sub$herald_version
+#' sub$timestamp
 #'
-#'   # $ accessor -- derived file-type views
-#'   sub$xpt_files        # character vector of XPT paths
-#'   sub$json_files       # character vector of JSON dataset paths
-#'   sub$define_path      # single path or NULL
-#'   sub$report_paths     # HTML / XLSX report paths
+#' sub$xpt_files        # derived: character vector of XPT paths
+#' sub$json_files       # derived: character vector of JSON paths
+#' sub$define_path      # derived: single path or NULL
+#' sub$report_paths     # derived: HTML / XLSX report paths
 #'
-#'   # [[ works the same as $
-#'   sub[["xpt_files"]]
+#' sub[["xpt_files"]]   # `[[` works identically to `$`
 #'
-#'   # Raw files table (path, type, size columns)
-#'   sub$files
-#'   sub$files[sub$files$type == "xpt", ]
-#'
-#'   # Print summary
-#'   print(sub)
-#'
-#'   # Validation summary (if validate = TRUE was used in submit())
-#'   sub$validation$summary
-#'   sub$validation$findings[sub$validation$findings$status == "fired", ]
+#' sub$files            # raw files table: path, type, size
 #' }
 #'
 #' @name herald_submission-methods
+#' @family methods
 #' @keywords internal
 #' @export
 `$.herald_submission` <- function(x, name) {
