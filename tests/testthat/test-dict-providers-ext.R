@@ -341,3 +341,250 @@ test_that("custom_provider defaults fields to all columns", {
   p <- custom_provider(tbl, name = "c")
   expect_setequal(p$fields, c("a", "b"))
 })
+
+test_that("custom_provider contains() with ignore_case=TRUE", {
+  df <- data.frame(TERM = c("Y", "N"), stringsAsFactors = FALSE)
+  p <- custom_provider(df, name = "test", fields = "TERM")
+  expect_equal(p$contains(c("Y", "X"), field = "TERM"), c(TRUE, FALSE))
+  expect_equal(
+    p$contains(c("y", "n"), field = "TERM", ignore_case = TRUE),
+    c(TRUE, TRUE)
+  )
+})
+
+test_that("custom_provider contains() returns NA for unknown field", {
+  df <- data.frame(x = "A", stringsAsFactors = FALSE)
+  p <- custom_provider(df, name = "x", fields = "x")
+  result <- p$contains("A", field = "not_a_field")
+  expect_true(is.na(result))
+})
+
+test_that("custom_provider lookup() returns NULL for no-match", {
+  df <- data.frame(x = c("A", "B"), stringsAsFactors = FALSE)
+  p <- custom_provider(df, name = "x", fields = "x")
+  expect_null(p$lookup("Z", field = "x"))
+})
+
+test_that("custom_provider lookup() returns NULL for unknown field", {
+  df <- data.frame(x = "A", stringsAsFactors = FALSE)
+  p <- custom_provider(df, name = "x", fields = "x")
+  expect_null(p$lookup("A", field = "not_a_col"))
+})
+
+# --------------------------------------------------------------------------
+# meddra lookup for llt, NULL-returning lookup paths
+# --------------------------------------------------------------------------
+
+test_that("meddra_provider lookup() for llt returns matching llt rows", {
+  dir <- tempfile("mdd-llt-look-")
+  dir.create(dir)
+  .fake_mdhier(dir)
+  .fake_llt(dir)
+  p <- meddra_provider(dir, version = "27.0")
+  hits <- p$lookup("Cephalalgia", field = "llt")
+  expect_equal(nrow(hits), 1L)
+  expect_equal(as.character(hits$llt_code), "10019228")
+})
+
+test_that("meddra_provider lookup() returns NULL for unknown field", {
+  dir <- tempfile("mdd-null-look-")
+  dir.create(dir)
+  .fake_mdhier(dir)
+  p <- meddra_provider(dir, version = "27.0")
+  expect_null(p$lookup("Headache", field = "not_a_level"))
+})
+
+test_that("meddra_provider lookup() returns NULL when no rows match", {
+  dir <- tempfile("mdd-nohit-")
+  dir.create(dir)
+  .fake_mdhier(dir)
+  p <- meddra_provider(dir, version = "27.0")
+  expect_null(p$lookup("NoSuchTerm", field = "pt"))
+})
+
+# --------------------------------------------------------------------------
+# whodrug additional coverage
+# --------------------------------------------------------------------------
+
+test_that("whodrug_provider errors on non-existent directory", {
+  expect_error(
+    whodrug_provider("/no/such/dir"),
+    class = "herald_error_input"
+  )
+})
+
+test_that("whodrug_provider contains() with ignore_case=TRUE", {
+  dir <- tempfile("whod-ci-")
+  dir.create(dir)
+  .fake_whodrug_dd(dir)
+  p <- whodrug_provider(dir, version = "2026-Mar-01")
+  expect_true(p$contains("aspirin", field = "drug_name", ignore_case = TRUE))
+  expect_false(p$contains("aspirin", field = "drug_name", ignore_case = FALSE))
+})
+
+test_that("whodrug_provider contains() returns NA for unknown field", {
+  dir <- tempfile("whod-na-")
+  dir.create(dir)
+  .fake_whodrug_dd(dir)
+  p <- whodrug_provider(dir, version = "2026-Mar-01")
+  expect_true(is.na(p$contains("ASPIRIN", field = "not_a_field")))
+})
+
+test_that("whodrug_provider lookup() returns NULL for unknown field", {
+  dir <- tempfile("whod-look-null-")
+  dir.create(dir)
+  .fake_whodrug_dd(dir)
+  p <- whodrug_provider(dir, version = "2026-Mar-01")
+  expect_null(p$lookup("ASPIRIN", field = "not_a_field"))
+})
+
+test_that("whodrug_provider lookup() returns NULL for no match", {
+  dir <- tempfile("whod-look-nomatch-")
+  dir.create(dir)
+  .fake_whodrug_dd(dir)
+  p <- whodrug_provider(dir, version = "2026-Mar-01")
+  expect_null(p$lookup("NOTADRUG", field = "drug_name"))
+})
+
+# --------------------------------------------------------------------------
+# loinc additional coverage
+# --------------------------------------------------------------------------
+
+test_that("loinc_provider errors on non-existent direct file path", {
+  expect_error(
+    loinc_provider("/no/such/Loinc.csv"),
+    class = "herald_error_input"
+  )
+})
+
+test_that("loinc_provider errors when LOINC_NUM column is missing", {
+  dir <- tempfile("loinc-nocolumn-")
+  dir.create(dir)
+  writeLines(
+    c("FOO,BAR", "a,b"),
+    file.path(dir, "Loinc.csv")
+  )
+  expect_error(loinc_provider(dir), class = "herald_error_runtime")
+})
+
+test_that("loinc_provider contains() with ignore_case=TRUE", {
+  dir <- tempfile("loinc-ci-")
+  dir.create(dir)
+  .fake_loinc_csv(dir)
+  p <- loinc_provider(dir, version = "2.77")
+  expect_true(
+    p$contains("hemoglobin", field = "component", ignore_case = TRUE)
+  )
+  expect_false(
+    p$contains("hemoglobin", field = "component", ignore_case = FALSE)
+  )
+})
+
+test_that("loinc_provider contains() returns NA for unknown field", {
+  dir <- tempfile("loinc-na-")
+  dir.create(dir)
+  .fake_loinc_csv(dir)
+  p <- loinc_provider(dir, version = "2.77")
+  expect_true(is.na(p$contains("X", field = "not_a_field")))
+})
+
+test_that("loinc_provider lookup() returns matching rows", {
+  dir <- tempfile("loinc-look-")
+  dir.create(dir)
+  .fake_loinc_csv(dir)
+  p <- loinc_provider(dir, version = "2.77")
+  hits <- p$lookup("12345-6", field = "loinc_num")
+  expect_equal(nrow(hits), 1L)
+  expect_equal(hits$COMPONENT, "Hemoglobin")
+})
+
+test_that("loinc_provider lookup() returns NULL for no match", {
+  dir <- tempfile("loinc-look-null-")
+  dir.create(dir)
+  .fake_loinc_csv(dir)
+  p <- loinc_provider(dir, version = "2.77")
+  expect_null(p$lookup("99999-9", field = "loinc_num"))
+})
+
+test_that("loinc_provider lookup() returns NULL for unknown field", {
+  dir <- tempfile("loinc-look-unk-")
+  dir.create(dir)
+  .fake_loinc_csv(dir)
+  p <- loinc_provider(dir, version = "2.77")
+  expect_null(p$lookup("12345-6", field = "not_a_field"))
+})
+
+# --------------------------------------------------------------------------
+# snomed additional coverage
+# --------------------------------------------------------------------------
+
+test_that("snomed_provider errors when direct file path does not exist", {
+  expect_error(
+    snomed_provider("/no/such/file.txt"),
+    class = "herald_error_input"
+  )
+})
+
+test_that("snomed_provider errors when description file missing required columns", {
+  dir <- tempfile("snomed-badcols-")
+  dir.create(dir)
+  path <- file.path(dir, "sct2_Description_Snapshot-en_x.txt")
+  writeLines(c("foo\tbar", "1\t2"), path)
+  expect_error(
+    snomed_provider(dir, version = "20250101"),
+    class = "herald_error_runtime"
+  )
+})
+
+test_that("snomed_provider contains() with ignore_case=TRUE", {
+  dir <- tempfile("snomed-ci-")
+  dir.create(dir)
+  .fake_snomed_snapshot(dir)
+  p <- snomed_provider(dir, version = "20250101")
+  expect_true(p$contains("headache", field = "term", ignore_case = TRUE))
+  expect_false(p$contains("headache", field = "term", ignore_case = FALSE))
+})
+
+test_that("snomed_provider contains() returns NA for unknown field", {
+  dir <- tempfile("snomed-na-")
+  dir.create(dir)
+  .fake_snomed_snapshot(dir)
+  p <- snomed_provider(dir, version = "20250101")
+  expect_true(is.na(p$contains("Headache", field = "not_a_field")))
+})
+
+test_that("snomed_provider lookup() returns matching rows", {
+  dir <- tempfile("snomed-look-")
+  dir.create(dir)
+  .fake_snomed_snapshot(dir)
+  p <- snomed_provider(dir, version = "20250101")
+  hits <- p$lookup("Headache", field = "term")
+  expect_equal(nrow(hits), 1L)
+  expect_equal(as.character(hits$conceptId), "25064002")
+})
+
+test_that("snomed_provider lookup() returns NULL for no match", {
+  dir <- tempfile("snomed-look-null-")
+  dir.create(dir)
+  .fake_snomed_snapshot(dir)
+  p <- snomed_provider(dir, version = "20250101")
+  expect_null(p$lookup("NoSuchTerm", field = "term"))
+})
+
+test_that("snomed_provider lookup() returns NULL for unknown field", {
+  dir <- tempfile("snomed-look-unk-")
+  dir.create(dir)
+  .fake_snomed_snapshot(dir)
+  p <- snomed_provider(dir, version = "20250101")
+  expect_null(p$lookup("Headache", field = "not_a_field"))
+})
+
+test_that("snomed_provider lookup() by concept_id returns matching rows", {
+  dir <- tempfile("snomed-conceptid-")
+  dir.create(dir)
+  .fake_snomed_snapshot(dir)
+  p <- snomed_provider(dir, version = "20250101")
+  hits <- p$lookup("25064002", field = "concept_id")
+  expect_equal(nrow(hits), 1L)
+  expect_equal(hits$term, "Headache")
+})

@@ -97,3 +97,87 @@ test_that("download_ct returns existing RDS without re-fetching (force=FALSE)", 
   path <- download_ct("sdtm", version = "2024-01-01", dest = dest, quiet = TRUE)
   expect_equal(normalizePath(path), normalizePath(rds))
 })
+
+test_that("available_ct_releases() returns empty tibble when no bundled/cache/remote", {
+  # Use a send package -- no bundled entry and an empty temp cache dir
+  dir <- tempfile("ct-send-")
+  dir.create(dir, recursive = TRUE)
+  inner <- file.path(dir, "R", "herald")
+  dir.create(inner, recursive = TRUE)
+  withr::with_envvar(
+    c(R_USER_CACHE_DIR = dir),
+    {
+      r <- available_ct_releases("send", include_remote = FALSE)
+      expect_s3_class(r, "tbl_df")
+      expect_equal(nrow(r), 0L)
+    }
+  )
+})
+
+test_that("available_ct_releases() includes cache entries for sdtm", {
+  # Verify the cached-entries path (lines 88-96) is exercised
+  base <- tempfile("ct-cache-sdtm-")
+  inner <- file.path(base, "R", "herald")
+  dir.create(inner, recursive = TRUE)
+  rds_path <- file.path(inner, "sdtm-ct-2023-09-29.rds")
+  saveRDS(list(), rds_path)
+  withr::with_envvar(
+    c(R_USER_CACHE_DIR = base),
+    {
+      herald:::.ct_cache_write(
+        list(
+          package = "sdtm",
+          version = "2023-09-29",
+          release_date = "2023-09-29",
+          path = rds_path,
+          downloaded_at = "2023-09-29T00:00:00Z"
+        ),
+        dir = inner
+      )
+      r <- available_ct_releases("sdtm", include_remote = FALSE)
+      expect_true("cache" %in% r$source)
+      expect_true("2023-09-29" %in% r$version)
+    }
+  )
+})
+
+test_that("available_ct_releases() gracefully handles remote error (include_remote=TRUE)", {
+  # When the remote NCI EVS listing fails, function should NOT error --
+  # it catches and emits an informational message, then returns local results.
+  base <- tempfile("ct-remote-err-")
+  inner <- file.path(base, "R", "herald")
+  dir.create(inner, recursive = TRUE)
+  withr::with_envvar(
+    c(R_USER_CACHE_DIR = base),
+    {
+      # Use include_remote=TRUE but with a near-zero timeout so the
+      # download.file call fails immediately; function must not throw.
+      # Suppress expected network-failure warnings from download.file.
+      expect_no_error(
+        suppressWarnings(
+          available_ct_releases("adam", include_remote = TRUE, timeout = 1L)
+        )
+      )
+    }
+  )
+})
+
+test_that(".normalise_path normalises a path string", {
+  p <- herald:::.normalise_path(tempdir())
+  expect_type(p, "character")
+  expect_false(grepl("\\\\", p))
+})
+
+test_that(".nci_evs_url_for builds a correct archive URL for a YYYY-MM-DD version", {
+  info <- herald:::.nci_evs_url_for("sdtm", "2024-03-29", timeout = 30L)
+  expect_equal(info$release_date, "2024-03-29")
+  expect_match(info$url, "2024-03-29\\.txt$")
+  expect_match(info$url, "SDTM")
+})
+
+test_that(".nci_evs_url_for errors on bad version string", {
+  expect_error(
+    herald:::.nci_evs_url_for("sdtm", "not-a-date", timeout = 30L),
+    class = "herald_error_input"
+  )
+})
