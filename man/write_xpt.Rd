@@ -25,7 +25,7 @@ members.}
 \item{dataset}{Dataset name (e.g., \code{"DM"}). Default: the
 \code{"dataset_name"} attribute of \code{x} (set by \code{read_xpt()},
 \code{read_json()}, or \code{apply_spec()}), then the uppercase file stem
-(\code{"sdtm/dm.xpt"} → \code{"DM"}), then \code{"DATA"}.
+(\code{"sdtm/dm.xpt"} -> \code{"DM"}), then \code{"DATA"}.
 V5: max 8 characters, uppercased. V8: max 32 characters.}
 
 \item{label}{Dataset label. Defaults to \code{attr(x, "label")} or \code{""}.}
@@ -43,7 +43,7 @@ or standard names (\code{"WINDOWS-1252"}, \code{"ISO-8859-1"}). Set to
 \description{
 Writes a data frame (or named list of data frames) to an XPT transport file
 in V5 (FDA submission standard) or V8 (extended) format. Pure R
-implementation — no SAS or haven dependency.
+implementation  --  no SAS or haven dependency.
 }
 \details{
 If the \code{herald.sort_keys} attribute is set on \code{x}, the data is

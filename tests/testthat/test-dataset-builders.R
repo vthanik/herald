@@ -156,6 +156,312 @@ test_that("Define_Standards_Metadata has one row per def:Standard", {
   expect_equal(sm$version, "3.4")
 })
 
+# ---- .build_define_datasets: non-herald_define returns empty list -----------
+
+test_that(".build_define_datasets returns empty list for non-herald_define", {
+  result <- herald:::.build_define_datasets(list())
+  expect_type(result, "list")
+  expect_equal(length(result), 0L)
+
+  result2 <- herald:::.build_define_datasets("not a define")
+  expect_equal(length(result2), 0L)
+})
+
+# ---- .get_builder -----------------------------------------------------------
+
+test_that(".get_builder returns NULL for unknown builder name", {
+  expect_null(herald:::.get_builder("NoSuchBuilder_XYZ"))
+})
+
+test_that(".get_builder returns a function for registered builders", {
+  fn <- herald:::.get_builder("Define_Study_Metadata")
+  expect_true(is.function(fn))
+})
+
+# ---- Define_ARM_Metadata: absent in minimal define -------------------------
+
+test_that("Define_ARM_Metadata absent when no ResultDisplay nodes", {
+  def <- .make_minimal_define()
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
+  frames <- herald:::.build_define_datasets(def)
+  # Minimal define has no ARM nodes -- builder should return NULL / not appear
+  expect_false("Define_ARM_Metadata" %in% names(frames))
+})
+
+# ---- Define_ARM_Result_Metadata: absent in minimal define ------------------
+
+test_that("Define_ARM_Result_Metadata absent when no AnalysisResult nodes", {
+  def <- .make_minimal_define()
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
+  frames <- herald:::.build_define_datasets(def)
+  expect_false("Define_ARM_Result_Metadata" %in% names(frames))
+})
+
+# ---- Define_MethodDef_Metadata: absent when no MethodDef -------------------
+
+test_that("Define_MethodDef_Metadata absent when no MethodDef nodes", {
+  def <- .make_minimal_define()
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
+  frames <- herald:::.build_define_datasets(def)
+  expect_false("Define_MethodDef_Metadata" %in% names(frames))
+})
+
+# ---- Define_ValueLevel_Metadata: absent when no WhereClauseDef -------------
+
+test_that("Define_ValueLevel_Metadata absent when no WhereClauseDef nodes", {
+  def <- .make_minimal_define()
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
+  frames <- herald:::.build_define_datasets(def)
+  expect_false("Define_ValueLevel_Metadata" %in% names(frames))
+})
+
+# ---- ARM builders with a define that has ARM sections ----------------------
+
+.make_arm_define <- function() {
+  if (!requireNamespace("xml2", quietly = TRUE)) {
+    return(NULL)
+  }
+  xml_str <- paste0(
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"',
+    '     xmlns:def="http://www.cdisc.org/ns/def/v2.1"',
+    '     xmlns:arm="http://www.cdisc.org/ns/arm/v1.0"',
+    '     OID="ODM.ARM01" CreationDateTime="2020-01-01T00:00:00">',
+    '  <Study OID="S.ARM01">',
+    '    <GlobalVariables>',
+    '      <StudyName>ARM01</StudyName>',
+    '      <StudyDescription>ARM Test</StudyDescription>',
+    '      <ProtocolName>PROTO02</ProtocolName>',
+    '    </GlobalVariables>',
+    '    <MetaDataVersion OID="MDV.1" Name="MDV1" def:DefineVersion="2.1.0">',
+    '      <ItemGroupDef OID="IG.ADSL" Name="ADSL" Repeating="No">',
+    '        <Description><TranslatedText>ADSL</TranslatedText></Description>',
+    '        <ItemRef ItemOID="IT.ADSL.USUBJID" Mandatory="Yes" OrderNumber="1"/>',
+    '      </ItemGroupDef>',
+    '      <ItemDef OID="IT.ADSL.USUBJID" Name="USUBJID" DataType="text" Length="200">',
+    '        <Description><TranslatedText>Subject ID</TranslatedText></Description>',
+    '      </ItemDef>',
+    '      <arm:AnalysisResultDisplays>',
+    '        <arm:ResultDisplay OID="RD.01" Name="Table 1">',
+    '          <Description><TranslatedText>Primary Efficacy</TranslatedText></Description>',
+    '          <arm:AnalysisResult OID="AR.01" ParameterOID="PAR.01">',
+    '          </arm:AnalysisResult>',
+    '          <arm:AnalysisResult OID="AR.02" ParameterOID="PAR.02">',
+    '          </arm:AnalysisResult>',
+    '        </arm:ResultDisplay>',
+    '        <arm:ResultDisplay OID="RD.02" Name="Table 2">',
+    '          <arm:AnalysisResult OID="AR.03" ParameterOID="PAR.01">',
+    '          </arm:AnalysisResult>',
+    '        </arm:ResultDisplay>',
+    '      </arm:AnalysisResultDisplays>',
+    '    </MetaDataVersion>',
+    '  </Study>',
+    '</ODM>'
+  )
+  tmp <- tempfile(fileext = ".xml")
+  writeLines(xml_str, tmp)
+  withr::defer(unlink(tmp), envir = parent.frame(2L))
+  herald:::read_define_xml(tmp)
+}
+
+test_that("Define_ARM_Metadata returns one row per ResultDisplay", {
+  def <- .make_arm_define()
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
+  frames <- herald:::.build_define_datasets(def)
+  arm <- frames[["Define_ARM_Metadata"]]
+  expect_false(is.null(arm))
+  expect_equal(nrow(arm), 2L)
+  expect_true("display_oid" %in% names(arm))
+  expect_true("display_name" %in% names(arm))
+  expect_true("is_duplicate_oid" %in% names(arm))
+  expect_true("is_duplicate_name" %in% names(arm))
+  expect_true("RD.01" %in% arm$display_oid)
+})
+
+test_that("Define_ARM_Result_Metadata returns one row per AnalysisResult", {
+  def <- .make_arm_define()
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
+  frames <- herald:::.build_define_datasets(def)
+  arm_res <- frames[["Define_ARM_Result_Metadata"]]
+  expect_false(is.null(arm_res))
+  expect_equal(nrow(arm_res), 3L)
+  expect_true("result_oid" %in% names(arm_res))
+  expect_true("display_oid" %in% names(arm_res))
+  expect_true("parameter_oid" %in% names(arm_res))
+  expect_true("is_duplicate_oid" %in% names(arm_res))
+})
+
+# ---- Define_MethodDef_Metadata with a define that has MethodDefs -----------
+
+.make_methoddef_define <- function() {
+  if (!requireNamespace("xml2", quietly = TRUE)) {
+    return(NULL)
+  }
+  xml_str <- paste0(
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"',
+    '     xmlns:def="http://www.cdisc.org/ns/def/v2.1"',
+    '     OID="ODM.MD01" CreationDateTime="2020-01-01T00:00:00">',
+    '  <Study OID="S.MD01">',
+    '    <GlobalVariables>',
+    '      <StudyName>MD01</StudyName>',
+    '      <StudyDescription>MethodDef Test</StudyDescription>',
+    '      <ProtocolName>PROTO03</ProtocolName>',
+    '    </GlobalVariables>',
+    '    <MetaDataVersion OID="MDV.1" Name="MDV1" def:DefineVersion="2.1.0">',
+    '      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No">',
+    '        <Description><TranslatedText>Demographics</TranslatedText></Description>',
+    '        <ItemRef ItemOID="IT.DM.USUBJID" Mandatory="Yes" OrderNumber="1"',
+    '                 def:MethodOID="MT.COMP1"/>',
+    '      </ItemGroupDef>',
+    '      <ItemDef OID="IT.DM.USUBJID" Name="USUBJID" DataType="text" Length="200">',
+    '        <Description><TranslatedText>Subject ID</TranslatedText></Description>',
+    '      </ItemDef>',
+    '      <MethodDef OID="MT.COMP1" Name="Compute USUBJID" Type="Computation">',
+    '        <Description><TranslatedText>Derived from site + subject number</TranslatedText></Description>',
+    '      </MethodDef>',
+    '    </MetaDataVersion>',
+    '  </Study>',
+    '</ODM>'
+  )
+  tmp <- tempfile(fileext = ".xml")
+  writeLines(xml_str, tmp)
+  withr::defer(unlink(tmp), envir = parent.frame(2L))
+  herald:::read_define_xml(tmp)
+}
+
+test_that("Define_MethodDef_Metadata returns one row per MethodDef", {
+  def <- .make_methoddef_define()
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
+  frames <- herald:::.build_define_datasets(def)
+  md <- frames[["Define_MethodDef_Metadata"]]
+  expect_false(is.null(md))
+  expect_equal(nrow(md), 1L)
+  expect_equal(md$oid, "MT.COMP1")
+  expect_equal(md$method_type, "Computation")
+  expect_true(md$has_description)
+})
+
+# ---- Define_ValueLevel_Metadata with a define that has WhereClauseDefs ----
+
+.make_vlm_define <- function() {
+  if (!requireNamespace("xml2", quietly = TRUE)) {
+    return(NULL)
+  }
+  xml_str <- paste0(
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"',
+    '     xmlns:def="http://www.cdisc.org/ns/def/v2.1"',
+    '     OID="ODM.VLM01" CreationDateTime="2020-01-01T00:00:00">',
+    '  <Study OID="S.VLM01">',
+    '    <GlobalVariables>',
+    '      <StudyName>VLM01</StudyName>',
+    '      <StudyDescription>VLM Test</StudyDescription>',
+    '      <ProtocolName>PROTO04</ProtocolName>',
+    '    </GlobalVariables>',
+    '    <MetaDataVersion OID="MDV.1" Name="MDV1" def:DefineVersion="2.1.0">',
+    '      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No">',
+    '        <Description><TranslatedText>Demographics</TranslatedText></Description>',
+    '        <ItemRef ItemOID="IT.DM.USUBJID" Mandatory="Yes" OrderNumber="1"/>',
+    '      </ItemGroupDef>',
+    '      <ItemDef OID="IT.DM.USUBJID" Name="USUBJID" DataType="text" Length="200">',
+    '        <Description><TranslatedText>Subject ID</TranslatedText></Description>',
+    '      </ItemDef>',
+    '      <def:WhereClauseDef OID="WC.01">',
+    '        <def:RangeCheck Comparator="EQ" SoftHard="Soft" def:ItemOID="IT.DM.USUBJID">',
+    '          <def:CheckValue>SUBJ001</def:CheckValue>',
+    '        </def:RangeCheck>',
+    '      </def:WhereClauseDef>',
+    '    </MetaDataVersion>',
+    '  </Study>',
+    '</ODM>'
+  )
+  tmp <- tempfile(fileext = ".xml")
+  writeLines(xml_str, tmp)
+  withr::defer(unlink(tmp), envir = parent.frame(2L))
+  herald:::read_define_xml(tmp)
+}
+
+test_that("Define_ValueLevel_Metadata returns rows for WhereClauseDef nodes", {
+  def <- .make_vlm_define()
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
+  frames <- herald:::.build_define_datasets(def)
+  vlm <- frames[["Define_ValueLevel_Metadata"]]
+  expect_false(is.null(vlm))
+  expect_equal(nrow(vlm), 1L)
+  expect_equal(vlm$oid, "WC.01")
+  expect_equal(vlm$comparator, "EQ")
+  expect_equal(vlm$soft_hard, "Soft")
+  expect_equal(vlm$check_value, "SUBJ001")
+})
+
+# ---- Define_Codelist_Metadata: empty codelist (no items) -------------------
+
+.make_empty_codelist_define <- function() {
+  if (!requireNamespace("xml2", quietly = TRUE)) {
+    return(NULL)
+  }
+  xml_str <- paste0(
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"',
+    '     xmlns:def="http://www.cdisc.org/ns/def/v2.1"',
+    '     OID="ODM.CL01" CreationDateTime="2020-01-01T00:00:00">',
+    '  <Study OID="S.CL01">',
+    '    <GlobalVariables>',
+    '      <StudyName>CL01</StudyName>',
+    '      <StudyDescription>CL Test</StudyDescription>',
+    '      <ProtocolName>PROTO05</ProtocolName>',
+    '    </GlobalVariables>',
+    '    <MetaDataVersion OID="MDV.1" Name="MDV1" def:DefineVersion="2.1.0">',
+    '      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No">',
+    '        <Description><TranslatedText>DM</TranslatedText></Description>',
+    '        <ItemRef ItemOID="IT.DM.SEX" Mandatory="Yes" OrderNumber="1"/>',
+    '      </ItemGroupDef>',
+    '      <ItemDef OID="IT.DM.SEX" Name="SEX" DataType="text" Length="1">',
+    '        <Description><TranslatedText>Sex</TranslatedText></Description>',
+    '      </ItemDef>',
+    '      <CodeList OID="CL.EXT" Name="ExtList" DataType="text">',
+    '        <ExternalCodeList Dictionary="MedDRA" Version="25.0"/>',
+    '      </CodeList>',
+    '    </MetaDataVersion>',
+    '  </Study>',
+    '</ODM>'
+  )
+  tmp <- tempfile(fileext = ".xml")
+  writeLines(xml_str, tmp)
+  withr::defer(unlink(tmp), envir = parent.frame(2L))
+  herald:::read_define_xml(tmp)
+}
+
+test_that("Define_Codelist_Metadata handles external codelist (no items)", {
+  def <- .make_empty_codelist_define()
+  if (is.null(def)) {
+    skip("xml2 not available")
+  }
+  frames <- herald:::.build_define_datasets(def)
+  cl <- frames[["Define_Codelist_Metadata"]]
+  expect_false(is.null(cl))
+  expect_equal(nrow(cl), 1L)
+  expect_true(cl$is_external)
+  expect_equal(cl$coded_value, "")
+})
+
 # ---- validate() injection ---------------------------------------------------
 
 test_that("validate() injects Define builder frames when define= is supplied", {

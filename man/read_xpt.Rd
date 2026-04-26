@@ -29,7 +29,7 @@ or a named list of data frames for multi-member files.
 }
 \description{
 Reads V5 (FDA standard) or V8 (extended) XPT transport files into R data
-frames. Pure R implementation — no SAS or haven dependency.
+frames. Pure R implementation  --  no SAS or haven dependency.
 }
 \details{
 \subsection{Date/datetime conversion}{
