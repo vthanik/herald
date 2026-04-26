@@ -1,7 +1,13 @@
 #' Read a SAS Transport (XPT) file into a data frame
 #'
-#' Reads V5 (FDA standard) or V8 (extended) XPT transport files into R data
-#' frames. Pure R implementation  --  no SAS or haven dependency.
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' Reads V5 (FDA standard) or V8 (extended) XPT transport files into R
+#' data frames. Pure R implementation -- no SAS, no haven, no Java
+#' dependency. Preserves dataset and variable labels, SAS formats,
+#' SAS lengths, and missing-value semantics so the result round-trips
+#' through [write_xpt()] without metadata loss.
 #'
 #' @param file File path to an \code{.xpt} file.
 #' @param col_select Character vector of column names to read. `NULL` (default)

@@ -45,12 +45,34 @@ herald_spec(
 A list with class \code{c("herald_spec", "list")}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Assembles a \code{herald_spec} that carries all Define-XML 2.1 slots:
-\code{ds_spec}, \code{var_spec}, \code{study}, \code{value_spec},
-\code{codelist}, \code{methods}, \code{comments}, \code{documents},
-\code{arm_displays}, and \code{arm_results}. Used by
-\code{write_define_xml()} and round-trip tests.
+\code{ds_spec}, \code{var_spec}, \code{study}, \code{value_spec}, \code{codelist}, \code{methods},
+\code{comments}, \code{documents}, \code{arm_displays}, and \code{arm_results}. Use this
+constructor when you need round-trip fidelity through
+\code{\link[=write_define_xml]{write_define_xml()}}; reach for the simpler \code{\link[=as_herald_spec]{as_herald_spec()}} when
+only datasets and variables matter.
 }
+\section{Input dispatch}{
+Each slot accepts a data frame in the layout produced by the matching
+\code{\link[=read_define_xml]{read_define_xml()}} field, so a Define-XML round-trip is just:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{d <- read_define_xml("define.xml")
+s <- herald_spec(
+  ds_spec      = d$ds_spec,      var_spec     = d$var_spec,
+  study        = d$study,        codelist     = d$codelist,
+  methods      = d$methods,      comments     = d$comments,
+  documents    = d$documents,    arm_displays = d$arm_displays,
+  arm_results  = d$arm_results
+)
+}\if{html}{\out{</div>}}
+
+Slots not supplied default to either an empty data frame (\code{var_spec},
+\code{study}) or \code{NULL} (everything else). \code{write_define_xml()} emits an
+element only when the corresponding slot is non-empty.
+}
+
 \examples{
 dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
 adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))

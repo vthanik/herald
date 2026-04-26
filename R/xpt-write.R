@@ -1,8 +1,13 @@
 #' Write a data frame to a SAS Transport (XPT) file
 #'
-#' Writes a data frame (or named list of data frames) to an XPT transport file
-#' in V5 (FDA submission standard) or V8 (extended) format. Pure R
-#' implementation  --  no SAS or haven dependency.
+#' @description
+#' `r lifecycle::badge("stable")`
+#'
+#' Writes a data frame (or named list of data frames) to an XPT
+#' transport file in V5 (FDA submission standard) or V8 (extended)
+#' format. Pure R implementation -- no SAS, no haven, no Java
+#' dependency. Round-trips dataset / variable labels, SAS formats,
+#' SAS lengths, and `Date` / `POSIXct` columns.
 #'
 #' If the \code{herald.sort_keys} attribute is set on \code{x}, the data is
 #' sorted by those keys before writing.

@@ -99,6 +99,8 @@ download_srs <- function(
 #' FDA SRS / UNII as a Dictionary Provider
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Returns a `herald_dict_provider` backed by the user-cached FDA SRS
 #' table (written by [download_srs()]). Rule ops query it under the
 #' name `"srs"`.

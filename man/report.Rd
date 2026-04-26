@@ -21,9 +21,11 @@ extension of \code{path}.}
 \code{path} invisibly.
 }
 \description{
-Single-function entry point for writing validation results.
-Dispatches to the appropriate writer based on the output path
-extension (or an explicit \code{format} override):
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Single-function entry point for writing validation results. \code{report()}
+inspects the path extension (or the \code{format} override) and delegates
+to the matching writer:
 \itemize{
 \item \code{"html"} -- self-contained archival HTML (\code{\link[=write_report_html]{write_report_html()}}).
 \item \code{"xlsx"} -- five-sheet workbook for sponsor review
@@ -31,6 +33,21 @@ extension (or an explicit \code{format} override):
 \item \code{"json"} -- machine-readable CI artifact (\code{\link[=write_report_json]{write_report_json()}}).
 }
 }
+\section{Extension dispatch matrix}{
+\tabular{lll}{
+   Path / \code{format} \tab Writer \tab Use case \cr
+   \verb{*.html} / "html" \tab \code{write_report_html()} \tab Submission archive, sponsor review \cr
+   \verb{*.xlsx} / "xlsx" \tab \code{write_report_xlsx()} \tab Sponsor / regulator spreadsheet \cr
+   \verb{*.json} / "json" \tab \code{write_report_json()} \tab CI diff artifact, programmatic use \cr
+}
+
+
+When \code{format} is supplied it wins; otherwise the extension is parsed
+from \code{path}. Unknown extensions raise an input error. The
+\code{herald_result} is rendered without mutation -- you can call
+\code{report()} repeatedly with different paths.
+}
+
 \examples{
 ae   <- data.frame(STUDYID = "X", USUBJID = "X-001", stringsAsFactors = FALSE)
 r    <- validate(files = ae, rules = character(0), quiet = TRUE)

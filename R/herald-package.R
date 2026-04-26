@@ -12,4 +12,5 @@
 #'
 #' @keywords internal
 #' @importFrom rlang caller_arg caller_env `%||%`
+#' @importFrom lifecycle deprecated
 "_PACKAGE"

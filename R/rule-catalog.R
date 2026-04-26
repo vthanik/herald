@@ -2,9 +2,19 @@
 
 #' Compiled rule catalog
 #'
-#' Returns every rule shipped with herald (conformance rules from
-#' `inst/rules/rules.rds` plus spec pre-flight rules from
-#' `inst/rules/spec_rules.rds`) as a flat tibble.
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' Returns every rule shipped with herald as a flat tibble. The catalog
+#' is the union of two compiled corpora:
+#'
+#' * `inst/rules/rules.rds` -- CDISC conformance rules
+#'   (SDTM-IG, ADaM-IG, SEND-IG, Define-XML).
+#' * `inst/rules/spec_rules.rds` -- herald-authored spec pre-flight
+#'   checks that run against a `herald_spec` before validation.
+#'
+#' Use this to discover available rules, inspect predicate coverage, or
+#' build a `rules =` filter for [validate()].
 #'
 #' @return A tibble with columns:
 #'   \describe{

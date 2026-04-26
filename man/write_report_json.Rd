@@ -20,9 +20,19 @@ write_report_json(x, path, pretty = TRUE, ...)
 \code{path} invisibly.
 }
 \description{
-Serialises a \code{herald_result} to a UTF-8 JSON document with a
-stable key order. Designed as the machine-readable artifact for
-CI pipelines, diffing between runs, and programmatic processing.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Serialises a \code{herald_result} to a UTF-8 JSON document with a stable
+key order. Designed as the machine-readable artifact for CI
+pipelines, diffing between runs, and programmatic post-processing:
+\itemize{
+\item Top-level keys: \code{herald_version}, \code{timestamp}, \code{duration_secs},
+\code{profile}, \code{config_hash}, \code{rules_applied}, \code{rules_total},
+\code{datasets_checked}, \code{counts}, \code{findings}, \code{dataset_meta},
+\code{rule_catalog}, \code{op_errors}.
+\item \code{findings} is a list of row objects (one entry per finding).
+\item \code{NA} values become \code{null}.
+}
 
 Requires the \code{jsonlite} package.
 }

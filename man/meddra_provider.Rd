@@ -18,6 +18,8 @@ MedDRA files don't self-identify. Defaults to \code{"unknown"}.}
 A \code{herald_dict_provider} with name \code{"meddra"}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Reads an MSSO MedDRA ASCII distribution from \code{path} and returns a
 \code{herald_dict_provider}. Supports membership checks at any level:
 \code{"llt"}, \code{"pt"}, \code{"hlt"}, \code{"hlgt"}, \code{"soc"}. Since MedDRA is

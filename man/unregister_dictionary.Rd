@@ -13,7 +13,11 @@ unregister_dictionary(name)
 \code{invisible(TRUE)} if removed, \code{FALSE} if not registered.
 }
 \description{
-Remove a dictionary from the session registry
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Removes a previously \code{\link[=register_dictionary]{register_dictionary()}}-installed provider.
+Idempotent: removing an unregistered name returns \code{FALSE} rather
+than erroring, so it is safe to call from teardown blocks.
 }
 \examples{
 p <- ct_provider("sdtm")

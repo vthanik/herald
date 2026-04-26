@@ -41,13 +41,18 @@ or standard names (\code{"WINDOWS-1252"}, \code{"ISO-8859-1"}). Set to
 \code{x} invisibly (the input data frame, not the file path).
 }
 \description{
-Writes a data frame (or named list of data frames) to an XPT transport file
-in V5 (FDA submission standard) or V8 (extended) format. Pure R
-implementation  --  no SAS or haven dependency.
-}
-\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Writes a data frame (or named list of data frames) to an XPT
+transport file in V5 (FDA submission standard) or V8 (extended)
+format. Pure R implementation -- no SAS, no haven, no Java
+dependency. Round-trips dataset / variable labels, SAS formats,
+SAS lengths, and \code{Date} / \code{POSIXct} columns.
+
 If the \code{herald.sort_keys} attribute is set on \code{x}, the data is
 sorted by those keys before writing.
+}
+\details{
 \subsection{Date/datetime handling}{
 
 R \code{Date} columns are converted to SAS date values (days since 1960-01-01)

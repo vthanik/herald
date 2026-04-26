@@ -15,10 +15,28 @@
 #' CDISC Controlled Terminology as a Dictionary Provider
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Returns a `herald_dict_provider` that serves the bundled (or
 #' user-cached) CDISC CT. Rule ops that need to check codelist
 #' membership look up this provider under the name `"ct-sdtm"` or
 #' `"ct-adam"`.
+#'
+#' @details
+#' # Provider protocol
+#'
+#' `contains(value, field, ignore_case)` interprets `field` as the
+#' codelist short name (e.g. `"NY"`, `"ARMNULRS"`), the NCI C-code, or
+#' the long human-readable codelist name -- the same dispatch order as
+#' `.lookup_codelist()` used by SDTM ops. Returns `NA` when `field` is
+#' missing or unknown so missing-codelist conditions surface as
+#' advisory findings, not errors.
+#'
+#' # Caching
+#'
+#' The bundled CT is loaded once via [load_ct()] and held in the
+#' provider closure for the lifetime of the object. Cache hits from a
+#' prior `download_ct()` are addressable through `version =`.
 #'
 #' @param package One of `"sdtm"`, `"adam"`. Defaults to `"sdtm"`.
 #' @param version Same semantics as [load_ct()]:

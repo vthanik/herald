@@ -12,17 +12,46 @@
 #' Stamp column and dataset attributes from a `herald_spec`
 #'
 #' @description
-#' For each dataset in `datasets`, writes `attr(., "label")` from
-#' `spec$ds_spec` when available, and for each column writes `"label"`,
-#' `"format.sas"`, `"sas.length"`, and `"xpt_type"` from `spec$var_spec`
-#' when a matching row exists. Spec values overwrite any existing
-#' attribute; columns with no spec row are untouched. Datasets absent
-#' from the spec are returned unchanged.
+#' `r lifecycle::badge("stable")`
+#'
+#' Pre-validation helper that copies CDISC metadata from a
+#' [`herald_spec`][as_herald_spec()] onto each dataset's columns and
+#' onto the data frame itself, so downstream rule operators can read
+#' attributes uniformly regardless of how the data was ingested. Spec
+#' values overwrite any existing attribute; columns with no spec row
+#' are untouched.
+#'
+#' * Sets `attr(ds, "label")` from `spec$ds_spec$label`.
+#' * Sets per-column `"label"`, `"format.sas"`, `"sas.length"`, and
+#'   `"xpt_type"` from `spec$var_spec`.
+#' * Leaves datasets that are not in `spec` unchanged.
 #'
 #' Call this before [validate()] when datasets come from CSV, plain
 #' data.frames, or any source that does not itself carry CDISC metadata.
 #' XPT and Dataset-JSON readers already set these attributes at ingest,
 #' so `apply_spec()` is optional there.
+#'
+#' @details
+#' # Stamped attributes
+#'
+#' For each row in `spec$var_spec` matching a column in `datasets`,
+#' `apply_spec()` writes:
+#'
+#' * `attr(col, "label")` from `var_spec$label`
+#' * `attr(col, "format.sas")` from `var_spec$format`
+#' * `attr(col, "sas.length")` from `var_spec$length`
+#' * `attr(col, "xpt_type")` from `var_spec$type`
+#'
+#' Dataset-level `attr(ds, "label")` is taken from `spec$ds_spec$label`.
+#'
+#' # Missing or extra variables
+#'
+#' Variables present in `spec$var_spec` but not in the dataset are
+#' silently skipped -- `apply_spec()` does not add columns. Variables
+#' present in the dataset but not in `spec$var_spec` are left unchanged
+#' (existing attributes preserved). Datasets named in `spec$ds_spec`
+#' but missing from `datasets` are also skipped without error; herald
+#' rules will catch missing required datasets at validation time.
 #'
 #' @param datasets Either a single data frame **or** a named list of data
 #'   frames. When a single data frame is passed, the dataset name is

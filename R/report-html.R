@@ -8,10 +8,18 @@
 #' Write a herald_result as a self-contained HTML report
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Renders a `herald_result` to a single-file, archival-quality HTML
-#' document. All CSS, JavaScript, and data are embedded inline -- the file
-#' is suitable for submission packages, inspection, and long-term
-#' archiving without external dependencies.
+#' document. All CSS, JavaScript, and data are embedded inline -- the
+#' file is suitable for submission packages, inspection, and long-term
+#' archiving without external dependencies. The report includes:
+#'
+#' * Header banner with run metadata and finding totals.
+#' * Per-dataset summary table.
+#' * Sortable findings table with rule-id deep links to the source
+#'   document (CDISC Library / Define-XML / SDTM IG).
+#' * Applied rules table with per-rule fired and advisory counts.
 #'
 #' @param x A `herald_result` object from [validate()].
 #' @param path Output file path (should end in `.html`).
