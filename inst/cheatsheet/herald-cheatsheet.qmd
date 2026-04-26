@@ -1,0 +1,190 @@
+---
+title: ""
+format:
+  pdf:
+    documentclass: article
+    classoption: [landscape, a4paper]
+    geometry:
+      - margin=0.4in
+      - top=0.35in
+      - bottom=0.35in
+    fontsize: 8pt
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{multicol}
+        \usepackage{titlesec}
+        \usepackage{xcolor}
+        \definecolor{heraldblue}{HTML}{1f4e79}
+        \titlespacing*{\section}{0pt}{4pt}{1pt}
+        \titlespacing*{\subsection}{0pt}{3pt}{0pt}
+        \titleformat{\section}{\normalsize\bfseries\color{heraldblue}}{}{0pt}{}
+        \titleformat{\subsection}{\small\bfseries\color{heraldblue}}{}{0pt}{}
+        \setlength{\columnsep}{1.2em}
+        \setlength{\parskip}{1pt}
+        \setlength{\parindent}{0pt}
+        \pagenumbering{gobble}
+    include-before-body:
+      text: |
+        \begin{center}
+          {\Large\bfseries\color{heraldblue} herald cheatsheet}\quad
+          {\small Pure-R CDISC conformance validation \textbar\ layers L0-L6 mirror \texttt{?herald}}
+        \end{center}
+        \vspace{-6pt}
+        \hrule
+        \vspace{4pt}
+        \begin{multicols}{3}
+    include-after-body:
+      text: |
+        \end{multicols}
+keep-tex: false
+execute:
+  eval: false
+  echo: true
+---
+
+\section*{L0 -- Read}
+
+Pure-R XPT v5, Dataset-JSON v1.1, Parquet, Define-XML 2.1.
+No Java or SAS dependency.
+
+```r
+library(herald)
+
+dm   <- read_xpt("dm.xpt")
+ae   <- read_json("ae.json")
+adsl <- read_parquet("adsl.parquet")
+def  <- read_define_xml("define.xml")
+```
+
+\section*{L1 -- Spec}
+
+Build a `herald_spec` from Define-XML, JSON, or
+list input. Carries dataset and variable metadata.
+
+```r
+spec <- as_herald_spec(def)
+
+spec <- herald_spec(
+  datasets  = list(...),
+  variables = list(...)
+)
+
+is_herald_spec(spec)
+```
+
+\section*{L2 -- Stamp}
+
+Stamp spec attributes (labels, lengths, types,
+classes) onto data frames pre-validation.
+
+```r
+dm <- apply_spec(dm, spec)
+ae <- apply_spec(ae, spec)
+```
+
+\section*{L3 -- Dict}
+
+Register controlled terminology and external
+dictionaries via the provider protocol.
+
+```r
+ct <- ct_provider(load_ct("sdtm", "2024-09-27"))
+mh <- meddra_provider(path = "meddra/")
+
+register_dictionary("CT",     ct)
+register_dictionary("MEDDRA", mh)
+
+list_dictionaries()
+```
+
+\section*{L4 -- Catalog}
+
+Inspect the compiled rule corpus: SDTM-IG,
+ADaM-IG, Define-XML, CDISC Library CORE.
+
+```r
+cat <- rule_catalog()
+supported_standards()
+
+sdtm <- cat[cat$standard == "SDTM-IG", ]
+```
+
+Rule ID prefixes:
+
+```
+ADaM-N          ADaM-IG v5.0
+SDTMIG-CGNNNN   SDTM-IG v2.0
+DEFINE-NNN      Define-XML v2.1
+CORE-NNNNNN     SDTM Library API
+```
+
+\section*{L5 -- Validate}
+
+Run the rule catalog against a directory or
+named list. Returns a `herald_result`.
+
+```r
+res <- validate(
+  files = list(DM = dm, AE = ae),
+  spec  = spec,
+  rules = c("SDTMIG-CG0001", "CORE-000123")
+)
+
+summary(res)
+```
+
+Severity and scope filters:
+
+```r
+res <- validate(
+  files        = "data/",
+  severity_map = c("SDTMIG-CG0042" = "warning"),
+  standards    = "SDTM-IG"
+)
+```
+
+\section*{L6 -- Report}
+
+Render reviewer-ready artifacts: self-contained
+HTML, workbook XLSX, machine JSON.
+
+```r
+write_report_html(res, "report.html")
+write_report_xlsx(res, "report.xlsx")
+write_report_json(res, "report.json")
+
+# extension dispatch
+report(res, "out/report.html")
+```
+
+\columnbreak
+
+\section*{Quick reference}
+
+\subsection*{Layer stack}
+
+```
+6  Report     write_report_html / xlsx / json
+5  Validate   validate(files = ..., rules = ...)
+4  Catalog    rule_catalog / supported_standards
+3  Dict       ct_provider / register_dictionary
+2  Stamp      apply_spec
+1  Spec       as_herald_spec / herald_spec
+0  Read       read_xpt / read_json / read_define_xml
+```
+
+\subsection*{End-to-end}
+
+```r
+res <- validate(
+  files = list(DM = dm, AE = ae),
+  spec  = as_herald_spec(def)
+)
+write_report_html(res, "qc.html")
+```
+
+\subsection*{Status}
+
+Pre-CRAN. Lifecycle: experimental.
+Project: \texttt{vthanik/herald}. License: MIT.

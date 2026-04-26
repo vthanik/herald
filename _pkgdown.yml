@@ -36,6 +36,9 @@ home:
     Read XPT, Dataset-JSON, and Parquet; stamp submission metadata; run
     SDTM, ADaM, and Define-XML rules; manage controlled terminology; and
     write reviewer-ready HTML, XLSX, and JSON reports.
+  links:
+    - text: Cheatsheet
+      href: https://vthanik.github.io/herald/herald-cheatsheet.pdf
 
 navbar:
   type: light
