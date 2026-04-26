@@ -41,3 +41,5 @@ tools/harvest-cache/
 
 # IDE (.vscode tracked for project-level air recommendations)
 .idea/
+tools/seed-debug.csv
+tools/rule-authoring/patterns/*.candidates.csv
