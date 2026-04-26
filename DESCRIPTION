@@ -5,15 +5,15 @@ Authors@R:
     person("Vignesh", "", email = "about.vignesh@gmail.com",
            role = c("aut", "cre"))
 Description: Pure-R conformance validation for CDISC clinical data
-    submissions. Checks SDTM and ADaM datasets against published CDISC
-    Library conformance rules, controlled terminology, and Define-XML 2.1
-    specifications. Produces submission-ready findings reports (HTML,
-    XLSX, JSON) with rule-level provenance linked to CDISC source. Ships
-    a first-class Define-XML 2.1 authoring object with full read, edit,
-    and write roundtrip (semantic preservation). Designed for teams
-    running reproducible pipelines with 'renv', 'targets', and CI --
-    a 'CRAN'-clean, R-native alternative to Java-based desktop
-    validators.
+    submissions. Reads SDTM and ADaM datasets from XPT, Dataset-JSON,
+    and Parquet files, then checks them against published CDISC Library
+    conformance rules, controlled terminology, and Define-XML 2.1
+    specifications. Produces findings reports (HTML, XLSX, JSON) with
+    rule-level provenance linked to CDISC source. Includes a Define-XML
+    2.1 authoring object supporting full read-edit-write roundtrip
+    with semantic preservation. Integrates with reproducible pipeline
+    tooling ('renv', 'targets') and CI workflows. Pure-R and 'CRAN'-
+    installable -- no Java runtime required.
 License: MIT + file LICENSE
 URL: https://github.com/vthanik/herald,
     https://vthanik.github.io/herald/

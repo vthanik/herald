@@ -1,6 +1,6 @@
 # herald
 
-> Pure-R CDISC conformance validation for clinical trial submissions.
+> Pure-R conformance validation for CDISC clinical data submissions. Reads SDTM and ADaM datasets from XPT, Dataset-JSON, and Parquet files, checks them against published CDISC Library rules, controlled terminology, and Define-XML 2.1 specs. No Java runtime required.
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
