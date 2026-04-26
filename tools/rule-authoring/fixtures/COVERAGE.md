@@ -1,15 +1,15 @@
 # Golden-fixture coverage
 
-_generated 2026-04-26T08:17:33Z by tools/fixture-coverage.R_
+_generated 2026-04-26T12:08:51Z by tools/fixture-coverage.R_
 
 | metric | count |
 |---|---:|
 | executable rules | 1650 |
-| covered (both fixtures) | 1349 |
+| covered (both fixtures) | 1354 |
 | missing positive only | 0 |
 | missing negative only | 0 |
-| missing both (pending) | 301 |
-| coverage | 81.8% |
+| missing both (pending) | 296 |
+| coverage | 82.1% |
 
 Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 
@@ -425,6 +425,11 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 638
 - 639
 - 64
+- 641
+- 642
+- 643
+- 644
+- 645
 - 647
 - 648
 - 649
@@ -1387,4 +1392,4 @@ Gate: WARN-ONLY. Will flip to hard-fail at 80%+ coverage.
 - 591
 - 600
 - 603
-- _...and 281 more_
+- _...and 276 more_

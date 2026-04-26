@@ -1,0 +1,15 @@
+{
+  "rule_id": "CORE-000305",
+  "fixture_type": "negative",
+  "datasets": {
+    "DM": {
+      "DMDUR": "ZQQQQQQZ"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,contains (should not fire)",
+  "authored": "auto-seed@4"
+}

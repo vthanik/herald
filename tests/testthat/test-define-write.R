@@ -1152,3 +1152,829 @@ test_that("write_define_html works with minimal spec (no study metadata)", {
   expect_no_error(write_define_html(spec, tmp))
   expect_true(file.exists(tmp))
 })
+
+# -- GlobalVariables backfill: partial study_df --------------------------------
+
+test_that("write_define_xml backfills missing StudyDescription when absent", {
+  spec <- herald_spec(
+    study = data.frame(
+      attribute = c("StudyName", "ProtocolName"),
+      value = c("STUDY-X", "PROT-X"),
+      stringsAsFactors = FALSE
+    ),
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      data_type = "text",
+      length = "12",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  expect_no_error(write_define_xml(spec, tmp, validate = FALSE))
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("StudyDescription", xml_text))
+  expect_true(grepl("STUDY-X", xml_text))
+})
+
+test_that("write_define_xml backfills missing StudyName and ProtocolName", {
+  spec <- herald_spec(
+    study = data.frame(
+      attribute = "StudyDescription",
+      value = "A study",
+      stringsAsFactors = FALSE
+    ),
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("UNKNOWN", xml_text))
+})
+
+# -- ItemGroupDef: repeating = YES and has_no_data = YES ----------------------
+
+test_that("write_define_xml emits Repeating=Yes when repeating column = YES", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "AE",
+      label = "Adverse Events",
+      repeating = "YES",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "AE",
+      variable = "AETERM",
+      data_type = "text",
+      length = "200",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl('Repeating="Yes"', xml_text, fixed = TRUE))
+})
+
+test_that("write_define_xml emits def:HasNoData=Yes when has_no_data = YES", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      has_no_data = "YES",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      data_type = "text",
+      length = "12",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("HasNoData", xml_text))
+})
+
+# -- ItemGroupDef: class and subclass -----------------------------------------
+
+test_that("write_define_xml emits def:Class and def:SubClass when present", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      class = "SPECIAL PURPOSE",
+      subclass = "TRIAL DESIGN",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      data_type = "text",
+      length = "12",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("def:Class", xml_text))
+  expect_true(grepl("SPECIAL PURPOSE", xml_text))
+  expect_true(grepl("def:SubClass", xml_text))
+  expect_true(grepl("TRIAL DESIGN", xml_text))
+})
+
+# -- ItemDef: sig_digits, format, comment_id, origin + source, CRF pages ------
+
+test_that("write_define_xml emits SignificantDigits when sig_digits present", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "VS",
+      label = "Vital Signs",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "VS",
+      variable = "VSSTRESN",
+      data_type = "float",
+      length = "8",
+      sig_digits = "3",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("SignificantDigits", xml_text))
+})
+
+test_that("write_define_xml emits def:DisplayFormat when format present", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "AGE",
+      data_type = "integer",
+      length = "8",
+      format = "8.",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("DisplayFormat", xml_text))
+  expect_true(grepl("8.", xml_text, fixed = TRUE))
+})
+
+test_that("write_define_xml emits def:CommentOID when comment_id present on var_spec", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "RFSTDTC",
+      data_type = "text",
+      length = "19",
+      comment_id = "COM.RFSTDTC",
+      stringsAsFactors = FALSE
+    ),
+    comments = data.frame(
+      comment_id = "COM.RFSTDTC",
+      description = "Reference start date",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("CommentOID", xml_text))
+  expect_true(grepl("COM.RFSTDTC", xml_text))
+})
+
+test_that("write_define_xml emits def:Origin with Source when origin + source present", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "AGE",
+      data_type = "integer",
+      length = "8",
+      origin = "Derived",
+      source = "Sponsor",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("def:Origin", xml_text))
+  expect_true(grepl("Derived", xml_text))
+  expect_true(grepl("Sponsor", xml_text))
+})
+
+test_that("write_define_xml emits def:DocumentRef for CRF origin with pages", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "AGE",
+      data_type = "integer",
+      length = "8",
+      origin = "CRF",
+      pages = "5",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("def:DocumentRef", xml_text))
+  expect_true(grepl("LF.ACRF", xml_text))
+})
+
+# -- CodeList: NCI code sets StandardOID, nci_term_code ------------------
+
+test_that("write_define_xml emits nci:ExtCodeID when nci_term_code present", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "SEX",
+      data_type = "text",
+      length = "1",
+      codelist_id = "CL.SEX",
+      stringsAsFactors = FALSE
+    ),
+    codelist = data.frame(
+      codelist_id = c("CL.SEX", "CL.SEX"),
+      name = c("Sex", "Sex"),
+      data_type = c("text", "text"),
+      term = c("M", "F"),
+      decoded_value = c("Male", "Female"),
+      nci_code = c("C66731", "C66731"),
+      nci_term_code = c("C20197", "C16576"),
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("STD.CT", xml_text))
+  expect_true(grepl("ExtCodeID", xml_text))
+})
+
+test_that("write_define_xml emits nci:ExtCodeID on EnumeratedItem when no decode", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "COUNTRY",
+      data_type = "text",
+      length = "3",
+      codelist_id = "CL.COUNTRY",
+      stringsAsFactors = FALSE
+    ),
+    codelist = data.frame(
+      codelist_id = "CL.COUNTRY",
+      name = "Country",
+      data_type = "text",
+      term = "USA",
+      decoded_value = "",
+      nci_code = "",
+      nci_term_code = "C17233",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("EnumeratedItem", xml_text))
+  expect_true(grepl("ExtCodeID", xml_text))
+})
+
+# -- MethodDef: FormalExpression with contexts, DocumentRef + pages -----------
+
+test_that("write_define_xml emits FormalExpression with default SAS context when blank", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "AGE",
+      data_type = "integer",
+      length = "8",
+      method_id = "MT.AGE",
+      stringsAsFactors = FALSE
+    ),
+    methods = data.frame(
+      method_id = "MT.AGE",
+      name = "Derive AGE",
+      type = "Computation",
+      description = "Age derivation",
+      expression_context = "",
+      expression_code = "age = year(rfstdtc) - year(brthdtc);",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("FormalExpression", xml_text))
+  expect_true(grepl("SAS", xml_text))
+  expect_true(grepl("age = year", xml_text))
+})
+
+test_that("write_define_xml emits FormalExpression with provided context", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "AGE",
+      data_type = "integer",
+      length = "8",
+      method_id = "MT.AGE",
+      stringsAsFactors = FALSE
+    ),
+    methods = data.frame(
+      method_id = "MT.AGE",
+      name = "Derive AGE",
+      type = "Computation",
+      description = "Age derivation",
+      expression_context = "R Version 4.3",
+      expression_code = "age <- difftime(rfstdtc, brthdtc) / 365.25",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("R Version 4.3", xml_text))
+})
+
+test_that("write_define_xml emits MethodDef DocumentRef with PDFPageRef", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "AGE",
+      data_type = "integer",
+      length = "8",
+      method_id = "MT.AGE",
+      stringsAsFactors = FALSE
+    ),
+    methods = data.frame(
+      method_id = "MT.AGE",
+      name = "Derive AGE",
+      type = "Computation",
+      description = "Age derivation",
+      document_id = "LF.PROG",
+      pages = "22-23",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("LF.PROG", xml_text))
+  expect_true(grepl("22-23", xml_text))
+  expect_true(grepl("PDFPageRef", xml_text))
+})
+
+# -- CommentDef: DocumentRef + pages ------------------------------------------
+
+test_that("write_define_xml emits CommentDef with DocumentRef and pages", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      data_type = "text",
+      length = "12",
+      stringsAsFactors = FALSE
+    ),
+    comments = data.frame(
+      comment_id = "COM.SPEC",
+      description = "See spec section 2.",
+      document_id = "LF.SPEC",
+      pages = "5-6",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("LF.SPEC", xml_text))
+  expect_true(grepl("5-6", xml_text))
+})
+
+# -- def:AnnotatedCRF and def:SupplementalDoc ---------------------------------
+
+test_that("write_define_xml emits def:AnnotatedCRF when documents contains acrf entry", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      data_type = "text",
+      length = "12",
+      stringsAsFactors = FALSE
+    ),
+    documents = data.frame(
+      document_id = c("LF.ACRF", "LF.SUPP"),
+      title = c("Annotated CRF", "Supplemental Document"),
+      href = c("acrf.pdf", "supp.pdf"),
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("AnnotatedCRF", xml_text))
+  expect_true(grepl("LF.ACRF", xml_text))
+})
+
+test_that("write_define_xml emits def:SupplementalDoc for non-ACRF documents", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      data_type = "text",
+      length = "12",
+      stringsAsFactors = FALSE
+    ),
+    documents = data.frame(
+      document_id = "LF.SUPP",
+      title = "Supplemental Analysis",
+      href = "supp.pdf",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("SupplementalDoc", xml_text))
+  expect_true(grepl("LF.SUPP", xml_text))
+})
+
+# -- def:leaf for documents ---------------------------------------------------
+
+test_that("write_define_xml emits def:leaf with href and title for documents", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      data_type = "text",
+      length = "12",
+      stringsAsFactors = FALSE
+    ),
+    documents = data.frame(
+      document_id = "LF.DOC1",
+      title = "Analysis Plan",
+      href = "sap.pdf",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("sap.pdf", xml_text))
+  expect_true(grepl("Analysis Plan", xml_text))
+})
+
+test_that("write_define_xml uses document_id.pdf as href fallback when href blank", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      data_type = "text",
+      length = "12",
+      stringsAsFactors = FALSE
+    ),
+    documents = data.frame(
+      document_id = "LF.DOC1",
+      title = "",
+      href = "",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("LF.DOC1.pdf", xml_text))
+})
+
+# -- ARM: programming_code with no context (default applied) ------------------
+
+test_that("write_define_xml ARM programming_code uses default SAS context when blank", {
+  arm_results_extra <- data.frame(
+    display_id = "RD.T14.1",
+    result_id = "AR.T14.1.R1",
+    description = "Demographics Summary",
+    programming_code = "proc freq data=adsl; run;",
+    programming_context = "",
+    stringsAsFactors = FALSE
+  )
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "ADSL",
+      label = "Subject-Level",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "ADSL",
+      variable = "STUDYID",
+      data_type = "text",
+      length = "12",
+      stringsAsFactors = FALSE
+    ),
+    arm_displays = data.frame(
+      display_id = "RD.T14.1",
+      title = "Table 14.1",
+      stringsAsFactors = FALSE
+    ),
+    arm_results = arm_results_extra
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("SAS Version 9.4", xml_text))
+  expect_true(grepl("proc freq", xml_text))
+})
+
+# -- .parse_where_clause: multi-condition and IN operator ---------------------
+
+test_that(".parse_where_clause handles simple EQ clause", {
+  result <- herald:::.parse_where_clause("PARAMCD EQ SYSBP", "VS")
+  expect_length(result, 1L)
+  expect_equal(result[[1L]]$comparator, "EQ")
+  expect_equal(result[[1L]]$item_oid, "IT.VS.PARAMCD")
+  expect_equal(result[[1L]]$values, "SYSBP")
+})
+
+test_that(".parse_where_clause handles IN clause with multiple values", {
+  result <- herald:::.parse_where_clause("PARAMCD IN (SYSBP, DIABP)", "VS")
+  expect_length(result, 1L)
+  expect_equal(result[[1L]]$comparator, "IN")
+  expect_length(result[[1L]]$values, 2L)
+  expect_true("SYSBP" %in% result[[1L]]$values)
+  expect_true("DIABP" %in% result[[1L]]$values)
+})
+
+test_that(".parse_where_clause handles AND-separated multi-clause", {
+  result <- herald:::.parse_where_clause(
+    "PARAMCD EQ SYSBP AND AVISIT EQ BASELINE",
+    "VS"
+  )
+  expect_length(result, 2L)
+  expect_equal(result[[1L]]$comparator, "EQ")
+  expect_equal(result[[2L]]$comparator, "EQ")
+})
+
+test_that(".parse_where_clause handles short token (fallback to EQ)", {
+  # Fewer than 3 tokens triggers fallback branch
+  result <- herald:::.parse_where_clause("PARAMCD SYSBP", "VS")
+  expect_length(result, 1L)
+  expect_equal(result[[1L]]$comparator, "EQ")
+})
+
+# -- .build_standards: BIMO standard -----------------------------------------
+
+test_that(".parse_standard_string parses BIMO standard", {
+  result <- herald:::.parse_standard_string("BIMO 1.0")
+  expect_equal(result$name, "BIMO")
+  expect_equal(result$type, "IG")
+})
+
+test_that("build with CDISC CT standard creates CT type in Standards node", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      standard = "CDISC 2020-09-25",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      data_type = "text",
+      length = "12",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("CDISC/NCI", xml_text))
+  expect_true(grepl('Type="CT"', xml_text, fixed = TRUE))
+})
+
+# -- WhereClauseDef via value_spec.where_clause -------------------------------
+
+test_that("write_define_xml with where_clause in value_spec creates WhereClauseDef", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "VS",
+      label = "Vital Signs",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = c("VS", "VS"),
+      variable = c("PARAMCD", "VSSTRESN"),
+      data_type = c("text", "float"),
+      length = c("8", "8"),
+      stringsAsFactors = FALSE
+    ),
+    value_spec = data.frame(
+      dataset = "VS",
+      variable = "VSSTRESN",
+      where_clause = "PARAMCD EQ SYSBP",
+      label = "Systolic BP",
+      data_type = "float",
+      length = "8",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+
+  write_define_xml(spec, tmp, validate = FALSE)
+  xml_text <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("WhereClauseDef", xml_text))
+  expect_true(grepl("RangeCheck", xml_text))
+  expect_true(grepl("SYSBP", xml_text))
+})
+
+# -- .build_define_html: title variations -------------------------------------
+
+test_that("write_define_html title uses study_name + std_label when both present", {
+  spec <- herald_spec(
+    study = data.frame(
+      attribute = "StudyName",
+      value = "STUDY-ABC",
+      stringsAsFactors = FALSE
+    ),
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      standard = "SDTMIG 3.3",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".html")
+  withr::defer(unlink(tmp))
+
+  write_define_html(spec, tmp)
+  html <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("STUDY-ABC", html, fixed = TRUE))
+  expect_true(grepl("SDTMIG 3.3", html, fixed = TRUE))
+})
+
+test_that("write_define_html title uses std_label alone when study_name blank", {
+  spec <- herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demographics",
+      standard = "SDTMIG 3.3",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      stringsAsFactors = FALSE
+    )
+  )
+  tmp <- tempfile(fileext = ".html")
+  withr::defer(unlink(tmp))
+
+  write_define_html(spec, tmp)
+  html <- paste(readLines(tmp, warn = FALSE), collapse = "\n")
+  expect_true(grepl("SDTMIG 3.3", html, fixed = TRUE))
+})
+
+# -- .safe_col: numeric value is returned as character -----------------------
+
+test_that(".safe_col coerces numeric to character", {
+  df <- data.frame(x = 42.5, stringsAsFactors = FALSE)
+  result <- herald:::.safe_col(df, "x", 1L)
+  expect_equal(result, "42.5")
+  expect_type(result, "character")
+})
+
+# -- .na2empty: length-0 vector -----------------------------------------------
+
+test_that(".na2empty returns empty string for length-0 vector", {
+  expect_equal(herald:::.na2empty(character(0L)), "")
+})
+
+# -- .row_class ----------------------------------------------------------------
+
+test_that(".row_class returns tablerowodd for odd row", {
+  expect_equal(herald:::.row_class(1L), "tablerowodd")
+})
+
+test_that(".row_class returns tableroweven for even row", {
+  expect_equal(herald:::.row_class(2L), "tableroweven")
+})

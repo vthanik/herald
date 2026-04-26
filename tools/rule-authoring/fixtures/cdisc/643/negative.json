@@ -1,0 +1,24 @@
+{
+  "rule_id": "643",
+  "fixture_type": "negative",
+  "datasets": {
+    "ADAE": {
+      "_placeholder_": "x",
+      "AEDUR": "value"
+    },
+    "AE": {
+      "_placeholder_": "x"
+    }
+  },
+  "expected": {
+    "fires": false,
+    "rows": []
+  },
+  "notes": "auto-seeded (+1 ref ds); 2 leaf op(s): exists,not_exists (should not fire)",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "ADAE": "OCCURRENCE DATA STRUCTURE"
+    }
+  }
+}

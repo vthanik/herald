@@ -247,3 +247,192 @@ test_that("format_duration_secs rounds to 2 dp", {
   d <- as.difftime(1.23456, units = "secs")
   expect_equal(format_duration_secs(d), 1.23)
 })
+
+# ---- report-html.R: uncovered branches ------------------------------------
+
+test_that("write_report_html shows skipped refs cell in header meta", {
+  # Build a result that has skipped references so n_skipped > 0 in header
+  r <- mk_result_fixture()
+  # Inject skipped_refs with one dataset entry
+  r$skipped_refs <- list(
+    datasets = list(
+      DM = list(rule_ids = c("CG0001", "CG0002"), hint = "Provide DM dataset")
+    ),
+    dictionaries = list()
+  )
+  p <- withr::local_tempfile(fileext = ".html")
+  write_report_html(r, p)
+  html <- paste(readLines(p, warn = FALSE), collapse = "\n")
+  expect_true(grepl("Skipped", html))
+})
+
+test_that("write_report_html renders skipped refs section with dict entries", {
+  r <- mk_result_fixture()
+  r$skipped_refs <- list(
+    datasets = list(
+      AE = list(rule_ids = c("CG0100"), hint = "Provide AE dataset")
+    ),
+    dictionaries = list(
+      MedDRA = list(rule_ids = c("CG0200"), hint = "Provide MedDRA dictionary")
+    )
+  )
+  p <- withr::local_tempfile(fileext = ".html")
+  write_report_html(r, p)
+  html <- paste(readLines(p, warn = FALSE), collapse = "\n")
+  expect_true(grepl("Missing reference data", html))
+  expect_true(grepl("MedDRA", html))
+  expect_true(grepl("Dictionary", html))
+})
+
+test_that("write_report_html truncates details at 2000 rows with notice", {
+  # Build result with > 2000 findings rows
+  big_findings <- tibble::tibble(
+    rule_id = rep("CORE-000001", 2005L),
+    authority = rep("CDISC", 2005L),
+    standard = rep("SDTM-IG", 2005L),
+    severity = rep("Low", 2005L),
+    status = rep("fired", 2005L),
+    dataset = rep("AE", 2005L),
+    variable = rep("AETERM", 2005L),
+    row = seq_len(2005L),
+    value = rep("x", 2005L),
+    expected = rep(NA_character_, 2005L),
+    message = rep("msg", 2005L),
+    source_url = rep(NA_character_, 2005L),
+    p21_id_equivalent = rep(NA_character_, 2005L),
+    license = rep(NA_character_, 2005L)
+  )
+  r <- mk_result_fixture(findings = big_findings)
+  p <- withr::local_tempfile(fileext = ".html")
+  write_report_html(r, p)
+  html <- paste(readLines(p, warn = FALSE), collapse = "\n")
+  expect_true(grepl("additional findings omitted", html))
+})
+
+test_that(".html_tab_issues renders empty rule list row with dash", {
+  # Pass a counts list with empty by_rule so top_rows = dash row
+  counts <- list(
+    by_severity = c(Reject = 1L, High = 0L, Medium = 0L, Low = 0L),
+    by_rule = c(),  # empty named integer
+    by_status = c(fired = 1L),
+    by_dataset = c()
+  )
+  out <- herald:::.html_tab_issues(counts, n_fired = 1L, n_adv = 0L)
+  expect_true(grepl("&mdash;", out))
+})
+
+test_that(".html_tab_details returns no-findings row for zero-row data.frame", {
+  findings <- data.frame(
+    rule_id = character(),
+    severity = character(),
+    status = character(),
+    dataset = character(),
+    variable = character(),
+    row = integer(),
+    value = character(),
+    message = character(),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::.html_tab_details(findings)
+  expect_true(grepl("No findings to report", out))
+})
+
+test_that(".html_tab_rules renders no-rules row for empty data frame", {
+  rules_df <- data.frame(
+    id = character(),
+    severity = character(),
+    authority = character(),
+    standard = character(),
+    fired_n = integer(),
+    advisory_n = integer(),
+    message = character(),
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::.html_tab_rules(rules_df)
+  expect_true(grepl("No rules in the applied catalog", out))
+})
+
+test_that(".html_tab_rules includes source link when source_url present", {
+  rules_df <- data.frame(
+    id = "CORE-000001",
+    severity = "Low",
+    authority = "CDISC",
+    standard = "SDTM-IG",
+    fired_n = 0L,
+    advisory_n = 0L,
+    source_url = "https://example.com/rule/1",
+    message = "test rule",
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::.html_tab_rules(rules_df)
+  expect_true(grepl("href=", out))
+  expect_true(grepl("source", out))
+})
+
+test_that(".html_tab_rules uses dash when source_url is NA", {
+  rules_df <- data.frame(
+    id = "CORE-000001",
+    severity = "Low",
+    authority = "CDISC",
+    standard = "SDTM-IG",
+    fired_n = 0L,
+    advisory_n = 0L,
+    source_url = NA_character_,
+    message = "test rule",
+    stringsAsFactors = FALSE
+  )
+  out <- herald:::.html_tab_rules(rules_df)
+  expect_true(grepl("&mdash;", out))
+})
+
+test_that(".na_blank returns empty string for length-0 input", {
+  out <- herald:::.na_blank(character(0L))
+  expect_equal(out, "")
+})
+
+test_that(".fmt_int returns '0' for NA", {
+  expect_equal(herald:::.fmt_int(NA_integer_), "0")
+})
+
+test_that(".fmt_int returns '0' for length-0 input", {
+  expect_equal(herald:::.fmt_int(integer(0L)), "0")
+})
+
+test_that(".fmt_row returns dash for NA", {
+  expect_equal(herald:::.fmt_row(NA_integer_), "&mdash;")
+})
+
+test_that(".fmt_row returns dash for length-0 input", {
+  expect_equal(herald:::.fmt_row(integer(0L)), "&mdash;")
+})
+
+test_that(".source_link returns dash for empty string url", {
+  expect_equal(herald:::.source_link(""), "&mdash;")
+})
+
+test_that(".source_link returns dash for NULL", {
+  expect_equal(herald:::.source_link(NULL), "&mdash;")
+})
+
+test_that(".source_link returns anchor for valid url", {
+  out <- herald:::.source_link("https://example.com")
+  expect_true(grepl("<a href=", out))
+})
+
+test_that(".html_skipped_refs returns empty string for non-list input", {
+  out <- herald:::.html_skipped_refs("not_a_list")
+  expect_equal(out, "")
+})
+
+test_that(".html_skipped_refs returns empty string when both entries empty", {
+  out <- herald:::.html_skipped_refs(list(datasets = list(), dictionaries = list()))
+  expect_equal(out, "")
+})
+
+test_that("write_report_html sets custom title when provided", {
+  r <- mk_result_fixture()
+  p <- withr::local_tempfile(fileext = ".html")
+  write_report_html(r, p, title = "My Custom Title")
+  html <- paste(readLines(p, warn = FALSE), collapse = "\n")
+  expect_true(grepl("My Custom Title", html))
+})

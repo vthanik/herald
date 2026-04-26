@@ -181,3 +181,69 @@ test_that(".nci_evs_url_for errors on bad version string", {
     class = "herald_error_input"
   )
 })
+
+test_that(".download_and_cache returns early (verbose) when file already exists", {
+  dest <- withr::local_tempdir(pattern = "ct-dac-verbose-")
+  rds <- file.path(dest, "sdtm-ct-2024-01-01.rds")
+  saveRDS(list(), rds)
+  # quiet = FALSE exercises the cli_inform "Using cached" branch (line 244)
+  expect_no_error(
+    suppressMessages(
+      herald:::.download_and_cache(
+        url = "https://example.com/not-real.txt",
+        rds_path = rds,
+        fetch_ext = ".txt",
+        parser = identity,
+        parser_info = list(),
+        manifest_entry = list(package = "sdtm", version = "2024-01-01"),
+        force = FALSE,
+        quiet = FALSE,
+        dest = dest
+      )
+    )
+  )
+})
+
+test_that(".parse_nci_evs_txt handles extensible=YES codelist", {
+  txt <- paste(
+    "Code\tCodelist Code\tCodelist Extensible (Yes/No)\tCodelist Name\tCDISC Submission Value\tCDISC Synonym(s)\tCDISC Definition\tNCI Preferred Term",
+    "C99999\t\tYes\tExtensible List\tMYCL\t\tAn extensible codelist.\tMy Codelist",
+    "C11111\tC99999\tYes\tExtensible List\tVAL1\tV1\tFirst value.\tFirst",
+    sep = "\n"
+  )
+  tmp <- withr::local_tempfile(fileext = ".txt")
+  writeLines(txt, tmp)
+  ct <- herald:::.parse_nci_evs_txt(
+    tmp,
+    package = "sdtm",
+    release_date = "2024-06-01",
+    source_url = "https://example/ext.txt"
+  )
+  expect_true(ct[["MYCL"]]$extensible)
+  expect_equal(attr(ct, "package"), "sdtm")
+  expect_equal(attr(ct, "source_url"), "https://example/ext.txt")
+  expect_equal(attr(ct, "release_date"), "2024-06-01")
+})
+
+test_that(".nci_evs_index_for builds the correct base URL", {
+  url <- herald:::.nci_evs_index_for("adam")
+  expect_match(url, "ADAM$")
+  expect_match(url, "evs.nci.nih.gov")
+})
+
+test_that("available_ct_releases() with remote error still returns local results", {
+  # include_remote=TRUE but with bad timeout -- remote fails.
+  # The error is caught, NULL is returned by tryCatch, and local results remain.
+  base <- withr::local_tempdir(pattern = "ct-remote-null-")
+  inner <- file.path(base, "R", "herald")
+  dir.create(inner, recursive = TRUE)
+  withr::with_envvar(
+    c(R_USER_CACHE_DIR = base),
+    {
+      result <- suppressWarnings(
+        available_ct_releases("adam", include_remote = TRUE, timeout = 1L)
+      )
+      expect_s3_class(result, "tbl_df")
+    }
+  )
+})

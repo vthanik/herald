@@ -69,7 +69,8 @@
     "soc_code",
     "drug",
     "code",
-    "preferred_name"
+    "preferred_name",
+    "unii"
   )
   make <- function(name) {
     tbl <- as.data.frame(

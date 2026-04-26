@@ -1,0 +1,20 @@
+{
+  "rule_id": "CORE-000880",
+  "fixture_type": "positive",
+  "datasets": {
+    "BS": {
+      "BSPDUR": "xx-xx"
+    }
+  },
+  "expected": {
+    "fires": true,
+    "rows": 1
+  },
+  "notes": "auto-seeded; 2 leaf op(s): non_empty,contains",
+  "authored": "auto-seed@4",
+  "spec": {
+    "class_map": {
+      "BS": "FINDINGS"
+    }
+  }
+}

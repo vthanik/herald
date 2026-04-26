@@ -278,3 +278,141 @@ test_that("scan_folder_datasets returns empty json_files when no JSON files pres
   expect_equal(length(result$json_files), 0L)
   expect_equal(length(result$xpt_files), 1L)
 })
+
+# ---- load_folder_datasets_filtered -----------------------------------------
+
+test_that("load_folder_datasets_filtered errors when no files of requested format", {
+  tmp <- withr::local_tempdir()
+  writeLines('{"clinicalData": {}}', file.path(tmp, "dm.json"))
+  expect_error(
+    herald:::load_folder_datasets_filtered(tmp, format = "xpt"),
+    class = "herald_error_io"
+  )
+})
+
+test_that("load_folder_datasets_filtered errors when requested dataset not found", {
+  tmp <- withr::local_tempdir()
+  adsl_xpt <- file.path(tmp, "adsl.xpt")
+  adsl_df <- data.frame(
+    STUDYID = "X001",
+    USUBJID = "X001-001",
+    stringsAsFactors = FALSE
+  )
+  herald::write_xpt(adsl_df, adsl_xpt)
+  expect_error(
+    herald:::load_folder_datasets_filtered(tmp, datasets = c("NONEXIST"), format = "xpt"),
+    class = "herald_error_io"
+  )
+})
+
+test_that("load_folder_datasets_filtered returns named list for valid XPT", {
+  tmp <- withr::local_tempdir()
+  adsl_xpt <- file.path(tmp, "adsl.xpt")
+  adsl_df <- data.frame(
+    STUDYID = "X001",
+    USUBJID = "X001-001",
+    stringsAsFactors = FALSE
+  )
+  herald::write_xpt(adsl_df, adsl_xpt)
+  result <- herald:::load_folder_datasets_filtered(tmp, format = "xpt")
+  expect_type(result, "list")
+  expect_named(result, "ADSL")
+})
+
+test_that("load_folder_datasets_filtered filters by requested dataset names", {
+  tmp <- withr::local_tempdir()
+  adsl_df <- data.frame(
+    STUDYID = "X001",
+    USUBJID = "X001-001",
+    stringsAsFactors = FALSE
+  )
+  advs_df <- data.frame(
+    STUDYID = "X001",
+    USUBJID = "X001-001",
+    PARAMCD = "SYSBP",
+    AVAL = 120,
+    stringsAsFactors = FALSE
+  )
+  herald::write_xpt(adsl_df, file.path(tmp, "adsl.xpt"))
+  herald::write_xpt(advs_df, file.path(tmp, "advs.xpt"))
+  result <- herald:::load_folder_datasets_filtered(
+    tmp,
+    datasets = "ADSL",
+    format = "xpt"
+  )
+  expect_named(result, "ADSL")
+  expect_length(result, 1L)
+})
+
+test_that("load_folder_datasets_filtered errors on nonexistent directory", {
+  expect_error(
+    herald:::load_folder_datasets_filtered("/no/such/dir", format = "xpt"),
+    class = "herald_error_io"
+  )
+})
+
+# ---- load_folder_datasets --------------------------------------------------
+
+test_that("load_folder_datasets errors when directory has no dataset files", {
+  tmp <- withr::local_tempdir()
+  expect_error(
+    herald:::load_folder_datasets(tmp),
+    class = "herald_error_io"
+  )
+})
+
+test_that("load_folder_datasets returns named list of data frames for XPT dir", {
+  tmp <- withr::local_tempdir()
+  adsl_df <- data.frame(
+    STUDYID = "X001",
+    USUBJID = "X001-001",
+    stringsAsFactors = FALSE
+  )
+  herald::write_xpt(adsl_df, file.path(tmp, "adsl.xpt"))
+  result <- herald:::load_folder_datasets(tmp)
+  expect_type(result, "list")
+  expect_true("ADSL" %in% names(result))
+  expect_true(is.data.frame(result[["ADSL"]]))
+})
+
+test_that("load_folder_datasets errors on nonexistent directory", {
+  expect_error(
+    herald:::load_folder_datasets("/no/such/path"),
+    class = "herald_error_io"
+  )
+})
+
+# ---- detect_adam_classes: edge cases ----------------------------------------
+
+test_that("detect_adam_classes handles unnamed list (non-symbol) with fallback names", {
+  df1 <- data.frame(X = 1:3)
+  result <- herald::detect_adam_classes(list(DATA1 = df1))
+  expect_named(result, "DATA1")
+})
+
+test_that(
+  "detect_adam_classes with herald_spec missing dataset column returns character(0)",
+  {
+    spec <- readRDS(system.file("extdata", "adam-spec.rds", package = "herald"))
+    spec2 <- spec
+    spec2$var_spec[["dataset"]] <- NULL
+    result <- herald::detect_adam_classes(spec2)
+    expect_equal(result, character(0L))
+  }
+)
+
+# ---- detect_standard: single SEND pattern (not enough for send) -----------
+
+test_that("detect_standard returns unknown with only 1 SEND-like domain", {
+  # "BW" alone is in send_patterns but not in adam/sdtm -- expect unknown
+  expect_equal(herald:::detect_standard(c("BW")), "unknown")
+})
+
+# ---- extract_standard_from_spec: all-NA standards column ------------------
+
+test_that("extract_standard_from_spec handles all-NA standards column", {
+  spec <- readRDS(system.file("extdata", "adam-spec.rds", package = "herald"))
+  spec2 <- spec
+  spec2$ds_spec[["standard"]] <- NA_character_
+  expect_null(herald:::extract_standard_from_spec(spec2))
+})

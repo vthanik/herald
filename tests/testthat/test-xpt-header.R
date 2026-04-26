@@ -815,3 +815,142 @@ test_that("parse_obs_header returns NA for V5 OBS header", {
   result <- herald:::parse_obs_header(hdr_str, version = 5L)
   expect_true(is.na(result))
 })
+
+# -- read_record_str -----------------------------------------------------------
+
+test_that("read_record_str reads exactly 80 bytes as string", {
+  # Build a known 80-byte record and write it, then read back
+  payload <- herald:::str_to_raw(
+    "HEADER RECORD*******OBS     HEADER RECORD!!!!!!!000000000000000000000000000000",
+    80L
+  )
+  tmp <- withr::local_tempfile()
+  writeBin(payload, tmp)
+  con <- file(tmp, "rb")
+  on.exit(close(con), add = TRUE)
+  result <- herald:::read_record_str(con)
+  expect_type(result, "character")
+  expect_equal(nchar(result), 80L)
+  expect_true(grepl("OBS", result, fixed = TRUE))
+})
+
+# -- parse_member_section: NULL on EOF ----------------------------------------
+
+test_that("parse_member_section returns NULL on EOF", {
+  tmp <- withr::local_tempfile()
+  writeBin(raw(0L), tmp)
+  con <- file(tmp, "rb")
+  on.exit(close(con), add = TRUE)
+  result <- herald:::parse_member_section(con, version = 5L)
+  expect_null(result)
+})
+
+test_that("parse_member_section returns NULL when record has no MEMBER marker", {
+  # Write an OBS record (no MEMBER/MEMBV8) to trick parse_member_section
+  payload <- herald:::str_to_raw(
+    "HEADER RECORD*******OBS     HEADER RECORD!!!!!!!000000000000000000000000000000",
+    80L
+  )
+  tmp <- withr::local_tempfile()
+  writeBin(payload, tmp)
+  con <- file(tmp, "rb")
+  on.exit(close(con), add = TRUE)
+  result <- herald:::parse_member_section(con, version = 5L)
+  expect_null(result)
+})
+
+# -- parse_format_str: no dot, no trailing digits -----------------------------
+
+test_that("parse_format_str handles pure-alpha format with no dot and no digits", {
+  # e.g. a bare name like "CHAR" -- no dot, no trailing digits
+  result <- herald:::parse_format_str("CHAR")
+  expect_equal(result$name, "CHAR")
+  expect_equal(result$length, 0L)
+  expect_equal(result$decimals, 0L)
+})
+
+test_that("parse_format_str handles dot-only format (no width, no decimals)", {
+  # Formats like "." -- dot at position 1, nothing before or after
+  result <- herald:::parse_format_str(".")
+  expect_equal(result$length, 0L)
+  expect_equal(result$decimals, 0L)
+})
+
+# -- build_namestr: V8 extended name area -------------------------------------
+
+test_that("build_namestr V8 includes 32-byte extended name in trailer", {
+  long_name <- "LONGVARIABLENAME01"
+  result <- herald:::build_namestr(
+    vartype = 2L,
+    var_length = 20L,
+    varnum = 1L,
+    name = long_name,
+    version = 8L
+  )
+  # V8 namestr = 88 (fixed) + 32 (ext name) + 2+2+2 (lengths) + 14 (pad) = 140
+  expect_equal(length(result), 140L)
+  # Extended name occupies bytes 89:120 -- check it contains our name
+  ext_name_bytes <- result[89:120]
+  ext_name_str <- trimws(rawToChar(ext_name_bytes))
+  expect_equal(ext_name_str, long_name)
+})
+
+test_that("build_namestr V8 encodes label_len and fmtname_len in trailer", {
+  label <- "A label for the variable"
+  fmt <- "DATE9."
+  result <- herald:::build_namestr(
+    vartype = 1L,
+    var_length = 8L,
+    varnum = 1L,
+    name = "AGE",
+    label = label,
+    format_name = fmt,
+    version = 8L
+  )
+  expect_equal(length(result), 140L)
+  label_len <- herald:::s370fpib2_to_int(result[121:122])
+  expect_equal(label_len, nchar(label))
+  fmtname_len <- herald:::s370fpib2_to_int(result[123:124])
+  expect_equal(fmtname_len, nchar(fmt))
+})
+
+# -- build_label_extension: V5 returns empty raw ------------------------------
+
+test_that("build_label_extension returns empty raw for V5", {
+  df <- data.frame(X = 1L, stringsAsFactors = FALSE)
+  attr(df$X, "label") <- "Some label"
+  result <- herald:::build_label_extension(df, version = 5L)
+  expect_equal(length(result), 0L)
+})
+
+test_that("build_label_extension returns empty raw when no columns need extension", {
+  df <- data.frame(X = 1L, Y = "a", stringsAsFactors = FALSE)
+  attr(df$X, "label") <- "Short"
+  attr(df$Y, "label") <- "Also short"
+  result <- herald:::build_label_extension(df, version = 8L)
+  expect_equal(length(result), 0L)
+})
+
+test_that("build_label_extension LABELV9 chunk: long fmt and infmt both included", {
+  # Trigger LABELV9 by having format > 8 chars
+  df <- data.frame(DTC = "2024-01-01", stringsAsFactors = FALSE)
+  attr(df$DTC, "label") <- "Datetime field"
+  attr(df$DTC, "format.sas") <- "DATETIME26.6"
+  attr(df$DTC, "informat.sas") <- "DATETIME26.6"
+  result <- herald:::build_label_extension(df, version = 8L)
+  # Should be non-empty and padded to 80-byte boundary
+  expect_true(length(result) > 0L)
+  expect_equal(length(result) %% 80L, 0L)
+  hdr_str <- rawToChar(result[1:80])
+  expect_true(grepl("LABELV9", hdr_str, fixed = TRUE))
+})
+
+test_that("build_label_extension LABELV8: no long format, only long label", {
+  df <- data.frame(STUDYID = "S1", stringsAsFactors = FALSE)
+  attr(df$STUDYID, "label") <- strrep("X", 45L)  # > 40 chars
+  result <- herald:::build_label_extension(df, version = 8L)
+  expect_true(length(result) > 0L)
+  expect_equal(length(result) %% 80L, 0L)
+  hdr_str <- rawToChar(result[1:80])
+  expect_true(grepl("LABELV8", hdr_str, fixed = TRUE))
+})

@@ -181,3 +181,50 @@ test_that("read_json handles zero-row dataset with numeric columns", {
   expect_equal(nrow(result), 0L)
   expect_true("AGE" %in% names(result))
 })
+
+test_that("read_json restores format.sas from displayFormat field", {
+  # Construct a Dataset-JSON that includes a displayFormat on a column.
+  json_content <- jsonlite::toJSON(
+    list(
+      datasetJSONVersion = "1.1",
+      name = "LB",
+      label = "Lab Results",
+      columns = list(
+        list(
+          name = "LBDTC",
+          label = "Date/Time",
+          dataType = "string",
+          displayFormat = "DATE9."
+        )
+      ),
+      rows = list(list("2024-01-01"))
+    ),
+    auto_unbox = TRUE
+  )
+
+  tmp <- withr::local_tempfile(fileext = ".json")
+  writeLines(json_content, tmp)
+
+  result <- read_json(tmp)
+  expect_equal(attr(result$LBDTC, "format.sas"), "DATE9.")
+})
+
+test_that("read_json preserves dataset_name even when ds label is empty", {
+  # Covers the nzchar(ds_label) branch where label is absent/empty.
+  json_content <- jsonlite::toJSON(
+    list(
+      datasetJSONVersion = "1.1",
+      name = "AE",
+      columns = list(list(name = "AETERM", dataType = "string")),
+      rows = list(list("Headache"))
+    ),
+    auto_unbox = TRUE
+  )
+
+  tmp <- withr::local_tempfile(fileext = ".json")
+  writeLines(json_content, tmp)
+
+  result <- read_json(tmp)
+  expect_equal(attr(result, "dataset_name"), "AE")
+  expect_null(attr(result, "label")) # no label set since it was absent
+})

@@ -520,6 +520,16 @@ test_that(".builder_codelist_metadata returns data.frame with coded_value column
   expect_true("M" %in% result$coded_value)
 })
 
+test_that(".builder_codelist_metadata handles external codelist (no items) -- direct", {
+  def <- .make_empty_codelist_define()
+  if (is.null(def)) skip("xml2 not available")
+  result <- herald:::.builder_codelist_metadata(def)
+  expect_true(is.data.frame(result))
+  expect_equal(nrow(result), 1L)
+  expect_true(result$is_external)
+  expect_equal(result$coded_value, "")
+})
+
 test_that(".builder_standards_metadata returns data.frame with name column", {
   def <- .make_minimal_define()
   if (is.null(def)) skip("xml2 not available")

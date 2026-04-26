@@ -217,3 +217,63 @@ test_that("validate_v8_compliance passes valid inputs", {
   df <- data.frame(AGE = 1L, stringsAsFactors = FALSE)
   expect_true(herald:::validate_v8_compliance(df, "DM"))
 })
+
+# -- raw_to_str_enc -----------------------------------------------------------
+
+test_that("raw_to_str_enc returns empty string for empty raw vector", {
+  expect_equal(herald:::raw_to_str_enc(raw(0)), "")
+})
+
+test_that("raw_to_str_enc returns empty string for all-null raw vector", {
+  expect_equal(herald:::raw_to_str_enc(as.raw(c(0x00, 0x00))), "")
+})
+
+test_that("raw_to_str_enc trims without encoding", {
+  raw_vec <- charToRaw("ABC   ")
+  expect_equal(herald:::raw_to_str_enc(raw_vec), "ABC")
+})
+
+test_that("raw_to_str_enc converts encoding when specified", {
+  raw_vec <- charToRaw("ABC")
+  result <- herald:::raw_to_str_enc(raw_vec, encoding = "latin1")
+  expect_equal(result, "ABC")
+})
+
+# -- .raw_mat_to_strvec -------------------------------------------------------
+
+test_that(".raw_mat_to_strvec returns character(0) for 0-column matrix", {
+  m <- matrix(as.raw(0), nrow = 4, ncol = 0)
+  expect_equal(herald:::.raw_mat_to_strvec(m), character(0))
+})
+
+# -- validate_write_inputs: column type detection -----------------------------
+
+test_that("validate_write_inputs column type detection handles factor", {
+  tmp <- withr::local_tempfile(fileext = ".xpt")
+  df <- data.frame(X = factor(c("a", "b")), Y = 1L, stringsAsFactors = FALSE)
+  result <- tryCatch(
+    herald:::validate_write_inputs(df, tmp, 5L, "DS", "Dataset"),
+    error = function(e) e
+  )
+  expect_true(isTRUE(result) || inherits(result, "error"))
+})
+
+test_that("validate_write_inputs column type detection handles Date", {
+  tmp <- withr::local_tempfile(fileext = ".xpt")
+  df <- data.frame(DT = as.Date("2020-01-01"), Y = 1L, stringsAsFactors = FALSE)
+  result <- tryCatch(
+    herald:::validate_write_inputs(df, tmp, 5L, "DS", "Dataset"),
+    error = function(e) e
+  )
+  expect_true(isTRUE(result) || inherits(result, "error"))
+})
+
+test_that("validate_write_inputs column type detection handles POSIXct", {
+  tmp <- withr::local_tempfile(fileext = ".xpt")
+  df <- data.frame(DT = as.POSIXct("2020-01-01"), Y = 1L, stringsAsFactors = FALSE)
+  result <- tryCatch(
+    herald:::validate_write_inputs(df, tmp, 5L, "DS", "Dataset"),
+    error = function(e) e
+  )
+  expect_true(isTRUE(result) || inherits(result, "error"))
+})

@@ -158,8 +158,11 @@ walk_tree <- function(node, data, ctx = NULL) {
     return(rep(NA, nrow(data)))
   }
 
-  # Strip 'operator' key; remaining keys are op args.
-  args <- node[setdiff(names(node), "operator")]
+  # Strip meta-keys that are not op arguments.
+  # 'operator' names the function; 'expand' is the indexed-column spec
+  # consumed by .expand_indexed() before this point. Both are always
+  # present on leaf nodes but neither is a parameter of any op_ function.
+  args <- node[setdiff(names(node), c("operator", "expand"))]
 
   # SDTM / ADaM `--VAR` wildcard expansion. For each candidate domain
   # prefix (SDTM 2-char, ADaM "AD" prefix -> SDTM parent, SUPP prefix, etc.)
@@ -187,12 +190,31 @@ walk_tree <- function(node, data, ctx = NULL) {
   # $-prefixed cross-reference substitution (e.g. $dm_usubjid -> unique
   # USUBJID values in DM). Unresolved tokens -> NA mask so the reviewer
   # gets an advisory instead of a silent false-pass.
+  #
+  # Guard: exists/not_exists use a "DS.COL" dotted name to check column
+  # PRESENCE in a reference dataset (e.g. exists("AE.AESTDY")). That name
+  # must NOT be resolved to the column's values -- the op handles it
+  # directly via .ref_ds(). Shield it from substitution here, then restore.
+  .DOTTED_DS_COL <- "^[A-Z][A-Z0-9]{1,7}\\.[A-Z][A-Z0-9_]*$"
+  shielded_name <- NULL
+  if (op_name %in% c("exists", "not_exists") &&
+      is.character(args$name) && length(args$name) == 1L &&
+      grepl(.DOTTED_DS_COL, args$name)) {
+    shielded_name <- args$name
+    args$name <- args$name  # keep but mark it; substitution skips it below
+  }
   if (!is.null(ctx) && !is.null(ctx$crossrefs)) {
-    sub <- substitute_crossrefs(args, ctx)
+    args_for_sub <- if (!is.null(shielded_name)) {
+      tmp <- args; tmp$name <- NULL; tmp
+    } else {
+      args
+    }
+    sub <- substitute_crossrefs(args_for_sub, ctx)
     if (isTRUE(sub$unresolved)) {
       return(rep(NA, nrow(data)))
     }
     args <- sub$args
+    if (!is.null(shielded_name)) args$name <- shielded_name
   }
 
   tryCatch(

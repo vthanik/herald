@@ -319,3 +319,51 @@ test_that("substitute_crossrefs skips args with no $ or dotted refs", {
   expect_false(out$unresolved)
   expect_equal(out$args$value, "S1-001")
 })
+
+# -- build_crossrefs closures with spec ----------------------------------------
+
+test_that("$domain_label closure returns character(0) when ctx has no current_dataset", {
+  cr <- herald:::build_crossrefs(list(), spec = NULL)
+  ctx <- herald:::new_herald_ctx()
+  ctx$datasets <- list()
+  ctx$current_dataset <- NULL
+  result <- cr[["$domain_label"]](ctx)
+  expect_equal(result, character(0))
+})
+
+test_that("build_crossrefs with spec creates $required_variables closure", {
+  ds_spec <- data.frame(dataset = "DM", class = "FINDINGS", stringsAsFactors = FALSE)
+  var_spec <- data.frame(dataset = "DM", variable = "USUBJID", required = TRUE,
+                         stringsAsFactors = FALSE)
+  spec <- structure(list(ds_spec = ds_spec, var_spec = var_spec),
+                    class = c("herald_spec", "list"))
+  cr <- herald:::build_crossrefs(list(DM = data.frame(x = 1L)), spec = spec)
+  expect_true(is.function(cr[["$required_variables"]]))
+  ctx <- herald:::new_herald_ctx()
+  ctx$datasets <- list(DM = data.frame(x = 1L))
+  ctx$spec <- spec
+  ctx$current_dataset <- "DM"
+  result <- cr[["$required_variables"]](ctx)
+  expect_true(is.character(result))
+})
+
+test_that("build_crossrefs with spec creates $allowed_variables closure", {
+  ds_spec <- data.frame(dataset = "DM", class = "FINDINGS", stringsAsFactors = FALSE)
+  var_spec <- data.frame(dataset = "DM", variable = "USUBJID", allowed = TRUE,
+                         stringsAsFactors = FALSE)
+  spec <- structure(list(ds_spec = ds_spec, var_spec = var_spec),
+                    class = c("herald_spec", "list"))
+  cr <- herald:::build_crossrefs(list(DM = data.frame(x = 1L)), spec = spec)
+  expect_true(is.function(cr[["$allowed_variables"]]))
+  ctx <- herald:::new_herald_ctx()
+  ctx$datasets <- list(DM = data.frame(x = 1L))
+  ctx$spec <- spec
+  ctx$current_dataset <- "DM"
+  result <- cr[["$allowed_variables"]](ctx)
+  expect_true(is.character(result))
+})
+
+test_that(".log_unresolved returns invisibly NULL when ctx is NULL", {
+  result <- herald:::.log_unresolved(NULL, "$token")
+  expect_null(result)
+})

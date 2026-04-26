@@ -537,6 +537,384 @@ test_that("op_key_not_unique_per_define returns NA when all key cols absent", {
 
 # -- validate() define parameter wiring -------------------------------------
 
+# -- print.herald_define: singular branches ------------------------------------
+
+test_that("print.herald_define shows singular forms for 1 dataset/variable/key", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  # minimal define with exactly 1 dataset, 1 variable, 1 key-var mapping
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S.TEST">
+    <MetaDataVersion OID="MDV.1" Name="MDV" DefineVersion="2.1.0">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No"
+                    def:KeyVariables="IT.DM.STUDYID">
+        <ItemRef ItemOID="IT.DM.STUDYID" Mandatory="Yes" OrderNumber="1"/>
+      </ItemGroupDef>
+      <ItemDef OID="IT.DM.STUDYID" Name="STUDYID" DataType="text" Length="12"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- herald:::read_define_xml(tmp)
+  out <- capture.output(print(d))
+  # 1 dataset -> "dataset" not "datasets"
+  expect_true(any(grepl("1 dataset,", out)))
+  # 1 variable -> "variable" not "variables"
+  expect_true(any(grepl("1 variable,", out)))
+  # 1 key-var mapping -> "mapping" not "mappings"
+  expect_true(any(grepl("1 key-var mapping", out)))
+})
+
+test_that("print.herald_define shows LOINC version when present", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  write_test_define(tmp, include_loinc_std = TRUE)
+  d <- herald:::read_define_xml(tmp)
+  out <- capture.output(print(d))
+  expect_true(any(grepl("LOINC version", out)))
+  expect_true(any(grepl("2.73", out)))
+})
+
+# -- .define_extract_study: no GlobalVariables / empty children ---------------
+
+test_that(".define_extract_study returns empty data.frame when no GlobalVariables", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  expect_s3_class(d$study, "data.frame")
+  expect_equal(nrow(d$study), 0L)
+})
+
+test_that(".define_extract_study returns empty data.frame when GlobalVariables has no children", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <GlobalVariables/>
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  expect_equal(nrow(d$study), 0L)
+})
+
+# -- .define_extract_datasets: empty ItemGroupDef (no namespace) ---------------
+
+test_that(".define_extract_datasets returns empty data.frame when no ItemGroupDef", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemDef OID="IT.DM.STUDYID" Name="STUDYID" DataType="text"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  expect_equal(nrow(d$ds_spec), 0L)
+})
+
+test_that(".define_extract_datasets uses def:Label fallback when no Description", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  # ItemGroupDef has no Description child -- triggers the def:Label fallback path
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No" def:Label="Demog"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  expect_equal(d$ds_spec$dataset, "DM")
+  # label is whatever xml2 returns for def:Label (may be "Demog" or "")
+  expect_true(is.character(d$ds_spec$label))
+})
+
+# -- .define_extract_variables: OID convention fallback -----------------------
+
+test_that(".define_extract_variables falls back to OID convention when no ItemRef mapping", {
+  # ItemDef has OID "IT.AE.AETERM" -- no ItemRef to map it, so dataset
+  # comes from OID split: parts[2] = "AE"
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.AE" Name="AE" Repeating="Yes"/>
+      <ItemDef OID="IT.AE.AETERM" Name="AETERM" DataType="text" Length="200"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  expect_true("AETERM" %in% d$var_spec$variable)
+  aeterm_row <- d$var_spec[d$var_spec$variable == "AETERM", ]
+  expect_equal(aeterm_row$dataset, "AE")
+})
+
+test_that(".define_extract_variables returns empty data.frame when no ItemDef", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  expect_equal(nrow(d$var_spec), 0L)
+  expect_true("dataset" %in% names(d$var_spec))
+})
+
+# -- .define_extract_codelists: EnumeratedItem and codelist with no items ------
+
+test_that(".define_extract_codelists handles EnumeratedItem (no Decode)", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No"/>
+      <CodeList OID="CL.NY" Name="NY" DataType="text">
+        <EnumeratedItem CodedValue="Y"/>
+        <EnumeratedItem CodedValue="N"/>
+      </CodeList>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  expect_s3_class(d$codelist, "data.frame")
+  expect_equal(d$codelist$term, c("Y", "N"))
+  # EnumeratedItem has no Decode, so decoded_value should be ""
+  expect_true(all(d$codelist$decoded_value == ""))
+})
+
+test_that(".define_extract_codelists returns NULL when CodeList has no items", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No"/>
+      <CodeList OID="CL.EMPTY" Name="Empty" DataType="text"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  expect_null(d$codelist)
+})
+
+# -- .define_extract_arm: ResultDisplay with no AnalysisResult children -------
+
+test_that(".define_extract_arm returns NULL results when ResultDisplay has no AnalysisResult", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1"
+     xmlns:arm="http://www.cdisc.org/ns/arm/v1.0">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <arm:AnalysisResultDisplays>
+        <arm:ResultDisplay OID="RD.001" Name="Table 1"/>
+      </arm:AnalysisResultDisplays>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  expect_s3_class(d$arm_displays, "data.frame")
+  expect_equal(nrow(d$arm_displays), 1L)
+  # No AnalysisResult children -> results is NULL
+  expect_null(d$arm_results)
+})
+
+# -- .define_extract_key_vars: def:KeyVariable child elements -----------------
+
+test_that(".define_extract_key_vars handles def:KeyVariable child elements", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  # Use KeyVariable child elements instead of KeyVariables attribute
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No">
+        <def:KeyVariable OID="IT.DM.STUDYID"/>
+        <def:KeyVariable OID="IT.DM.USUBJID"/>
+      </ItemGroupDef>
+      <ItemDef OID="IT.DM.STUDYID" Name="STUDYID" DataType="text" Length="12"/>
+      <ItemDef OID="IT.DM.USUBJID" Name="USUBJID" DataType="text" Length="40"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  kv <- d$key_vars[["DM"]]
+  expect_false(is.null(kv))
+  expect_true("STUDYID" %in% kv)
+  expect_true("USUBJID" %in% kv)
+})
+
+test_that(".define_extract_key_vars skips datasets with empty names", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No"
+                    def:KeyVariables="IT.DM.STUDYID">
+        <ItemRef ItemOID="IT.DM.STUDYID" Mandatory="Yes" OrderNumber="1"/>
+      </ItemGroupDef>
+      <ItemDef OID="IT.DM.STUDYID" Name="STUDYID" DataType="text" Length="12"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  # Only DM should be present; no empty-name entry
+  expect_true("DM" %in% names(d$key_vars))
+})
+
+# -- .define_extract_loinc_version: ExternalCodeList path ----------------------
+
+test_that(".define_extract_loinc_version finds LOINC via ExternalCodeList", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No"/>
+      <CodeList OID="CL.LOINC" Name="LOINC" DataType="text">
+        <def:ExternalCodeList Dictionary="LOINC" Version="2.74"/>
+      </CodeList>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  expect_equal(d$loinc_version, "2.74")
+})
+
+# -- .define_extract_variables: no label TranslatedText -----------------------
+
+test_that(".define_extract_variables handles ItemDef with no Description", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No">
+        <ItemRef ItemOID="IT.DM.AGE" Mandatory="Yes" OrderNumber="1"/>
+      </ItemGroupDef>
+      <ItemDef OID="IT.DM.AGE" Name="AGE" DataType="integer" Length="4"/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  age_row <- d$var_spec[d$var_spec$variable == "AGE", ]
+  expect_equal(nrow(age_row), 1L)
+  expect_equal(age_row$label, "")
+})
+
+# -- .define_extract_variables: DisplayFormat attribute -----------------------
+
+test_that(".define_extract_variables extracts def:DisplayFormat attribute", {
+  tmp <- tempfile(fileext = ".xml")
+  withr::defer(unlink(tmp))
+  writeLines(
+    '<?xml version="1.0" encoding="UTF-8"?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3"
+     xmlns:def="http://www.cdisc.org/ns/def/v2.1">
+  <Study OID="S1">
+    <MetaDataVersion OID="MDV.1" Name="MDV">
+      <ItemGroupDef OID="IG.DM" Name="DM" Repeating="No">
+        <ItemRef ItemOID="IT.DM.AGE" Mandatory="Yes" OrderNumber="1"/>
+      </ItemGroupDef>
+      <ItemDef OID="IT.DM.AGE" Name="AGE" DataType="integer" Length="4"
+               def:DisplayFormat="F8."/>
+    </MetaDataVersion>
+  </Study>
+</ODM>',
+    tmp
+  )
+  d <- suppressWarnings(herald:::read_define_xml(tmp))
+  age_row <- d$var_spec[d$var_spec$variable == "AGE", ]
+  expect_equal(age_row$format, "F8.")
+})
+
 test_that("validate() accepts define parameter without error", {
   skip_if(
     !file.exists(

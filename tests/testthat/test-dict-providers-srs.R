@@ -252,3 +252,66 @@ test_that(".resolve_srs_rds returns path when specific version is in cache", {
     }
   )
 })
+
+test_that("srs_provider() uses version arg when stub has no version attribute", {
+  # Exercises the 'else version' branch on line 126 of dict-providers-srs.R
+  stub <- tibble::tibble(UNII = "R16CO5Y76E", PT = "ASPIRIN")
+  # No attr(stub, "version") set intentionally
+  .with_srs_cache(stub, {
+    p <- srs_provider("latest-cache")
+    expect_s3_class(p, "herald_dict_provider")
+    # version should fall back to the cache-resolved version string
+    expect_type(p$version, "character")
+    expect_true(nzchar(p$version))
+  })
+})
+
+test_that("srs_provider() contains() uses fallback 'PT' for unknown field", {
+  # Exercises the default arm of the switch() in contains_fn
+  stub <- tibble::tibble(UNII = "R16CO5Y76E", PT = "ASPIRIN")
+  attr(stub, "version") <- "2026-04-15"
+  .with_srs_cache(stub, {
+    p <- srs_provider("latest-cache")
+    # 'rxcui' is not a known field -> switch default -> 'PT'
+    result <- p$contains("ASPIRIN", field = "rxcui")
+    expect_true(result)
+    result_miss <- p$contains("NOTHERE", field = "rxcui")
+    expect_false(result_miss)
+  })
+})
+
+test_that("srs_provider() lookup() uses fallback 'PT' for unknown field", {
+  # Exercises the default arm of the switch() in lookup_fn
+  stub <- tibble::tibble(UNII = "R16CO5Y76E", PT = "ASPIRIN")
+  attr(stub, "version") <- "2026-04-15"
+  .with_srs_cache(stub, {
+    p <- srs_provider("latest-cache")
+    # unknown field -> default to 'PT'
+    hit <- p$lookup("ASPIRIN", field = "rxcui")
+    expect_equal(nrow(hit), 1L)
+    expect_null(p$lookup("NOTHERE", field = "rxcui"))
+  })
+})
+
+test_that("download_srs() creates dest dir when it does not exist", {
+  # Exercises dir.create(dest, recursive = TRUE) branch in download_srs()
+  # We intercept before the network call by pointing to a path that does
+  # not exist and verifying the dir is created up to the point where
+  # .download_and_cache() would be called. We do this by stubbing the
+  # download attempt: pass a bogus url and catch the resulting error.
+  base <- withr::local_tempdir(pattern = "srs-newdir-")
+  new_dest <- file.path(base, "nested", "path")
+  expect_false(dir.exists(new_dest))
+  # The network call will fail (no internet needed) -- we only care that
+  # the directory is created before that happens.
+  suppressWarnings(tryCatch(
+    download_srs(
+      version = "2026-01-01",
+      dest = new_dest,
+      timeout = 1L,
+      quiet = TRUE
+    ),
+    error = function(e) NULL
+  ))
+  expect_true(dir.exists(new_dest))
+})

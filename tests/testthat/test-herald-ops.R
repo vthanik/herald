@@ -183,3 +183,60 @@ test_that(".caller_source_file() returns NA or a character string", {
   result <- herald:::.caller_source_file()
   expect_true(is.na(result) || is.character(result))
 })
+
+# ---- .op_meta() full tibble shape and types ----------------------------------
+
+test_that(".op_meta() tibble has correct column types", {
+  meta <- herald:::.op_meta()
+  expect_type(meta$name, "character")
+  expect_type(meta$kind, "character")
+  expect_type(meta$summary, "character")
+  expect_type(meta$cost_hint, "character")
+  expect_type(meta$column_arg, "character")
+  expect_type(meta$returns_na_ok, "logical")
+  expect_type(meta$registered_in, "character")
+})
+
+test_that(".op_meta() full tibble includes temporal operators", {
+  meta <- herald:::.op_meta()
+  expect_true("is_complete_date" %in% meta$name)
+  expect_true("date_greater_than" %in% meta$name)
+  expect_true("value_not_iso8601" %in% meta$name)
+})
+
+test_that(".op_meta() for a temporal op returns correct kind", {
+  m <- herald:::.op_meta("is_complete_date")
+  expect_equal(m$kind, "temporal")
+  expect_equal(m$column_arg, "name")
+  expect_true(m$returns_na_ok)
+})
+
+test_that(".op_meta() for value_not_iso8601 has examples field (list type)", {
+  m <- herald:::.op_meta("value_not_iso8601")
+  expect_type(m$examples, "list")
+})
+
+# ---- .register_op() with registered_in auto-fill ----------------------------
+
+test_that(".register_op() sets registered_in (NA or non-empty string)", {
+  test_fn <- function(data, ctx, ...) rep(TRUE, nrow(data))
+  herald:::.register_op(
+    "__test_op_source_detect__",
+    test_fn,
+    meta = list(kind = "test", summary = "source detect test")
+  )
+  m <- herald:::.op_meta("__test_op_source_detect__")
+  expect_true(is.na(m$registered_in) || nzchar(m$registered_in))
+})
+
+# ---- .ref_ds() records rule_id in missing_refs --------------------------------
+
+test_that(".ref_ds() records the current rule_id in missing_refs", {
+  ctx <- mk_ctx(
+    datasets = list(AE = data.frame(x = 1L)),
+    current_rule_id = "RULE-999"
+  )
+  herald:::.ref_ds(ctx, "DM")
+  expect_true("DM" %in% names(ctx$missing_refs$datasets))
+  expect_true("RULE-999" %in% ctx$missing_refs$datasets[["DM"]])
+})

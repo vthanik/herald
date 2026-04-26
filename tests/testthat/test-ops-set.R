@@ -482,3 +482,172 @@ test_that(".lookup_codelist returns NULL when not found", {
   ct <- list(SEX = list(codelist_code = "C66731", codelist_name = "Sex"))
   expect_null(herald:::.lookup_codelist(ct, "NOTEXIST"))
 })
+
+# =============================================================================
+# op_value_in_codelist -- additional branch coverage
+# =============================================================================
+
+# Helper: fake CT provider that returns all-NA for any contains() call.
+# Used to exercise the "codelist not found in provider" advisory path.
+.mk_ct_ctx_na_provider <- function() {
+  provider <- herald:::new_dict_provider(
+    name = "ct-sdtm",
+    version = "test",
+    source = "test",
+    license = "CC-BY-4.0",
+    fields = character(0L),
+    contains = function(value, field = NULL, ignore_case = FALSE) {
+      rep(NA, length(value))
+    }
+  )
+  ctx <- herald:::new_herald_ctx()
+  ctx$dict <- list("ct-sdtm" = provider)
+  ctx
+}
+
+# Helper: fake CT provider that always returns TRUE (all values in codelist).
+.mk_ct_ctx_all_pass <- function() {
+  provider <- herald:::new_dict_provider(
+    name = "ct-sdtm",
+    version = "test",
+    source = "test",
+    license = "CC-BY-4.0",
+    fields = c("NY"),
+    contains = function(value, field = NULL, ignore_case = FALSE) {
+      rep(TRUE, length(value))
+    }
+  )
+  ctx <- herald:::new_herald_ctx()
+  ctx$dict <- list("ct-sdtm" = provider)
+  ctx
+}
+
+test_that("op_value_in_codelist returns logical(0) for 0-row dataset", {
+  d <- data.frame(FL = character(0L), stringsAsFactors = FALSE)
+  ctx <- .mk_ct_ctx_all_pass()
+  out <- herald:::op_value_in_codelist(d, ctx, name = "FL", codelist = "NY")
+  expect_equal(out, logical(0L))
+})
+
+test_that("op_value_in_codelist returns NA when column absent", {
+  d <- data.frame(OTHER = "Y", stringsAsFactors = FALSE)
+  ctx <- .mk_ct_ctx_all_pass()
+  out <- herald:::op_value_in_codelist(d, ctx, name = "FL", codelist = "NY")
+  expect_equal(out, NA)
+})
+
+test_that("op_value_in_codelist returns NA advisory when CT provider not found", {
+  # Use a non-existent package name so ct_provider() throws and the op
+  # falls back to recording a missing_ref and returning NA.
+  d <- data.frame(FL = "Y", stringsAsFactors = FALSE)
+  ctx <- herald:::new_herald_ctx() # no dict, ct_provider("nopackage") will fail
+  herald:::.init_missing_refs(ctx)
+  ctx$current_rule_id <- "SDTMIG-CG0001"
+  out <- herald:::op_value_in_codelist(
+    d, ctx,
+    name = "FL",
+    codelist = "NY",
+    package = "nopackage_that_does_not_exist"
+  )
+  expect_true(is.na(out[[1L]]))
+  expect_true("ct-nopackage_that_does_not_exist" %in%
+    names(ctx$missing_refs$dictionaries))
+})
+
+test_that("op_value_in_codelist returns NA advisory when codelist not in provider", {
+  # Provider is found but returns all-NA for the codelist lookup.
+  d <- data.frame(FL = "Y", stringsAsFactors = FALSE)
+  ctx <- .mk_ct_ctx_na_provider()
+  out <- herald:::op_value_in_codelist(d, ctx, name = "FL", codelist = "NONEXISTENT_CL")
+  expect_true(all(is.na(out)))
+})
+
+test_that("op_value_in_codelist extensible = TRUE always passes non-empty rows", {
+  d <- data.frame(
+    FL = c("Y", "SPONSOR_TERM", "ANOTHER"),
+    stringsAsFactors = FALSE
+  )
+  ctx <- .mk_ct_ctx_na_provider()
+  # Even though provider returns all-NA, extensible = TRUE should
+  # override so non-empty values all pass (FALSE = does not fire).
+  # But since NA provider returns all NA, the codelist-not-found
+  # branch fires first. Use the all-pass provider instead.
+  ctx2 <- .mk_ct_ctx_all_pass()
+  out <- herald:::op_value_in_codelist(
+    d, ctx2,
+    name = "FL",
+    codelist = "NY",
+    extensible = TRUE
+  )
+  expect_equal(out, c(FALSE, FALSE, FALSE))
+})
+
+# =============================================================================
+# op_value_in_srs_table -- additional branch coverage
+# =============================================================================
+
+test_that("op_value_in_srs_table returns logical(0) for 0-row dataset", {
+  d <- data.frame(TSVAL = character(0L), stringsAsFactors = FALSE)
+  ctx <- .mk_fake_srs_ctx("ASPIRIN", character())
+  out <- herald:::op_value_in_srs_table(d, ctx, name = "TSVAL")
+  expect_equal(out, logical(0L))
+})
+
+test_that("op_value_in_srs_table returns NA advisory when SRS contains() returns all-NA", {
+  # Provider registered but contains() returns all-NA (unknown field/structure).
+  provider <- herald:::new_dict_provider(
+    name = "srs",
+    version = "test",
+    source = "test",
+    license = "public",
+    fields = c("preferred_name"),
+    contains = function(value, field = "preferred_name", ignore_case = FALSE) {
+      rep(NA, length(value))
+    }
+  )
+  ctx <- herald:::new_herald_ctx()
+  ctx$dict <- list(srs = provider)
+  d <- data.frame(TSVAL = "ASPIRIN", stringsAsFactors = FALSE)
+  out <- herald:::op_value_in_srs_table(d, ctx, name = "TSVAL")
+  expect_true(all(is.na(out)))
+})
+
+# =============================================================================
+# op_value_in_dictionary -- additional branch coverage
+# =============================================================================
+
+test_that("op_value_in_dictionary returns logical(0) for 0-row dataset", {
+  d <- data.frame(AEDECOD = character(0L), stringsAsFactors = FALSE)
+  ctx <- .mk_fake_meddra_ctx("Headache")
+  out <- herald:::op_value_in_dictionary(
+    d, ctx,
+    name = "AEDECOD",
+    dict_name = "meddra",
+    field = "pt"
+  )
+  expect_equal(out, logical(0L))
+})
+
+test_that("op_value_in_dictionary returns NA advisory when contains() returns all-NA", {
+  # Provider registered but contains() returns all-NA (field not supported).
+  provider <- herald:::new_dict_provider(
+    name = "meddra",
+    version = "test",
+    source = "test",
+    license = "MSSO",
+    fields = c("pt"),
+    contains = function(value, field = "pt", ignore_case = FALSE) {
+      rep(NA, length(value))
+    }
+  )
+  ctx <- herald:::new_herald_ctx()
+  ctx$dict <- list(meddra = provider)
+  d <- data.frame(AEDECOD = "Headache", stringsAsFactors = FALSE)
+  out <- herald:::op_value_in_dictionary(
+    d, ctx,
+    name = "AEDECOD",
+    dict_name = "meddra",
+    field = "pt"
+  )
+  expect_true(all(is.na(out)))
+})

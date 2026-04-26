@@ -103,3 +103,143 @@ test_that("op_value_not_iso8601 returns NA on absent column", {
 test_that("op_value_not_iso8601 is registered", {
   expect_true("value_not_iso8601" %in% herald:::.list_ops())
 })
+
+# ---- null column branches ----------------------------------------------------
+
+test_that("op_is_complete_date returns all-NA for absent column", {
+  d <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  result <- herald:::op_is_complete_date(d, NULL, "DTC")
+  expect_equal(result, c(NA, NA))
+})
+
+test_that("op_invalid_date returns all-NA for absent column", {
+  d <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  result <- herald:::op_invalid_date(d, NULL, "DTC")
+  expect_equal(result, c(NA, NA))
+})
+
+test_that("op_invalid_duration returns all-NA for absent column", {
+  d <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  result <- herald:::op_invalid_duration(d, NULL, "DUR")
+  expect_equal(result, c(NA, NA))
+})
+
+# ---- .parse_sdtm_dt out-of-range bounds --------------------------------------
+
+test_that(".parse_sdtm_dt returns NA for out-of-range month", {
+  result <- herald:::.parse_sdtm_dt("2024-13-01")
+  expect_true(is.na(result))
+})
+
+test_that(".parse_sdtm_dt returns NA for out-of-range day", {
+  result <- herald:::.parse_sdtm_dt("2024-01-32")
+  expect_true(is.na(result))
+})
+
+test_that(".parse_sdtm_dt returns NA for out-of-range hour", {
+  result <- herald:::.parse_sdtm_dt("2024-01-15T25:00:00")
+  expect_true(is.na(result))
+})
+
+test_that(".parse_sdtm_dt returns NA for out-of-range minute", {
+  result <- herald:::.parse_sdtm_dt("2024-01-15T12:61:00")
+  expect_true(is.na(result))
+})
+
+test_that(".parse_sdtm_dt returns NA for out-of-range second (>60)", {
+  result <- herald:::.parse_sdtm_dt("2024-01-15T12:00:61")
+  expect_true(is.na(result))
+})
+
+test_that(".parse_sdtm_dt returns NA for non-matching string", {
+  result <- herald:::.parse_sdtm_dt("not-a-date-at-all")
+  expect_true(is.na(result))
+})
+
+test_that(".parse_sdtm_dt returns NA for empty string", {
+  result <- herald:::.parse_sdtm_dt("")
+  expect_true(is.na(result))
+})
+
+test_that(".parse_sdtm_dt returns NA for NA input", {
+  result <- herald:::.parse_sdtm_dt(NA_character_)
+  expect_true(is.na(result))
+})
+
+test_that(".parse_sdtm_dt parses year-only to year floor", {
+  result <- herald:::.parse_sdtm_dt("2024")
+  expect_false(is.na(result))
+  expect_equal(format(result, "%Y-%m-%d", tz = "UTC"), "2024-01-01")
+})
+
+test_that(".parse_sdtm_dt parses YYYY-MM to month floor", {
+  result <- herald:::.parse_sdtm_dt("2024-06")
+  expect_false(is.na(result))
+  expect_equal(format(result, "%Y-%m-%d", tz = "UTC"), "2024-06-01")
+})
+
+# ---- .date_cmp multi-element value path --------------------------------------
+
+test_that(".date_cmp with multi-element value returns all NA", {
+  d <- data.frame(
+    DTC = c("2024-01-15", "2024-06-01"),
+    stringsAsFactors = FALSE
+  )
+  result <- herald:::op_date_greater_than(d, NULL, "DTC", c("2024-01-01", "2024-05-01"))
+  expect_equal(result, c(NA, NA))
+})
+
+# ---- date_cmp null column ----------------------------------------------------
+
+test_that("op_date_greater_than returns all NA for absent column", {
+  d <- data.frame(USUBJID = c("S1", "S2"), stringsAsFactors = FALSE)
+  result <- herald:::op_date_greater_than(d, NULL, "DTC", "2024-01-01")
+  expect_equal(result, c(NA, NA))
+})
+
+# ---- remaining date comparison ops -------------------------------------------
+
+test_that("op_date_equal_to matches exact date", {
+  d <- data.frame(
+    A = c("2024-06-01", "2024-06-02", "2024-06-01"),
+    stringsAsFactors = FALSE
+  )
+  result <- herald:::op_date_equal_to(d, NULL, "A", "2024-06-01")
+  expect_equal(result, c(TRUE, FALSE, TRUE))
+})
+
+test_that("op_date_not_equal_to inverts equality", {
+  d <- data.frame(
+    A = c("2024-06-01", "2024-06-02", NA_character_),
+    stringsAsFactors = FALSE
+  )
+  result <- herald:::op_date_not_equal_to(d, NULL, "A", "2024-06-01")
+  expect_equal(result, c(FALSE, TRUE, NA))
+})
+
+test_that("op_date_greater_than_or_equal_to covers boundary", {
+  d <- data.frame(
+    A = c("2024-06-01", "2024-06-02", "2024-05-31"),
+    stringsAsFactors = FALSE
+  )
+  result <- herald:::op_date_greater_than_or_equal_to(d, NULL, "A", "2024-06-01")
+  expect_equal(result, c(TRUE, TRUE, FALSE))
+})
+
+test_that("op_date_less_than fires correctly", {
+  d <- data.frame(
+    A = c("2024-05-31", "2024-06-01", "2024-06-02"),
+    stringsAsFactors = FALSE
+  )
+  result <- herald:::op_date_less_than(d, NULL, "A", "2024-06-01")
+  expect_equal(result, c(TRUE, FALSE, FALSE))
+})
+
+test_that("op_date_equal_to returns NA when lhs is not parseable", {
+  d <- data.frame(
+    A = c("not-a-date", "2024-06-01"),
+    stringsAsFactors = FALSE
+  )
+  result <- herald:::op_date_equal_to(d, NULL, "A", "2024-06-01")
+  expect_equal(result, c(NA, TRUE))
+})

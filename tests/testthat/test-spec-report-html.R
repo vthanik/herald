@@ -181,3 +181,58 @@ test_that(".spec_findings_rows HTML-escapes special characters", {
   expect_false(grepl("<script>", out))
   expect_true(grepl("&lt;script&gt;", out))
 })
+
+# -- write_spec_report_html: fired and advisory counts in output ---------------
+
+test_that("write_spec_report_html reflects fired/advisory counts in output", {
+  path <- withr::local_tempfile(fileext = ".html")
+  findings <- .make_spec_findings(
+    status = c("fired", "fired", "advisory"),
+    severity = c("Reject", "High", "Medium"),
+    rule_id = c("SPEC-001", "SPEC-002", "SPEC-003"),
+    dataset = c("DM", "AE", "LB"),
+    variable = c("USUBJID", "AETERM", "LBTEST"),
+    row = c(1L, 2L, 3L),
+    value = c("bad", "", ""),
+    message = c("msg1", "msg2", "msg3")
+  )
+  herald:::write_spec_report_html(findings, path)
+  content <- paste(readLines(path, warn = FALSE), collapse = "\n")
+  # Both fired IDs should appear
+  expect_true(grepl("SPEC-001", content))
+  expect_true(grepl("SPEC-002", content))
+  # Advisory is not in fired rows
+  expect_false(grepl("SPEC-003", content))
+})
+
+test_that("write_spec_report_html renders dataset-only location (no variable)", {
+  path <- withr::local_tempfile(fileext = ".html")
+  findings <- .make_spec_findings(
+    status = "fired",
+    severity = "High",
+    dataset = "DM",
+    variable = "",
+    row = NA_integer_
+  )
+  herald:::write_spec_report_html(findings, path)
+  content <- paste(readLines(path, warn = FALSE), collapse = "\n")
+  expect_true(grepl("DM", content))
+})
+
+test_that("write_spec_report_html counts N_FIRED and N_ADVISORY placeholders", {
+  path <- withr::local_tempfile(fileext = ".html")
+  findings <- .make_spec_findings(
+    status = c("fired", "advisory"),
+    severity = c("Reject", "Medium"),
+    rule_id = c("SPEC-001", "SPEC-002"),
+    dataset = c("DM", "AE"),
+    variable = c("USUBJID", "AETERM"),
+    row = c(1L, NA_integer_),
+    value = c("bad", ""),
+    message = c("fired msg", "advisory msg")
+  )
+  herald:::write_spec_report_html(findings, path)
+  content <- paste(readLines(path, warn = FALSE), collapse = "\n")
+  # No unresolved placeholders remain
+  expect_false(grepl("[{][{][A-Z_]+[}][}]", content))
+})

@@ -183,3 +183,147 @@ test_that("check_file_exists errors for missing file", {
     class = "herald_error_file"
   )
 })
+
+# ---- herald_warning ---------------------------------------------------------
+
+test_that("herald_warning signals herald_warning class", {
+  expect_warning(
+    herald:::herald_warning("Something iffy."),
+    class = "herald_warning"
+  )
+})
+
+test_that("herald_warning does not error when called", {
+  expect_no_error(
+    withCallingHandlers(
+      herald:::herald_warning("Watch out."),
+      warning = function(w) invokeRestart("muffleWarning")
+    )
+  )
+})
+
+# ---- herald_error_file: path metadata ---------------------------------------
+
+test_that("herald_error_file stores path in condition", {
+  err <- tryCatch(
+    herald:::herald_error_file("File missing.", path = "/data/dm.xpt"),
+    error = function(e) e
+  )
+  expect_s3_class(err, "herald_error_file")
+  expect_equal(err$path, "/data/dm.xpt")
+})
+
+# ---- herald_error_spec: slot metadata ---------------------------------------
+
+test_that("herald_error_spec stores slot in condition", {
+  err <- tryCatch(
+    herald:::herald_error_spec("Bad ds_spec.", slot = "ds_spec"),
+    error = function(e) e
+  )
+  expect_s3_class(err, "herald_error_spec")
+  expect_equal(err$slot, "ds_spec")
+})
+
+# ---- herald_error_rule: rule_id metadata ------------------------------------
+
+test_that("herald_error_rule stores rule_id in condition", {
+  err <- tryCatch(
+    herald:::herald_error_rule("Bad rule.", rule_id = "ADaM-001"),
+    error = function(e) e
+  )
+  expect_s3_class(err, "herald_error_rule")
+  expect_equal(err$rule_id, "ADaM-001")
+})
+
+# ---- check_herald_spec -------------------------------------------------------
+
+test_that("check_herald_spec passes for a herald_spec", {
+  spec <- herald::as_herald_spec(
+    ds_spec = data.frame(
+      dataset = "DM",
+      label = "Demo",
+      stringsAsFactors = FALSE
+    ),
+    var_spec = data.frame(
+      dataset = "DM",
+      variable = "STUDYID",
+      stringsAsFactors = FALSE
+    )
+  )
+  expect_no_error(herald:::check_herald_spec(spec))
+})
+
+test_that("check_herald_spec errors on non-spec input", {
+  expect_error(
+    herald:::check_herald_spec(list(x = 1)),
+    class = "herald_error_input"
+  )
+})
+
+test_that("check_herald_spec errors on data frame input", {
+  expect_error(
+    herald:::check_herald_spec(data.frame(x = 1)),
+    class = "herald_error_input"
+  )
+})
+
+# ---- check_herald_validation -------------------------------------------------
+
+test_that("check_herald_validation errors on non-validation input", {
+  expect_error(
+    herald:::check_herald_validation(list(x = 1)),
+    class = "herald_error_input"
+  )
+})
+
+test_that("check_herald_validation errors on NULL", {
+  expect_error(
+    herald:::check_herald_validation(NULL),
+    class = "herald_error_input"
+  )
+})
+
+# ---- check_scalar_int: additional edge cases --------------------------------
+
+test_that("check_scalar_int errors on non-integer numeric (float)", {
+  expect_error(herald:::check_scalar_int(1.5), class = "herald_error_input")
+})
+
+test_that("check_scalar_int errors on negative value", {
+  expect_error(herald:::check_scalar_int(-3L), class = "herald_error_input")
+})
+
+test_that("check_scalar_int errors on length-2 vector", {
+  expect_error(
+    herald:::check_scalar_int(c(1L, 2L)),
+    class = "herald_error_input"
+  )
+})
+
+test_that("check_scalar_int errors on character input", {
+  expect_error(
+    herald:::check_scalar_int("1"),
+    class = "herald_error_input"
+  )
+})
+
+# ---- check_dir_exists -------------------------------------------------------
+
+test_that("check_dir_exists passes for an existing directory", {
+  tmp <- withr::local_tempdir()
+  expect_no_error(herald:::check_dir_exists(tmp))
+})
+
+test_that("check_dir_exists errors for a nonexistent directory", {
+  expect_error(
+    herald:::check_dir_exists("/nonexistent/path/abc123"),
+    class = "herald_error_file"
+  )
+})
+
+test_that("check_dir_exists errors on non-string input", {
+  expect_error(
+    herald:::check_dir_exists(42L),
+    class = "herald_error_input"
+  )
+})
