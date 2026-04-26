@@ -186,6 +186,16 @@ reference:
       - print.herald_spec
       - summary.herald_result
 
+  - title: "Operators"
+    desc: >
+      The validation engine dispatches each rule to a registered operator -- a
+      vectorised predicate with signature `op(data, ctx, ...)`. Operators are
+      referenced by name from rule YAML and resolved at run time. The full
+      sortable catalog of built-in operators, their kinds, arg schemas, and
+      cost hints lives in the operator catalog vignette.
+    contents:
+      - herald-ops-catalog
+
   - title: "Built-in Pilot Data"
     desc: >
       Small pilot datasets and specs bundled under `inst/extdata` for
