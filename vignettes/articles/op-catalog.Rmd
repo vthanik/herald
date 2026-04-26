@@ -1,0 +1,116 @@
+---
+title: "Operator catalog"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Operator catalog}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", echo = FALSE)
+library(herald)
+```
+
+An **operator** (or "op") is the executable kernel of a herald rule. Each
+op is a function `op_<name>(data, ctx, ...)` that returns a logical vector
+the same length as `nrow(data)`: `TRUE` means the record fires the rule
+(a finding is emitted), `FALSE` means the record passes, and `NA` means
+the check is indeterminate (recorded as advisory). Rules in the YAML
+corpus refer to ops by name; the validation engine looks them up in the
+operator registry at run time.
+
+The catalog below is generated at build time from the live registry.
+For the broader picture of how ops fit into the layer stack, see the
+[Architecture](../architecture.html) article. For guidance on writing
+new ops, see the operator pattern notes in `.claude/rules/r-code.md`.
+
+Ops are grouped by `kind`:
+
+- **set** -- membership / codelist / domain checks.
+- **compare** -- value comparisons against a literal or expression.
+- **existence** -- presence, absence, completeness, uniqueness.
+- **temporal** -- date / datetime ordering and ISO 8601 conformance.
+- **cross** -- references another dataset via `.ref_ds(ctx, name)`.
+- **string** -- regex, length, casing, whitespace.
+
+```{r build-catalog}
+ops <- herald:::.op_meta()
+
+# Format the arg_schema for each op into a compact one-line summary so
+# rule authors can see required arg names at a glance. We pull from
+# .OP_META directly because the tibble form drops the nested arg list.
+.format_args <- function(name) {
+  meta <- herald:::.op_meta(name)
+  schema <- meta$arg_schema
+  if (length(schema) == 0L) {
+    return("")
+  }
+  parts <- vapply(names(schema), function(arg) {
+    spec <- schema[[arg]]
+    type <- spec$type %||% "any"
+    required <- isTRUE(spec$required)
+    if (required) {
+      sprintf("%s:%s*", arg, type)
+    } else {
+      sprintf("%s:%s", arg, type)
+    }
+  }, character(1))
+  paste(parts, collapse = ", ")
+}
+
+ops$args <- vapply(ops$name, .format_args, character(1))
+
+# Replace NA kind with "(unset)" so grouping does not drop those rows.
+ops$kind <- ifelse(is.na(ops$kind) | !nzchar(ops$kind), "(unset)", ops$kind)
+```
+
+Total registered operators: **`r nrow(ops)`**.
+
+```{r render-catalog, results = "asis"}
+kind_order <- c(
+  "set", "compare", "existence", "temporal", "cross", "string", "spec",
+  "(unset)"
+)
+present_kinds <- intersect(kind_order, sort(unique(ops$kind)))
+extra_kinds <- setdiff(sort(unique(ops$kind)), present_kinds)
+all_kinds <- c(present_kinds, extra_kinds)
+
+for (k in all_kinds) {
+  rows <- ops[ops$kind == k, , drop = FALSE]
+  if (nrow(rows) == 0L) next
+  cat(sprintf("\n\n## %s (%d)\n\n", k, nrow(rows)))
+  tbl <- data.frame(
+    name = rows$name,
+    summary = rows$summary,
+    args = rows$args,
+    cost = rows$cost_hint,
+    `NA ok` = ifelse(rows$returns_na_ok, "yes", "no"),
+    check.names = FALSE,
+    stringsAsFactors = FALSE
+  )
+  print(knitr::kable(tbl, format = "html", row.names = FALSE))
+}
+```
+
+## Reading the table
+
+- **name** -- the registry key referenced by rule YAML under the `op:`
+  field.
+- **summary** -- one-line description from the op's registration block.
+- **args** -- argument names with type tags. A trailing `*` marks a
+  required argument; argless ops show an empty cell.
+- **cost** -- big-O hint for the inner loop. `O(n)` ops scale linearly
+  with dataset rows; `O(n*m)` ops scan a reference dataset.
+- **NA ok** -- whether the op emits `NA` (advisory) under indeterminate
+  conditions such as a missing required argument or a partially typed
+  column.
+
+## See also
+
+- [Architecture](../architecture.html) -- where operators sit in the
+  layer stack.
+- [Rule coverage](../rule-coverage.html) -- how compiled rules are
+  scoped to ops and standards.
+- `vignette("validation-reporting", package = "herald")` -- end-to-end
+  validation flow.
