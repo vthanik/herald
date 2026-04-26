@@ -81,25 +81,37 @@
 #'   }
 #'
 #' @examples
-#' # Minimal in-memory run
+#' dm   <- readRDS(system.file("extdata", "dm.rds",        package = "herald"))
+#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
+#' dm   <- apply_spec(dm, spec)
+#'
 #' ae <- data.frame(
 #'   STUDYID = "PILOT01", DOMAIN = "AE", USUBJID = "PILOT01-001-001",
 #'   AETERM  = "HEADACHE", AEDECOD = "Headache",
 #'   stringsAsFactors = FALSE
 #' )
-#' result <- validate(files = ae, quiet = TRUE)
-#' result
 #'
-#' # Inspect findings
-#' result$findings[result$findings$status == "fired", ]
+#' # ---- Single data frame -- name inferred from variable symbol (dm -> "DM") ----
+#' r1 <- validate(files = dm, quiet = TRUE)
+#' r1$findings[r1$findings$status == "fired", c("rule_id", "message")]
+#' r1$datasets_checked
 #'
-#' # From disk -- apply_spec first for full attribute coverage
-#' dm   <- readRDS(system.file("extdata", "dm.rds",        package = "herald"))
-#' spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
-#' dm   <- apply_spec(dm, spec)
-#' # single data frame -- name inferred from variable (dm -> "DM")
-#' result2 <- validate(files = dm, quiet = TRUE)
-#' result2
+#' # ---- Named list of data frames -- multiple domains in one run --------
+#' r2 <- validate(files = list(DM = dm, AE = ae), quiet = TRUE)
+#' r2$datasets_checked
+#' r2$profile   # "sdtm", "adam", or "send"
+#'
+#' # ---- Filter to specific rules or standards ---------------------------
+#' r3 <- validate(files = dm, standards = "SDTM-IG", quiet = TRUE)
+#' r4 <- validate(files = dm, rules = c("CG0001", "CG0002"), quiet = TRUE)
+#'
+#' # ---- Override severity at run time (exact rule ID, regex, or category) ----
+#' r5 <- validate(
+#'   files = dm,
+#'   severity_map = c("CG0006" = "Reject", "^CG00[0-9]{2}$" = "High"),
+#'   quiet = TRUE
+#' )
+#' r5$findings[!is.na(r5$findings$severity_override), "severity_override"]
 #'
 #' @seealso [apply_spec()] to stamp CDISC attributes before validation,
 #'   [write_report_html()] / [write_report_xlsx()] to render results,

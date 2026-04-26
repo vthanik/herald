@@ -33,8 +33,23 @@ dm  <- apply_spec(dm, spec)
 out <- tempfile(fileext = ".parquet")
 on.exit(unlink(out))
 write_parquet(dm, out, label = "Demographics")
+
+# ---- Read back and inspect dataset-level attributes ------------------
 dm2 <- read_parquet(out)
-attr(dm2, "label")
+attr(dm2, "label")           # "Demographics"
+attr(dm2, "dataset_name")    # "DM"
+
+# ---- Column-level attributes preserved in key/value metadata ---------
+attr(dm2$USUBJID, "label")
+attr(dm2$USUBJID, "sas.length")
+
+# ---- Read then apply_spec to stamp from spec (supplement any missing attrs) ----
+dm3 <- read_parquet(out) |> apply_spec(spec)
+attr(dm3$STUDYID, "label")
+
+# ---- Read then validate ----------------------------------------------
+r <- validate(files = dm2, quiet = TRUE)
+r$datasets_checked
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -30,7 +30,35 @@
 #' dm   <- apply_spec(dm, spec)
 #' file <- tempfile(fileext = ".json")
 #' on.exit(unlink(file))
+#'
+#' # ---- Write with label -- dataset name inferred from variable symbol (dm -> "DM") ----
 #' write_json(dm, file, label = "Demographics")
+#' attr(read_json(file), "dataset_name")   # "DM"
+#'
+#' # ---- Explicit dataset and label overrides ----------------------------
+#' file2 <- tempfile(fileext = ".json")
+#' on.exit(unlink(file2), add = TRUE)
+#' write_json(dm, file2, dataset = "DM", label = "Demographics SDTM")
+#'
+#' # ---- With study OID and metadata reference (for define.xml linkage) ----
+#' file3 <- tempfile(fileext = ".json")
+#' on.exit(unlink(file3), add = TRUE)
+#' write_json(dm, file3,
+#'   dataset             = "DM",
+#'   study_oid           = "STUDY.PILOT01",
+#'   metadata_version_oid = "MDV.1",
+#'   metadata_ref        = "define.xml"
+#' )
+#'
+#' # ---- Plain data frame without prior apply_spec (attributes inferred from variable name) ----
+#' ae <- data.frame(
+#'   STUDYID = "X", DOMAIN = "AE", USUBJID = "X-001",
+#'   stringsAsFactors = FALSE
+#' )
+#' file4 <- tempfile(fileext = ".json")
+#' on.exit(unlink(file4), add = TRUE)
+#' write_json(ae, file4)
+#' attr(read_json(file4), "dataset_name")  # "AE"
 #'
 #' @seealso [read_json()] for reading, [write_xpt()] for XPT I/O.
 #'

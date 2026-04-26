@@ -77,10 +77,28 @@
 #' dm   <- apply_spec(dm, spec)
 #' tmp  <- tempfile(fileext = ".xpt")
 #' on.exit(unlink(tmp))
+#'
+#' # ---- V5 (FDA standard) -- dataset name inferred from variable symbol (dm -> "DM") ----
 #' write_xpt(dm, tmp)
-#' # dataset name inferred from variable symbol: "DM"
-#' dm2 <- read_xpt(tmp)
-#' attr(dm2, "dataset_name")
+#' attr(read_xpt(tmp), "dataset_name")   # "DM"
+#'
+#' # ---- V8 (extended names up to 32 chars) ------------------------------
+#' tmp8 <- tempfile(fileext = ".xpt")
+#' on.exit(unlink(tmp8), add = TRUE)
+#' write_xpt(dm, tmp8, version = 8L)
+#'
+#' # ---- Explicit dataset name and label overrides -----------------------
+#' tmp3 <- tempfile(fileext = ".xpt")
+#' on.exit(unlink(tmp3), add = TRUE)
+#' write_xpt(dm, tmp3, dataset = "DM", label = "Demographics")
+#' attr(read_xpt(tmp3), "label")
+#'
+#' # ---- Plain data frame (no prior apply_spec) -- name from file stem ----
+#' ae <- data.frame(STUDYID = "X", USUBJID = "X-001", stringsAsFactors = FALSE)
+#' tmp_ae <- tempfile(fileext = ".xpt")
+#' on.exit(unlink(tmp_ae), add = TRUE)
+#' write_xpt(ae, tmp_ae, dataset = "AE", label = "Adverse Events")
+#' attr(read_xpt(tmp_ae), "dataset_name")  # "AE"
 #'
 #' @seealso [read_xpt()] to read, [write_json()], [write_parquet()],
 #'   [convert_dataset()] to convert between formats.

@@ -53,8 +53,26 @@
 #'   '  </Study>',
 #'   '</ODM>'
 #' ), tmp)
+#'
+#' # ---- Parse and inspect dataset metadata ------------------------------
 #' d <- read_define_xml(tmp)
-#' d$ds_spec
+#' d$ds_spec           # data frame: dataset, label
+#' d$var_spec          # data frame: dataset, variable, label, data_type, ...
+#'
+#' # ---- Inspect study-level metadata ------------------------------------
+#' d$study             # attribute/value pairs (StudyName, etc.)
+#'
+#' # ---- Convert to herald_spec for apply_spec / write_define_xml round-trips ----
+#' spec <- as_herald_spec(d$ds_spec, d$var_spec)
+#' is_herald_spec(spec)
+#'
+#' # ---- Pass directly to validate() for Define-XML dependent rules ------
+#' r <- validate(
+#'   files  = list(DM = data.frame(STUDYID = "X", stringsAsFactors = FALSE)),
+#'   define = d,
+#'   quiet  = TRUE
+#' )
+#' r$datasets_checked
 #'
 #' @family spec
 #' @export

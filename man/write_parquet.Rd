@@ -38,7 +38,27 @@ spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
 dm   <- apply_spec(dm, spec)
 out  <- tempfile(fileext = ".parquet")
 on.exit(unlink(out))
+
+# ---- Dataset name inferred from variable symbol (dm -> "DM"), with label ----
 write_parquet(dm, out, label = "Demographics")
+attr(read_parquet(out), "dataset_name")   # "DM"
+
+# ---- Explicit dataset and label overrides ----------------------------
+out2 <- tempfile(fileext = ".parquet")
+on.exit(unlink(out2), add = TRUE)
+write_parquet(dm, out2, dataset = "DM", label = "Demographics SDTM")
+attr(read_parquet(out2), "label")
+
+# ---- Plain data frame (no apply_spec) -- name from variable symbol ----
+ae <- data.frame(STUDYID = "X", USUBJID = "X-001", stringsAsFactors = FALSE)
+out3 <- tempfile(fileext = ".parquet")
+on.exit(unlink(out3), add = TRUE)
+write_parquet(ae, out3, dataset = "AE", label = "Adverse Events")
+
+# ---- Round-trip: write and read back, compare column counts ----------
+write_parquet(dm, out)
+dm_rt <- read_parquet(out)
+identical(names(dm), names(dm_rt))
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -65,14 +65,32 @@ parquet \tab parquet \cr
 dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
 spec <- readRDS(system.file("extdata", "sdtm-spec.rds", package = "herald"))
 dm   <- apply_spec(dm, spec)
+
 xpt  <- tempfile(fileext = ".xpt")
 json <- tempfile(fileext = ".json")
 on.exit(unlink(c(xpt, json)))
 write_xpt(dm, xpt)
+
+# ---- XPT -> Dataset-JSON (format inferred from file extensions) ------
 convert_dataset(xpt, json)
-# round-trip back
-dm2 <- read_json(json)
-attr(dm2, "dataset_name")
+attr(read_json(json), "dataset_name")
+
+# ---- Dataset-JSON -> XPT (reverse direction) -------------------------
+xpt2 <- tempfile(fileext = ".xpt")
+on.exit(unlink(xpt2), add = TRUE)
+convert_dataset(json, xpt2)
+attr(read_xpt(xpt2), "dataset_name")
+
+# ---- Explicit format= override (no extension inference needed) -------
+json2 <- tempfile()           # no extension
+on.exit(unlink(json2), add = TRUE)
+convert_dataset(xpt, json2, from = "xpt", to = "json")
+
+# ---- Override dataset name and label at conversion time --------------
+json3 <- tempfile(fileext = ".json")
+on.exit(unlink(json3), add = TRUE)
+convert_dataset(xpt, json3, dataset = "DM", label = "Demographics")
+attr(read_json(json3), "label")
 
 }
 \seealso{

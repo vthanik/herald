@@ -27,12 +27,29 @@ CI pipelines, diffing between runs, and programmatic processing.
 Requires the \code{jsonlite} package.
 }
 \examples{
-ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
-                  stringsAsFactors = FALSE)
-r   <- validate(files = ae, quiet = TRUE)
-out <- tempfile(fileext = ".json")
-on.exit(unlink(out))
-write_report_json(r, out)
+dm <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+ae <- data.frame(STUDYID = "X", USUBJID = "X-001",
+                 stringsAsFactors = FALSE)
+r  <- validate(files = list(DM = dm, AE = ae), quiet = TRUE)
+
+# ---- Pretty-printed JSON (default) -----------------------------------
+out1 <- tempfile(fileext = ".json")
+on.exit(unlink(out1))
+write_report_json(r, out1)
+file.exists(out1)
+
+# ---- Compact JSON (pretty = FALSE) -- smaller files for CI pipelines ----
+out2 <- tempfile(fileext = ".json")
+on.exit(unlink(out2), add = TRUE)
+write_report_json(r, out2, pretty = FALSE)
+
+# ---- Inspect the written JSON structure ------------------------------
+parsed <- jsonlite::fromJSON(out1)
+names(parsed)
+
+# ---- Filter to fired findings after reading back ---------------------
+findings <- parsed$findings
+if (!is.null(findings)) findings[findings$status == "fired", ]
 
 }
 \seealso{

@@ -16,14 +16,23 @@ is_herald_spec(x)
 Is \code{x} a \code{herald_spec}?
 }
 \examples{
-dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+dm <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
 spec <- as_herald_spec(
   ds_spec  = data.frame(dataset = "DM", stringsAsFactors = FALSE),
   var_spec = data.frame(dataset = "DM", variable = names(dm),
                         stringsAsFactors = FALSE)
 )
+
+# ---- Valid herald_spec -- returns TRUE -------------------------------
 is_herald_spec(spec)
-is_herald_spec(list())
+
+# ---- Plain list -- returns FALSE -------------------------------------
+is_herald_spec(list(ds_spec = data.frame()))
+
+# ---- NULL, data.frame, or character -- all FALSE ---------------------
+is_herald_spec(NULL)
+is_herald_spec(data.frame())
+is_herald_spec("DM")
 
 }
 \seealso{

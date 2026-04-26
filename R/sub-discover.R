@@ -266,9 +266,21 @@ detect_standard <- function(names) {
 #' adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
 #' advs <- readRDS(system.file("extdata", "advs.rds", package = "herald"))
 #' adae <- readRDS(system.file("extdata", "adae.rds", package = "herald"))
+#'
+#' # ---- Infer class from column names of existing data frames -----------
 #' detect_adam_class(names(adsl))  # "ADSL"
 #' detect_adam_class(names(advs))  # "BDS"
 #' detect_adam_class(names(adae))  # "OCCDS"
+#'
+#' # ---- TTE class requires PARAMCD + AVAL + CNSR ------------------------
+#' detect_adam_class(c("USUBJID", "PARAMCD", "AVAL", "CNSR", "EVDTM"))
+#'
+#' # ---- Explicit character vector (e.g. from a spec variable list) ------
+#' detect_adam_class(c("USUBJID", "SAFFL", "ITTFL", "TRTP", "AGE"))  # "ADSL"
+#' detect_adam_class(c("USUBJID", "PARAMCD", "AVAL", "AVISITN"))    # "BDS"
+#'
+#' # ---- Unknown when no identifying variables are present ---------------
+#' detect_adam_class(c("X", "Y", "Z"))  # "unknown"
 #'
 #' @family specification
 #' @export
@@ -325,7 +337,26 @@ detect_adam_class <- function(vars) {
 #' advs <- readRDS(system.file("extdata", "advs.rds", package = "herald"))
 #' adae <- readRDS(system.file("extdata", "adae.rds", package = "herald"))
 #'
+#' # ---- Bare variable names -- dataset names inferred from symbols ------
 #' detect_adam_classes(adsl, advs, adae)
+#'
+#' # ---- Explicit names when variable symbols differ from domain names ----
+#' detect_adam_classes(ADSL = adsl, ADVS = advs, ADAE = adae)
+#'
+#' # ---- Named list of data frames ---------------------------------------
+#' datasets <- list(ADSL = adsl, ADVS = advs, ADAE = adae)
+#' detect_adam_classes(datasets)
+#'
+#' # ---- herald_spec -- reads variable names from var_spec$variable ------
+#' spec <- as_herald_spec(
+#'   ds_spec  = data.frame(dataset = c("ADSL", "ADVS"), stringsAsFactors = FALSE),
+#'   var_spec = data.frame(
+#'     dataset  = c(rep("ADSL", ncol(adsl)), rep("ADVS", ncol(advs))),
+#'     variable = c(names(adsl), names(advs)),
+#'     stringsAsFactors = FALSE
+#'   )
+#' )
+#' detect_adam_classes(spec)
 #'
 #' @family specification
 #' @export

@@ -208,7 +208,8 @@ list_dictionaries <- function(include_global = TRUE, include_cache = TRUE) {
 #' @return An object of class `c("herald_dict_provider", "list")`.
 #'
 #' @examples
-#' p <- new_dict_provider(
+#' # ---- Minimal provider: name + contains function ----------------------
+#' p1 <- new_dict_provider(
 #'   name     = "my-codes",
 #'   contains = function(value, field = "code", ignore_case = FALSE) {
 #'     value %in% c("A", "B", "C")
@@ -216,7 +217,46 @@ list_dictionaries <- function(include_global = TRUE, include_cache = TRUE) {
 #'   fields   = "code",
 #'   size_rows = 3L
 #' )
-#' p$contains(c("A", "D"))
+#' p1$contains(c("A", "D"))        # TRUE FALSE
+#' p1$info()$name                   # "my-codes"
+#'
+#' # ---- With version, source, and license metadata ----------------------
+#' p2 <- new_dict_provider(
+#'   name     = "sponsor-sex",
+#'   version  = "2026-01",
+#'   source   = "sponsor",
+#'   license  = "sponsor-private",
+#'   contains = function(value, field = "code", ignore_case = FALSE) {
+#'     value %in% c("M", "F", "U")
+#'   },
+#'   fields    = "code",
+#'   size_rows = 3L
+#' )
+#' p2$info()$version
+#'
+#' # ---- With optional lookup function (returns matching rows) -----------
+#' ref <- data.frame(
+#'   code  = c("M", "F"),
+#'   label = c("Male", "Female"),
+#'   stringsAsFactors = FALSE
+#' )
+#' p3 <- new_dict_provider(
+#'   name     = "sex-codes",
+#'   contains = function(value, field = "code", ignore_case = FALSE) {
+#'     value %in% ref$code
+#'   },
+#'   lookup   = function(value, field = "code") {
+#'     ref[ref$code %in% value, , drop = FALSE]
+#'   },
+#'   fields    = "code",
+#'   size_rows = nrow(ref)
+#' )
+#' p3$lookup("M")
+#'
+#' # ---- Register and use in validate() ----------------------------------
+#' register_dictionary("sex-codes", p3)
+#' list_dictionaries()
+#' unregister_dictionary("sex-codes")
 #'
 #' @family dict
 #' @export

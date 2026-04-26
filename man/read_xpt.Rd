@@ -116,9 +116,24 @@ dm  <- apply_spec(dm, spec)
 tmp <- tempfile(fileext = ".xpt")
 on.exit(unlink(tmp))
 write_xpt(dm, tmp)
+
+# ---- Full read -- all columns and all rows ---------------------------
 dm2 <- read_xpt(tmp)
 attr(dm2, "label")
+attr(dm2, "dataset_name")
 attr(dm2$USUBJID, "label")
+
+# ---- Select specific columns only (faster for large files) -----------
+dm3 <- read_xpt(tmp, col_select = c("STUDYID", "USUBJID", "AGE"))
+names(dm3)
+
+# ---- Read only the first 10 rows (useful for previewing) -------------
+dm4 <- read_xpt(tmp, n_max = 10)
+nrow(dm4)
+
+# ---- Override character encoding (e.g. Latin-1 encoded legacy files) ----
+dm5 <- read_xpt(tmp, encoding = "latin1")
+attr(dm5$USUBJID, "label")
 
 }
 \references{

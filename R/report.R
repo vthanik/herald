@@ -27,12 +27,32 @@
 #' @return `path` invisibly.
 #'
 #' @examples
-#' ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
-#'                   stringsAsFactors = FALSE)
-#' r   <- validate(files = ae, quiet = TRUE)
-#' out <- tempfile(fileext = ".json")
-#' on.exit(unlink(out))
-#' report(r, out)
+#' ae <- data.frame(STUDYID = "X", USUBJID = "X-001",
+#'                  stringsAsFactors = FALSE)
+#' r  <- validate(files = ae, quiet = TRUE)
+#'
+#' # ---- JSON -- format inferred from .json extension --------------------
+#' out_json <- tempfile(fileext = ".json")
+#' on.exit(unlink(out_json))
+#' report(r, out_json)
+#' file.exists(out_json)
+#'
+#' # ---- HTML -- format inferred from .html extension --------------------
+#' out_html <- tempfile(fileext = ".html")
+#' on.exit(unlink(out_html), add = TRUE)
+#' report(r, out_html)
+#'
+#' # ---- Explicit format= override (path has no extension) ---------------
+#' out_bare <- tempfile()
+#' on.exit(unlink(out_bare), add = TRUE)
+#' report(r, out_bare, format = "json")
+#'
+#' # ---- XLSX (requires openxlsx2) ---------------------------------------
+#' if (requireNamespace("openxlsx2", quietly = TRUE)) {
+#'   out_xlsx <- tempfile(fileext = ".xlsx")
+#'   on.exit(unlink(out_xlsx), add = TRUE)
+#'   report(r, out_xlsx)
+#' }
 #'
 #' @seealso [write_report_html()], [write_report_xlsx()],
 #'   [write_report_json()].
@@ -69,12 +89,29 @@ report <- function(x, path, format = NULL, ...) {
 #' @return `path` invisibly.
 #'
 #' @examples
-#' ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
-#'                   stringsAsFactors = FALSE)
-#' r   <- validate(files = ae, quiet = TRUE)
-#' out <- tempfile(fileext = ".json")
-#' on.exit(unlink(out))
-#' write_report_json(r, out)
+#' dm <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' ae <- data.frame(STUDYID = "X", USUBJID = "X-001",
+#'                  stringsAsFactors = FALSE)
+#' r  <- validate(files = list(DM = dm, AE = ae), quiet = TRUE)
+#'
+#' # ---- Pretty-printed JSON (default) -----------------------------------
+#' out1 <- tempfile(fileext = ".json")
+#' on.exit(unlink(out1))
+#' write_report_json(r, out1)
+#' file.exists(out1)
+#'
+#' # ---- Compact JSON (pretty = FALSE) -- smaller files for CI pipelines ----
+#' out2 <- tempfile(fileext = ".json")
+#' on.exit(unlink(out2), add = TRUE)
+#' write_report_json(r, out2, pretty = FALSE)
+#'
+#' # ---- Inspect the written JSON structure ------------------------------
+#' parsed <- jsonlite::fromJSON(out1)
+#' names(parsed)
+#'
+#' # ---- Filter to fired findings after reading back ---------------------
+#' findings <- parsed$findings
+#' if (!is.null(findings)) findings[findings$status == "fired", ]
 #'
 #' @seealso [validate()] to produce a result, [write_report_html()],
 #'   [write_report_xlsx()], [report()] to auto-select format.

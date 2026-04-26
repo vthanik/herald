@@ -35,18 +35,61 @@ any source (programmatic or parsed Define-XML) can be written out as
 Define-XML 2.1.
 }
 \examples{
-spec <- as_herald_spec(
-  ds_spec = data.frame(dataset = "DM", label = "Demographics",
-                       stringsAsFactors = FALSE),
-  var_spec = data.frame(dataset = "DM", variable = "STUDYID",
-                        label = "Study Identifier", data_type = "text",
-                        length = "12", stringsAsFactors = FALSE)
-)
+dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
 
-## -- Write to temporary file ----------------------------------------------
-tmp <- tempfile(fileext = ".xml")
-write_define_xml(spec, tmp, validate = FALSE)
-unlink(tmp)
+# ---- Minimal spec with one variable -- skip pre-flight validation ----
+spec1 <- as_herald_spec(
+  ds_spec  = data.frame(dataset = "DM", label = "Demographics",
+                        stringsAsFactors = FALSE),
+  var_spec = data.frame(dataset = "DM", variable = "STUDYID",
+                        stringsAsFactors = FALSE)
+)
+tmp1 <- tempfile(fileext = ".xml")
+on.exit(unlink(tmp1))
+write_define_xml(spec1, tmp1, validate = FALSE)
+
+# ---- With var_spec: variable labels, types, and lengths --------------
+spec2 <- as_herald_spec(
+  ds_spec  = data.frame(dataset = "DM", label = "Demographics",
+                        stringsAsFactors = FALSE),
+  var_spec = data.frame(
+    dataset   = rep("DM", 2),
+    variable  = c("STUDYID", "USUBJID"),
+    label     = c("Study Identifier", "Unique Subject Identifier"),
+    data_type = c("text", "text"),
+    length    = c("12", "40"),
+    stringsAsFactors = FALSE
+  )
+)
+tmp2 <- tempfile(fileext = ".xml")
+on.exit(unlink(tmp2), add = TRUE)
+write_define_xml(spec2, tmp2, validate = FALSE)
+
+# ---- Multi-dataset spec ----------------------------------------------
+adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
+spec3 <- as_herald_spec(
+  ds_spec  = data.frame(
+    dataset = c("DM", "ADSL"),
+    label   = c("Demographics", "Subject-Level Analysis Dataset"),
+    stringsAsFactors = FALSE
+  ),
+  var_spec = data.frame(
+    dataset  = c(rep("DM", ncol(dm)), rep("ADSL", ncol(adsl))),
+    variable = c(names(dm), names(adsl)),
+    stringsAsFactors = FALSE
+  )
+)
+tmp3 <- tempfile(fileext = ".xml")
+on.exit(unlink(tmp3), add = TRUE)
+write_define_xml(spec3, tmp3, validate = FALSE)
+
+# ---- Round-trip: write then read back --------------------------------
+tmp4 <- tempfile(fileext = ".xml")
+on.exit(unlink(tmp4), add = TRUE)
+write_define_xml(spec2, tmp4, validate = FALSE)
+d <- read_define_xml(tmp4)
+d$ds_spec
+d$var_spec[, c("dataset", "variable", "label")]
 
 }
 \seealso{

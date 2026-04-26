@@ -35,12 +35,31 @@
 #'   and (if supplied) `var_spec`.
 #'
 #' @examples
+#' dm   <- readRDS(system.file("extdata", "dm.rds",   package = "herald"))
 #' adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
 #' adae <- readRDS(system.file("extdata", "adae.rds", package = "herald"))
-#' spec <- as_herald_spec(
+#'
+#' # ---- Dataset-only spec (no var_spec) -- sufficient for class-scoped rules ----
+#' spec_ds_only <- as_herald_spec(
+#'   ds_spec = data.frame(dataset = "DM", stringsAsFactors = FALSE)
+#' )
+#' is_herald_spec(spec_ds_only)
+#' spec_ds_only$ds_spec
+#'
+#' # ---- Single dataset with variable list -------------------------------
+#' spec_single <- as_herald_spec(
+#'   ds_spec  = data.frame(dataset = "DM", label = "Demographics",
+#'                         stringsAsFactors = FALSE),
+#'   var_spec = data.frame(dataset = "DM", variable = names(dm),
+#'                         stringsAsFactors = FALSE)
+#' )
+#' nrow(spec_single$var_spec)
+#'
+#' # ---- Multi-dataset with class + label (ADaM) -------------------------
+#' spec_adam <- as_herald_spec(
 #'   ds_spec = data.frame(
 #'     dataset = c("ADSL", "ADAE"),
-#'     class   = c("SUBJECT LEVEL ANALYSIS DATASET", "BASIC DATA STRUCTURE"),
+#'     class   = c("SUBJECT LEVEL ANALYSIS DATASET", "OCCDS"),
 #'     label   = c("Subject-Level Analysis Dataset", "Adverse Events"),
 #'     stringsAsFactors = FALSE
 #'   ),
@@ -50,7 +69,21 @@
 #'     stringsAsFactors = FALSE
 #'   )
 #' )
-#' is_herald_spec(spec)
+#' nrow(spec_adam$ds_spec)
+#'
+#' # ---- Rich var_spec with type, label, format, length ------------------
+#' spec_rich <- as_herald_spec(
+#'   ds_spec  = data.frame(dataset = "DM", stringsAsFactors = FALSE),
+#'   var_spec = data.frame(
+#'     dataset  = c("DM", "DM"),
+#'     variable = c("STUDYID", "USUBJID"),
+#'     label    = c("Study Identifier", "Unique Subject Identifier"),
+#'     type     = c("text", "text"),
+#'     length   = c(12L, 40L),
+#'     stringsAsFactors = FALSE
+#'   )
+#' )
+#' spec_rich$var_spec[, c("variable", "label", "length")]
 #'
 #' @seealso [apply_spec()] for the pre-validation step that stamps column
 #'   attributes from a `herald_spec`.
@@ -114,13 +147,50 @@ as_herald_spec <- function(ds_spec, var_spec = NULL) {
 #'
 #' @examples
 #' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
-#' spec <- herald_spec(
+#' adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
+#'
+#' # ---- Minimal: ds_spec only (var_spec defaults to empty data frame) ----
+#' s1 <- herald_spec(
+#'   ds_spec = data.frame(dataset = "DM", label = "Demographics",
+#'                        stringsAsFactors = FALSE)
+#' )
+#' is_herald_spec(s1)
+#' nrow(s1$var_spec)   # 0 -- empty but present
+#'
+#' # ---- With ds_spec and var_spec ---------------------------------------
+#' s2 <- herald_spec(
 #'   ds_spec  = data.frame(dataset = "DM", label = "Demographics",
 #'                         stringsAsFactors = FALSE),
 #'   var_spec = data.frame(dataset = "DM", variable = names(dm),
 #'                         stringsAsFactors = FALSE)
 #' )
-#' is_herald_spec(spec)
+#' nrow(s2$var_spec)
+#'
+#' # ---- With study metadata slot (used by write_define_xml) -------------
+#' s3 <- herald_spec(
+#'   ds_spec = data.frame(dataset = "ADSL", stringsAsFactors = FALSE),
+#'   study   = data.frame(
+#'     attribute = c("StudyName", "ProtocolName"),
+#'     value     = c("PILOT01", "PROTOCOL-A"),
+#'     stringsAsFactors = FALSE
+#'   )
+#' )
+#' s3$study
+#'
+#' # ---- Rich spec with codelist slot ------------------------------------
+#' s4 <- herald_spec(
+#'   ds_spec  = data.frame(dataset = "DM", stringsAsFactors = FALSE),
+#'   var_spec = data.frame(dataset = "DM", variable = names(dm),
+#'                         stringsAsFactors = FALSE),
+#'   codelist = data.frame(
+#'     codelist_id = "CL.SEX",
+#'     codelist_label = "Sex",
+#'     value = c("M", "F"),
+#'     decoded_value = c("Male", "Female"),
+#'     stringsAsFactors = FALSE
+#'   )
+#' )
+#' nrow(s4$codelist)
 #'
 #' @seealso [as_herald_spec()] for the simpler two-arg constructor.
 #' @family spec
@@ -184,14 +254,23 @@ herald_spec <- function(
 #' @return `TRUE` if `x` inherits from `herald_spec`, else `FALSE`.
 #'
 #' @examples
-#' dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
+#' dm <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
 #' spec <- as_herald_spec(
 #'   ds_spec  = data.frame(dataset = "DM", stringsAsFactors = FALSE),
 #'   var_spec = data.frame(dataset = "DM", variable = names(dm),
 #'                         stringsAsFactors = FALSE)
 #' )
+#'
+#' # ---- Valid herald_spec -- returns TRUE -------------------------------
 #' is_herald_spec(spec)
-#' is_herald_spec(list())
+#'
+#' # ---- Plain list -- returns FALSE -------------------------------------
+#' is_herald_spec(list(ds_spec = data.frame()))
+#'
+#' # ---- NULL, data.frame, or character -- all FALSE ---------------------
+#' is_herald_spec(NULL)
+#' is_herald_spec(data.frame())
+#' is_herald_spec("DM")
 #'
 #' @family spec
 #' @export

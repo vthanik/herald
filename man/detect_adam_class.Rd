@@ -47,9 +47,21 @@ matching \code{*FL} but no PARAMCD.
 adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
 advs <- readRDS(system.file("extdata", "advs.rds", package = "herald"))
 adae <- readRDS(system.file("extdata", "adae.rds", package = "herald"))
+
+# ---- Infer class from column names of existing data frames -----------
 detect_adam_class(names(adsl))  # "ADSL"
 detect_adam_class(names(advs))  # "BDS"
 detect_adam_class(names(adae))  # "OCCDS"
+
+# ---- TTE class requires PARAMCD + AVAL + CNSR ------------------------
+detect_adam_class(c("USUBJID", "PARAMCD", "AVAL", "CNSR", "EVDTM"))
+
+# ---- Explicit character vector (e.g. from a spec variable list) ------
+detect_adam_class(c("USUBJID", "SAFFL", "ITTFL", "TRTP", "AGE"))  # "ADSL"
+detect_adam_class(c("USUBJID", "PARAMCD", "AVAL", "AVISITN"))    # "BDS"
+
+# ---- Unknown when no identifying variables are present ---------------
+detect_adam_class(c("X", "Y", "Z"))  # "unknown"
 
 }
 \seealso{

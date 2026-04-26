@@ -53,13 +53,50 @@ Assembles a \code{herald_spec} that carries all Define-XML 2.1 slots:
 }
 \examples{
 dm   <- readRDS(system.file("extdata", "dm.rds", package = "herald"))
-spec <- herald_spec(
+adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
+
+# ---- Minimal: ds_spec only (var_spec defaults to empty data frame) ----
+s1 <- herald_spec(
+  ds_spec = data.frame(dataset = "DM", label = "Demographics",
+                       stringsAsFactors = FALSE)
+)
+is_herald_spec(s1)
+nrow(s1$var_spec)   # 0 -- empty but present
+
+# ---- With ds_spec and var_spec ---------------------------------------
+s2 <- herald_spec(
   ds_spec  = data.frame(dataset = "DM", label = "Demographics",
                         stringsAsFactors = FALSE),
   var_spec = data.frame(dataset = "DM", variable = names(dm),
                         stringsAsFactors = FALSE)
 )
-is_herald_spec(spec)
+nrow(s2$var_spec)
+
+# ---- With study metadata slot (used by write_define_xml) -------------
+s3 <- herald_spec(
+  ds_spec = data.frame(dataset = "ADSL", stringsAsFactors = FALSE),
+  study   = data.frame(
+    attribute = c("StudyName", "ProtocolName"),
+    value     = c("PILOT01", "PROTOCOL-A"),
+    stringsAsFactors = FALSE
+  )
+)
+s3$study
+
+# ---- Rich spec with codelist slot ------------------------------------
+s4 <- herald_spec(
+  ds_spec  = data.frame(dataset = "DM", stringsAsFactors = FALSE),
+  var_spec = data.frame(dataset = "DM", variable = names(dm),
+                        stringsAsFactors = FALSE),
+  codelist = data.frame(
+    codelist_id = "CL.SEX",
+    codelist_label = "Sex",
+    value = c("M", "F"),
+    decoded_value = c("Male", "Female"),
+    stringsAsFactors = FALSE
+  )
+)
+nrow(s4$codelist)
 
 }
 \seealso{

@@ -37,9 +37,23 @@ dm   <- apply_spec(dm, spec)
 file <- tempfile(fileext = ".json")
 on.exit(unlink(file))
 write_json(dm, file, label = "Demographics")
-dm2  <- read_json(file)
-attr(dm2, "label")
+
+# ---- Read back and inspect dataset-level attributes ------------------
+dm2 <- read_json(file)
+attr(dm2, "label")          # "Demographics"
+attr(dm2, "dataset_name")   # "DM"
+
+# ---- Inspect column-level attributes preserved from write_json -------
 attr(dm2$USUBJID, "label")
+attr(dm2$STUDYID, "sas.length")
+
+# ---- Read then apply_spec to overwrite/supplement attributes from spec ----
+dm3 <- read_json(file) |> apply_spec(spec)
+attr(dm3$USUBJID, "label")
+
+# ---- Read then validate immediately ----------------------------------
+r <- validate(files = dm2, quiet = TRUE)
+r$datasets_checked
 
 }
 \seealso{

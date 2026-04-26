@@ -32,12 +32,32 @@ extension (or an explicit \code{format} override):
 }
 }
 \examples{
-ae  <- data.frame(STUDYID = "X", USUBJID = "X-001",
-                  stringsAsFactors = FALSE)
-r   <- validate(files = ae, quiet = TRUE)
-out <- tempfile(fileext = ".json")
-on.exit(unlink(out))
-report(r, out)
+ae <- data.frame(STUDYID = "X", USUBJID = "X-001",
+                 stringsAsFactors = FALSE)
+r  <- validate(files = ae, quiet = TRUE)
+
+# ---- JSON -- format inferred from .json extension --------------------
+out_json <- tempfile(fileext = ".json")
+on.exit(unlink(out_json))
+report(r, out_json)
+file.exists(out_json)
+
+# ---- HTML -- format inferred from .html extension --------------------
+out_html <- tempfile(fileext = ".html")
+on.exit(unlink(out_html), add = TRUE)
+report(r, out_html)
+
+# ---- Explicit format= override (path has no extension) ---------------
+out_bare <- tempfile()
+on.exit(unlink(out_bare), add = TRUE)
+report(r, out_bare, format = "json")
+
+# ---- XLSX (requires openxlsx2) ---------------------------------------
+if (requireNamespace("openxlsx2", quietly = TRUE)) {
+  out_xlsx <- tempfile(fileext = ".xlsx")
+  on.exit(unlink(out_xlsx), add = TRUE)
+  report(r, out_xlsx)
+}
 
 }
 \seealso{

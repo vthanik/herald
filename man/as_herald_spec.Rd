@@ -26,12 +26,31 @@ lowercase; required columns are checked. Extra columns pass through
 unchanged.
 }
 \examples{
+dm   <- readRDS(system.file("extdata", "dm.rds",   package = "herald"))
 adsl <- readRDS(system.file("extdata", "adsl.rds", package = "herald"))
 adae <- readRDS(system.file("extdata", "adae.rds", package = "herald"))
-spec <- as_herald_spec(
+
+# ---- Dataset-only spec (no var_spec) -- sufficient for class-scoped rules ----
+spec_ds_only <- as_herald_spec(
+  ds_spec = data.frame(dataset = "DM", stringsAsFactors = FALSE)
+)
+is_herald_spec(spec_ds_only)
+spec_ds_only$ds_spec
+
+# ---- Single dataset with variable list -------------------------------
+spec_single <- as_herald_spec(
+  ds_spec  = data.frame(dataset = "DM", label = "Demographics",
+                        stringsAsFactors = FALSE),
+  var_spec = data.frame(dataset = "DM", variable = names(dm),
+                        stringsAsFactors = FALSE)
+)
+nrow(spec_single$var_spec)
+
+# ---- Multi-dataset with class + label (ADaM) -------------------------
+spec_adam <- as_herald_spec(
   ds_spec = data.frame(
     dataset = c("ADSL", "ADAE"),
-    class   = c("SUBJECT LEVEL ANALYSIS DATASET", "BASIC DATA STRUCTURE"),
+    class   = c("SUBJECT LEVEL ANALYSIS DATASET", "OCCDS"),
     label   = c("Subject-Level Analysis Dataset", "Adverse Events"),
     stringsAsFactors = FALSE
   ),
@@ -41,7 +60,21 @@ spec <- as_herald_spec(
     stringsAsFactors = FALSE
   )
 )
-is_herald_spec(spec)
+nrow(spec_adam$ds_spec)
+
+# ---- Rich var_spec with type, label, format, length ------------------
+spec_rich <- as_herald_spec(
+  ds_spec  = data.frame(dataset = "DM", stringsAsFactors = FALSE),
+  var_spec = data.frame(
+    dataset  = c("DM", "DM"),
+    variable = c("STUDYID", "USUBJID"),
+    label    = c("Study Identifier", "Unique Subject Identifier"),
+    type     = c("text", "text"),
+    length   = c(12L, 40L),
+    stringsAsFactors = FALSE
+  )
+)
+spec_rich$var_spec[, c("variable", "label", "length")]
 
 }
 \seealso{

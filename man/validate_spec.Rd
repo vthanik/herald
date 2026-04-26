@@ -26,13 +26,33 @@ the slots of \code{spec}.  If any issues are found a detailed HTML report is
 written to \code{report}, opened in the IDE viewer, and an error is raised.
 }
 \examples{
-## -- Valid spec: returns invisibly with no side effects ---------------------
-spec <- as_herald_spec(
+# ---- Valid spec -- returns invisibly (no issues found) ---------------
+spec_ok <- as_herald_spec(
+  ds_spec = data.frame(
+    dataset = "DM",
+    label   = "Demographics",
+    stringsAsFactors = FALSE
+  )
+)
+invisible(validate_spec(spec_ok))   # returns NULL invisibly
+
+# ---- Suppress the viewer for automated pipelines ---------------------
+invisible(validate_spec(spec_ok, view = FALSE))
+
+# ---- Send the HTML report to a known path (not a tempfile) -----------
+report_path <- tempfile(fileext = ".html")
+on.exit(unlink(report_path))
+invisible(validate_spec(spec_ok, report = report_path, view = FALSE))
+file.exists(report_path)   # FALSE -- file is only written when issues exist
+
+# ---- Invalid spec triggers an error (catch it for demonstration) -----
+spec_bad <- as_herald_spec(
   ds_spec = data.frame(dataset = "DM", stringsAsFactors = FALSE)
 )
-if (interactive()) {
-  validate_spec(spec)
-}
+tryCatch(
+  validate_spec(spec_bad, view = FALSE),
+  herald_error_validation = function(e) conditionMessage(e)
+)
 
 }
 \seealso{
