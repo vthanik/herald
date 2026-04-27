@@ -151,10 +151,7 @@ read_define_xml <- function(path, call = rlang::caller_env()) {
   ns <- xml2::xml_ns(doc)
 
   # Find MetaDataVersion -- the main container
-  mdv <- xml2::xml_find_first(doc, ".//d1:MetaDataVersion", ns)
-  if (is.na(mdv)) {
-    mdv <- xml2::xml_find_first(doc, ".//MetaDataVersion")
-  }
+  mdv <- .xfind_first(doc, ".//d1:MetaDataVersion", ".//MetaDataVersion", ns)
   if (is.na(mdv)) {
     herald_error(
       c(
@@ -228,10 +225,7 @@ print.herald_define <- function(x, ...) {
 
 #' @noRd
 .define_extract_study <- function(doc, ns) {
-  gv <- xml2::xml_find_first(doc, ".//d1:GlobalVariables", ns)
-  if (is.na(gv)) {
-    gv <- xml2::xml_find_first(doc, ".//GlobalVariables")
-  }
+  gv <- .xfind_first(doc, ".//d1:GlobalVariables", ".//GlobalVariables", ns)
   if (is.na(gv)) {
     return(data.frame(
       attribute = character(),
@@ -254,10 +248,7 @@ print.herald_define <- function(x, ...) {
 
 #' @noRd
 .define_extract_datasets <- function(mdv, ns) {
-  igd_nodes <- xml2::xml_find_all(mdv, ".//d1:ItemGroupDef", ns)
-  if (length(igd_nodes) == 0L) {
-    igd_nodes <- xml2::xml_find_all(mdv, ".//ItemGroupDef")
-  }
+  igd_nodes <- .xfind_all(mdv, ".//d1:ItemGroupDef", ".//ItemGroupDef", ns)
   if (length(igd_nodes) == 0L) {
     return(data.frame(
       dataset = character(),
@@ -277,10 +268,12 @@ print.herald_define <- function(x, ...) {
   labels <- vapply(
     igd_nodes,
     function(n) {
-      desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
-      if (is.na(desc)) {
-        desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
-      }
+      desc <- .xfind_first(
+        n,
+        ".//d1:Description/d1:TranslatedText",
+        ".//Description/TranslatedText",
+        ns
+      )
       if (is.na(desc)) {
         return(xml2::xml_attr(n, "def:Label") %||% "")
       }
@@ -295,10 +288,7 @@ print.herald_define <- function(x, ...) {
 #' @noRd
 .define_extract_variables <- function(mdv, ns) {
   # Build OID -> (dataset, order, mandatory) from ItemGroupDef > ItemRef.
-  igd_nodes <- xml2::xml_find_all(mdv, ".//d1:ItemGroupDef", ns)
-  if (length(igd_nodes) == 0L) {
-    igd_nodes <- xml2::xml_find_all(mdv, ".//ItemGroupDef")
-  }
+  igd_nodes <- .xfind_all(mdv, ".//d1:ItemGroupDef", ".//ItemGroupDef", ns)
 
   oid_dataset <- list()
   oid_order <- list()
@@ -306,10 +296,7 @@ print.herald_define <- function(x, ...) {
 
   for (ign in igd_nodes) {
     ds_name <- xml2::xml_attr(ign, "Name") %||% ""
-    refs <- xml2::xml_find_all(ign, "d1:ItemRef", ns)
-    if (length(refs) == 0L) {
-      refs <- xml2::xml_find_all(ign, "ItemRef")
-    }
+    refs <- .xfind_all(ign, "d1:ItemRef", "ItemRef", ns)
     for (ref in refs) {
       item_oid <- xml2::xml_attr(ref, "ItemOID") %||% ""
       if (nzchar(item_oid)) {
@@ -320,10 +307,7 @@ print.herald_define <- function(x, ...) {
     }
   }
 
-  item_nodes <- xml2::xml_find_all(mdv, ".//d1:ItemDef", ns)
-  if (length(item_nodes) == 0L) {
-    item_nodes <- xml2::xml_find_all(mdv, ".//ItemDef")
-  }
+  item_nodes <- .xfind_all(mdv, ".//d1:ItemDef", ".//ItemDef", ns)
 
   if (length(item_nodes) == 0L) {
     return(data.frame(
@@ -365,10 +349,12 @@ print.herald_define <- function(x, ...) {
   labels <- vapply(
     item_nodes,
     function(n) {
-      desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
-      if (is.na(desc)) {
-        desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
-      }
+      desc <- .xfind_first(
+        n,
+        ".//d1:Description/d1:TranslatedText",
+        ".//Description/TranslatedText",
+        ns
+      )
       if (is.na(desc)) {
         return("")
       }
@@ -452,10 +438,7 @@ print.herald_define <- function(x, ...) {
 
 #' @noRd
 .define_extract_codelists <- function(mdv, ns) {
-  cl_nodes <- xml2::xml_find_all(mdv, ".//d1:CodeList", ns)
-  if (length(cl_nodes) == 0L) {
-    cl_nodes <- xml2::xml_find_all(mdv, ".//CodeList")
-  }
+  cl_nodes <- .xfind_all(mdv, ".//d1:CodeList", ".//CodeList", ns)
   if (length(cl_nodes) == 0L) {
     return(NULL)
   }
@@ -466,22 +449,23 @@ print.herald_define <- function(x, ...) {
     cl_name <- xml2::xml_attr(cl, "Name") %||% ""
     cl_dtype <- xml2::xml_attr(cl, "DataType") %||% ""
 
-    items <- xml2::xml_find_all(cl, ".//d1:CodeListItem", ns)
-    if (length(items) == 0L) {
-      items <- xml2::xml_find_all(cl, ".//CodeListItem")
-    }
-    enum_items <- xml2::xml_find_all(cl, ".//d1:EnumeratedItem", ns)
-    if (length(enum_items) == 0L) {
-      enum_items <- xml2::xml_find_all(cl, ".//EnumeratedItem")
-    }
+    items <- .xfind_all(cl, ".//d1:CodeListItem", ".//CodeListItem", ns)
+    enum_items <- .xfind_all(
+      cl,
+      ".//d1:EnumeratedItem",
+      ".//EnumeratedItem",
+      ns
+    )
 
     all_items <- c(items, enum_items)
     for (item in all_items) {
       term <- xml2::xml_attr(item, "CodedValue") %||% ""
-      decode <- xml2::xml_find_first(item, ".//d1:Decode/d1:TranslatedText", ns)
-      if (is.na(decode)) {
-        decode <- xml2::xml_find_first(item, ".//Decode/TranslatedText")
-      }
+      decode <- .xfind_first(
+        item,
+        ".//d1:Decode/d1:TranslatedText",
+        ".//Decode/TranslatedText",
+        ns
+      )
       decoded_val <- if (!is.na(decode)) xml2::xml_text(decode) else ""
 
       rows <- c(
@@ -506,10 +490,7 @@ print.herald_define <- function(x, ...) {
 
 #' @noRd
 .define_extract_methods <- function(mdv, ns) {
-  meth_nodes <- xml2::xml_find_all(mdv, ".//d1:MethodDef", ns)
-  if (length(meth_nodes) == 0L) {
-    meth_nodes <- xml2::xml_find_all(mdv, ".//MethodDef")
-  }
+  meth_nodes <- .xfind_all(mdv, ".//d1:MethodDef", ".//MethodDef", ns)
   if (length(meth_nodes) == 0L) {
     return(NULL)
   }
@@ -532,10 +513,12 @@ print.herald_define <- function(x, ...) {
   descriptions <- vapply(
     meth_nodes,
     function(n) {
-      desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
-      if (is.na(desc)) {
-        desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
-      }
+      desc <- .xfind_first(
+        n,
+        ".//d1:Description/d1:TranslatedText",
+        ".//Description/TranslatedText",
+        ns
+      )
       if (is.na(desc)) {
         return("")
       }
@@ -555,10 +538,13 @@ print.herald_define <- function(x, ...) {
 
 #' @noRd
 .define_extract_comments <- function(mdv, ns) {
-  com_nodes <- xml2::xml_find_all(mdv, ".//def:CommentDef", ns)
-  if (length(com_nodes) == 0L) {
-    com_nodes <- xml2::xml_find_all(mdv, ".//CommentDef")
-  }
+  com_nodes <- .xfind_all(
+    mdv,
+    ".//def:CommentDef",
+    ".//CommentDef",
+    ns,
+    prefix = "def"
+  )
   if (length(com_nodes) == 0L) {
     return(NULL)
   }
@@ -571,10 +557,12 @@ print.herald_define <- function(x, ...) {
   descriptions <- vapply(
     com_nodes,
     function(n) {
-      desc <- xml2::xml_find_first(n, ".//d1:Description/d1:TranslatedText", ns)
-      if (is.na(desc)) {
-        desc <- xml2::xml_find_first(n, ".//Description/TranslatedText")
-      }
+      desc <- .xfind_first(
+        n,
+        ".//d1:Description/d1:TranslatedText",
+        ".//Description/TranslatedText",
+        ns
+      )
       if (is.na(desc)) {
         return("")
       }
@@ -650,19 +638,13 @@ print.herald_define <- function(x, ...) {
 #'
 #' @noRd
 .define_extract_key_vars <- function(mdv, ns, ds_spec) {
-  igd_nodes <- xml2::xml_find_all(mdv, ".//d1:ItemGroupDef", ns)
-  if (length(igd_nodes) == 0L) {
-    igd_nodes <- xml2::xml_find_all(mdv, ".//ItemGroupDef")
-  }
+  igd_nodes <- .xfind_all(mdv, ".//d1:ItemGroupDef", ".//ItemGroupDef", ns)
   if (length(igd_nodes) == 0L) {
     return(list())
   }
 
   # Build OID -> variable name map from ItemDef
-  item_nodes <- xml2::xml_find_all(mdv, ".//d1:ItemDef", ns)
-  if (length(item_nodes) == 0L) {
-    item_nodes <- xml2::xml_find_all(mdv, ".//ItemDef")
-  }
+  item_nodes <- .xfind_all(mdv, ".//d1:ItemDef", ".//ItemDef", ns)
   oid_to_name <- list()
   for (n in item_nodes) {
     oid <- xml2::xml_attr(n, "OID") %||% ""

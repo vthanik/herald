@@ -70,6 +70,36 @@
   xml2::xml_text(ch)
 }
 
+# Namespace-aware XPath wrappers.
+#
+# Define-XML can arrive with or without an xmlns declaration. xml2 binds
+# the default namespace to prefix `d1`; non-namespaced docs have no `d1`
+# binding, so a `d1:Foo` selector emits `Undefined namespace prefix [1219]`.
+# These helpers gate the namespaced attempt on `d1` actually being bound,
+# falling back to the plain selector. Behaviour matches the previous
+# pair-of-calls pattern -- only the warning is suppressed.
+.has_ns <- function(ns, prefix) prefix %in% names(ns)
+
+.xfind_first <- function(node, ns_xpath, plain_xpath, ns, prefix = "d1") {
+  if (.has_ns(ns, prefix)) {
+    res <- xml2::xml_find_first(node, ns_xpath, ns)
+    if (!is.na(res)) {
+      return(res)
+    }
+  }
+  xml2::xml_find_first(node, plain_xpath)
+}
+
+.xfind_all <- function(node, ns_xpath, plain_xpath, ns, prefix = "d1") {
+  if (.has_ns(ns, prefix)) {
+    res <- xml2::xml_find_all(node, ns_xpath, ns)
+    if (length(res) > 0L) {
+      return(res)
+    }
+  }
+  xml2::xml_find_all(node, plain_xpath)
+}
+
 # ---------- builder: Define_Study_Metadata -----------------------------------
 # One row covering ODM + Study + MetaDataVersion + GlobalVariables attributes.
 
@@ -80,10 +110,7 @@
     return(NULL)
   }
 
-  odm_node <- xml2::xml_find_first(doc, "/d1:ODM", ns)
-  if (is.na(odm_node)) {
-    odm_node <- xml2::xml_find_first(doc, "/ODM")
-  }
+  odm_node <- .xfind_first(doc, "/d1:ODM", "/ODM", ns)
 
   .a <- function(node, a) if (is.na(node)) "" else .attr_val(node, a)
   .na <- function(node, a) if (is.na(node)) "" else .ns_attr(node, a)
@@ -95,10 +122,7 @@
   odm_context <- .na(odm_node, "Context")
   odm_file_type <- .a(odm_node, "FileType")
 
-  study_node <- xml2::xml_find_first(doc, ".//d1:Study", ns)
-  if (is.na(study_node)) {
-    study_node <- xml2::xml_find_first(doc, ".//Study")
-  }
+  study_node <- .xfind_first(doc, ".//d1:Study", ".//Study", ns)
   study_oid <- .a(study_node, "OID")
 
   mdv <- def$xml_mdv
@@ -107,10 +131,12 @@
   mdv_desc <- .a(mdv, "Description")
   mdv_def_version <- .ns_attr(mdv, "DefineVersion")
 
-  gv_node <- xml2::xml_find_first(doc, ".//d1:GlobalVariables", ns)
-  if (is.na(gv_node)) {
-    gv_node <- xml2::xml_find_first(doc, ".//GlobalVariables")
-  }
+  gv_node <- .xfind_first(
+    doc,
+    ".//d1:GlobalVariables",
+    ".//GlobalVariables",
+    ns
+  )
   study_name <- .child_text(gv_node, "*[local-name()='StudyName']")
   study_desc <- .child_text(gv_node, "*[local-name()='StudyDescription']")
   protocol_name <- .child_text(gv_node, "*[local-name()='ProtocolName']")
@@ -165,10 +191,7 @@
     return(NULL)
   }
 
-  igd_nodes <- xml2::xml_find_all(mdv, "d1:ItemGroupDef", ns)
-  if (length(igd_nodes) == 0L) {
-    igd_nodes <- xml2::xml_find_all(mdv, "ItemGroupDef")
-  }
+  igd_nodes <- .xfind_all(mdv, "d1:ItemGroupDef", "ItemGroupDef", ns)
   if (length(igd_nodes) == 0L) {
     return(NULL)
   }
@@ -261,10 +284,7 @@
   }
 
   # Build OID-keyed maps from ItemGroupDef/ItemRef
-  igd_nodes <- xml2::xml_find_all(mdv, "d1:ItemGroupDef", ns)
-  if (length(igd_nodes) == 0L) {
-    igd_nodes <- xml2::xml_find_all(mdv, "ItemGroupDef")
-  }
+  igd_nodes <- .xfind_all(mdv, "d1:ItemGroupDef", "ItemGroupDef", ns)
 
   oid_ds <- list()
   oid_order <- list()
@@ -276,10 +296,7 @@
 
   for (ign in igd_nodes) {
     ds_nm <- .attr_val(ign, "Name")
-    refs <- xml2::xml_find_all(ign, "d1:ItemRef", ns)
-    if (length(refs) == 0L) {
-      refs <- xml2::xml_find_all(ign, "ItemRef")
-    }
+    refs <- .xfind_all(ign, "d1:ItemRef", "ItemRef", ns)
     for (ref in refs) {
       ioid <- .attr_val(ref, "ItemOID")
       if (!nzchar(ioid)) {
@@ -294,10 +311,7 @@
     }
   }
 
-  item_nodes <- xml2::xml_find_all(mdv, "d1:ItemDef", ns)
-  if (length(item_nodes) == 0L) {
-    item_nodes <- xml2::xml_find_all(mdv, "ItemDef")
-  }
+  item_nodes <- .xfind_all(mdv, "d1:ItemDef", "ItemDef", ns)
   if (length(item_nodes) == 0L) {
     return(NULL)
   }
@@ -416,10 +430,7 @@
     return(NULL)
   }
 
-  cl_nodes <- xml2::xml_find_all(mdv, "d1:CodeList", ns)
-  if (length(cl_nodes) == 0L) {
-    cl_nodes <- xml2::xml_find_all(mdv, "CodeList")
-  }
+  cl_nodes <- .xfind_all(mdv, "d1:CodeList", "CodeList", ns)
   if (length(cl_nodes) == 0L) {
     return(NULL)
   }
@@ -448,10 +459,8 @@
 
     # Items (CodeListItem + EnumeratedItem)
     items <- c(
-      xml2::xml_find_all(cl, "d1:CodeListItem", ns),
-      xml2::xml_find_all(cl, "CodeListItem"),
-      xml2::xml_find_all(cl, "d1:EnumeratedItem", ns),
-      xml2::xml_find_all(cl, "EnumeratedItem")
+      .xfind_all(cl, "d1:CodeListItem", "CodeListItem", ns),
+      .xfind_all(cl, "d1:EnumeratedItem", "EnumeratedItem", ns)
     )
 
     if (length(items) == 0L) {
@@ -623,10 +632,7 @@
     return(NULL)
   }
 
-  md_nodes <- xml2::xml_find_all(mdv, "d1:MethodDef", ns)
-  if (length(md_nodes) == 0L) {
-    md_nodes <- xml2::xml_find_all(mdv, "MethodDef")
-  }
+  md_nodes <- .xfind_all(mdv, "d1:MethodDef", "MethodDef", ns)
   if (length(md_nodes) == 0L) {
     return(NULL)
   }
