@@ -1,0 +1,501 @@
+# herald
+
+> Pure-R conformance validation for CDISC clinical data submissions.
+> Reads SDTM and ADaM datasets from XPT, Dataset-JSON, and Parquet
+> files, checks them against published CDISC Library rules, controlled
+> terminology, and Define-XML 2.1 specs. No Java runtime required.
+
+`herald` is a pure-R package for teams that need reproducible submission
+checks without a Java desktop validator. It reads clinical datasets,
+stamps metadata from a submission specification, runs SDTM, ADaM, and
+Define-XML rules, and writes review-ready reports.
+
+Status: pre-alpha. APIs can still change while the rule engine and
+Define-XML round-trip are being completed.
+
+## Why herald?
+
+Clinical submission validation usually crosses several tools: SAS
+transport writers, spreadsheet specs, Define-XML tooling, controlled
+terminology lookups, Java validators, and hand-built reports. `herald`
+puts the core workflow in one auditable R pipeline.
+
+| Capability             | herald                                                                                                                         |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| Pure-R validation path | No JVM or desktop validator required for package workflows                                                                     |
+| Dataset I/O            | XPT, Dataset-JSON, and Parquet readers/writers                                                                                 |
+| Single metadata object | `herald_spec` drives labels, lengths, types, and Define-XML                                                                    |
+| Rule transparency      | [`rule_catalog()`](https://vthanik.github.io/herald/reference/rule_catalog.md) exposes every compiled rule and predicate state |
+| Dictionary protocol    | CDISC CT, SRS, MedDRA, WHODrug, LOINC, SNOMED, and sponsor dictionaries use one interface                                      |
+| Reports                | HTML for review, XLSX for triage, JSON for automation                                                                          |
+| Define-XML             | Read/write round-trip for Define-XML 2.1 and reviewer HTML                                                                     |
+
+## Compare to Pinnacle 21
+
+| Dimension               | herald                              | Pinnacle 21 (Community / Enterprise)   |
+|-------------------------|-------------------------------------|----------------------------------------|
+| Engine                  | Pure R (no JVM)                     | Java (JVM required)                    |
+| Cost                    | Open source (MIT)                   | Community free / Enterprise commercial |
+| Extensibility           | `.register_op()` + YAML rule corpus | Closed rule engine                     |
+| Define-XML round-trip   | Read + write + reviewer HTML        | Read + reviewer HTML                   |
+| Dictionary protocol     | Pluggable provider interface        | Built-in lookups                       |
+| Output formats          | HTML, XLSX, JSON                    | HTML, XLSX                             |
+| CI / `targets` / `renv` | First-class (pure R)                | External tool invocation               |
+
+## Pipeline verbs
+
+| Workflow step                    | Primary function                                                                                                                                                                                                                                                                                                                                 |
+|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Read datasets                    | [`read_xpt()`](https://vthanik.github.io/herald/reference/read_xpt.md), [`read_json()`](https://vthanik.github.io/herald/reference/read_json.md), [`read_parquet()`](https://vthanik.github.io/herald/reference/read_parquet.md)                                                                                                                 |
+| Build or load specs              | [`as_herald_spec()`](https://vthanik.github.io/herald/reference/as_herald_spec.md), [`herald_spec()`](https://vthanik.github.io/herald/reference/herald_spec.md), [`read_define_xml()`](https://vthanik.github.io/herald/reference/read_define_xml.md)                                                                                           |
+| Stamp labels, lengths, and types | [`apply_spec()`](https://vthanik.github.io/herald/reference/apply_spec.md)                                                                                                                                                                                                                                                                       |
+| Validate submissions             | [`validate()`](https://vthanik.github.io/herald/reference/validate.md)                                                                                                                                                                                                                                                                           |
+| Inspect rule coverage            | [`rule_catalog()`](https://vthanik.github.io/herald/reference/rule_catalog.md), [`supported_standards()`](https://vthanik.github.io/herald/reference/supported_standards.md)                                                                                                                                                                     |
+| Use controlled terminology       | [`load_ct()`](https://vthanik.github.io/herald/reference/load_ct.md), [`ct_provider()`](https://vthanik.github.io/herald/reference/ct_provider.md)                                                                                                                                                                                               |
+| Write reports                    | [`report()`](https://vthanik.github.io/herald/reference/report.md), [`write_report_html()`](https://vthanik.github.io/herald/reference/write_report_html.md), [`write_report_xlsx()`](https://vthanik.github.io/herald/reference/write_report_xlsx.md), [`write_report_json()`](https://vthanik.github.io/herald/reference/write_report_json.md) |
+| Author Define-XML                | [`write_define_xml()`](https://vthanik.github.io/herald/reference/write_define_xml.md), [`write_define_html()`](https://vthanik.github.io/herald/reference/write_define_html.md)                                                                                                                                                                 |
+| Convert formats                  | [`convert_dataset()`](https://vthanik.github.io/herald/reference/convert_dataset.md)                                                                                                                                                                                                                                                             |
+
+## Installation
+
+`herald` is not on CRAN yet.
+
+``` r
+# from GitHub (recommended while pre-CRAN)
+pak::pak("vthanik/herald")
+
+# or from a local clone
+pak::local_install()
+
+# after the first public release
+install.packages("herald")
+```
+
+## Five-minute workflow
+
+This example uses the lazy-loaded pilot datasets shipped with the
+package (`dm`, `adsl`, `adae`, `advs`).
+
+``` r
+library(herald)
+
+r <- validate(files = list(DM = dm, AE = adae))
+#> ✔ Loaded 1762 rules; validating 2 datasets.
+summary(r)
+#> $state
+#> [1] "Incomplete"
+#> 
+#> $rules_applied
+#> [1] 240
+#> 
+#> $rules_total
+#> [1] 1762
+#> 
+#> $datasets_checked
+#> [1] "DM" "AE"
+#> 
+#> $n_findings_fired
+#> [1] 371
+#> 
+#> $n_findings_advisory
+#> [1] 230
+#> 
+#> $severity_counts
+#> 
+#> Medium 
+#>    371 
+#> 
+#> $duration
+#> Time difference of 1.358754 secs
+#> 
+#> $timestamp
+#> [1] "2026-04-27 00:47:28 BST"
+write_report_html(r, tempfile(fileext = ".html"))
+```
+
+## What you get
+
+The HTML report opens with a header band, summary tiles, and a sortable
+findings table grouped by severity, rule, and dataset.
+
+![Top of the rendered HTML validation
+report](reference/figures/report-screenshot.png)
+
+Write the same result to other formats:
+
+``` r
+report(r, "validation-report.html")
+report(r, "validation-report.xlsx")
+report(r, "validation-report.json")
+```
+
+Convert between transport formats:
+
+``` r
+write_xpt(dm, "dm.xpt")
+convert_dataset("dm.xpt", "dm.json")
+```
+
+## Key features
+
+### Transparent rule corpus
+
+``` r
+catalog <- rule_catalog()
+catalog[catalog$has_predicate, c("rule_id", "standard", "severity", "message")]
+supported_standards()
+```
+
+### Controlled terminology in the same pipeline
+
+``` r
+ct <- ct_provider("sdtm")
+ct$contains(c("Y", "N", "UNKNOWN"), field = "NY")
+
+validate(
+  files = dm,
+  dictionaries = list("ct-sdtm" = ct),
+  quiet = TRUE
+)
+```
+
+### One result, three report formats
+
+``` r
+report(r, "qc/report.html")
+report(r, "qc/report.xlsx")
+report(r, "qc/report.json")
+```
+
+### Define-XML round-trip
+
+``` r
+write_define_xml(sdtm_spec, "define.xml", validate = FALSE)
+define <- read_define_xml("define.xml")
+write_define_html(sdtm_spec, "define.html", define_xml = "define.xml")
+```
+
+## Documentation
+
+Start with these vignettes:
+
+- [`vignette("herald")`](https://vthanik.github.io/herald/articles/herald.md):
+  end-to-end package workflow
+- [`vignette("validation-reporting")`](https://vthanik.github.io/herald/articles/validation-reporting.md):
+  validation, filtering, and reports
+- [`vignette("data-io")`](https://vthanik.github.io/herald/articles/data-io.md):
+  XPT, Dataset-JSON, Parquet, and conversion
+- [`vignette("define-xml")`](https://vthanik.github.io/herald/articles/define-xml.md):
+  Define-XML 2.1 read/write round-trip
+- [`vignette("dictionaries")`](https://vthanik.github.io/herald/articles/dictionaries.md):
+  controlled terminology and dictionary providers
+- [`vignette("best-practices")`](https://vthanik.github.io/herald/articles/best-practices.md):
+  production validation project patterns
+- [`vignette("architecture")`](https://vthanik.github.io/herald/articles/architecture.md):
+  package layers and extension points
+- [`vignette("rule-coverage")`](https://vthanik.github.io/herald/articles/rule-coverage.md):
+  rule fixture coverage status
+
+## Development checks
+
+Run these before committing package changes:
+
+``` bash
+Rscript -e 'devtools::document()'
+Rscript -e 'devtools::test()'
+Rscript -e 'devtools::check(args = "--no-manual")'
+```
+
+Generated files such as `man/*.Rd`, `NAMESPACE`, and compiled rule
+artifacts should be regenerated from source, not hand-edited.
+
+## License
+
+MIT. Rule content is authored independently from CDISC Library material
+and primary regulator documents. See `LICENSE.md` and `inst/NOTICE` when
+present.
+
+# Package index
+
+## Dataset I/O
+
+Read and write clinical datasets without a Java or SAS dependency.
+[`read_xpt()`](https://vthanik.github.io/herald/reference/read_xpt.md)
+and
+[`write_xpt()`](https://vthanik.github.io/herald/reference/write_xpt.md)
+handle SAS transport files in pure R.
+[`read_json()`](https://vthanik.github.io/herald/reference/read_json.md)
+and
+[`write_json()`](https://vthanik.github.io/herald/reference/write_json.md)
+support CDISC Dataset-JSON v1.1.
+[`read_parquet()`](https://vthanik.github.io/herald/reference/read_parquet.md)
+and
+[`write_parquet()`](https://vthanik.github.io/herald/reference/write_parquet.md)
+use Arrow when available.
+[`convert_dataset()`](https://vthanik.github.io/herald/reference/convert_dataset.md)
+moves between formats while preserving labels, lengths, types, and
+dataset-level metadata.
+
+- [`read_xpt()`](https://vthanik.github.io/herald/reference/read_xpt.md)
+  **\[stable\]** : Read a SAS Transport (XPT) file into a data frame
+- [`write_xpt()`](https://vthanik.github.io/herald/reference/write_xpt.md)
+  **\[stable\]** : Write a data frame to a SAS Transport (XPT) file
+- [`read_json()`](https://vthanik.github.io/herald/reference/read_json.md)
+  : Read a CDISC Dataset-JSON file
+- [`write_json()`](https://vthanik.github.io/herald/reference/write_json.md)
+  : Write a data frame as CDISC Dataset-JSON v1.1
+- [`read_parquet()`](https://vthanik.github.io/herald/reference/read_parquet.md)
+  : Read an Apache Parquet dataset with CDISC column attributes
+- [`write_parquet()`](https://vthanik.github.io/herald/reference/write_parquet.md)
+  : Write a data frame to Apache Parquet with CDISC column attributes
+- [`convert_dataset()`](https://vthanik.github.io/herald/reference/convert_dataset.md)
+  : Convert a dataset between XPT, Dataset-JSON, and Parquet
+
+## Specification Metadata
+
+Build and inspect `herald_spec` objects: the metadata source for dataset
+labels, variable labels, storage lengths, expected types, standards, and
+dataset classes.
+[`apply_spec()`](https://vthanik.github.io/herald/reference/apply_spec.md)
+stamps those attributes onto data frames before validation and transport
+writing.
+
+- [`as_herald_spec()`](https://vthanik.github.io/herald/reference/as_herald_spec.md)
+  **\[experimental\]** :
+
+  Construct a `herald_spec` object
+
+- [`herald_spec()`](https://vthanik.github.io/herald/reference/herald_spec.md)
+  **\[experimental\]** : Construct a rich herald_spec with all
+  submission slots
+
+- [`is_herald_spec()`](https://vthanik.github.io/herald/reference/is_herald_spec.md)
+  :
+
+  Is `x` a `herald_spec`?
+
+- [`apply_spec()`](https://vthanik.github.io/herald/reference/apply_spec.md)
+  **\[stable\]** :
+
+  Stamp column and dataset attributes from a `herald_spec`
+
+## Define-XML 2.1
+
+Read, write, and render Define-XML 2.1. The rich
+[`herald_spec()`](https://vthanik.github.io/herald/reference/herald_spec.md)
+constructor carries study metadata, datasets, variables, codelists,
+methods, comments, document leaves, value-level metadata, and ADaM ARM.
+Parsed Define-XML can be passed to
+[`validate()`](https://vthanik.github.io/herald/reference/validate.md)
+so metadata-dependent rules run with the same context as reviewers.
+
+- [`read_define_xml()`](https://vthanik.github.io/herald/reference/read_define_xml.md)
+  **\[stable\]** : Read a Define-XML 2.1 file
+- [`write_define_xml()`](https://vthanik.github.io/herald/reference/write_define_xml.md)
+  : Write a Define-XML 2.1 file from a herald specification
+- [`write_define_html()`](https://vthanik.github.io/herald/reference/write_define_html.md)
+  : Write a Define-XML 2.1 HTML rendering
+- [`validate_spec()`](https://vthanik.github.io/herald/reference/validate_spec.md)
+  : Validate a herald_spec for Define-XML completeness
+
+## Validation Engine
+
+[`validate()`](https://vthanik.github.io/herald/reference/validate.md)
+runs the compiled rule catalog against directories or named lists of
+data frames and returns a `herald_result`. Rule filters can target exact
+IDs, authorities, standards, and study-specific severity policies.
+[`rule_catalog()`](https://vthanik.github.io/herald/reference/rule_catalog.md)
+and
+[`supported_standards()`](https://vthanik.github.io/herald/reference/supported_standards.md)
+expose the compiled corpus for planning, QC, and coverage review.
+
+- [`validate()`](https://vthanik.github.io/herald/reference/validate.md)
+  **\[stable\]** : Validate CDISC clinical data against the conformance
+  rule catalog
+- [`rule_catalog()`](https://vthanik.github.io/herald/reference/rule_catalog.md)
+  **\[experimental\]** : Compiled rule catalog
+- [`supported_standards()`](https://vthanik.github.io/herald/reference/supported_standards.md)
+  : Summarise herald's standards coverage
+
+## Reports
+
+Convert `herald_result` objects into submission-review artifacts.
+[`report()`](https://vthanik.github.io/herald/reference/report.md)
+dispatches from file extension; explicit writers produce self-contained
+HTML, workbook-style XLSX, and machine-readable JSON. Reports include
+findings, rule counts, dataset metadata, skipped references, and run
+metadata.
+
+- [`report()`](https://vthanik.github.io/herald/reference/report.md)
+  **\[stable\]** : Write a herald_result to disk in any supported format
+- [`write_report_html()`](https://vthanik.github.io/herald/reference/write_report_html.md)
+  **\[experimental\]** : Write a herald_result as a self-contained HTML
+  report
+- [`write_report_xlsx()`](https://vthanik.github.io/herald/reference/write_report_xlsx.md)
+  **\[experimental\]** : Write a herald_result as a five-sheet XLSX
+  workbook
+- [`write_report_json()`](https://vthanik.github.io/herald/reference/write_report_json.md)
+  **\[experimental\]** : Write a herald_result as canonical JSON
+
+## Controlled Terminology
+
+Load bundled SDTM and ADaM controlled terminology, inspect release
+metadata, list available NCI EVS releases, and refresh local caches.
+[`ct_provider()`](https://vthanik.github.io/herald/reference/ct_provider.md)
+exposes CDISC CT through the same dictionary-provider protocol used by
+SRS, MedDRA, WHODrug, LOINC, SNOMED, and sponsor dictionaries.
+
+- [`load_ct()`](https://vthanik.github.io/herald/reference/load_ct.md) :
+  Load bundled or cached CDISC Controlled Terminology
+- [`ct_info()`](https://vthanik.github.io/herald/reference/ct_info.md) :
+  Summarise the currently resolvable CT.
+- [`available_ct_releases()`](https://vthanik.github.io/herald/reference/available_ct_releases.md)
+  : List available CDISC CT releases
+- [`download_ct()`](https://vthanik.github.io/herald/reference/download_ct.md)
+  : Download + cache a CDISC CT release from NCI EVS
+- [`ct_provider()`](https://vthanik.github.io/herald/reference/ct_provider.md)
+  **\[experimental\]** : CDISC Controlled Terminology as a Dictionary
+  Provider
+
+## External Dictionary Providers
+
+Register external or sponsor-owned terminology sources for validation
+runs. Providers expose `contains()` and optional `lookup()` methods so
+rules can check dictionary membership without knowing the file format.
+Use session-wide registration for interactive work or pass providers
+directly to `validate(dictionaries = ...)` for reproducible pipelines.
+
+- [`new_dict_provider()`](https://vthanik.github.io/herald/reference/new_dict_provider.md)
+  **\[experimental\]** : Construct a dictionary-provider object
+- [`custom_provider()`](https://vthanik.github.io/herald/reference/custom_provider.md)
+  **\[experimental\]** : Generic in-memory Dictionary Provider
+- [`register_dictionary()`](https://vthanik.github.io/herald/reference/register_dictionary.md)
+  **\[experimental\]** : Install a dictionary provider in the session
+  registry
+- [`unregister_dictionary()`](https://vthanik.github.io/herald/reference/unregister_dictionary.md)
+  **\[experimental\]** : Remove a dictionary from the session registry
+- [`list_dictionaries()`](https://vthanik.github.io/herald/reference/list_dictionaries.md)
+  : List known dictionaries
+- [`download_srs()`](https://vthanik.github.io/herald/reference/download_srs.md)
+  : Download + cache the FDA SRS / UNII table
+- [`srs_provider()`](https://vthanik.github.io/herald/reference/srs_provider.md)
+  **\[experimental\]** : FDA SRS / UNII as a Dictionary Provider
+- [`meddra_provider()`](https://vthanik.github.io/herald/reference/meddra_provider.md)
+  **\[experimental\]** : MedDRA as a Dictionary Provider
+- [`whodrug_provider()`](https://vthanik.github.io/herald/reference/whodrug_provider.md)
+  **\[experimental\]** : WHO-Drug as a Dictionary Provider
+- [`loinc_provider()`](https://vthanik.github.io/herald/reference/loinc_provider.md)
+  **\[experimental\]** : LOINC as a Dictionary Provider
+- [`snomed_provider()`](https://vthanik.github.io/herald/reference/snomed_provider.md)
+  **\[experimental\]** : SNOMED CT as a Dictionary Provider
+
+## Submission Discovery and ADaM Helpers
+
+Helpers for classifying ADaM datasets and detecting analysis dataset
+shapes from variable names. These functions are useful for routing
+class-scoped ADaM rules and for checking whether a sponsor dataset looks
+like ADSL, BDS, OCCDS, or ADTTE.
+
+- [`detect_adam_class()`](https://vthanik.github.io/herald/reference/detect_adam_class.md)
+  : Detect the ADaM dataset class from column names
+- [`detect_adam_classes()`](https://vthanik.github.io/herald/reference/detect_adam_classes.md)
+  : Detect ADaM class for each dataset
+
+## Object Methods
+
+Print and summary methods for the main herald objects. These keep
+console output compact while preserving the full object for programmatic
+access in pipelines and reports.
+
+- [`print(`*`<herald_define>`*`)`](https://vthanik.github.io/herald/reference/print.herald_define.md)
+  : Print a herald_define
+- [`print(`*`<herald_dict_provider>`*`)`](https://vthanik.github.io/herald/reference/print.herald_dict_provider.md)
+  : Print a herald_dict_provider
+- [`print(`*`<herald_result>`*`)`](https://vthanik.github.io/herald/reference/print.herald_result.md)
+  : Print a herald_result
+- [`print(`*`<herald_spec>`*`)`](https://vthanik.github.io/herald/reference/print.herald_spec.md)
+  : Print a herald_spec
+- [`summary(`*`<herald_result>`*`)`](https://vthanik.github.io/herald/reference/summary.herald_result.md)
+  : Summarise a herald_result
+
+## Operators
+
+The validation engine dispatches each rule to a registered operator – a
+vectorised predicate with signature `op(data, ctx, ...)`. Operators are
+referenced by name from rule YAML and resolved at run time. The full
+sortable catalog of built-in operators, their kinds, arg schemas, and
+cost hints lives in the operator catalog vignette.
+
+- [`herald-ops-catalog`](https://vthanik.github.io/herald/reference/herald-ops-catalog.md)
+  : Operator catalog
+
+## Built-in Datasets
+
+Lazy-loaded SDTM and ADaM datasets and specs shipped with the package.
+Use directly in examples and vignettes without
+[`readRDS()`](https://rdrr.io/r/base/readRDS.html) or
+[`system.file()`](https://rdrr.io/r/base/system.file.html). The
+`pilot-data` page documents the legacy `.rds` fixtures retained under
+`inst/extdata` for backwards compatibility.
+
+- [`dm`](https://vthanik.github.io/herald/reference/dm.md) : Pilot DM
+  (Demographics) domain
+- [`adsl`](https://vthanik.github.io/herald/reference/adsl.md) : Pilot
+  ADSL (Subject-Level Analysis Dataset)
+- [`adae`](https://vthanik.github.io/herald/reference/adae.md) : Pilot
+  ADAE (Adverse Events Analysis Dataset, OCCDS)
+- [`advs`](https://vthanik.github.io/herald/reference/advs.md) : Pilot
+  ADVS (Vital Signs Analysis Dataset, BDS)
+- [`sdtm_spec`](https://vthanik.github.io/herald/reference/sdtm_spec.md)
+  : Pilot SDTM specification (herald_spec)
+- [`adam_spec`](https://vthanik.github.io/herald/reference/adam_spec.md)
+  : Pilot ADaM specification (herald_spec)
+- [`pilot-data`](https://vthanik.github.io/herald/reference/pilot-data.md)
+  : CDISC Pilot 03 example data and specs (bundled)
+
+# Articles
+
+### Reference
+
+- [herald
+  cheatsheet](https://vthanik.github.io/herald/articles/cheatsheet.md):
+
+  Single-page reference for the herald CDISC validation pipeline – read,
+  spec, stamp, dictionaries, catalog, validate, report.
+
+### Get started
+
+- [Getting Started with
+  herald](https://vthanik.github.io/herald/articles/herald.md):
+- [What CDISC rules does herald
+  check?](https://vthanik.github.io/herald/articles/rule-coverage.md):
+- [Validation and
+  Reporting](https://vthanik.github.io/herald/articles/validation-reporting.md):
+- [Dataset I/O and Format
+  Conversion](https://vthanik.github.io/herald/articles/data-io.md):
+
+### Workflows
+
+- [Define-XML
+  2.1](https://vthanik.github.io/herald/articles/define-xml.md):
+- [Controlled Terminology and Dictionary
+  Providers](https://vthanik.github.io/herald/articles/dictionaries.md):
+- [Best Practices for Validation
+  Projects](https://vthanik.github.io/herald/articles/best-practices.md):
+
+### Cookbook
+
+- [Herald
+  Cookbook](https://vthanik.github.io/herald/articles/cookbook.md):
+- [Extending
+  herald](https://vthanik.github.io/herald/articles/extending-herald.md):
+- [Migrating from Pinnacle
+  21](https://vthanik.github.io/herald/articles/migrating-from-p21.md):
+- [Frequently Asked
+  Questions](https://vthanik.github.io/herald/articles/faq.md):
+
+### Internals
+
+- [Architecture](https://vthanik.github.io/herald/articles/architecture.md):
+- [Operator
+  catalog](https://vthanik.github.io/herald/articles/op-catalog.md):
