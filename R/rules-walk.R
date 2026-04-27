@@ -197,15 +197,21 @@ walk_tree <- function(node, data, ctx = NULL) {
   # directly via .ref_ds(). Shield it from substitution here, then restore.
   .DOTTED_DS_COL <- "^[A-Z][A-Z0-9]{1,7}\\.[A-Z][A-Z0-9_]*$"
   shielded_name <- NULL
-  if (op_name %in% c("exists", "not_exists") &&
-      is.character(args$name) && length(args$name) == 1L &&
-      grepl(.DOTTED_DS_COL, args$name)) {
+  if (
+    op_name %in%
+      c("exists", "not_exists") &&
+      is.character(args$name) &&
+      length(args$name) == 1L &&
+      grepl(.DOTTED_DS_COL, args$name)
+  ) {
     shielded_name <- args$name
-    args$name <- args$name  # keep but mark it; substitution skips it below
+    args$name <- args$name # keep but mark it; substitution skips it below
   }
   if (!is.null(ctx) && !is.null(ctx$crossrefs)) {
     args_for_sub <- if (!is.null(shielded_name)) {
-      tmp <- args; tmp$name <- NULL; tmp
+      tmp <- args
+      tmp$name <- NULL
+      tmp
     } else {
       args
     }

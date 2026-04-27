@@ -74,7 +74,7 @@ write_json <- function(
   metadata_ref = NULL,
   originator = "herald"
 ) {
-  .x_expr <- rlang::enexpr(x)
+  x_expr <- rlang::enexpr(x)
   call <- rlang::caller_env()
   check_data_frame(x, call = call)
   check_scalar_chr(file, call = call)
@@ -104,8 +104,8 @@ write_json <- function(
     ds_attr <- attr(data, "dataset_name")
     if (!is.null(ds_attr) && length(ds_attr) == 1L) {
       dataset <- ds_attr
-    } else if (is.symbol(.x_expr)) {
-      cand <- as.character(.x_expr)
+    } else if (is.symbol(x_expr)) {
+      cand <- as.character(x_expr)
       if (grepl("^[A-Za-z_][A-Za-z0-9_]*$", cand)) dataset <- toupper(cand)
     } else {
       dataset <- toupper(tools::file_path_sans_ext(basename(file)))

@@ -80,7 +80,7 @@
 #' @family spec
 #' @export
 apply_spec <- function(datasets, spec) {
-  .ds_expr <- rlang::enexpr(datasets)
+  ds_expr <- rlang::enexpr(datasets)
   call <- rlang::caller_env()
 
   single_df <- is.data.frame(datasets)
@@ -90,8 +90,8 @@ apply_spec <- function(datasets, spec) {
     ds_attr <- attr(datasets, "dataset_name")
     if (!is.null(ds_attr) && length(ds_attr) == 1L && nzchar(ds_attr)) {
       ds_name <- toupper(as.character(ds_attr))
-    } else if (is.symbol(.ds_expr)) {
-      cand <- as.character(.ds_expr)
+    } else if (is.symbol(ds_expr)) {
+      cand <- as.character(ds_expr)
       if (grepl("^[A-Za-z_][A-Za-z0-9_]*$", cand)) ds_name <- toupper(cand)
     }
     if (is.null(ds_name)) {

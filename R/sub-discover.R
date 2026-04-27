@@ -361,16 +361,16 @@ detect_adam_class <- function(vars) {
 #' @family adam
 #' @export
 detect_adam_classes <- function(..., call = rlang::caller_env()) {
-  .exprs <- rlang::enexprs(...)
-  .vals <- list(...)
+  exprs <- rlang::enexprs(...)
+  vals <- list(...)
 
   # Single herald_spec or named list passed as the only argument
   if (
-    length(.vals) == 1L &&
-      (inherits(.vals[[1L]], "herald_spec") ||
-        (is.list(.vals[[1L]]) && !is.data.frame(.vals[[1L]])))
+    length(vals) == 1L &&
+      (inherits(vals[[1L]], "herald_spec") ||
+        (is.list(vals[[1L]]) && !is.data.frame(vals[[1L]])))
   ) {
-    x <- .vals[[1L]]
+    x <- vals[[1L]]
     if (inherits(x, "herald_spec")) {
       vs <- x$var_spec
       if (is.null(vs) || !"dataset" %in% names(vs)) {
@@ -395,22 +395,22 @@ detect_adam_classes <- function(..., call = rlang::caller_env()) {
   }
 
   # One or more data frames passed directly (bare or named)
-  nms <- names(.vals)
+  nms <- names(vals)
   if (is.null(nms)) {
-    nms <- character(length(.vals))
+    nms <- character(length(vals))
   }
-  for (i in seq_along(.vals)) {
-    if (!nzchar(nms[[i]]) && is.symbol(.exprs[[i]])) {
-      nms[[i]] <- toupper(as.character(.exprs[[i]]))
+  for (i in seq_along(vals)) {
+    if (!nzchar(nms[[i]]) && is.symbol(exprs[[i]])) {
+      nms[[i]] <- toupper(as.character(exprs[[i]]))
     }
     if (!nzchar(nms[[i]])) nms[[i]] <- paste0("DATA", i)
   }
-  names(.vals) <- nms
+  names(vals) <- nms
 
-  if (length(.vals) > 0L && all(vapply(.vals, is.data.frame, logical(1L)))) {
+  if (length(vals) > 0L && all(vapply(vals, is.data.frame, logical(1L)))) {
     return(vapply(
       nms,
-      function(nm) detect_adam_class(names(.vals[[nm]])),
+      function(nm) detect_adam_class(names(vals[[nm]])),
       character(1L)
     ))
   }

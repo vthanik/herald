@@ -117,7 +117,7 @@ write_xpt <- function(
   label = NULL,
   encoding = "wlatin1"
 ) {
-  .x_expr <- rlang::enexpr(x)
+  x_expr <- rlang::enexpr(x)
   call <- rlang::caller_env()
   encoding <- resolve_encoding(encoding)
   version <- vctrs::vec_cast(version, integer())
@@ -142,8 +142,8 @@ write_xpt <- function(
     ds_attr <- attr(x, "dataset_name")
     if (!is.null(ds_attr) && length(ds_attr) == 1L) {
       name <- ds_attr
-    } else if (is.symbol(.x_expr)) {
-      cand <- as.character(.x_expr)
+    } else if (is.symbol(x_expr)) {
+      cand <- as.character(x_expr)
       if (grepl("^[A-Za-z_][A-Za-z0-9_]*$", cand)) name <- toupper(cand)
     }
   }

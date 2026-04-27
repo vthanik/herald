@@ -27,7 +27,7 @@ Imports:
     jsonlite,
     lifecycle,
     openxlsx2,
-    rlang,
+    rlang (>= 1.1.0),
     S7,
     tibble,
     vctrs,
