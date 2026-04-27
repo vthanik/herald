@@ -196,12 +196,19 @@ reference:
     contents:
       - herald-ops-catalog
 
-  - title: "Built-in Pilot Data"
+  - title: "Built-in Datasets"
     desc: >
-      Small pilot datasets and specs bundled under `inst/extdata` for
-      examples, smoke tests, and vignette workflows. These are accessed with
-      `system.file("extdata", ..., package = "herald")`.
+      Lazy-loaded SDTM and ADaM datasets and specs shipped with the package.
+      Use directly in examples and vignettes without `readRDS()` or
+      `system.file()`. The `pilot-data` page documents the legacy `.rds`
+      fixtures retained under `inst/extdata` for backwards compatibility.
     contents:
+      - dm
+      - adsl
+      - adae
+      - advs
+      - sdtm_spec
+      - adam_spec
       - "pilot-data"
 
 articles:
