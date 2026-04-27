@@ -241,6 +241,284 @@ main {
   }
 }
 
+// ── Cheatsheet ─────────────────────────────────────────────────────────────
+// Scoped to .cheatsheet wrapper -- isolates these styles to the cheatsheet
+// article so the rest of the pkgdown site is untouched.
+
+.cheatsheet {
+  --cs-l0: #0ea5e9;
+  --cs-l1: #6366f1;
+  --cs-l2: #8b5cf6;
+  --cs-l3: #ec4899;
+  --cs-l4: #f59e0b;
+  --cs-l5: #10b981;
+  --cs-l6: #ef4444;
+  --cs-ink: #0f172a;
+  --cs-muted: #64748b;
+  --cs-line: #e2e8f0;
+  --cs-bg: #ffffff;
+  --cs-bg-alt: #f8fafc;
+  --cs-code-bg: #0f172a;
+  --cs-code-ink: #e2e8f0;
+
+  font-feature-settings: "ss01", "ss02";
+  color: var(--cs-ink);
+  margin-top: 1rem;
+
+  .cs-hero {
+    border: 1px solid var(--cs-line);
+    border-radius: 8px;
+    padding: 1.75rem 2rem;
+    margin: 0 0 2rem;
+    background: linear-gradient(135deg, #f0f9ff 0%, #ede9fe 60%, #fdf2f8 100%);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+
+    h1 {
+      margin: 0 0 .35rem;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--cs-ink);
+    }
+    p { margin: 0; color: var(--cs-muted); font-size: 1.02rem; }
+    .cs-hero-meta {
+      text-align: right;
+      font-size: .82rem;
+      color: var(--cs-muted);
+      line-height: 1.45;
+      code { background: rgba(255,255,255,.6); }
+    }
+  }
+
+  .cs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0 0 2rem;
+    @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 720px)  { grid-template-columns: 1fr; }
+  }
+  .cs-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 0 0 2rem;
+    @media (max-width: 720px) { grid-template-columns: 1fr; }
+  }
+
+  .cs-card {
+    border: 1px solid var(--cs-line);
+    border-radius: 6px;
+    padding: 1rem 1.1rem 1.1rem;
+    background: var(--cs-bg);
+    border-top: 4px solid var(--cs-accent, var(--cs-l0));
+    display: flex;
+    flex-direction: column;
+
+    .cs-tag {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--cs-accent, var(--cs-l0));
+      margin-bottom: .35rem;
+    }
+    h3 {
+      margin: 0 0 .35rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--cs-ink);
+    }
+    p.cs-lede {
+      margin: 0 0 .8rem;
+      color: var(--cs-muted);
+      font-size: .92rem;
+      line-height: 1.45;
+    }
+    .cs-fn {
+      font-family: "Source Code Pro", monospace;
+      font-size: .82rem;
+      color: var(--cs-accent, var(--cs-l0));
+      font-weight: 500;
+      margin-bottom: .6rem;
+    }
+    pre {
+      background: var(--cs-code-bg) !important;
+      color: var(--cs-code-ink);
+      border-radius: 4px;
+      padding: .7rem .85rem;
+      font-size: .76rem;
+      line-height: 1.5;
+      margin: 0 0 .6rem;
+      overflow-x: auto;
+      background-image: none !important;
+      code {
+        background: transparent;
+        color: inherit;
+        padding: 0;
+      }
+    }
+    .cs-note {
+      margin-top: auto;
+      font-size: .78rem;
+      color: var(--cs-muted);
+      border-top: 1px dashed var(--cs-line);
+      padding-top: .55rem;
+      strong { color: var(--cs-ink); }
+    }
+  }
+
+  // Per-layer accent
+  .cs-l0 { --cs-accent: var(--cs-l0); }
+  .cs-l1 { --cs-accent: var(--cs-l1); }
+  .cs-l2 { --cs-accent: var(--cs-l2); }
+  .cs-l3 { --cs-accent: var(--cs-l3); }
+  .cs-l4 { --cs-accent: var(--cs-l4); }
+  .cs-l5 { --cs-accent: var(--cs-l5); }
+  .cs-l6 { --cs-accent: var(--cs-l6); }
+
+  // Layer-stack flow diagram
+  .cs-stack {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: .35rem;
+    margin: 0 0 2rem;
+    @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
+  }
+  .cs-stack-cell {
+    border-radius: 4px;
+    padding: .55rem .65rem;
+    color: #fff;
+    font-size: .78rem;
+    line-height: 1.3;
+    background: var(--cs-accent, var(--cs-l0));
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+    .cs-stack-num { font-weight: 700; opacity: .75; font-size: .7rem; letter-spacing: .1em; }
+    .cs-stack-name { font-weight: 700; font-size: .92rem; }
+    .cs-stack-fn { font-family: "Source Code Pro", monospace; font-size: .72rem; opacity: .9; }
+  }
+
+  // Section header band
+  .cs-section {
+    margin: 2.5rem 0 1rem;
+    padding: .55rem 0 .6rem;
+    border-top: 1px solid var(--cs-line);
+    display: flex;
+    align-items: baseline;
+    gap: .9rem;
+    h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      color: var(--cs-ink);
+    }
+    .cs-section-sub {
+      color: var(--cs-muted);
+      font-size: .92rem;
+    }
+  }
+
+  // Reference tables
+  .cs-ref {
+    border: 1px solid var(--cs-line);
+    border-radius: 6px;
+    padding: .9rem 1rem;
+    background: var(--cs-bg-alt);
+    h4 {
+      margin: 0 0 .6rem;
+      font-size: .78rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--cs-muted);
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      font-size: .85rem;
+      margin: 0;
+      border-collapse: collapse;
+      td, th {
+        padding: .3rem .5rem .3rem 0;
+        vertical-align: top;
+        border: none;
+      }
+      th { font-weight: 600; color: var(--cs-ink); border-bottom: 1px solid var(--cs-line); }
+      tr + tr td { border-top: 1px dotted var(--cs-line); }
+      code { background: rgba(15, 23, 42, .06); padding: 1px 5px; border-radius: 3px; }
+    }
+  }
+
+  .cs-recipe {
+    border: 1px solid var(--cs-line);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    background: var(--cs-bg-alt);
+    h3 { margin: 0 0 .35rem; font-size: 1.1rem; font-weight: 700; }
+    p  { margin: 0 0 .7rem; color: var(--cs-muted); font-size: .92rem; }
+    pre {
+      background: var(--cs-code-bg) !important;
+      color: var(--cs-code-ink);
+      background-image: none !important;
+      border-radius: 4px;
+      padding: .9rem 1rem;
+      font-size: .82rem;
+      margin: 0;
+      code { background: transparent; color: inherit; }
+    }
+  }
+
+  .cs-tips {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .55rem .9rem;
+    @media (max-width: 720px) { grid-template-columns: 1fr; }
+    li {
+      padding-left: 1.4rem;
+      position: relative;
+      font-size: .9rem;
+      line-height: 1.45;
+      color: var(--cs-ink);
+      margin: 0;
+      &::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--cs-l1);
+        font-weight: 700;
+      }
+      strong { color: var(--cs-ink); }
+      code { background: rgba(15, 23, 42, .06); padding: 1px 5px; border-radius: 3px; }
+    }
+  }
+}
+
+// Dark mode tweaks for cheatsheet
+[data-bs-theme="dark"] .cheatsheet {
+  --cs-ink: #e2e8f0;
+  --cs-muted: #94a3b8;
+  --cs-line: #334155;
+  --cs-bg: #0f172a;
+  --cs-bg-alt: #1e293b;
+  .cs-hero {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b0764 60%, #831843 100%);
+    p, .cs-hero-meta { color: #cbd5e1; }
+    h1 { color: #f8fafc; }
+  }
+  .cs-card { background: #1e293b; }
+  .cs-ref code, .cs-tips code { background: rgba(226,232,240,.1); color: #f1f5f9; }
+}
+
 // ── Search highlight ───────────────────────────────────────────────────────
 $mark-colour: mix($body-bg, $primary, 70%) !default;
 mark {

@@ -1,0 +1,592 @@
+---
+title: "herald cheatsheet"
+description: >
+  Single-page reference for the herald CDISC validation pipeline -- read,
+  spec, stamp, dictionaries, catalog, validate, report.
+output:
+  rmarkdown::html_vignette:
+    toc: false
+vignette: >
+  %\VignetteIndexEntry{herald cheatsheet}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE, comment = "")
+```
+
+::: {.cheatsheet}
+
+::: {.cs-hero}
+::: {}
+# herald cheatsheet {.unnumbered}
+
+Pure-R CDISC conformance validation. Read submission datasets, attach
+metadata, run rules, ship reviewer-ready reports -- without Java or SAS.
+:::
+::: {.cs-hero-meta}
+SDTM-IG v2.0 &middot; ADaM-IG v5.0 &middot; Define-XML 2.1<br>
+CDISC Library CORE &middot; NCI EVS CT &middot; MedDRA &middot; WHODrug
+:::
+:::
+
+::: {.cs-stack}
+::: {.cs-stack-cell style="--cs-accent: #0ea5e9"}
+[L0]{.cs-stack-num}<br>[Read]{.cs-stack-name}<br>[read_xpt / read_json]{.cs-stack-fn}
+:::
+::: {.cs-stack-cell style="--cs-accent: #6366f1"}
+[L1]{.cs-stack-num}<br>[Spec]{.cs-stack-name}<br>[as_herald_spec]{.cs-stack-fn}
+:::
+::: {.cs-stack-cell style="--cs-accent: #8b5cf6"}
+[L2]{.cs-stack-num}<br>[Stamp]{.cs-stack-name}<br>[apply_spec]{.cs-stack-fn}
+:::
+::: {.cs-stack-cell style="--cs-accent: #ec4899"}
+[L3]{.cs-stack-num}<br>[Dict]{.cs-stack-name}<br>[ct_provider]{.cs-stack-fn}
+:::
+::: {.cs-stack-cell style="--cs-accent: #f59e0b"}
+[L4]{.cs-stack-num}<br>[Catalog]{.cs-stack-name}<br>[rule_catalog]{.cs-stack-fn}
+:::
+::: {.cs-stack-cell style="--cs-accent: #10b981"}
+[L5]{.cs-stack-num}<br>[Validate]{.cs-stack-name}<br>[validate]{.cs-stack-fn}
+:::
+::: {.cs-stack-cell style="--cs-accent: #ef4444"}
+[L6]{.cs-stack-num}<br>[Report]{.cs-stack-name}<br>[write_report_html]{.cs-stack-fn}
+:::
+:::
+
+::: {.cs-section}
+## L0 -- Read
+
+[Pure-R ingest. No JVM, no SAS.]{.cs-section-sub}
+:::
+
+::: {.cs-grid}
+
+::: {.cs-card .cs-l0}
+[Transport]{.cs-tag}
+
+### SAS XPT v5
+
+[Round-trip XPT with labels, lengths, types preserved.]{.cs-lede}
+
+```r
+dm <- read_xpt("dm.xpt")
+write_xpt(dm, "dm.xpt", label = "Demographics")
+```
+
+::: {.cs-note}
+**Tip:** XPT label = 40 char max, variable label = 200; truncation throws
+`herald_error_input`.
+:::
+:::
+
+::: {.cs-card .cs-l0}
+[Modern]{.cs-tag}
+
+### Dataset-JSON v1.1
+
+[CDISC's transport replacement -- preserves types and ISO 8601 dates.]{.cs-lede}
+
+```r
+ae <- read_json("ae.json")
+write_json(ae, "ae.json",
+  dataset_label = "Adverse Events",
+  iso_dates     = TRUE
+)
+```
+
+::: {.cs-note}
+Carries `name`, `label`, `itemOID`, `standard` on every column.
+:::
+:::
+
+::: {.cs-card .cs-l0}
+[Analytics]{.cs-tag}
+
+### Parquet
+
+[Arrow-backed columnar storage. Best for ADaM at scale.]{.cs-lede}
+
+```r
+adsl <- read_parquet("adsl.parquet")
+write_parquet(adsl, "adsl.parquet")
+
+convert_dataset("dm.xpt", "dm.parquet")
+```
+
+::: {.cs-note}
+Requires `arrow`; falls back to a clear `herald_error_runtime` if absent.
+:::
+:::
+
+:::
+
+::: {.cs-section}
+## L1 -- Spec
+
+[Build the metadata object that drives stamping and validation.]{.cs-section-sub}
+:::
+
+::: {.cs-grid}
+
+::: {.cs-card .cs-l1}
+[From Define-XML]{.cs-tag}
+
+### Lift metadata
+
+[Round-trip a Define-XML 2.1 document into a herald_spec.]{.cs-lede}
+
+```r
+def  <- read_define_xml("define.xml")
+spec <- as_herald_spec(def)
+
+is_herald_spec(spec) # TRUE
+```
+
+::: {.cs-note}
+Carries codelists, methods, comments, value-level metadata, ARM display
+sections.
+:::
+:::
+
+::: {.cs-card .cs-l1}
+[From scratch]{.cs-tag}
+
+### Hand-build a spec
+
+[Programmatic construction for tests, fixtures, sponsor extensions.]{.cs-lede}
+
+```r
+spec <- herald_spec(
+  datasets  = list(
+    DM = list(label = "Demographics",
+              class = "SPECIAL PURPOSE")
+  ),
+  variables = list(
+    DM = list(
+      USUBJID = list(label = "Subject ID",
+                     length = 30, type = "text"),
+      AGE     = list(label = "Age", type = "integer")
+    )
+  )
+)
+```
+:::
+
+::: {.cs-card .cs-l1}
+[Inspect]{.cs-tag}
+
+### Walk a spec
+
+[Print, summarise, validate against the schema.]{.cs-lede}
+
+```r
+print(spec)
+summary(spec)
+validate_spec(spec)   # define-xml structure rules
+
+names(spec$datasets)
+spec$variables$DM$AGE
+```
+
+::: {.cs-note}
+`validate_spec()` runs only the `DEFINE-NNN` rule subset -- no datasets
+needed.
+:::
+:::
+
+:::
+
+::: {.cs-section}
+## L2 -- Stamp
+
+[Project spec attributes onto data frames before validation.]{.cs-section-sub}
+:::
+
+::: {.cs-grid-2}
+
+::: {.cs-card .cs-l2}
+[Apply]{.cs-tag}
+
+### Stamp a single dataset
+
+```r
+dm <- apply_spec(dm, spec)
+
+attr(dm, "label")             # "Demographics"
+attr(dm$AGE, "label")         # "Age"
+attr(dm$AGE, "herald_length") # 8
+class(dm)                     # data.frame + sdtm class
+```
+
+::: {.cs-note}
+Idempotent. Re-stamping replaces -- never appends.
+:::
+:::
+
+::: {.cs-card .cs-l2}
+[Bulk]{.cs-tag}
+
+### Stamp a whole study
+
+```r
+files <- list(DM = dm, AE = ae, EX = ex, VS = vs)
+files <- Map(apply_spec, files, list(spec))
+
+# or pass to validate() and let it stamp
+validate(files = files, spec = spec)
+```
+
+::: {.cs-note}
+Rules expecting `herald_length`, `herald_type`, dataset class will
+fail-fast without stamping.
+:::
+:::
+
+:::
+
+::: {.cs-section}
+## L3 -- Dictionaries
+
+[Controlled terminology + external dictionary providers.]{.cs-section-sub}
+:::
+
+::: {.cs-grid}
+
+::: {.cs-card .cs-l3}
+[CDISC CT]{.cs-tag}
+
+### Bundled SDTM / ADaM CT
+
+```r
+ct <- load_ct("sdtm", release = "2024-09-27")
+ct_info(ct)
+available_ct_releases("sdtm")
+
+# refresh local NCI EVS cache
+download_ct("sdtm")
+```
+:::
+
+::: {.cs-card .cs-l3}
+[External]{.cs-tag}
+
+### MedDRA / WHODrug / SRS
+
+```r
+mh   <- meddra_provider(path = "meddra/")
+who  <- whodrug_provider(path = "whodrug/")
+srs  <- srs_provider(release = "latest")
+
+mh$contains("LLT", "Headache")
+who$lookup("ATC", "N02BE01")
+```
+:::
+
+::: {.cs-card .cs-l3}
+[Custom]{.cs-tag}
+
+### Sponsor / ad-hoc
+
+```r
+my_codelist <- custom_provider(
+  values = c("AE001", "AE002"),
+  name   = "SPONSOR_AE_REASON"
+)
+
+register_dictionary("SPONSOR", my_codelist)
+list_dictionaries()
+unregister_dictionary("SPONSOR")
+```
+
+::: {.cs-note}
+All providers share `contains()` + optional `lookup()` -- rules don't
+care about source.
+:::
+:::
+
+:::
+
+::: {.cs-section}
+## L4 -- Catalog
+
+[Inspect and filter the compiled rule corpus.]{.cs-section-sub}
+:::
+
+::: {.cs-grid-2}
+
+::: {.cs-card .cs-l4}
+[Browse]{.cs-tag}
+
+### The rule catalog
+
+```r
+cat <- rule_catalog()
+
+# slice by standard
+sdtm  <- cat[cat$standard == "SDTM-IG", ]
+adam  <- cat[cat$standard == "ADaM-IG", ]
+core  <- cat[cat$standard == "CORE",    ]
+
+supported_standards()
+```
+:::
+
+::: {.cs-card .cs-l4}
+[Filter]{.cs-tag}
+
+### Pick targeted rule sets
+
+```r
+demog_rules <- cat[
+  cat$dataset == "DM" &
+    cat$severity == "error",
+  "rule_id"
+]
+
+validate(files = files, spec = spec,
+         rules = demog_rules)
+```
+
+::: {.cs-note}
+Rule IDs are stable -- safe to pin in study-level QC scripts.
+:::
+:::
+
+:::
+
+::: {.cs-grid-2}
+
+::: {.cs-ref}
+#### Rule ID prefixes {.unnumbered}
+
+| prefix             | source                              |
+|--------------------|-------------------------------------|
+| `SDTMIG-CGNNNN`    | SDTM-IG v2.0 (CG0001 -- CG0666)     |
+| `ADaM-N`           | ADaM-IG v5.0 (1 -- ~790)            |
+| `DEFINE-NNN`       | Define-XML 2.1 (001 -- 225)         |
+| `CORE-NNNNNN`      | SDTM Library API (000001 -- 001082) |
+:::
+
+::: {.cs-ref}
+#### Severity levels {.unnumbered}
+
+| level     | meaning                    |
+|-----------|----------------------------|
+| `error`   | Submission-blocking        |
+| `warning` | Reviewer follow-up expected|
+| `note`    | Informational, advisory    |
+:::
+
+:::
+
+::: {.cs-section}
+## L5 -- Validate
+
+[Run the catalog. Returns a herald_result.]{.cs-section-sub}
+:::
+
+::: {.cs-grid-2}
+
+::: {.cs-card .cs-l5}
+[Run]{.cs-tag}
+
+### End-to-end validate()
+
+```r
+res <- validate(
+  files = list(DM = dm, AE = ae),
+  spec  = spec,
+  rules = c("SDTMIG-CG0001",
+            "CORE-000123")
+)
+
+summary(res)
+```
+
+::: {.cs-note}
+Pass a directory path or a named list of data frames. Spec is optional
+but unlocks metadata-aware rules.
+:::
+:::
+
+::: {.cs-card .cs-l5}
+[Tune]{.cs-tag}
+
+### Severity + scope filters
+
+```r
+res <- validate(
+  files        = "data/",
+  spec         = spec,
+  standards    = c("SDTM-IG", "Define-XML"),
+  severity_map = c("SDTMIG-CG0042" = "warning"),
+  dictionaries = list(MEDDRA = mh)
+)
+```
+
+::: {.cs-note}
+Skipped cross-dataset refs surface in `res$skipped_refs` -- not as
+silent passes.
+:::
+:::
+
+:::
+
+::: {.cs-grid-2}
+
+::: {.cs-ref}
+#### Operator kinds (R/ops-*.R) {.unnumbered}
+
+| kind        | example use                       |
+|-------------|-----------------------------------|
+| `set`       | Codelist membership               |
+| `compare`   | Cross-variable comparisons        |
+| `existence` | Variable presence / NA checks     |
+| `temporal`  | Date order, ISO 8601 parsing      |
+| `cross`     | Cross-dataset joins               |
+| `string`    | Pattern, regex, length            |
+:::
+
+::: {.cs-ref}
+#### Error classes (always via herald_error()) {.unnumbered}
+
+| class                        | when                          |
+|------------------------------|-------------------------------|
+| `herald_error_input`         | User argument problem         |
+| `herald_error_runtime`       | Internal / dependency failure |
+| `herald_error_file`          | I/O, missing or unreadable    |
+| `herald_error_spec`          | Spec construction or shape    |
+| `herald_error_rule`          | Rule definition problem       |
+| `herald_error_validation`    | Engine run failure            |
+:::
+
+:::
+
+::: {.cs-section}
+## L6 -- Report
+
+[Reviewer-ready artifacts. Self-contained, audit-friendly.]{.cs-section-sub}
+:::
+
+::: {.cs-grid}
+
+::: {.cs-card .cs-l6}
+[HTML]{.cs-tag}
+
+### Self-contained QC report
+
+```r
+write_report_html(res, "qc.html")
+```
+
+::: {.cs-note}
+Findings, rule counts, dataset metadata, skipped refs, run metadata --
+one file, no assets.
+:::
+:::
+
+::: {.cs-card .cs-l6}
+[XLSX]{.cs-tag}
+
+### Workbook for reviewers
+
+```r
+write_report_xlsx(res, "qc.xlsx")
+```
+
+::: {.cs-note}
+One sheet per section; severity-coloured rows.
+:::
+:::
+
+::: {.cs-card .cs-l6}
+[JSON]{.cs-tag}
+
+### Machine-readable artifact
+
+```r
+write_report_json(res, "qc.json")
+
+# or dispatch from extension
+report(res, "out/qc.html")
+report(res, "out/qc.xlsx")
+```
+
+::: {.cs-note}
+Stable schema -- safe for downstream dashboards, CI, ticket creation.
+:::
+:::
+
+:::
+
+::: {.cs-section}
+## End-to-end recipe
+
+[A full submission QC pass in one block.]{.cs-section-sub}
+:::
+
+::: {.cs-recipe}
+
+```r
+library(herald)
+
+# L0 + L1 -- read datasets and lift Define-XML metadata
+def   <- read_define_xml("submission/define.xml")
+spec  <- as_herald_spec(def)
+
+files <- list(
+  DM = read_xpt("submission/dm.xpt"),
+  AE = read_json("submission/ae.json"),
+  EX = read_xpt("submission/ex.xpt")
+)
+
+# L3 -- attach external dictionaries
+mh  <- meddra_provider(path = "dict/meddra/")
+
+# L5 -- run targeted validation
+res <- validate(
+  files        = files,
+  spec         = spec,
+  standards    = c("SDTM-IG", "Define-XML"),
+  dictionaries = list(MEDDRA = mh),
+  severity_map = c("SDTMIG-CG0042" = "warning")
+)
+
+# L6 -- ship reviewer artifacts
+write_report_html(res, "out/qc.html")
+write_report_xlsx(res, "out/qc.xlsx")
+write_report_json(res, "out/qc.json")
+```
+
+:::
+
+::: {.cs-section}
+## Tips & pitfalls
+
+[Things experienced users wish they knew on day one.]{.cs-section-sub}
+:::
+
+::: {.cs-tips-wrap}
+
+- **Stamp before validate.** Metadata-aware rules silently skip on
+  un-stamped data. `apply_spec()` first.
+- **Pin rule IDs in CI.** Catalog grows -- `rules = c(...)` keeps
+  reviews reproducible across releases.
+- **Use `severity_map`, not forks.** Demote sponsor-irrelevant rules
+  without editing YAML.
+- **Inspect `res$skipped_refs`.** Cross-dataset rules skip when refs
+  missing -- not a pass.
+- **Errors are typed.** `tryCatch(..., herald_error_input = ...)`
+  beats string matching.
+- **Define-XML alone is valid input.** Run `validate_spec()` against
+  `define.xml` with no datasets.
+- **Parquet for big ADaM.** XPT > 2 GB is risky; `convert_dataset()`
+  moves formats while preserving labels.
+- **Custom providers cost nothing.** Wrap any vector with
+  `custom_provider()` and register it.
+
+:::
+
+:::

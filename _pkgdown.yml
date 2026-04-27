@@ -38,13 +38,13 @@ home:
     write reviewer-ready HTML, XLSX, and JSON reports.
   links:
     - text: Cheatsheet
-      href: https://vthanik.github.io/herald/herald-cheatsheet.pdf
+      href: articles/cheatsheet.html
 
 navbar:
   type: light
   bg: none
   structure:
-    left: [intro, reference, articles, news]
+    left: [intro, reference, articles, cheatsheet, news]
     right: [search, lightswitch, github]
   components:
     intro:
@@ -53,6 +53,9 @@ navbar:
     reference:
       text: Reference
       href: reference/index.html
+    cheatsheet:
+      text: Cheatsheet
+      href: articles/cheatsheet.html
     news:
       text: News
       href: news/index.html
@@ -212,6 +215,11 @@ reference:
       - "pilot-data"
 
 articles:
+  - title: "Reference"
+    navbar: ~
+    contents:
+      - articles/cheatsheet
+
   - title: "Get started"
     navbar: ~
     contents:
