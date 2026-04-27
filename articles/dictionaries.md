@@ -134,7 +134,7 @@ result
 #> Rules: 0/0 applied
 #> Datasets checked: 1
 #> Findings: 0
-#> Duration: 0.02800536 secs
+#> Duration: 0.02690029 secs
 ```
 
 ## Custom dictionaries

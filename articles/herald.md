@@ -72,7 +72,7 @@ result
 #> Rules: 0/0 applied
 #> Datasets checked: 1
 #> Findings: 0
-#> Duration: 0.161721 secs
+#> Duration: 0.1638377 secs
 names(result)
 #>  [1] "findings"         "rules_applied"    "rules_total"     
 #>  [4] "datasets_checked" "duration"         "timestamp"       

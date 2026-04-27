@@ -26,7 +26,7 @@ r0
 #> Rules: 0/0 applied
 #> Datasets checked: 1
 #> Findings: 0
-#> Duration: 0.1632524 secs
+#> Duration: 0.1660948 secs
 ```
 
 Or from a directory of files:
@@ -191,9 +191,9 @@ write_report_json(r2, json)
 
 file.info(c(html, xlsx, json))[, c("size", "mtime")]
 #>                                             size               mtime
-#> /tmp/RtmpeLvPMv/herald-reports/report.html 19484 2026-04-27 09:23:32
-#> /tmp/RtmpeLvPMv/herald-reports/report.xlsx  9560 2026-04-27 09:23:32
-#> /tmp/RtmpeLvPMv/herald-reports/report.json  2944 2026-04-27 09:23:32
+#> /tmp/RtmpyJ2hCz/herald-reports/report.html 19484 2026-04-27 09:23:52
+#> /tmp/RtmpyJ2hCz/herald-reports/report.xlsx  9561 2026-04-27 09:23:52
+#> /tmp/RtmpyJ2hCz/herald-reports/report.json  2944 2026-04-27 09:23:52
 ```
 
 ## Skipped references
